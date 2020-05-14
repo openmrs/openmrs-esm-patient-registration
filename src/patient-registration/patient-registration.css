@@ -1,0 +1,17 @@
+.container {
+    margin: 75px;
+    padding: 50px;
+    height: 100vh;
+    box-shadow: 0rem 0.125rem 0.25rem rgba(0, 0, 0, 0.08), 0rem 0.0625rem 0.25rem rgba(0, 0, 0, 0.04);
+    background-color: #fff;
+    border-radius: .5rem;
+    border: 1px solid #dadce0;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.item {
+    margin: 10px;
+    padding: 10px;
+}
