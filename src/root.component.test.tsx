@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { cleanup, render } from '@testing-library/react';
+import { mount } from 'enzyme';
 import Root from './root.component';
 
 window['getOpenmrsSpaBase'] = jest.fn().mockImplementation(() => '/');
-
-afterAll(cleanup);
 
 describe('root component', () => {
   it('renders without dying', () => {
@@ -15,8 +13,8 @@ describe('root component', () => {
   });
 
   it('renders the main (parent) component', () => {
-    const wrapper = render(<Root />);
-    expect(wrapper.container.getElementsByTagName('main')).toHaveLength(1);
-    expect(wrapper.container.getElementsByClassName('omrs-main-content')).toHaveLength(1);
+    const wrapper = mount(<Root />);
+    expect(wrapper.find('main')).toHaveLength(1);
+    expect(wrapper.find('.omrs-main-content')).toHaveLength(1);
   });
 });
