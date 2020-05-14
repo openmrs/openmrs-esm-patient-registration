@@ -5,10 +5,10 @@ import { BrowserRouter } from 'react-router-dom';
 
 defineConfigSchema('@openmrs/esm-patient-registration', {});
 
-function Root(props) {
+function Root() {
   return (
     <BrowserRouter basename={window['getOpenmrsSpaBase']()}>
-      <div>Fill me with content!</div>
+      <main className="omrs-main-content">Fill me with content!</main>
     </BrowserRouter>
   );
 }
