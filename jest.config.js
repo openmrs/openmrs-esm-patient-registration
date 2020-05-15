@@ -8,5 +8,5 @@ module.exports = {
     '@openmrs/esm-module-config': '<rootDir>/__mocks__/openmrs-esm-module-config.mock.tsx',
   },
   snapshotSerializers: ['enzyme-to-json/serializer'],
-  setupFilesAfterEnv: ['<rootDir>/src/setupEnzyme.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/setup-enzyme.ts'],
 };
