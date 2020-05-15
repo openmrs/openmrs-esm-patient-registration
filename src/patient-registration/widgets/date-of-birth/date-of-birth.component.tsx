@@ -27,9 +27,16 @@ class DateOfBirth extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="DateOfBirthContainer">
-        <label htmlFor="DateOfBirth">Date of Birth:</label>
-        <input className="DateOfBirthDatePicker" type="date" value={this.state.date} onChange={this.handleDateChange} />
+      <div className="omrs-margin-8 omrs-padding-8">
+        <label className="omrs-type-title-5 omrs-margin-right-4" htmlFor="date-of-birth">
+          Date of Birth:
+        </label>
+        <div className="omrs-datepicker">
+          <input type="date" name="datepicker" value={this.state.date} onChange={this.handleDateChange} required />
+          <svg className="omrs-icon" role="img">
+            <use xlinkHref="#omrs-icon-calendar"></use>
+          </svg>
+        </div>
       </div>
     );
   }

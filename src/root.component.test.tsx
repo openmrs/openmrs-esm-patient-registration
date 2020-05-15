@@ -17,7 +17,6 @@ describe('root component', () => {
 
   it('renders the main (parent) component', () => {
     expect(wrapper.find('main')).toHaveLength(1);
-    expect(wrapper.find('.omrs-main-content')).toHaveLength(1);
   });
 
   it('renders the patient registration component', () => {

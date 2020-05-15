@@ -1,6 +1,5 @@
 import React from 'react';
 import DateOfBirth from './widgets/date-of-birth/date-of-birth.component';
-import styles from './patient-registration.css';
 
 class PatientRegistration extends React.Component {
   constructor(props: any) {
@@ -19,11 +18,12 @@ class PatientRegistration extends React.Component {
 
   render() {
     return (
-      <main className={styles.container}>
-        <section className={styles.item}>
+      <form className="omrs-margin-8 omrs-padding-8">
+        <h1 className="omrs-type-title-1">New Patient</h1>
+        <section className="omrs-margin-8 omrs-padding-8">
           <DateOfBirth setDate={this.setDateOfBirth} />
         </section>
-      </main>
+      </form>
     );
   }
 }
