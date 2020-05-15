@@ -7,6 +7,7 @@ class PatientRegistration extends React.Component {
 
     this.state = {
       dateOfBirth: '',
+      estimatedDateOfBirth: false,
     };
   }
 
@@ -16,12 +17,18 @@ class PatientRegistration extends React.Component {
     });
   };
 
+  setEstimatedDateOfBirth = (estimate: boolean) => {
+    this.setState({
+      estimatedDateOfBirth: estimate,
+    });
+  };
+
   render() {
     return (
       <form className="omrs-margin-8 omrs-padding-8">
         <h1 className="omrs-type-title-1">New Patient</h1>
         <section className="omrs-margin-8 omrs-padding-8">
-          <DateOfBirth setDate={this.setDateOfBirth} />
+          <DateOfBirth setDate={this.setDateOfBirth} setEstimate={this.setEstimatedDateOfBirth} />
         </section>
       </form>
     );
