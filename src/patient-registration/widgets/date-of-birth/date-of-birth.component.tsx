@@ -1,4 +1,6 @@
 import React from 'react';
+import Age from './age.component';
+import styles from './date-of-birth.css';
 
 interface IProps {
   setDate: (date: string) => void;
@@ -15,17 +17,23 @@ class DateOfBirth extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      date: 'dd/mm/yyyy',
+      date: '',
       estimate: false,
     };
   }
 
-  handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      date: e.target.value,
-    });
+  getTodaysDate = () => {
+    return new Date().toISOString().split('T')[0];
+  };
 
-    this.props.setDate(e.target.value);
+  handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value <= this.getTodaysDate()) {
+      this.setState({
+        date: e.target.value,
+      });
+
+      this.props.setDate(e.target.value);
+    }
   };
 
   handleEstimateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,19 +46,26 @@ class DateOfBirth extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="omrs-margin-8 omrs-padding-8 container">
-        <div className="field">
-          <label className="omrs-type-title-4 omrs-margin-right-4" htmlFor="date-of-birth">
+      <main className={`omrs-margin-8 omrs-padding-8 ${styles.container}`}>
+        <section className={styles.item}>
+          <label htmlFor="datepicker" className="omrs-margin-right-4 date-of-birth">
             Date of Birth
           </label>
           <div className="omrs-datepicker">
-            <input type="date" name="datepicker" value={this.state.date} onChange={this.handleDateChange} required />
+            <input
+              type="date"
+              name="datepicker"
+              value={this.state.date}
+              max={this.getTodaysDate()}
+              onChange={this.handleDateChange}
+              required
+            />
             <svg className="omrs-icon" role="img">
               <use xlinkHref="#omrs-icon-calendar"></use>
             </svg>
           </div>
-        </div>
-        <div className="field">
+        </section>
+        <section className={styles.item}>
           <div className="omrs-checkbox">
             <label>
               <input
@@ -59,11 +74,14 @@ class DateOfBirth extends React.Component<IProps, IState> {
                 checked={this.state.estimate}
                 onChange={this.handleEstimateChange}
               />
-              <span className="omrs-type-title-5 omrs-margin-left-4">Estimate</span>
+              <span className="omrs-margin-left-4 estimate">Estimate</span>
             </label>
           </div>
-        </div>
-      </div>
+        </section>
+        <section className={styles.item}>
+          <Age />
+        </section>
+      </main>
     );
   }
 }

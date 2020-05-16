@@ -1,65 +1,88 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import DateOfBirth from './date-of-birth.component';
+import Age from './age.component';
 
 const mockProps = {
   setDate: jest.fn(),
   setEstimate: jest.fn(),
 };
 
-describe('date of birth', () => {
+const getFutureDate = () => {
+  let tomorrow = new Date();
+  tomorrow.setDate(new Date().getDate() + 1);
+
+  return tomorrow.toISOString().split('T')[0];
+};
+
+describe('date of birth rendering', () => {
   const wrapper = shallow(<DateOfBirth setDate={mockProps.setDate} setEstimate={mockProps.setEstimate} />);
 
-  it('renders a container', () => {
-    expect(wrapper.find('.container')).toHaveLength(1);
+  it('renders a main container', () => {
+    expect(wrapper.find('main.container')).toHaveLength(1);
   });
 
-  it('renders two input fields', () => {
-    expect(wrapper.find('input')).toHaveLength(2);
-  });
-
-  it('renders two labels', () => {
-    expect(wrapper.find('label')).toHaveLength(2);
+  it('renders three section items', () => {
+    expect(wrapper.find('section.item')).toHaveLength(3);
   });
 
   it('renders a required date picker input', () => {
-    expect(wrapper.find('[type="date"]')).toHaveLength(1);
-    expect(wrapper.find('input').get(0).props.required).toEqual(true);
+    expect(wrapper.find('input[type="date"]')).toHaveLength(1);
+    expect(wrapper.find('input[type="date"]').get(0).props.required).toEqual(true);
   });
 
-  it('renders an date picker input label', () => {
-    expect(wrapper.find('label').get(0).props.children).toEqual('Date of Birth');
+  it('renders a date of birth label', () => {
+    expect(wrapper.find('label.date-of-birth').text()).toEqual('Date of Birth');
   });
 
   it('renders an estimate checkbox', () => {
-    expect(wrapper.find('[type="checkbox"]')).toHaveLength(1);
+    expect(wrapper.find('input[type="checkbox"]')).toHaveLength(1);
   });
 
   it('renders an estimate label', () => {
-    expect(wrapper.find('span').text()).toEqual('Estimate');
+    expect(wrapper.find('span.estimate').text()).toEqual('Estimate');
+  });
+
+  it('renders an age widget', () => {
+    expect(wrapper.find(Age)).toHaveLength(1);
   });
 });
 
 describe('date of birth interaction', () => {
-  const wrapper = mount(<DateOfBirth setDate={mockProps.setDate} setEstimate={mockProps.setEstimate} />);
+  let wrapper: ShallowWrapper;
+
+  beforeEach(() => {
+    wrapper = shallow(<DateOfBirth setDate={mockProps.setDate} setEstimate={mockProps.setEstimate} />);
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
+    wrapper = null;
+  });
 
   it('has a default state and value', () => {
-    expect(wrapper.state('date')).toEqual('dd/mm/yyyy');
-    expect(wrapper.find('[type="date"]').prop('value')).toEqual('dd/mm/yyyy');
+    expect(wrapper.state('date')).toEqual('');
+    expect(wrapper.find('input[type="date"]').prop('value')).toEqual('');
   });
 
   it('has estimate set to false by default', () => {
     expect(wrapper.state('estimate')).toEqual(false);
-    expect(wrapper.find('[type="checkbox"]').prop('checked')).toEqual(false);
+    expect(wrapper.find('input[type="checkbox"]').prop('checked')).toEqual(false);
   });
 
-  it('changes the date of birth', () => {
-    wrapper.find('[type="date"]').simulate('change', { target: { value: '12/10/1994' } });
-    expect(wrapper.state('date')).toEqual('12/10/1994');
-    expect(wrapper.find('[type="date"]').prop('value')).toEqual('12/10/1994');
+  it('updates the date of birth', () => {
+    wrapper.find('input[type="date"]').simulate('change', { target: { value: '1994-10-12' } });
+    expect(wrapper.state('date')).toEqual('1994-10-12');
+    expect(wrapper.find('input[type="date"]').prop('value')).toEqual('1994-10-12');
   });
 
-  it('changes the estimate', () => {
+  it('updates the date of birth past todays date', () => {
+    wrapper.find('input[type="date"]').simulate('change', { target: { value: getFutureDate() } });
+    expect(wrapper.state('date')).toEqual('');
+    expect(wrapper.find('input[type="date"]').prop('value')).toEqual('');
+  });
+
+  it('updates the estimate', () => {
     wrapper.find('[type="checkbox"]').simulate('change', { target: { checked: true } });
     expect(wrapper.state('estimate')).toEqual(true);
     expect(wrapper.find('[type="checkbox"]').prop('checked')).toEqual(true);
