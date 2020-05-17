@@ -32,6 +32,9 @@ class Age extends React.Component<IProps, IState> {
   render() {
     return (
       <main className={styles.container}>
+        <label htmlFor="age" className="omrs-margin-right-4 age">
+          Age
+        </label>
         <section className={styles.item}>
           <div>
             <label className="omrs-margin-right-4 years" htmlFor="years">

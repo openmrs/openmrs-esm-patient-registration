@@ -32,7 +32,7 @@ describe('date of birth rendering', () => {
   });
 
   it('renders a date of birth label', () => {
-    expect(wrapper.find('label.date-of-birth').text()).toEqual('Date of Birth');
+    expect(wrapper.find('label.date-of-birth').text()).toEqual('Date of Birth *');
   });
 
   it('renders an estimate checkbox', () => {

@@ -6,5 +6,5 @@ module.exports = {
   parser: 'typescript',
   semi: true,
   jsxBracketSameLine: true,
-  includeFiles: 'src/**/*.tsx?',
+  includeFiles: 'src/**/*.tsx',
 };

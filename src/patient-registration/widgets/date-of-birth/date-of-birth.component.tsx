@@ -49,7 +49,7 @@ class DateOfBirth extends React.Component<IProps, IState> {
       <main className={`omrs-margin-8 omrs-padding-8 ${styles.container}`}>
         <section className={styles.item}>
           <label htmlFor="datepicker" className="omrs-margin-right-4 date-of-birth">
-            Date of Birth
+            Date of Birth *
           </label>
           <div className="omrs-datepicker">
             <input

@@ -14,7 +14,11 @@ describe('age widget rendering', () => {
   });
 
   it('renders three labels', () => {
-    expect(wrapper.find('label')).toHaveLength(3);
+    expect(wrapper.find('label')).toHaveLength(4);
+  });
+
+  it('renders an age label', () => {
+    expect(wrapper.find('label.age').text()).toEqual('Age');
   });
 
   it('renders a years label', () => {
