@@ -71,4 +71,22 @@ describe('age interaction', () => {
     expect(wrapper.state('days')).toEqual(3);
     expect(wrapper.find('input[name="days"]').get(0).props.value).toEqual(3);
   });
+
+  it('updates years value to a negative number', () => {
+    wrapper.find('input[name="years"]').simulate('change', { target: { valueAsNumber: -1, name: 'years' } });
+    expect(wrapper.state('years')).toEqual(0);
+    expect(wrapper.find('input[name="years"]').get(0).props.value).toEqual(0);
+  });
+
+  it('updates months value to a negative number', () => {
+    wrapper.find('input[name="months"]').simulate('change', { target: { valueAsNumber: -2, name: 'months' } });
+    expect(wrapper.state('months')).toEqual(0);
+    expect(wrapper.find('input[name="months"]').get(0).props.value).toEqual(0);
+  });
+
+  it('updates days value to a negative number', () => {
+    wrapper.find('input[name="days"]').simulate('change', { target: { valueAsNumber: -3, name: 'days' } });
+    expect(wrapper.state('days')).toEqual(0);
+    expect(wrapper.find('input[name="days"]').get(0).props.value).toEqual(0);
+  });
 });

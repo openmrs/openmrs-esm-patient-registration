@@ -21,10 +21,12 @@ class Age extends React.Component<IProps, IState> {
   }
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      ...this.state,
-      [e.target.name]: e.target.valueAsNumber,
-    });
+    if (e.target.valueAsNumber >= 0) {
+      this.setState({
+        ...this.state,
+        [e.target.name]: e.target.valueAsNumber,
+      });
+    }
   };
 
   render() {
@@ -35,7 +37,7 @@ class Age extends React.Component<IProps, IState> {
             <label className="omrs-margin-right-4 years" htmlFor="years">
               Years
             </label>
-            <input type="number" value={this.state.years} name="years" onChange={this.handleInputChange} />
+            <input type="number" value={this.state.years} name="years" min="0" onChange={this.handleInputChange} />
           </div>
         </section>
         <section className={styles.item}>
@@ -43,14 +45,14 @@ class Age extends React.Component<IProps, IState> {
             <label className="omrs-margin-right-4 months" htmlFor="months">
               Months
             </label>
-            <input type="number" value={this.state.months} name="months" onChange={this.handleInputChange} />
+            <input type="number" value={this.state.months} name="months" min="0" onChange={this.handleInputChange} />
           </div>
         </section>
         <section className={styles.item}>
           <label className="omrs-margin-right-4 days" htmlFor="days">
             Days
           </label>
-          <input type="number" value={this.state.days} name="days" onChange={this.handleInputChange} />
+          <input type="number" value={this.state.days} name="days" min="0" onChange={this.handleInputChange} />
         </section>
       </main>
     );
