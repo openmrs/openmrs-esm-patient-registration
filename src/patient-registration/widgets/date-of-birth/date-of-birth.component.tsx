@@ -81,6 +81,10 @@ class DateOfBirth extends React.Component<IProps, IState> {
           </div>
         </section>
         <section className={styles.item}>
+          <label htmlFor="birth-time">Birth Time</label>
+          <input type="time" name="birth-time" value="00:00" onChange={this.handleBirthTimeChange} />
+        </section>
+        <section className={styles.item}>
           <Age />
         </section>
       </main>

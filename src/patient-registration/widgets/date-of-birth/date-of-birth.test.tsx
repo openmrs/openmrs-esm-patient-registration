@@ -22,8 +22,8 @@ describe('date of birth rendering', () => {
     expect(wrapper.find('main.container')).toHaveLength(1);
   });
 
-  it('renders three section items', () => {
-    expect(wrapper.find('section.item')).toHaveLength(3);
+  it('renders four section items', () => {
+    expect(wrapper.find('section.item')).toHaveLength(4);
   });
 
   it('renders a required date picker input', () => {
@@ -32,15 +32,23 @@ describe('date of birth rendering', () => {
   });
 
   it('renders a date of birth label', () => {
-    expect(wrapper.find('label.date-of-birth').text()).toEqual('Date of Birth *');
+    expect(wrapper.find('label[htmlFor="date-of-birth"]').text()).toEqual('Date of Birth *');
   });
 
-  it('renders an estimate checkbox', () => {
-    expect(wrapper.find('input[type="checkbox"]')).toHaveLength(1);
+  it('renders a birth time label', () => {
+    expect(wrapper.find('label[htmlFor="birth-time"]').text()).toEqual('Birth Time');
+  });
+
+  it('renders a birth time input', () => {
+    expect(wrapper.find('input[type="time"]')).toHaveLength(1);
   });
 
   it('renders an estimate label', () => {
     expect(wrapper.find('span.estimate').text()).toEqual('Estimate');
+  });
+
+  it('renders an estimate checkbox', () => {
+    expect(wrapper.find('input[type="checkbox"]')).toHaveLength(1);
   });
 
   it('renders an age widget', () => {
