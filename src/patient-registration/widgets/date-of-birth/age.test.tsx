@@ -18,19 +18,19 @@ describe('age widget rendering', () => {
   });
 
   it('renders an age label', () => {
-    expect(wrapper.find('label.age').text()).toEqual('Age');
+    expect(wrapper.find('label[htmlFor="age"]').text()).toEqual('Age');
   });
 
   it('renders a years label', () => {
-    expect(wrapper.find('label.years').text()).toEqual('Years');
+    expect(wrapper.find('label[htmlFor="years"]').text()).toEqual('Years');
   });
 
   it('renders a months label', () => {
-    expect(wrapper.find('label.months').text()).toEqual('Months');
+    expect(wrapper.find('label[htmlFor="months"]').text()).toEqual('Months');
   });
 
   it('renders a days label', () => {
-    expect(wrapper.find('label.days').text()).toEqual('Days');
+    expect(wrapper.find('label[htmlFor="days"]').text()).toEqual('Days');
   });
 });
 

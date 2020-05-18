@@ -44,11 +44,13 @@ class DateOfBirth extends React.Component<IProps, IState> {
     this.props.setEstimate(e.target.checked);
   };
 
+  handleBirthTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
+
   render() {
     return (
       <main className={`omrs-margin-8 omrs-padding-8 ${styles.container}`}>
         <section className={styles.item}>
-          <label htmlFor="datepicker" className="omrs-margin-right-4 date-of-birth">
+          <label htmlFor="date-of-birth" className="omrs-margin-right-4">
             Date of Birth *
           </label>
           <div className="omrs-datepicker">

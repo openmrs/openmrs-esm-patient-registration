@@ -32,12 +32,12 @@ class Age extends React.Component<IProps, IState> {
   render() {
     return (
       <main className={styles.container}>
-        <label htmlFor="age" className="omrs-margin-right-4 age">
+        <label htmlFor="age" className="omrs-margin-right-4">
           Age
         </label>
         <section className={styles.item}>
           <div>
-            <label className="omrs-margin-right-4 years" htmlFor="years">
+            <label className="omrs-margin-right-4" htmlFor="years">
               Years
             </label>
             <input type="number" value={this.state.years} name="years" min="0" onChange={this.handleInputChange} />
@@ -45,14 +45,14 @@ class Age extends React.Component<IProps, IState> {
         </section>
         <section className={styles.item}>
           <div>
-            <label className="omrs-margin-right-4 months" htmlFor="months">
+            <label className="omrs-margin-right-4s" htmlFor="months">
               Months
             </label>
             <input type="number" value={this.state.months} name="months" min="0" onChange={this.handleInputChange} />
           </div>
         </section>
         <section className={styles.item}>
-          <label className="omrs-margin-right-4 days" htmlFor="days">
+          <label className="omrs-margin-right-4" htmlFor="days">
             Days
           </label>
           <input type="number" value={this.state.days} name="days" min="0" onChange={this.handleInputChange} />
