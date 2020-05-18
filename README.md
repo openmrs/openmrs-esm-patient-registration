@@ -113,7 +113,9 @@ A widget is simply a component that, in the case of the Patient Registration mod
 
 ## Acknowledgements
 - [Florian Rappl](https://github.com/FlorianRappl) - scaffolding and setting up the module as well as onboarding the dev team
-- Romain Buisson - JIRA ticket inception and analysis
+- Romain Buisson - design, inception, and analysis
+- Helena Lyhme - design, inception, and analysis
+- Susanna Schiavi - design, inception, and analysis
 - [openmrs-esm-home](https://github.com/openmrs/openmrs-esm-home) - reference code for setting up and beginning development of the module
 
 ## License
