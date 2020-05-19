@@ -1,11 +1,26 @@
 .container {
-
+    width: 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 15px 10px;
+    grid-template-areas: 
+        "dob dob time"
+        "age age estimate";
 }
 
-.title {
-
+.itemDateOfBirth {
+    grid-area: dob;
 }
 
-.item {
+.itemBirthTime {
+    grid-area: time;
+}
 
+.itemAge {
+    grid-area: age;
+}
+
+.itemEstimate {
+    grid-area: estimate;
 }

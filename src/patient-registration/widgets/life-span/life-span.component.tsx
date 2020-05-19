@@ -79,7 +79,7 @@ class LifeSpan extends React.Component<LifeSpanProps, LifeSpanState> {
   render() {
     return (
       <main className={styles.container}>
-        <section className={styles.item}>
+        <section className={styles.itemDateOfBirth}>
           <label htmlFor="date-of-birth">Date of Birth</label>
           <input
             type="date"
@@ -89,7 +89,7 @@ class LifeSpan extends React.Component<LifeSpanProps, LifeSpanState> {
             onChange={this.handleDateOfBirthChange}
           />
         </section>
-        <section className={styles.item}>
+        <section className={styles.itemBirthTime}>
           <label htmlFor="birth-time">Birth Time</label>
           <input
             type="time"
@@ -99,8 +99,7 @@ class LifeSpan extends React.Component<LifeSpanProps, LifeSpanState> {
             onChange={this.handleBirthTimeChange}
           />
         </section>
-        <section className={styles.item}>
-          <h1 className="title">Age</h1>
+        <section className={styles.itemAge}>
           <label htmlFor="years">Years</label>
           <input type="number" id="years" name="years" value={this.state.age.years} onChange={this.handleAgeChange} />
           <label htmlFor="months">Months</label>
@@ -114,7 +113,7 @@ class LifeSpan extends React.Component<LifeSpanProps, LifeSpanState> {
           <label htmlFor="days">Days</label>
           <input type="number" id="days" name="days" value={this.state.age.days} onChange={this.handleAgeChange} />
         </section>
-        <section className={styles.item}>
+        <section className={styles.itemEstimate}>
           <label htmlFor="estimate">Estimate</label>
           <input
             type="checkbox"

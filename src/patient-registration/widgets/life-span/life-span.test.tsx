@@ -9,8 +9,8 @@ describe('life span container', () => {
     expect(wrapper.find('main.container')).toHaveLength(1);
   });
 
-  it('renders 4 section items', () => {
-    expect(wrapper.find('section.item')).toHaveLength(4);
+  it('renders 4 sections', () => {
+    expect(wrapper.find('section')).toHaveLength(4);
   });
 });
 
@@ -89,10 +89,6 @@ describe('age', () => {
   afterEach(() => {
     wrapper.unmount();
     wrapper = null;
-  });
-
-  it('renders an age title', () => {
-    expect(wrapper.find('h1.title').text()).toEqual('Age');
   });
 
   it('renders a years, months, and days label', () => {
