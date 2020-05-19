@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.item {
+    margin-right: 10px;
+    padding-left: 10px;
+    border-radius: 2em;
+}
