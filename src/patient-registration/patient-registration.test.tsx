@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import PatientRegistration from './patient-registration.component';
+import PatientName from './widgets/patient-name/patient-name.component';
 import DateOfBirth from './widgets/date-of-birth/date-of-birth.component';
 
 describe('patient registration rendering', () => {
@@ -15,7 +16,11 @@ describe('patient registration rendering', () => {
   });
 
   it('renders a widget section', () => {
-    expect(wrapper.find('section.widget')).toHaveLength(1);
+    expect(wrapper.find('section.widget')).toHaveLength(2);
+  });
+
+  it('renders the patient name component', () => {
+    expect(wrapper.find(PatientName)).toHaveLength(1);
   });
 
   it('renders the date of birth component', () => {
