@@ -100,18 +100,40 @@ class LifeSpan extends React.Component<LifeSpanProps, LifeSpanState> {
           />
         </section>
         <section className={styles.itemAge}>
-          <label htmlFor="years">Years</label>
-          <input type="number" id="years" name="years" value={this.state.age.years} onChange={this.handleAgeChange} />
-          <label htmlFor="months">Months</label>
+          <label htmlFor="age">Age</label>
+          <label className={styles.ageLabel} htmlFor="years">
+            Years
+          </label>
           <input
+            className={styles.ageInput}
+            type="number"
+            id="years"
+            name="years"
+            value={this.state.age.years}
+            onChange={this.handleAgeChange}
+          />
+          <label className={styles.ageLabel} htmlFor="months">
+            Months
+          </label>
+          <input
+            className={styles.ageInput}
             type="number"
             id="months"
             name="months"
             value={this.state.age.months}
             onChange={this.handleAgeChange}
           />
-          <label htmlFor="days">Days</label>
-          <input type="number" id="days" name="days" value={this.state.age.days} onChange={this.handleAgeChange} />
+          <label className={styles.ageLabel} htmlFor="days">
+            Days
+          </label>
+          <input
+            className={styles.ageInput}
+            type="number"
+            id="days"
+            name="days"
+            value={this.state.age.days}
+            onChange={this.handleAgeChange}
+          />
         </section>
         <section className={styles.itemEstimate}>
           <label htmlFor="estimate">Estimate</label>

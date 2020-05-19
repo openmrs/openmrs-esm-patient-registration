@@ -1,5 +1,4 @@
 .container {
-    width: 50%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -23,4 +22,30 @@
 
 .itemEstimate {
     grid-area: estimate;
+}
+
+label {
+    padding: 5px;
+    font-weight: bold;
+}
+
+input {
+    padding: 5px;
+    text-align: center;
+}
+
+input[type=checkbox] {
+    transform: scale(1.5);
+}
+
+.ageLabel {
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+    background-color: lightgray;
+    font-size: smaller;
+    font-weight: normal;
+}
+
+.ageInput {
+    margin-right: 5px;
 }
