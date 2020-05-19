@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import PatientName from './patient-name.component';
 
 describe('patient name widget rendering', () => {
@@ -9,12 +9,12 @@ describe('patient name widget rendering', () => {
     expect(wrapper.find('main.container')).toHaveLength(1);
   });
 
-  it('renders 3 section items', () => {
-    expect(wrapper.find('section.item')).toHaveLength(3);
+  it('renders 4 section items', () => {
+    expect(wrapper.find('section.item')).toHaveLength(4);
   });
 
-  it('renders 3 labels', () => {
-    expect(wrapper.find('label')).toHaveLength(3);
+  it('renders 4 labels', () => {
+    expect(wrapper.find('label')).toHaveLength(4);
   });
 
   it('renders a first name label', () => {
@@ -41,5 +41,26 @@ describe('patient name widget rendering', () => {
   it('renders a required last name input', () => {
     expect(wrapper.find('input[name="last_name"]')).toHaveLength(1);
     expect(wrapper.find('input[name="last_name"]').get(0).props.required).toEqual(true);
+  });
+
+  it('renders a name unknown checkbox', () => {
+    expect(wrapper.find('input[type="checkbox"]')).toHaveLength(1);
+  });
+
+  it('renders a name unknown label', () => {
+    expect(wrapper.find('span.name_unknown').text()).toEqual('Name unknown');
+  });
+});
+
+describe('patient name interaction', () => {
+  let wrapper: ShallowWrapper;
+
+  beforeEach(() => {
+    wrapper = shallow(<PatientName />);
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
+    wrapper = null;
   });
 });

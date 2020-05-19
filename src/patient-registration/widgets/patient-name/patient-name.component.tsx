@@ -39,6 +39,14 @@ class PatientName extends React.Component<IProps, IState> {
             </label>
           </div>
         </section>
+        <section className={styles.item}>
+          <div className="omrs-checkbox">
+            <label>
+              <input type="checkbox" name="omrs-checkbox" />
+              <span className="omrs-margin-left-4 name_unknown">Name unknown</span>
+            </label>
+          </div>
+        </section>
       </main>
     );
   }
