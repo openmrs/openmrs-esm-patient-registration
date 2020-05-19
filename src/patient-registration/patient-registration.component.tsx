@@ -1,5 +1,5 @@
 import React from 'react';
-import DateOfBirth from './widgets/date-of-birth/date-of-birth.component';
+import LifeSpan from './widgets/life-span/life-span.component';
 import styles from './patient-registration.css';
 
 class PatientRegistration extends React.Component {
@@ -29,7 +29,7 @@ class PatientRegistration extends React.Component {
       <form className={`omrs-margin-8 omrs-padding-8 ${styles.dashboard}`}>
         <h1 className="omrs-type-title-1">New Patient</h1>
         <section className={styles.widget}>
-          <DateOfBirth setDate={this.setDateOfBirth} setEstimate={this.setEstimatedDateOfBirth} />
+          <LifeSpan />
         </section>
       </form>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import PatientRegistration from './patient-registration.component';
-import DateOfBirth from './widgets/date-of-birth/date-of-birth.component';
+import LifeSpan from './widgets/life-span/life-span.component';
 
 describe('patient registration rendering', () => {
   const wrapper = shallow(<PatientRegistration />);
@@ -14,11 +14,11 @@ describe('patient registration rendering', () => {
     expect(wrapper.find('h1').text()).toEqual('New Patient');
   });
 
-  it('renders a widget section', () => {
+  it('renders 1 widget section', () => {
     expect(wrapper.find('section.widget')).toHaveLength(1);
   });
 
-  it('renders the date of birth component', () => {
-    expect(wrapper.find(DateOfBirth)).toHaveLength(1);
-  });
+  it('renders a life span widget', () => {
+    expect(wrapper.find(LifeSpan)).toHaveLength(1);
+  })
 });
