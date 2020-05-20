@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Root from './root.component';
-import PatientRegistration from './patient-registration/patient-registration.component';
+import { PatientRegistration } from './patient-registration/patient-registration.component';
 
 window['getOpenmrsSpaBase'] = jest.fn().mockImplementation(() => '/');
 

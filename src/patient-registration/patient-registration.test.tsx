@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import PatientRegistration from './patient-registration.component';
+import { PatientRegistration } from './patient-registration.component';
 import { LifeSpan } from './widgets/life-span/life-span.component';
 import PatientName from './widgets/patient-name/patient-name.component';
 

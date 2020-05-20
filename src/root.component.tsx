@@ -2,7 +2,7 @@ import React from 'react';
 import { defineConfigSchema } from '@openmrs/esm-module-config';
 import openmrsRootDecorator from '@openmrs/react-root-decorator';
 import { BrowserRouter } from 'react-router-dom';
-import PatientRegistration from './patient-registration/patient-registration.component';
+import { PatientRegistration } from './patient-registration/patient-registration.component';
 
 defineConfigSchema('@openmrs/esm-patient-registration', {});
 
