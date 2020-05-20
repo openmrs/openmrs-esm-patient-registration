@@ -1,6 +1,9 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
+import moment from 'moment';
 import LifeSpan from './life-span.component';
+
+require('moment-precise-range-plugin');
 
 describe('life span container', () => {
   const wrapper = shallow(<LifeSpan />);
@@ -44,8 +47,11 @@ describe('date of birth', () => {
   });
 
   it('updates the age', () => {
-    wrapper.find('input[id="date-of-birth"]').simulate('change', { target: { value: '1994-10-24' } });
-    expect(wrapper.state('age')).toEqual({ years: 25, months: 6, days: 25 });
+    let dateOfBirth = moment('1994-10-24', 'YYYY-MM-DD');
+    let difference = moment().preciseDiff(dateOfBirth, true);
+
+    wrapper.find('input[id="date-of-birth"]').simulate('change', { target: { value: dateOfBirth } });
+    expect(wrapper.state('age')).toEqual({ years: difference.years, months: difference.months, days: difference.days });
   });
 });
 
@@ -115,10 +121,15 @@ describe('age', () => {
   });
 
   it('updates the date of birth', () => {
+    let difference = moment()
+      .subtract(3, 'years')
+      .subtract(2, 'months')
+      .subtract(1, 'days');
+
     wrapper.find('input[id="years"]').simulate('change', { target: { name: 'years', value: 3 } });
     wrapper.find('input[id="months"]').simulate('change', { target: { name: 'months', value: 2 } });
     wrapper.find('input[id="days"]').simulate('change', { target: { name: 'days', value: 1 } });
-    expect(wrapper.state('dateOfBirth')).toEqual('2017-03-18');
+    expect(wrapper.state('dateOfBirth')).toEqual(difference.toISOString().split('T')[0]);
   });
 });
 

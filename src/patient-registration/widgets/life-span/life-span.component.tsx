@@ -1,7 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-require('moment-precise-range-plugin');
 import styles from './life-span.css';
+
+require('moment-precise-range-plugin');
 
 interface LifeSpanProps {}
 
@@ -59,8 +60,7 @@ class LifeSpan extends React.Component<LifeSpanProps, LifeSpanState> {
   };
 
   updateDateOfBirth() {
-    let difference = moment();
-    difference
+    let difference = moment()
       .subtract(this.state.age.years, 'years')
       .subtract(this.state.age.months, 'months')
       .subtract(this.state.age.days, 'days');
