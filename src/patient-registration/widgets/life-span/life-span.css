@@ -1,10 +1,11 @@
 .container {
+    width: 60%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 15px 10px;
     grid-template-areas: 
-        "dob dob time"
+        "dob time ."
         "age age estimate";
 }
 
@@ -32,10 +33,6 @@ label {
 input {
     padding: 5px;
     text-align: center;
-}
-
-input[type=checkbox] {
-    transform: scale(1.5);
 }
 
 .ageLabel {
