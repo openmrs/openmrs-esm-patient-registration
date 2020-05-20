@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import PatientRegistration from './patient-registration.component';
 import LifeSpan from './widgets/life-span/life-span.component';
+import PatientName from './widgets/patient-name/patient-name.component';
 
 describe('patient registration rendering', () => {
   const wrapper = shallow(<PatientRegistration />);
@@ -14,11 +15,15 @@ describe('patient registration rendering', () => {
     expect(wrapper.find('h1').text()).toEqual('New Patient');
   });
 
-  it('renders 1 widget section', () => {
-    expect(wrapper.find('section.widget')).toHaveLength(1);
+  it('renders 2 widget sections', () => {
+    expect(wrapper.find('section.widget')).toHaveLength(2);
+  });
+
+  it('renders the patient name component', () => {
+    expect(wrapper.find(PatientName)).toHaveLength(1);
   });
 
   it('renders a life span widget', () => {
     expect(wrapper.find(LifeSpan)).toHaveLength(1);
-  })
+  });
 });
