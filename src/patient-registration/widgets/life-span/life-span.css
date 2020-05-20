@@ -1,0 +1,51 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 15px 10px;
+    grid-template-areas: 
+        "dob dob time"
+        "age age estimate";
+}
+
+.itemDateOfBirth {
+    grid-area: dob;
+}
+
+.itemBirthTime {
+    grid-area: time;
+}
+
+.itemAge {
+    grid-area: age;
+}
+
+.itemEstimate {
+    grid-area: estimate;
+}
+
+label {
+    padding: 5px;
+    font-weight: bold;
+}
+
+input {
+    padding: 5px;
+    text-align: center;
+}
+
+input[type=checkbox] {
+    transform: scale(1.5);
+}
+
+.ageLabel {
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+    background-color: lightgray;
+    font-size: smaller;
+    font-weight: normal;
+}
+
+.ageInput {
+    margin-right: 5px;
+}
