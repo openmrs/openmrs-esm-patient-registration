@@ -1,5 +1,5 @@
 import React from 'react';
-import LifeSpan from './widgets/life-span/life-span.component';
+import { LifeSpan } from './widgets/life-span/life-span.component';
 import PatientName from './widgets/patient-name/patient-name.component';
 import styles from './patient-registration.css';
 

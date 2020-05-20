@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow, mount, ReactWrapper, ShallowWrapper } from 'enzyme';
 import moment from 'moment';
-import LifeSpan from './life-span.component';
+import { LifeSpan } from './life-span.component';
 
 require('moment-precise-range-plugin');
 
@@ -38,12 +38,12 @@ describe('date of birth', () => {
   });
 
   it('has a default value of an empty string', () => {
-    expect(wrapper.state('dateOfBirth')).toEqual('');
+    expect(wrapper.find('input[id="date-of-birth"]').prop('value')).toEqual('');
   });
 
   it('updates the value to a new date of birth', () => {
     wrapper.find('input[id="date-of-birth"]').simulate('change', { target: { value: '1994-10-24' } });
-    expect(wrapper.state('dateOfBirth')).toEqual('1994-10-24');
+    expect(wrapper.find('input[id="date-of-birth"]').prop('value')).toEqual('1994-10-24');
   });
 
   it('updates the age', () => {
@@ -51,7 +51,9 @@ describe('date of birth', () => {
     let difference = moment().preciseDiff(dateOfBirth, true);
 
     wrapper.find('input[id="date-of-birth"]').simulate('change', { target: { value: dateOfBirth } });
-    expect(wrapper.state('age')).toEqual({ years: difference.years, months: difference.months, days: difference.days });
+    expect(wrapper.find('input[id="years"]').prop('value')).toEqual(difference.years);
+    expect(wrapper.find('input[id="months"]').prop('value')).toEqual(difference.months);
+    expect(wrapper.find('input[id="days"]').prop('value')).toEqual(difference.days);
   });
 });
 
@@ -76,20 +78,20 @@ describe('birth time', () => {
   });
 
   it('has a default value of an empty string', () => {
-    expect(wrapper.state('birthTime')).toEqual('');
+    expect(wrapper.find('input[id="birth-time"]').prop('value')).toEqual('');
   });
 
   it('updates the value to a new birth time', () => {
     wrapper.find('input[id="birth-time"]').simulate('change', { target: { value: '18:32' } });
-    expect(wrapper.state('birthTime')).toEqual('18:32');
+    expect(wrapper.find('input[id="birth-time"]').prop('value')).toEqual('18:32');
   });
 });
 
 describe('age', () => {
-  let wrapper: ShallowWrapper;
+  let wrapper: ReactWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<LifeSpan />);
+    wrapper = mount(<LifeSpan />);
   });
 
   afterEach(() => {
@@ -110,14 +112,18 @@ describe('age', () => {
   });
 
   it('has default values of 0', () => {
-    expect(wrapper.state('age')).toEqual({ years: 0, months: 0, days: 0 });
+    expect(wrapper.find('input[id="years"]').prop('value')).toEqual(0);
+    expect(wrapper.find('input[id="months"]').prop('value')).toEqual(0);
+    expect(wrapper.find('input[id="days"]').prop('value')).toEqual(0);
   });
 
   it('updates the values to a new age', () => {
     wrapper.find('input[id="years"]').simulate('change', { target: { name: 'years', value: 3 } });
     wrapper.find('input[id="months"]').simulate('change', { target: { name: 'months', value: 2 } });
     wrapper.find('input[id="days"]').simulate('change', { target: { name: 'days', value: 1 } });
-    expect(wrapper.state('age')).toEqual({ years: 3, months: 2, days: 1 });
+    expect(wrapper.find('input[id="years"]').prop('value')).toEqual(3);
+    expect(wrapper.find('input[id="months"]').prop('value')).toEqual(2);
+    expect(wrapper.find('input[id="days"]').prop('value')).toEqual(1);
   });
 
   it('updates the date of birth', () => {
@@ -129,7 +135,7 @@ describe('age', () => {
     wrapper.find('input[id="years"]').simulate('change', { target: { name: 'years', value: 3 } });
     wrapper.find('input[id="months"]').simulate('change', { target: { name: 'months', value: 2 } });
     wrapper.find('input[id="days"]').simulate('change', { target: { name: 'days', value: 1 } });
-    expect(wrapper.state('dateOfBirth')).toEqual(difference.toISOString().split('T')[0]);
+    expect(wrapper.find('input[id="date-of-birth"]').prop('value')).toEqual(difference.toISOString().split('T')[0]);
   });
 });
 
@@ -154,11 +160,11 @@ describe('estimate item', () => {
   });
 
   it('has a default value of false', () => {
-    expect(wrapper.state('estimate')).toEqual(false);
+    expect(wrapper.find('input[id="estimate"]').prop('checked')).toEqual(false);
   });
 
   it('updates the value to true when checked', () => {
     wrapper.find('input[id="estimate"]').simulate('change', { target: { checked: true } });
-    expect(wrapper.state('estimate')).toEqual(true);
+    expect(wrapper.find('input[id="estimate"]').prop('checked')).toEqual(true);
   });
 });
