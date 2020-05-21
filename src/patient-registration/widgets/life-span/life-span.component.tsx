@@ -4,32 +4,57 @@ import styles from './life-span.css';
 
 require('moment-precise-range-plugin');
 
-interface LifeSpanProps {}
+interface LifeSpanProps {
+  onLifeSpanChange(lifeSpan: LifeSpanState): void;
+}
+
+interface LifeSpanState {
+  dateOfBirth: string;
+  birthTime: string;
+  age: { years: number; months: number; days: number };
+  estimate: boolean;
+}
 
 export function LifeSpan(props: LifeSpanProps) {
-  const [dateOfBirth, setDateOfBirth] = useState<string>('');
-  const [birthTime, setBirthTime] = useState<string>('');
-  const [age, setAge] = useState<{ years: number; months: number; days: number }>({ years: 0, months: 0, days: 0 });
-  const [estimate, setEstimate] = useState<boolean>(false);
+  const [patientLifeSpan, setPatientLifeSpan] = useState<LifeSpanState>({
+    dateOfBirth: '',
+    birthTime: '',
+    age: { years: 0, months: 0, days: 0 },
+    estimate: false,
+  });
+
+  useEffect(() => {
+    props.onLifeSpanChange(patientLifeSpan);
+  }, [patientLifeSpan]);
 
   useEffect(() => {
     let difference = moment()
-      .subtract(age.years, 'years')
-      .subtract(age.months, 'months')
-      .subtract(age.days, 'days');
-    setDateOfBirth(difference.toISOString().split('T')[0]);
-  }, [age]);
+      .subtract(patientLifeSpan.age.years, 'years')
+      .subtract(patientLifeSpan.age.months, 'months')
+      .subtract(patientLifeSpan.age.days, 'days');
+
+    setPatientLifeSpan({
+      ...patientLifeSpan,
+      dateOfBirth: difference.toISOString().split('T')[0],
+    });
+  }, [patientLifeSpan.age]);
 
   const handleDateOfBirthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let dateOfBirth = moment(event.target.value, 'YYYY-MM-DD');
     let difference = moment().preciseDiff(dateOfBirth, true);
 
-    setDateOfBirth(event.target.value);
-    setAge({ years: difference.years, months: difference.months, days: difference.days });
+    setPatientLifeSpan({
+      ...patientLifeSpan,
+      dateOfBirth: event.target.value,
+      age: { years: difference.years, months: difference.months, days: difference.days },
+    });
   };
 
   const handleAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAge({ ...age, [event.target.name]: event.target.value });
+    setPatientLifeSpan({
+      ...patientLifeSpan,
+      age: { ...patientLifeSpan.age, [event.target.name]: event.target.value },
+    });
   };
 
   return (
@@ -40,7 +65,7 @@ export function LifeSpan(props: LifeSpanProps) {
           type="date"
           id="date-of-birth"
           name="date-of-birth"
-          value={dateOfBirth}
+          value={patientLifeSpan.dateOfBirth}
           onChange={handleDateOfBirthChange}
         />
       </section>
@@ -50,8 +75,8 @@ export function LifeSpan(props: LifeSpanProps) {
           type="time"
           id="birth-time"
           name="birth-time"
-          value={birthTime}
-          onChange={event => setBirthTime(event.target.value)}
+          value={patientLifeSpan.birthTime}
+          onChange={event => setPatientLifeSpan({ ...patientLifeSpan, birthTime: event.target.value })}
         />
       </section>
       <section className={styles.itemAge}>
@@ -64,7 +89,7 @@ export function LifeSpan(props: LifeSpanProps) {
           type="number"
           id="years"
           name="years"
-          value={age.years}
+          value={patientLifeSpan.age.years}
           onChange={handleAgeChange}
         />
         <label className={styles.ageLabel} htmlFor="months">
@@ -75,7 +100,7 @@ export function LifeSpan(props: LifeSpanProps) {
           type="number"
           id="months"
           name="months"
-          value={age.months}
+          value={patientLifeSpan.age.months}
           onChange={handleAgeChange}
         />
         <label className={styles.ageLabel} htmlFor="days">
@@ -86,7 +111,7 @@ export function LifeSpan(props: LifeSpanProps) {
           type="number"
           id="days"
           name="days"
-          value={age.days}
+          value={patientLifeSpan.age.days}
           onChange={handleAgeChange}
         />
       </section>
@@ -96,8 +121,8 @@ export function LifeSpan(props: LifeSpanProps) {
           type="checkbox"
           id="estimate"
           name="estimate"
-          checked={estimate}
-          onChange={event => setEstimate(event.target.checked)}
+          checked={patientLifeSpan.estimate}
+          onChange={event => setPatientLifeSpan({ ...patientLifeSpan, estimate: event.target.checked })}
         />
       </section>
     </main>

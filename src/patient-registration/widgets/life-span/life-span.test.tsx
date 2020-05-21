@@ -5,8 +5,12 @@ import { LifeSpan } from './life-span.component';
 
 require('moment-precise-range-plugin');
 
+const mockProps = {
+  onLifeSpanChange: jest.fn(),
+};
+
 describe('life span container', () => {
-  const wrapper = shallow(<LifeSpan />);
+  const wrapper = shallow(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
 
   it('renders a main container ', () => {
     expect(wrapper.find('main.container')).toHaveLength(1);
@@ -21,7 +25,7 @@ describe('date of birth', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<LifeSpan />);
+    wrapper = shallow(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
   });
 
   afterEach(() => {
@@ -61,7 +65,7 @@ describe('birth time', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<LifeSpan />);
+    wrapper = shallow(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
   });
 
   afterEach(() => {
@@ -91,7 +95,7 @@ describe('age', () => {
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
-    wrapper = mount(<LifeSpan />);
+    wrapper = mount(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
   });
 
   afterEach(() => {
@@ -143,7 +147,7 @@ describe('estimate item', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<LifeSpan />);
+    wrapper = shallow(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
   });
 
   afterEach(() => {
