@@ -68,7 +68,7 @@ function shouldShowPatientRegistration(location) {
   return routePrefix("patient-registration", location);
 }
 ```
-4. Run the module from `localhost:8080`
+4. Run the module from `https://localhost:8080/openmrs-esm-root-config.defaults.js`
 ```
 npm start -- --https
 ```
