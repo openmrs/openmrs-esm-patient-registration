@@ -12,11 +12,15 @@ describe('patient registration rendering', () => {
   });
 
   it('renders a new patient title', () => {
-    expect(wrapper.find('h1').text()).toEqual('New Patient');
+    expect(wrapper.find('h1.title')).toHaveLength(1);
   });
 
   it('renders 2 widget sections', () => {
     expect(wrapper.find('section.widget')).toHaveLength(2);
+  });
+
+  it('renders save button', () => {
+    expect(wrapper.find('button.save')).toHaveLength(1);
   });
 
   it('renders the patient name component', () => {

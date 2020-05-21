@@ -1,0 +1,14 @@
+.dashboard {
+    margin: 75px;
+    padding: 25px;
+    background-color: white;
+    box-shadow: 1.5px 1.5px 5px grey;
+}
+
+.widget {
+    width: 80%;
+}
+
+.save {
+    padding: 10px;
+}
