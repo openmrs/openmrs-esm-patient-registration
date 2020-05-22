@@ -6,57 +6,19 @@ const mockProps = {
   onPatientNameChange: jest.fn(),
 };
 
-describe('patient name widget rendering', () => {
+describe('patient name container', () => {
   const wrapper = shallow(<PatientName onPatientNameChange={mockProps.onPatientNameChange} />);
 
-  it('renders a main container', () => {
-    expect(wrapper.find('main.container')).toHaveLength(1);
+  it('renders a main', () => {
+    expect(wrapper.find('main')).toHaveLength(1);
   });
 
-  it('renders 4 section items', () => {
-    expect(wrapper.find('section.item')).toHaveLength(4);
-  });
-
-  it('renders 4 labels', () => {
-    expect(wrapper.find('label')).toHaveLength(4);
-  });
-
-  it('renders a first name label', () => {
-    expect(wrapper.find('label.first_name').text()).toEqual('First Name');
-  });
-
-  it('renders a first name label', () => {
-    expect(wrapper.find('label.middle_name').text()).toEqual('Middle Name');
-  });
-
-  it('renders a last name label', () => {
-    expect(wrapper.find('label.last_name').text()).toEqual('Last Name');
-  });
-
-  it('renders a required first name input', () => {
-    expect(wrapper.find('input[name="first_name"]')).toHaveLength(1);
-    expect(wrapper.find('input[name="first_name"]').get(0).props.required).toEqual(true);
-  });
-
-  it('renders a middle name input', () => {
-    expect(wrapper.find('input[name="middle_name"]')).toHaveLength(1);
-  });
-
-  it('renders a required last name input', () => {
-    expect(wrapper.find('input[name="last_name"]')).toHaveLength(1);
-    expect(wrapper.find('input[name="last_name"]').get(0).props.required).toEqual(true);
-  });
-
-  it('renders a name unknown checkbox', () => {
-    expect(wrapper.find('input[type="checkbox"]')).toHaveLength(1);
-  });
-
-  it('renders a name unknown label', () => {
-    expect(wrapper.find('span.name_unknown').text()).toEqual('Name Unknown');
+  it('renders 2 sections', () => {
+    expect(wrapper.find('section')).toHaveLength(2);
   });
 });
 
-describe('patient name interaction', () => {
+describe('patient name', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
@@ -68,29 +30,55 @@ describe('patient name interaction', () => {
     wrapper = null;
   });
 
+  it('renders a first name placeholder', () => {
+    expect(wrapper.find('input[name="first-name"]').prop('placeholder')).toEqual('First Name');
+  });
+
+  it('renders a first name placeholder', () => {
+    expect(wrapper.find('input[name="middle-name"]').prop('placeholder')).toEqual('Middle Name');
+  });
+
+  it('renders a last name placeholder', () => {
+    expect(wrapper.find('input[name="last-name"]').prop('placeholder')).toEqual('Last Name');
+  });
+
+  it('renders a required first name input', () => {
+    expect(wrapper.find('input[name="first-name"]')).toHaveLength(1);
+    expect(wrapper.find('input[name="first-name"]').prop('required')).toEqual(true);
+  });
+
+  it('renders a middle name input', () => {
+    expect(wrapper.find('input[name="middle-name"]')).toHaveLength(1);
+  });
+
+  it('renders a required last name input', () => {
+    expect(wrapper.find('input[name="last-name"]')).toHaveLength(1);
+    expect(wrapper.find('input[name="last-name"]').prop('required')).toEqual(true);
+  });
+
   it('has a default input value', () => {
-    expect(wrapper.find('input[name="first_name"]').get(0).props.value).toEqual('');
-    expect(wrapper.find('input[name="middle_name"]').get(0).props.value).toEqual('');
-    expect(wrapper.find('input[name="last_name"]').get(0).props.value).toEqual('');
+    expect(wrapper.find('input[name="first-name"]').prop('value')).toEqual('');
+    expect(wrapper.find('input[name="middle-name"]').prop('value')).toEqual('');
+    expect(wrapper.find('input[name="last-name"]').prop('value')).toEqual('');
   });
 
-  it('updates first_name value', () => {
-    wrapper.find('input[name="first_name"]').simulate('change', { target: { value: 'Peter', name: 'first_name' } });
-    expect(wrapper.find('input[name="first_name"]').get(0).props.value).toEqual('Peter');
+  it('updates first name value', () => {
+    wrapper.find('input[name="first-name"]').simulate('change', { target: { value: 'Peter', name: 'first_name' } });
+    expect(wrapper.find('input[name="first-name"]').prop('value')).toEqual('Peter');
   });
 
-  it('updates middle_name value', () => {
-    wrapper.find('input[name="middle_name"]').simulate('change', { target: { value: 'Frank', name: 'middle_name' } });
-    expect(wrapper.find('input[name="middle_name"]').get(0).props.value).toEqual('Frank');
+  it('updates middle name value', () => {
+    wrapper.find('input[name="middle-name"]').simulate('change', { target: { value: 'Frank', name: 'middle_name' } });
+    expect(wrapper.find('input[name="middle-name"]').prop('value')).toEqual('Frank');
   });
 
-  it('updates last_name value', () => {
-    wrapper.find('input[name="last_name"]').simulate('change', { target: { value: 'Huber', name: 'last_name' } });
-    expect(wrapper.find('input[name="last_name"]').get(0).props.value).toEqual('Huber');
+  it('updates last name value', () => {
+    wrapper.find('input[name="last-name"]').simulate('change', { target: { value: 'Huber', name: 'last_name' } });
+    expect(wrapper.find('input[name="last-name"]').prop('value')).toEqual('Huber');
   });
 });
 
-describe('name unknown interaction', () => {
+describe('name unknown', () => {
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
@@ -100,6 +88,14 @@ describe('name unknown interaction', () => {
   afterEach(() => {
     wrapper.unmount();
     wrapper = null;
+  });
+
+  it('renders a name unknown checkbox', () => {
+    expect(wrapper.find('input[type="checkbox"]')).toHaveLength(1);
+  });
+
+  it('renders a name unknown label', () => {
+    expect(wrapper.find('label[htmlFor="name-unknown"]').text()).toEqual('Name Unknown');
   });
 
   it('has name unknown set to false by default', () => {
@@ -112,13 +108,13 @@ describe('name unknown interaction', () => {
   });
 
   it('updates the patients names to blanks when patient unknown', () => {
-    wrapper.find('input[name="first_name"]').simulate('change', { target: { value: 'Peter', name: 'first_name' } });
-    wrapper.find('input[name="middle_name"]').simulate('change', { target: { value: 'Frank', name: 'middle_name' } });
-    wrapper.find('input[name="last_name"]').simulate('change', { target: { value: 'Huber', name: 'last_name' } });
+    wrapper.find('input[name="first-name"]').simulate('change', { target: { value: 'Peter', name: 'first_name' } });
+    wrapper.find('input[name="middle-name"]').simulate('change', { target: { value: 'Frank', name: 'middle_name' } });
+    wrapper.find('input[name="last-name"]').simulate('change', { target: { value: 'Huber', name: 'last_name' } });
     wrapper.find('[type="checkbox"]').simulate('change', { target: { checked: true } });
 
-    expect(wrapper.find('input[name="first_name"]').prop('value')).toEqual('');
-    expect(wrapper.find('input[name="middle_name"]').prop('value')).toEqual('');
-    expect(wrapper.find('input[name="last_name"]').prop('value')).toEqual('');
+    expect(wrapper.find('input[name="first-name"]').prop('value')).toEqual('');
+    expect(wrapper.find('input[name="middle-name"]').prop('value')).toEqual('');
+    expect(wrapper.find('input[name="last-name"]').prop('value')).toEqual('');
   });
 });

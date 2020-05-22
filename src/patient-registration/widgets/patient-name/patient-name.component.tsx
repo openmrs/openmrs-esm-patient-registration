@@ -41,65 +41,44 @@ export function PatientName(props: PatientNameProps) {
 
   return (
     <main className={styles.container}>
+      <label htmlFor="patient-name">Patient Name</label>
       <section className={styles.item}>
-        <div className="omrs-input-group">
-          <input
-            type="text"
-            value={patientName.firstName}
-            name="first_name"
-            className="omrs-input-underlined"
-            disabled={patientName.nameUnknown}
-            onChange={event => setPatientName({ ...patientName, firstName: event.target.value })}
-            required
-          />
-          <label htmlFor="first_name" className="omrs-margin-right-4 first_name">
-            First Name
-          </label>
-        </div>
+        <input
+          type="text"
+          placeholder="First Name"
+          value={patientName.firstName}
+          name="first-name"
+          disabled={patientName.nameUnknown}
+          onChange={event => setPatientName({ ...patientName, firstName: event.target.value })}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Middle Name"
+          value={patientName.middleName}
+          name="middle-name"
+          disabled={patientName.nameUnknown}
+          onChange={event => setPatientName({ ...patientName, middleName: event.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          value={patientName.lastName}
+          name="last-name"
+          disabled={patientName.nameUnknown}
+          onChange={event => setPatientName({ ...patientName, lastName: event.target.value })}
+          required
+        />
       </section>
       <section className={styles.item}>
-        <div className="omrs-input-group">
-          <input
-            type="text"
-            value={patientName.middleName}
-            name="middle_name"
-            className="omrs-input-underlined"
-            disabled={patientName.nameUnknown}
-            onChange={event => setPatientName({ ...patientName, middleName: event.target.value })}
-          />
-          <label htmlFor="middle_name" className="omrs-margin-right-4 middle_name">
-            Middle Name
-          </label>
-        </div>
-      </section>
-      <section className={styles.item}>
-        <div className="omrs-input-group">
-          <input
-            type="text"
-            value={patientName.lastName}
-            name="last_name"
-            className="omrs-input-underlined"
-            disabled={patientName.nameUnknown}
-            onChange={event => setPatientName({ ...patientName, lastName: event.target.value })}
-            required
-          />
-          <label htmlFor="last_name" className="omrs-margin-right-4 last_name">
-            Last Name
-          </label>
-        </div>
-      </section>
-      <section className={styles.item}>
-        <div className="omrs-checkbox">
-          <label>
-            <input
-              type="checkbox"
-              name="omrs-checkbox"
-              checked={patientName.nameUnknown}
-              onChange={event => setPatientName({ ...patientName, nameUnknown: event.target.checked })}
-            />
-            <span className="omrs-margin-left-4 name_unknown">Name Unknown</span>
-          </label>
-        </div>
+        <label htmlFor="name-unknown">Name Unknown</label>
+        <input
+          type="checkbox"
+          id="name-unknown"
+          name="name-unknown"
+          checked={patientName.nameUnknown}
+          onChange={event => setPatientName({ ...patientName, nameUnknown: event.target.checked })}
+        />
       </section>
     </main>
   );
