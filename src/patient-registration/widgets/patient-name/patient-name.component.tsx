@@ -41,8 +41,8 @@ export function PatientName(props: PatientNameProps) {
 
   return (
     <main className={styles.container}>
+      <label htmlFor="patient-name">Patient Name</label>
       <section className={styles.item}>
-        <label htmlFor="patient-name">Patient Name</label>
         <input
           type="text"
           placeholder="First Name"

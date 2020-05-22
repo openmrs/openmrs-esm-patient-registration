@@ -59,60 +59,71 @@ export function LifeSpan(props: LifeSpanProps) {
 
   return (
     <main className={styles.container}>
-      <section className={styles.item}>
-        <div className={styles.subItem}>
-          <label htmlFor="date-of-birth">Date of Birth</label>
-          <input
-            type="date"
-            id="date-of-birth"
-            name="date-of-birth"
-            value={patientLifeSpan.dateOfBirth}
-            onChange={handleDateOfBirthChange}
-          />
-        </div>
-        <div className={styles.subItem}>
-          <label htmlFor="birth-time">Birth Time</label>
-          <input
-            type="time"
-            id="birth-time"
-            name="birth-time"
-            value={patientLifeSpan.birthTime}
-            onChange={event => setPatientLifeSpan({ ...patientLifeSpan, birthTime: event.target.value })}
-          />
-        </div>
+      <section className={styles.itemDateOfBirth}>
+        <label htmlFor="date-of-birth">Date of Birth</label>
+        <input
+          type="date"
+          id="date-of-birth"
+          name="date-of-birth"
+          value={patientLifeSpan.dateOfBirth}
+          onChange={handleDateOfBirthChange}
+        />
       </section>
-      <section className={styles.item}>
-        <div className={styles.subItem}>
-          <label htmlFor="age">Age</label>
-          <label className={styles.fieldLabel} htmlFor="years">
-            Years
-          </label>
-          <input type="number" id="years" name="years" value={patientLifeSpan.age.years} onChange={handleAgeChange} />
-          <label className={styles.fieldLabel} htmlFor="months">
-            Months
-          </label>
-          <input
-            type="number"
-            id="months"
-            name="months"
-            value={patientLifeSpan.age.months}
-            onChange={handleAgeChange}
-          />
-          <label className={styles.fieldLabel} htmlFor="days">
-            Days
-          </label>
-          <input type="number" id="days" name="days" value={patientLifeSpan.age.days} onChange={handleAgeChange} />
-        </div>
-        <div className={styles.subItem}>
-          <label htmlFor="estimate">Estimate</label>
-          <input
-            type="checkbox"
-            id="estimate"
-            name="estimate"
-            checked={patientLifeSpan.estimate}
-            onChange={event => setPatientLifeSpan({ ...patientLifeSpan, estimate: event.target.checked })}
-          />
-        </div>
+      <section className={styles.itemBirthTime}>
+        <label htmlFor="birth-time">Birth Time</label>
+        <input
+          type="time"
+          id="birth-time"
+          name="birth-time"
+          value={patientLifeSpan.birthTime}
+          onChange={event => setPatientLifeSpan({ ...patientLifeSpan, birthTime: event.target.value })}
+        />
+      </section>
+      <section className={styles.itemAge}>
+        <label htmlFor="age">Age</label>
+        <label className={styles.ageLabel} htmlFor="years">
+          Years
+        </label>
+        <input
+          className={styles.ageInput}
+          type="number"
+          id="years"
+          name="years"
+          value={patientLifeSpan.age.years}
+          onChange={handleAgeChange}
+        />
+        <label className={styles.ageLabel} htmlFor="months">
+          Months
+        </label>
+        <input
+          className={styles.ageInput}
+          type="number"
+          id="months"
+          name="months"
+          value={patientLifeSpan.age.months}
+          onChange={handleAgeChange}
+        />
+        <label className={styles.ageLabel} htmlFor="days">
+          Days
+        </label>
+        <input
+          className={styles.ageInput}
+          type="number"
+          id="days"
+          name="days"
+          value={patientLifeSpan.age.days}
+          onChange={handleAgeChange}
+        />
+      </section>
+      <section className={styles.itemEstimate}>
+        <label htmlFor="estimate">Estimate</label>
+        <input
+          type="checkbox"
+          id="estimate"
+          name="estimate"
+          checked={patientLifeSpan.estimate}
+          onChange={event => setPatientLifeSpan({ ...patientLifeSpan, estimate: event.target.checked })}
+        />
       </section>
     </main>
   );

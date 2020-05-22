@@ -1,25 +1,47 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 15px 10px;
+    grid-template-areas: 
+        "dob time ."
+        "age age estimate";
 }
 
-.item {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: 10px;
+.itemDateOfBirth {
+    grid-area: dob;
 }
 
-.item, .subItem label {
+.itemBirthTime {
+    grid-area: time;
+}
+
+.itemAge {
+    grid-area: age;
+}
+
+.itemEstimate {
+    grid-area: estimate;
+}
+
+label {
+    padding: 5px;
+    font-weight: bold;
+}
+
+input {
+    padding: 5px;
+    text-align: center;
+}
+
+.ageLabel {
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+    background-color: lightgray;
+    font-size: smaller;
+    font-weight: normal;
+}
+
+.ageInput {
     margin-right: 5px;
-}
-
-.item, .subItem input {
-    margin-right: 5px;
-}
-
-.fieldLabel {
-    font-size: 80%;
-    color: grey;
 }

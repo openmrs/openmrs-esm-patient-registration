@@ -2,16 +2,11 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .item {
-    margin: 10px;
-}
-
-.item label {
-    margin-right: 5px;
-}
-
-.item input {
-    margin-right: 5px;
+    margin-right: 10px;
+    padding-left: 10px;
+    border-radius: 2em;
 }
