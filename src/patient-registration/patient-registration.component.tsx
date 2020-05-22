@@ -12,13 +12,17 @@ export function PatientRegistration(props: PatientRegistrationProps) {
   return (
     <form className={styles.dashboard}>
       <h1 className={styles.title}>New Patient</h1>
-      <section className={styles.widget}>
-        <PatientName onPatientNameChange={setPatientName} />
+      <section className={styles.demographics}>
+        <div className={styles.widget}>
+          <PatientName onPatientNameChange={setPatientName} />
+        </div>
+        <div className={styles.widget}>
+          <LifeSpan onLifeSpanChange={setLifeSpan} />
+        </div>
       </section>
-      <section className={styles.widget}>
-        <LifeSpan onLifeSpanChange={setLifeSpan} />
+      <section className={styles.submit}>
+        <button className={styles.save}>Save</button>
       </section>
-      <button className={styles.save}>Save</button>
     </form>
   );
 }

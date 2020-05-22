@@ -15,8 +15,16 @@ describe('patient registration rendering', () => {
     expect(wrapper.find('h1.title')).toHaveLength(1);
   });
 
-  it('renders 2 widget sections', () => {
-    expect(wrapper.find('section.widget')).toHaveLength(2);
+  it('renders a demographics section', () => {
+    expect(wrapper.find('section.demographics')).toHaveLength(1);
+  });
+
+  it('renders a submit section', () => {
+    expect(wrapper.find('section.submit')).toHaveLength(1);
+  });
+
+  it('renders 2 widget divs', () => {
+    expect(wrapper.find('div.widget')).toHaveLength(2);
   });
 
   it('renders save button', () => {

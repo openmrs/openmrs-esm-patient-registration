@@ -5,10 +5,27 @@
     box-shadow: 1.5px 1.5px 5px grey;
 }
 
+.title {
+    color: black;
+}
+
+.demographics {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid lightgray;
+}
+
 .widget {
-    width: 80%;
+    margin: 10px;
+}
+
+.submit {
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
 }
 
 .save {
-    padding: 10px;
+    color: black;
 }
