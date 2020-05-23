@@ -16,8 +16,12 @@ describe('life span container', () => {
     expect(wrapper.find('main.container')).toHaveLength(1);
   });
 
-  it('renders 4 sections', () => {
-    expect(wrapper.find('section')).toHaveLength(4);
+  it('renders 2 sections', () => {
+    expect(wrapper.find('section')).toHaveLength(2);
+  });
+
+  it('renders 4 divs', () => {
+    expect(wrapper.find('div')).toHaveLength(4);
   });
 });
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { PatientRegistration } from './patient-registration.component';
+import { PatientName } from './widgets/patient-name/patient-name.component';
 import { LifeSpan } from './widgets/life-span/life-span.component';
-import PatientName from './widgets/patient-name/patient-name.component';
 
-describe('patient registration rendering', () => {
+describe('patient registration', () => {
   const wrapper = shallow(<PatientRegistration />);
 
   it('renders a form dashboard', () => {
@@ -14,13 +14,17 @@ describe('patient registration rendering', () => {
   it('renders a new patient title', () => {
     expect(wrapper.find('h1.title')).toHaveLength(1);
   });
+});
 
-  it('renders 2 widget sections', () => {
-    expect(wrapper.find('section.widget')).toHaveLength(2);
+describe('demographics section', () => {
+  const wrapper = shallow(<PatientRegistration />);
+
+  it('renders a demographics section', () => {
+    expect(wrapper.find('section.demographics')).toHaveLength(1);
   });
 
-  it('renders save button', () => {
-    expect(wrapper.find('button.save')).toHaveLength(1);
+  it('renders 2 widget divs', () => {
+    expect(wrapper.find('div.widget')).toHaveLength(2);
   });
 
   it('renders the patient name component', () => {
@@ -29,5 +33,18 @@ describe('patient registration rendering', () => {
 
   it('renders a life span widget', () => {
     expect(wrapper.find(LifeSpan)).toHaveLength(1);
+  });
+});
+
+describe('submit section', () => {
+  const wrapper = shallow(<PatientRegistration />);
+
+  it('renders a submit section', () => {
+    expect(wrapper.find('section.submit')).toHaveLength(1);
+  });
+
+  it('renders save submit button', () => {
+    expect(wrapper.find('button[id="save"]')).toHaveLength(1);
+    expect(wrapper.find('button[id="save"]').prop('type')).toEqual('submit');
   });
 });
