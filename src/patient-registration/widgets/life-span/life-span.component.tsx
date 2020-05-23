@@ -13,6 +13,7 @@ interface LifeSpanState {
   birthTime: string;
   age: { years: number; months: number; days: number };
   estimate: boolean;
+  errors: { age: boolean };
 }
 
 export function LifeSpan(props: LifeSpanProps) {
@@ -21,6 +22,7 @@ export function LifeSpan(props: LifeSpanProps) {
     birthTime: '',
     age: { years: 0, months: 0, days: 0 },
     estimate: false,
+    errors: { age: false },
   });
 
   useEffect(() => {
@@ -57,6 +59,13 @@ export function LifeSpan(props: LifeSpanProps) {
     });
   };
 
+  const handleAgeBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    setPatientLifeSpan({
+      ...patientLifeSpan,
+      errors: { age: event.target.valueAsNumber < 0 },
+    });
+  };
+
   return (
     <main className={styles.container}>
       <section className={styles.itemDateOfBirth}>
@@ -66,6 +75,11 @@ export function LifeSpan(props: LifeSpanProps) {
           id="date-of-birth"
           name="date-of-birth"
           value={patientLifeSpan.dateOfBirth}
+          max={
+            moment()
+              .toISOString()
+              .split('T')[0]
+          }
           onChange={handleDateOfBirthChange}
         />
       </section>
@@ -89,8 +103,10 @@ export function LifeSpan(props: LifeSpanProps) {
           type="number"
           id="years"
           name="years"
+          min="0"
           value={patientLifeSpan.age.years}
           onChange={handleAgeChange}
+          onBlur={handleAgeBlur}
         />
         <label className={styles.ageLabel} htmlFor="months">
           Months
@@ -100,8 +116,10 @@ export function LifeSpan(props: LifeSpanProps) {
           type="number"
           id="months"
           name="months"
+          min="0"
           value={patientLifeSpan.age.months}
           onChange={handleAgeChange}
+          onBlur={handleAgeBlur}
         />
         <label className={styles.ageLabel} htmlFor="days">
           Days
@@ -111,8 +129,10 @@ export function LifeSpan(props: LifeSpanProps) {
           type="number"
           id="days"
           name="days"
+          min="0"
           value={patientLifeSpan.age.days}
           onChange={handleAgeChange}
+          onBlur={handleAgeBlur}
         />
       </section>
       <section className={styles.itemEstimate}>
@@ -125,6 +145,7 @@ export function LifeSpan(props: LifeSpanProps) {
           onChange={event => setPatientLifeSpan({ ...patientLifeSpan, estimate: event.target.checked })}
         />
       </section>
+      {patientLifeSpan.errors.age ? <div id="ageError">Enter a positive number</div> : null}
     </main>
   );
 }

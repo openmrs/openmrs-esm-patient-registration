@@ -50,6 +50,14 @@ describe('date of birth', () => {
     expect(wrapper.find('input[id="date-of-birth"]').prop('value')).toEqual('1994-10-24');
   });
 
+  it('has a max value of todays date', () => {
+    expect(wrapper.find('input[id="date-of-birth"]').prop('max')).toEqual(
+      moment()
+        .toISOString()
+        .split('T')[0],
+    );
+  });
+
   it('updates the age', () => {
     let dateOfBirth = moment('1994-10-24', 'YYYY-MM-DD');
     let difference = moment().preciseDiff(dateOfBirth, true);
@@ -119,6 +127,12 @@ describe('age', () => {
     expect(wrapper.find('input[id="years"]').prop('value')).toEqual(0);
     expect(wrapper.find('input[id="months"]').prop('value')).toEqual(0);
     expect(wrapper.find('input[id="days"]').prop('value')).toEqual(0);
+  });
+
+  it('has a min value of 0', () => {
+    expect(wrapper.find('input[id="years"]').prop('min')).toEqual('0');
+    expect(wrapper.find('input[id="months"]').prop('min')).toEqual('0');
+    expect(wrapper.find('input[id="days"]').prop('min')).toEqual('0');
   });
 
   it('updates the values to a new age', () => {
