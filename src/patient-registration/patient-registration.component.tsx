@@ -21,7 +21,9 @@ export function PatientRegistration(props: PatientRegistrationProps) {
         </div>
       </section>
       <section className={styles.submit}>
-        <button className={styles.save}>Save</button>
+        <button id="save" type="submit" className={styles.save}>
+          Save
+        </button>
       </section>
     </form>
   );
