@@ -4,7 +4,7 @@ import { PatientRegistration } from './patient-registration.component';
 import { PatientName } from './widgets/patient-name/patient-name.component';
 import { LifeSpan } from './widgets/life-span/life-span.component';
 
-describe('patient registration rendering', () => {
+describe('patient registration', () => {
   const wrapper = shallow(<PatientRegistration />);
 
   it('renders a form dashboard', () => {

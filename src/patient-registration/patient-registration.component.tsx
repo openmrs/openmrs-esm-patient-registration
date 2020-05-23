@@ -9,8 +9,12 @@ export function PatientRegistration(props: PatientRegistrationProps) {
   const [patientName, setPatientName] = useState(null);
   const [lifeSpan, setLifeSpan] = useState(null);
 
+  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
   return (
-    <form className={styles.dashboard}>
+    <form onSubmit={onFormSubmit} className={styles.dashboard}>
       <h1 className={styles.title}>New Patient</h1>
       <section className={styles.demographics}>
         <div className={styles.widget}>
