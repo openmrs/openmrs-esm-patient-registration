@@ -23,3 +23,9 @@
     font-size: 80%;
     color: grey;
 }
+
+.error {
+    margin-right: 10px;
+    font-size: 80%;
+    color: red;
+}

@@ -60,10 +60,12 @@ export function LifeSpan(props: LifeSpanProps) {
   };
 
   const handleAgeBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    setPatientLifeSpan({
-      ...patientLifeSpan,
-      errors: { age: event.target.valueAsNumber < 0 },
-    });
+    if (patientLifeSpan.age.years < 0 || patientLifeSpan.age.months < 0 || patientLifeSpan.age.days < 0) {
+      setPatientLifeSpan({
+        ...patientLifeSpan,
+        errors: { age: event.target.valueAsNumber < 0 },
+      });
+    }
   };
 
   return (
@@ -135,6 +137,11 @@ export function LifeSpan(props: LifeSpanProps) {
             onBlur={handleAgeBlur}
           />
         </div>
+        {patientLifeSpan.errors.age ? (
+          <div id="ageError" className={`${styles.subItem} ${styles.error}`}>
+            Must be positive
+          </div>
+        ) : null}
         <div className={styles.subItem}>
           <label htmlFor="estimate">Estimate</label>
           <input
@@ -146,7 +153,6 @@ export function LifeSpan(props: LifeSpanProps) {
           />
         </div>
       </section>
-      {patientLifeSpan.errors.age ? <div id="ageError">Enter a positive number</div> : null}
     </main>
   );
 }
