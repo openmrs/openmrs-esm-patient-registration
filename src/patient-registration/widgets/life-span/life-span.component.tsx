@@ -60,12 +60,10 @@ export function LifeSpan(props: LifeSpanProps) {
   };
 
   const handleAgeBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (patientLifeSpan.age.years < 0 || patientLifeSpan.age.months < 0 || patientLifeSpan.age.days < 0) {
-      setPatientLifeSpan({
-        ...patientLifeSpan,
-        errors: { age: event.target.valueAsNumber < 0 },
-      });
-    }
+    setPatientLifeSpan({
+      ...patientLifeSpan,
+      errors: { age: patientLifeSpan.age.years < 0 || patientLifeSpan.age.months < 0 || patientLifeSpan.age.days < 0 },
+    });
   };
 
   return (
