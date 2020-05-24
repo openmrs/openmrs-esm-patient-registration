@@ -30,18 +30,6 @@ describe('patient name', () => {
     wrapper = null;
   });
 
-  it('renders a first name placeholder', () => {
-    expect(wrapper.find('input[name="first-name"]').prop('placeholder')).toEqual('First Name');
-  });
-
-  it('renders a first name placeholder', () => {
-    expect(wrapper.find('input[name="middle-name"]').prop('placeholder')).toEqual('Middle Name');
-  });
-
-  it('renders a last name placeholder', () => {
-    expect(wrapper.find('input[name="last-name"]').prop('placeholder')).toEqual('Last Name');
-  });
-
   it('renders a required first name input', () => {
     expect(wrapper.find('input[name="first-name"]')).toHaveLength(1);
     expect(wrapper.find('input[name="first-name"]').prop('required')).toEqual(true);
@@ -95,7 +83,7 @@ describe('name unknown', () => {
   });
 
   it('renders a name unknown label', () => {
-    expect(wrapper.find('label[htmlFor="name-unknown"]').text()).toEqual('Name Unknown');
+    expect(wrapper.find('label[htmlFor="name-unknown"]')).toHaveLength(1);
   });
 
   it('has name unknown set to false by default', () => {
