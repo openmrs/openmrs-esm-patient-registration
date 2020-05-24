@@ -29,3 +29,7 @@
     font-size: 80%;
     color: red;
 }
+
+.required {
+    color: red;
+}

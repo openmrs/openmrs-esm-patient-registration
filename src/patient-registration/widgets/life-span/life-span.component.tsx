@@ -66,11 +66,15 @@ export function LifeSpan(props: LifeSpanProps) {
     });
   };
 
+  const requiredField = () => {
+    return <span className={styles.required}>*</span>;
+  };
+
   return (
     <main className={styles.container}>
       <section className={styles.item}>
         <div className={styles.subItem}>
-          <label htmlFor="date-of-birth">Date of Birth</label>
+          <label htmlFor="date-of-birth">Date of Birth {requiredField()}</label>
           <input
             type="date"
             id="date-of-birth"
@@ -82,6 +86,7 @@ export function LifeSpan(props: LifeSpanProps) {
             }
             value={patientLifeSpan.dateOfBirth}
             onChange={handleDateOfBirthChange}
+            required
           />
         </div>
         <div className={styles.subItem}>
@@ -97,7 +102,7 @@ export function LifeSpan(props: LifeSpanProps) {
       </section>
       <section className={styles.item}>
         <div className={styles.subItem}>
-          <label htmlFor="age">Age</label>
+          <label htmlFor="age">Age {requiredField()}</label>
           <label className={styles.fieldLabel} htmlFor="years">
             Years
           </label>
@@ -109,6 +114,7 @@ export function LifeSpan(props: LifeSpanProps) {
             value={patientLifeSpan.age.years}
             onChange={handleAgeChange}
             onBlur={handleAgeBlur}
+            required
           />
           <label className={styles.fieldLabel} htmlFor="months">
             Months
@@ -121,6 +127,7 @@ export function LifeSpan(props: LifeSpanProps) {
             value={patientLifeSpan.age.months}
             onChange={handleAgeChange}
             onBlur={handleAgeBlur}
+            required
           />
           <label className={styles.fieldLabel} htmlFor="days">
             Days
@@ -133,6 +140,7 @@ export function LifeSpan(props: LifeSpanProps) {
             value={patientLifeSpan.age.days}
             onChange={handleAgeChange}
             onBlur={handleAgeBlur}
+            required
           />
         </div>
         {patientLifeSpan.errors.age ? (

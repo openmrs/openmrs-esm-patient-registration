@@ -38,11 +38,15 @@ describe('date of birth', () => {
   });
 
   it('renders a label', () => {
-    expect(wrapper.find('label[htmlFor="date-of-birth"]').text()).toEqual('Date of Birth');
+    expect(wrapper.find('label[htmlFor="date-of-birth"]')).toHaveLength(1);
   });
 
   it('renders a date of birth input', () => {
     expect(wrapper.find('input[id="date-of-birth"]').prop('type')).toEqual('date');
+  });
+
+  it('is a required field', () => {
+    expect(wrapper.find('input[id="date-of-birth"]').prop('required')).toEqual(true);
   });
 
   it('has a default value of an empty string', () => {
@@ -86,7 +90,7 @@ describe('birth time', () => {
   });
 
   it('renders a label', () => {
-    expect(wrapper.find('label[htmlFor="birth-time"]').text()).toEqual('Birth Time');
+    expect(wrapper.find('label[htmlFor="birth-time"]')).toHaveLength(1);
   });
 
   it('renders a birth time input', () => {
@@ -116,15 +120,21 @@ describe('age', () => {
   });
 
   it('renders a years, months, and days label', () => {
-    expect(wrapper.find('label[htmlFor="years"]').text()).toEqual('Years');
-    expect(wrapper.find('label[htmlFor="months"]').text()).toEqual('Months');
-    expect(wrapper.find('label[htmlFor="days"]').text()).toEqual('Days');
+    expect(wrapper.find('label[htmlFor="years"]')).toHaveLength(1);
+    expect(wrapper.find('label[htmlFor="months"]')).toHaveLength(1);
+    expect(wrapper.find('label[htmlFor="days"]')).toHaveLength(1);
   });
 
   it('renders a years, months, and days input', () => {
     expect(wrapper.find('input[id="years"]').prop('type')).toEqual('number');
     expect(wrapper.find('input[id="months"]').prop('type')).toEqual('number');
     expect(wrapper.find('input[id="days"]').prop('type')).toEqual('number');
+  });
+
+  it('consists of required fields', () => {
+    expect(wrapper.find('input[id="years"]').prop('required')).toEqual(true);
+    expect(wrapper.find('input[id="months"]').prop('required')).toEqual(true);
+    expect(wrapper.find('input[id="days"]').prop('required')).toEqual(true);
   });
 
   it('has default values of 0', () => {
@@ -174,7 +184,7 @@ describe('estimate item', () => {
   });
 
   it('renders a label', () => {
-    expect(wrapper.find('label[htmlFor="estimate"]').text()).toEqual('Estimate');
+    expect(wrapper.find('label[htmlFor="estimate"]')).toHaveLength(1);
   });
 
   it('renders a checkbox input', () => {
