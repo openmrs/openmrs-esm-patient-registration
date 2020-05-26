@@ -5,7 +5,7 @@ import styles from './life-span.css';
 require('moment-precise-range-plugin');
 
 interface LifeSpanProps {
-  onLifeSpanChange(lifeSpan: LifeSpanState): void;
+  onChange(lifeSpan: LifeSpanState): void;
 }
 
 interface LifeSpanState {
@@ -26,7 +26,7 @@ export function LifeSpan(props: LifeSpanProps) {
   });
 
   useEffect(() => {
-    props.onLifeSpanChange(patientLifeSpan);
+    props.onChange(patientLifeSpan);
   }, [patientLifeSpan]);
 
   useEffect(() => {

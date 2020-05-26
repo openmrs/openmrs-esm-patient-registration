@@ -3,11 +3,11 @@ import { shallow, mount, ShallowWrapper, ReactWrapper } from 'enzyme';
 import { PatientName } from './patient-name.component';
 
 const mockProps = {
-  onPatientNameChange: jest.fn(),
+  onChange: jest.fn(),
 };
 
 describe('patient name container', () => {
-  const wrapper = shallow(<PatientName onPatientNameChange={mockProps.onPatientNameChange} />);
+  const wrapper = shallow(<PatientName onChange={mockProps.onChange} />);
 
   it('renders a main', () => {
     expect(wrapper.find('main')).toHaveLength(1);
@@ -22,7 +22,7 @@ describe('patient name', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<PatientName onPatientNameChange={mockProps.onPatientNameChange} />);
+    wrapper = shallow(<PatientName onChange={mockProps.onChange} />);
   });
 
   afterEach(() => {
@@ -74,7 +74,7 @@ describe('name unknown', () => {
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
-    wrapper = mount(<PatientName onPatientNameChange={mockProps.onPatientNameChange} />);
+    wrapper = mount(<PatientName onChange={mockProps.onChange} />);
   });
 
   afterEach(() => {
@@ -115,7 +115,7 @@ describe('additional patient names', () => {
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
-    wrapper = mount(<PatientName onPatientNameChange={mockProps.onPatientNameChange} />);
+    wrapper = mount(<PatientName onChange={mockProps.onChange} />);
   });
 
   afterEach(() => {

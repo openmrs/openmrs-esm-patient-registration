@@ -6,11 +6,11 @@ import { LifeSpan } from './life-span.component';
 require('moment-precise-range-plugin');
 
 const mockProps = {
-  onLifeSpanChange: jest.fn(),
+  onChange: jest.fn(),
 };
 
 describe('life span container', () => {
-  const wrapper = shallow(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
+  const wrapper = shallow(<LifeSpan onChange={mockProps.onChange} />);
 
   it('renders a main container ', () => {
     expect(wrapper.find('main.container')).toHaveLength(1);
@@ -29,7 +29,7 @@ describe('date of birth', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
+    wrapper = shallow(<LifeSpan onChange={mockProps.onChange} />);
   });
 
   afterEach(() => {
@@ -81,7 +81,7 @@ describe('birth time', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
+    wrapper = shallow(<LifeSpan onChange={mockProps.onChange} />);
   });
 
   afterEach(() => {
@@ -111,7 +111,7 @@ describe('age', () => {
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
-    wrapper = mount(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
+    wrapper = mount(<LifeSpan onChange={mockProps.onChange} />);
   });
 
   afterEach(() => {
@@ -175,7 +175,7 @@ describe('estimate item', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<LifeSpan onLifeSpanChange={mockProps.onLifeSpanChange} />);
+    wrapper = shallow(<LifeSpan onChange={mockProps.onChange} />);
   });
 
   afterEach(() => {

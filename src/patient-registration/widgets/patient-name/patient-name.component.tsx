@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './patient-name.css';
 
 interface PatientNameProps {
-  onPatientNameChange(patientName: PatientNameState): void;
+  onChange(patientName: PatientNameState): void;
 }
 
 interface PatientNameState {
@@ -27,7 +27,7 @@ export function PatientName(props: PatientNameProps) {
   });
 
   useEffect(() => {
-    props.onPatientNameChange(patientName);
+    props.onChange(patientName);
   }, [patientName]);
 
   useEffect(() => {

@@ -18,10 +18,10 @@ export function PatientRegistration(props: PatientRegistrationProps) {
       <h1 className={styles.title}>New Patient</h1>
       <section className={styles.demographics}>
         <div className={styles.widget}>
-          <PatientName onPatientNameChange={setPatientName} />
+          <PatientName onChange={setPatientName} />
         </div>
         <div className={styles.widget}>
-          <LifeSpan onLifeSpanChange={setLifeSpan} />
+          <LifeSpan onChange={setLifeSpan} />
         </div>
       </section>
       <section className={styles.submit}>
