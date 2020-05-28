@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/esm-patient-registration",
+  "name": "@openmrs/esm-patient-registration-app",
   "version": "0.1.0",
   "description": "Patient registration microfrontend for the OpenMRS SPA",
   "main": "dist/openmrs-esm-patient-registration.js",
@@ -7,7 +7,7 @@
   "license": "MPL-2.0",
   "homepage": "https://github.com/openmrs/openmrs-esm-patient-registration#readme",
   "scripts": {
-    "start": "webpack-dev-server --port 8081",
+    "start": "webpack-dev-server",
     "start-https": "webpack-dev-server --https",
     "build": "webpack --mode production",
     "lint": "eslint src --ext tsx",
