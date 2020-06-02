@@ -1,7 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { PatientRegistration } from './patient-registration.component';
-import { PersonalDetails } from './section/personal-details.component';
+import { PersonalDetails } from './section/personal-details/personal-details.component';
+import { AddressInformation } from './section/address-information/address-information.component';
 
 const mockProps = {
   onChange: jest.fn(),
@@ -18,8 +19,8 @@ describe('patient registration', () => {
     expect(wrapper.find('h1.title')).toHaveLength(1);
   });
 
-  it('renders a personal details subtitle', () => {
-    expect(wrapper.find('h2.subTitle')).toHaveLength(1);
+  it('renders 2 subtitles', () => {
+    expect(wrapper.find('h2.subTitle')).toHaveLength(2);
   });
 
   it('renders a personal details section', () => {
@@ -28,6 +29,14 @@ describe('patient registration', () => {
 
   it('renders a personal details component', () => {
     expect(wrapper.find(<PersonalDetails onChange={mockProps.onChange} />));
+  });
+
+  it('renders an address information section', () => {
+    expect(wrapper.find('section.addressInformation')).toHaveLength(1);
+  });
+
+  it('renders an address information component', () => {
+    expect(wrapper.find(<AddressInformation onChange={mockProps.onChange} />));
   });
 
   it('renders a submit button', () => {

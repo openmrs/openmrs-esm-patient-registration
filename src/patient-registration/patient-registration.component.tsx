@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 import { Patient } from './patient-registration-helper';
 import { getCurrentUserLocation, getUniquePatientIdentifier, savePatient } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
-import { PersonalDetails, PersonalDetailsState } from './section/personal-details.component';
+import { PersonalDetails, PersonalDetailsState } from './section/personal-details/personal-details.component';
+import {
+  AddressInformation,
+  AddressInformationState,
+} from './section/address-information/address-information.component';
 import styles from './patient-registration.css';
 
 const IDENTIFIER_TYPE: string = '05a29f94-c0ed-11e2-94be-8c13b969e334';
@@ -61,6 +65,8 @@ export function PatientRegistration(props: PatientRegistrationProps) {
     patient.person.names[0].familyName = personalDetails.familyName;
   };
 
+  const handleAddressInformationChange = (addressInformation: AddressInformationState) => {};
+
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -83,6 +89,11 @@ export function PatientRegistration(props: PatientRegistrationProps) {
         <h2 className={styles.subTitle}>Personal Details</h2>
         <hr className={styles.horizontalRule}></hr>
         <PersonalDetails onChange={handlePersonalDetailsChange} />
+      </section>
+      <section className={styles.addressInformation}>
+        <h2 className={styles.subTitle}>Address Information</h2>
+        <hr className={styles.horizontalRule}></hr>
+        <AddressInformation onChange={handleAddressInformationChange} />
       </section>
       <button id="submit" type="submit" className={styles.submit}>
         Submit

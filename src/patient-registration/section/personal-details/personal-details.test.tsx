@@ -10,6 +10,10 @@ const mockProps = {
 describe('personal details', () => {
   const wrapper = shallow(<PersonalDetails onChange={mockProps.onChange} />);
 
+  it('renders a container', () => {
+    expect(wrapper.find('main.container')).toHaveLength(1);
+  });
+
   it('renders 5 field headers', () => {
     expect(wrapper.find('h1.fieldHeader')).toHaveLength(5);
   });
