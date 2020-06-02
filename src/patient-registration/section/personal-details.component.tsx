@@ -155,14 +155,16 @@ export function PersonalDetails(props: PersonalDetailsProps) {
         </div>
         <div className={styles.input}>
           <select
+            name="gender"
             value={personalDetails.gender}
             onChange={event => setPersonalDetails({ ...personalDetails, gender: event.target.value })}>
             <option value="" disabled>
               Select
             </option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+            <option value="U">Unknown</option>
           </select>
         </div>
         <div className={styles.input}>

@@ -86,6 +86,11 @@ describe('field interaction', () => {
     wrapper.find('input[name="birth-time"]').simulate('change', { target: { valueAsDate: testTime } });
     expect(wrapper.find('input[name="birth-time"]').prop('value')).toEqual(dayjs(testTime).format('HH:mm'));
   });
+
+  it('updates gender', () => {
+    wrapper.find('select[name="gender"]').simulate('change', { target: { value: 'M' } });
+    expect(wrapper.find('select[name="gender"]').prop('value')).toEqual('M');
+  });
 });
 
 describe('field validation', () => {
