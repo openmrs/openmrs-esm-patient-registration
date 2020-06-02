@@ -1,31 +1,33 @@
 .dashboard {
+    display: flex;
+    flex-direction: column;
     margin: 75px;
-    padding: 25px;
+}
+
+.personalDetails {
+    padding: 30px;
     background-color: white;
     box-shadow: 1.5px 1.5px 5px grey;
 }
 
 .title {
+    margin-left: 10px;
+    font-size: x-large;
     color: black;
 }
 
-.demographics {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid lightgray;
+.subTitle {
+    margin-left: 5px;
+    font-size: larger;
+    color: black;
 }
 
-.widget {
-    margin: 10px;
+.horizontalRule {
+    border: 1px solid lightgray;
 }
 
 .submit {
-    margin: 10px;
-    padding: 5px;
-    display: flex;
-    flex-direction: row;
-}
-
-.save {
-    color: black;
+    align-self: flex-end;
+    margin: 15px;
+    width: 5%;
 }

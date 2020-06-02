@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 50px;
+}
+
+.headers {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.header {
+    margin-right: 10px;
+}
+
+.input {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.subInput {
+    margin-right: 5px;
+}
+
+.fieldHeader {
+    font-size: medium;
+    color: black;
+}
+
+.fieldLabel {
+    margin-right: 5px;
+    font-size: medium;
+    color: black;
+}
+
+.fieldSubLabel {
+    margin-right: 5px;
+    font-size: smaller;
+    color: grey;
+}
