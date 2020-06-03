@@ -1,5 +1,4 @@
 import './set-public-path';
-import { routePrefix } from '@openmrs/esm-root-config';
 import { backendDependencies } from './openmrs-backend-dependencies';
 
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
@@ -7,7 +6,7 @@ const importTranslation = require.context('../translations', false, /.json$/, 'l
 function setupOpenMRS() {
   return {
     lifecycle: () => import('./openmrs-esm-patient-registration'),
-    activate: location => routePrefix('patient-registration', location),
+    activate: 'patient-registration',
   };
 }
 
