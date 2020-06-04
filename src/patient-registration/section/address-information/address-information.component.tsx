@@ -33,23 +33,9 @@ export function AddressInformation(props: AddressInformationProps) {
     endDate: null,
   });
 
-  const [test, setTest] = useState<string>('');
-
   useEffect(() => {
     props.onChange(addressInformation);
   }, [addressInformation]);
-
-  const textInputField = (name: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
-    return (
-      <input
-        className={styles.fieldInput}
-        type="text"
-        value={name}
-        name={name}
-        onChange={event => setter(event.target.value)}
-      />
-    );
-  };
 
   return (
     <main className={styles.container}>
