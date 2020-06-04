@@ -7,23 +7,7 @@ const mockProps = {
   onChange: jest.fn(),
 };
 
-describe('personal details', () => {
-  const wrapper = shallow(<PersonalDetails onChange={mockProps.onChange} />);
-
-  it('renders 5 field headers', () => {
-    expect(wrapper.find('h1.fieldHeader')).toHaveLength(5);
-  });
-
-  it('renders 5 input rows', () => {
-    expect(wrapper.find('div.input')).toHaveLength(5);
-  });
-
-  it('renders 14 sub-inputs', () => {
-    expect(wrapper.find('div.subInput')).toHaveLength(13);
-  });
-});
-
-describe('field interaction', () => {
+describe('personal details interaction', () => {
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
@@ -94,12 +78,6 @@ describe('field interaction', () => {
 });
 
 describe('field validation', () => {
-  it('test passes placeholder', () => {
-    expect(true).toEqual(true);
-  });
-});
-
-describe('age and birth date integration', () => {
   it('test passes placeholder', () => {
     expect(true).toEqual(true);
   });
