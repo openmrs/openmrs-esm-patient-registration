@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import styles from './personal-details.css';
 
@@ -46,7 +46,7 @@ export function PersonalDetails(props: PersonalDetailsProps) {
 
   useEffect(() => {
     if (personalDetails.nameUnknown) {
-      setNames('');
+      setNames('Unknown');
     }
   }, [personalDetails.nameUnknown]);
 

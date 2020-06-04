@@ -35,7 +35,7 @@ describe('name interaction', () => {
   it('clears the name fields when the unknown checkbox is checked', () => {
     wrapper.find('input[name="given-name"]').simulate('change', { target: { value: 'Test' } });
     wrapper.find('input[name="name-unknown"]').simulate('change', { target: { checked: true } });
-    expect(wrapper.find('input[name="given-name"]').prop('value')).toEqual('');
+    expect(wrapper.find('input[name="given-name"]').prop('value')).toEqual('Unknown');
   });
 
   describe('field validation', () => {
