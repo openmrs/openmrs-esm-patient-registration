@@ -34,6 +34,20 @@ export function PatientRegistration(props: PatientRegistrationProps) {
       birthdate: null,
       birthdateEstimated: false,
       birthtime: null,
+      addresses: [
+        {
+          address1: '',
+          address2: '',
+          cityVillage: '',
+          stateProvince: '',
+          postalCode: '',
+          country: '',
+          latitude: '',
+          longitude: '',
+          startDate: null,
+          endDate: null,
+        },
+      ],
     },
   };
 
@@ -65,7 +79,17 @@ export function PatientRegistration(props: PatientRegistrationProps) {
     patient.person.names[0].familyName = personalDetails.familyName;
   };
 
-  const handleAddressInformationChange = (addressInformation: AddressInformationState) => {};
+  const handleAddressInformationChange = (addressInformation: AddressInformationState) => {
+    patient.person.addresses[0].address1 = addressInformation.address1;
+    patient.person.addresses[0].address2 = addressInformation.address2;
+    patient.person.addresses[0].cityVillage = addressInformation.cityVillage;
+    patient.person.addresses[0].stateProvince = addressInformation.stateProvince;
+    patient.person.addresses[0].postalCode = addressInformation.postalCode;
+    patient.person.addresses[0].latitude = addressInformation.latitude;
+    patient.person.addresses[0].longitude = addressInformation.longitude;
+    patient.person.addresses[0].startDate = addressInformation.startDate;
+    patient.person.addresses[0].endDate = addressInformation.endDate;
+  };
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -24,15 +24,6 @@ describe('address information', () => {
       expect(wrapper.find('input[name="' + name + '"]').prop('value')).toEqual(testString);
     });
   };
-
-  const runInputNumberTest = (name: string) => {
-    it('updates the ' + name + ' value', () => {
-      let testNumber = 1;
-      wrapper.find('input[name="' + name + '"]').simulate('change', { target: { valueAsNumber: testNumber } });
-      expect(wrapper.find('input[name="' + name + '"]').prop('value')).toEqual(testNumber);
-    });
-  };
-
   const runInputDateTest = (name: string) => {
     it('updates the ' + name + ' value', () => {
       let testDate = '2020-04-01';
@@ -47,9 +38,8 @@ describe('address information', () => {
   runInputStringTest('stateProvince');
   runInputStringTest('country');
   runInputStringTest('postalCode');
-
-  runInputNumberTest('latitude');
-  runInputNumberTest('longitude');
+  runInputStringTest('latitude');
+  runInputStringTest('longitude');
 
   runInputDateTest('startDate');
   runInputDateTest('endDate');

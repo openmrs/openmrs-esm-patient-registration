@@ -13,8 +13,8 @@ export interface AddressInformationState {
   stateProvince: string;
   postalCode: string;
   country: string;
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
   startDate: Date;
   endDate: Date;
 }
@@ -27,8 +27,8 @@ export function AddressInformation(props: AddressInformationProps) {
     stateProvince: '',
     postalCode: '',
     country: '',
-    latitude: null,
-    longitude: null,
+    latitude: '',
+    longitude: '',
     startDate: null,
     endDate: null,
   });
@@ -122,20 +122,20 @@ export function AddressInformation(props: AddressInformationProps) {
           <h1 className={styles.fieldHeader}>Latitude</h1>
           <input
             className={styles.fieldInput}
-            type="number"
+            type="string"
             value={addressInformation.latitude !== null ? addressInformation.latitude : ''}
             name="latitude"
-            onChange={event => setAddressInformation({ ...addressInformation, latitude: event.target.valueAsNumber })}
+            onChange={event => setAddressInformation({ ...addressInformation, latitude: event.target.value })}
           />
         </section>
         <section className={styles.column}>
           <h1 className={styles.fieldHeader}>Longitude</h1>
           <input
             className={styles.fieldInput}
-            type="number"
+            type="string"
             value={addressInformation.longitude !== null ? addressInformation.longitude : ''}
             name="longitude"
-            onChange={event => setAddressInformation({ ...addressInformation, longitude: event.target.valueAsNumber })}
+            onChange={event => setAddressInformation({ ...addressInformation, longitude: event.target.value })}
           />
         </section>
       </section>
