@@ -9,10 +9,10 @@ interface AddressInformationProps {
 export interface AddressInformationState {
   address1: string;
   address2: string;
-  country: string;
   cityVillage: string;
   stateProvince: string;
   postalCode: string;
+  country: string;
   latitude: number;
   longitude: number;
   startDate: Date;
@@ -23,10 +23,10 @@ export function AddressInformation(props: AddressInformationProps) {
   const [addressInformation, setAddressInformation] = useState<AddressInformationState>({
     address1: '',
     address2: '',
-    country: '',
     cityVillage: '',
     stateProvince: '',
     postalCode: '',
+    country: '',
     latitude: null,
     longitude: null,
     startDate: null,
@@ -95,6 +95,16 @@ export function AddressInformation(props: AddressInformationProps) {
           />
         </section>
       </section>
+      <section className={styles.column}>
+        <h1 className={styles.fieldHeader}>Postal Code</h1>
+        <input
+          className={styles.fieldInput}
+          type="text"
+          value={addressInformation.postalCode}
+          name="postalCode"
+          onChange={event => setAddressInformation({ ...addressInformation, postalCode: event.target.value })}
+        />
+      </section>
       <section className={styles.row}>
         <section className={styles.column}>
           <h1 className={styles.fieldHeader}>Country</h1>
@@ -104,16 +114,6 @@ export function AddressInformation(props: AddressInformationProps) {
             value={addressInformation.country}
             name="country"
             onChange={event => setAddressInformation({ ...addressInformation, country: event.target.value })}
-          />
-        </section>
-        <section className={styles.column}>
-          <h1 className={styles.fieldHeader}>Postal Code</h1>
-          <input
-            className={styles.fieldInput}
-            type="text"
-            value={addressInformation.postalCode}
-            name="postalCode"
-            onChange={event => setAddressInformation({ ...addressInformation, postalCode: event.target.value })}
           />
         </section>
       </section>
