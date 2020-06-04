@@ -184,6 +184,7 @@ export function PersonalDetails(props: PersonalDetailsProps) {
             placeholder="Additional Middle Name"
             value={personalDetails.additionalMiddleName}
             name="additional-middle-name"
+            className={styles.fieldInput}
             disabled={personalDetails.nameUnknown}
             onChange={event => setPersonalDetails({ ...personalDetails, additionalMiddleName: event.target.value })}
           />
