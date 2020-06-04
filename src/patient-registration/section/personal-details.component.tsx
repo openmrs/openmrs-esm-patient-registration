@@ -45,9 +45,7 @@ export function PersonalDetails(props: PersonalDetailsProps) {
   }, [personalDetails]);
 
   useEffect(() => {
-    if (personalDetails.nameUnknown) {
-      setNames('Unknown');
-    }
+    personalDetails.nameUnknown ? setNames('Unknown') : setNames('');
   }, [personalDetails.nameUnknown]);
 
   useEffect(() => {
