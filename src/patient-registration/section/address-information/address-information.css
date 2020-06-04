@@ -1,3 +1,33 @@
 .container {
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 50px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.column {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.fieldHeader {
+    margin-right: 5px;
+    font-size: medium;
+    color: black;
+}
+
+.fieldInput {
+    margin-right: 5px;
+    flex-grow: 0.5;
 }
