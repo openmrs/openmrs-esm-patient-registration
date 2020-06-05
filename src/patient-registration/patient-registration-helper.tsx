@@ -9,6 +9,13 @@ export type Patient = {
   person: {
     names: [
       {
+        preferred: boolean;
+        givenName: string;
+        middleName: string;
+        familyName: string;
+      },
+      {
+        preferred: boolean;
         givenName: string;
         middleName: string;
         familyName: string;
