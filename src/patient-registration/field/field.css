@@ -1,20 +1,12 @@
 .row {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
-    flex-wrap: wrap;
-}
-
-.column {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-    flex-wrap: wrap;
 }
 
 .fieldHeader {
+    flex-shrink: 0;
     margin-right: 5px;
     font-size: medium;
     color: black;

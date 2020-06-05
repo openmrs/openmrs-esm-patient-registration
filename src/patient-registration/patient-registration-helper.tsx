@@ -25,5 +25,19 @@ export type Patient = {
     birthdate: Date;
     birthdateEstimated: boolean;
     birthtime: Date;
+    addresses: [
+      {
+        address1: string;
+        address2: string;
+        cityVillage: string;
+        stateProvince: string;
+        postalCode: string;
+        country: string;
+        latitude: string;
+        longitude: string;
+        startDate: Date;
+        endDate: Date;
+      },
+    ];
   };
 };

@@ -5,6 +5,7 @@ import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { Name } from './field/name/name.component';
 import { Gender } from './field/gender/gender.component';
 import { Birthdate } from './field/birthdate/birthdate.component';
+import { Address } from './field/address/address.component';
 import styles from './patient-registration.css';
 
 const IDENTIFIER_TYPE: string = '05a29f94-c0ed-11e2-94be-8c13b969e334';
@@ -30,6 +31,18 @@ export function PatientRegistration(props: PatientRegistrationProps) {
   const [birthdate, setBirthdate] = useState<Patient['person']['birthdate']>(null);
   const [birthdateEstimated, setBirthdateEstimated] = useState<Patient['person']['birthdateEstimated']>(false);
   const [birthtime, setBirthtime] = useState<Patient['person']['birthtime']>(null);
+  const [address, setAddress] = useState<Patient['person']['addresses'][0]>({
+    address1: '',
+    address2: '',
+    cityVillage: '',
+    stateProvince: '',
+    postalCode: '',
+    country: '',
+    latitude: '',
+    longitude: '',
+    startDate: null,
+    endDate: null,
+  });
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -67,6 +80,7 @@ export function PatientRegistration(props: PatientRegistrationProps) {
         birthdate: birthdate,
         birthdateEstimated: birthdateEstimated,
         birthtime: birthtime,
+        addresses: [address],
       },
     };
 
@@ -97,6 +111,11 @@ export function PatientRegistration(props: PatientRegistrationProps) {
           onBirthdateEstimatedChange={setBirthdateEstimated}
           onBirthtimeChange={setBirthtime}
         />
+      </section>
+      <section className={styles.addressInformation}>
+        <h2 className={styles.subTitle}>Address Information</h2>
+        <hr className={styles.horizontalRule}></hr>
+        <Address value={address} onChange={setAddress} />
       </section>
       <button id="submit" type="submit" className={styles.submit}>
         Submit

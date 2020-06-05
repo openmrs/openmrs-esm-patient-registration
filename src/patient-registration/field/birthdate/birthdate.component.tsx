@@ -40,32 +40,28 @@ export function Birthdate(props: BirthdateProps) {
     return (
       <section className={styles.row}>
         <h1 className={styles.fieldHeader}>Estimated Age</h1>
-        <section className={styles.column}>
-          <label className={styles.fieldLabel} htmlFor="years">
-            Years
-          </label>
-          <input
-            type="number"
-            id="years"
-            name="years"
-            value={age.years}
-            className={styles.fieldInput}
-            onChange={event => setAge({ ...age, years: event.target.valueAsNumber })}
-          />
-        </section>
-        <section className={styles.column}>
-          <label className={styles.fieldLabel} htmlFor="months">
-            Months
-          </label>
-          <input
-            type="number"
-            id="months"
-            name="months"
-            value={age.months}
-            className={styles.fieldInput}
-            onChange={event => setAge({ ...age, months: event.target.valueAsNumber })}
-          />
-        </section>
+        <label className={styles.fieldLabel} htmlFor="years">
+          Years
+        </label>
+        <input
+          type="number"
+          id="years"
+          name="years"
+          value={age.years}
+          className={styles.fieldInput}
+          onChange={event => setAge({ ...age, years: event.target.valueAsNumber })}
+        />
+        <label className={styles.fieldLabel} htmlFor="months">
+          Months
+        </label>
+        <input
+          type="number"
+          id="months"
+          name="months"
+          value={age.months}
+          className={styles.fieldInput}
+          onChange={event => setAge({ ...age, months: event.target.valueAsNumber })}
+        />
       </section>
     );
   };
@@ -75,41 +71,35 @@ export function Birthdate(props: BirthdateProps) {
       {props.birthdateEstimatedValue ? getAgeInputs() : null}
       <section className={styles.row}>
         <h1 className={styles.fieldHeader}>Birth Date</h1>
-        <section className={styles.column}>
-          <input
-            type="date"
-            id="birthdate"
-            name="birthdate"
-            className={styles.fieldInput}
-            disabled={props.birthdateEstimatedValue}
-            value={props.birthdateValue !== null ? dayjs(props.birthdateValue).format('YYYY-MM-DD') : ''}
-            min={'0000-01-01'}
-            max={'9999-12-31'}
-            onChange={event => props.onBirthdateChange(event.target.valueAsDate)}
-          />
-        </section>
-        <section className={styles.column}>
-          <h1 className={styles.fieldHeader}>Birth Time</h1>
-          <input
-            type="time"
-            id="birthtime"
-            name="birthtime"
-            className={styles.fieldInput}
-            value={props.birthtimeValue !== null ? dayjs(props.birthtimeValue).format('HH:mm') : ''}
-            onChange={event => props.onBirthtimeChange(event.target.valueAsDate)}
-          />
-        </section>
-        <section className={styles.column}>
-          <h1 className={styles.fieldHeader}>Estimate</h1>
-          <input
-            type="checkbox"
-            id="estimate"
-            name="estimate"
-            className={styles.fieldInput}
-            checked={props.birthdateEstimatedValue}
-            onChange={event => props.onBirthdateEstimatedChange(event.target.checked)}
-          />
-        </section>
+        <input
+          type="date"
+          id="birthdate"
+          name="birthdate"
+          className={styles.fieldInput}
+          disabled={props.birthdateEstimatedValue}
+          value={props.birthdateValue !== null ? dayjs(props.birthdateValue).format('YYYY-MM-DD') : ''}
+          min={'0000-01-01'}
+          max={'9999-12-31'}
+          onChange={event => props.onBirthdateChange(event.target.valueAsDate)}
+        />
+        <h1 className={styles.fieldHeader}>Birth Time</h1>
+        <input
+          type="time"
+          id="birthtime"
+          name="birthtime"
+          className={styles.fieldInput}
+          value={props.birthtimeValue !== null ? dayjs(props.birthtimeValue).format('HH:mm') : ''}
+          onChange={event => props.onBirthtimeChange(event.target.valueAsDate)}
+        />
+        <h1 className={styles.fieldHeader}>Estimate</h1>
+        <input
+          type="checkbox"
+          id="estimate"
+          name="estimate"
+          className={styles.fieldInput}
+          checked={props.birthdateEstimatedValue}
+          onChange={event => props.onBirthdateEstimatedChange(event.target.checked)}
+        />
       </section>
     </main>
   );
