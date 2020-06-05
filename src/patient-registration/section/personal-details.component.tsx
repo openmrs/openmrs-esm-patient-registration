@@ -83,7 +83,7 @@ export function PersonalDetails(props: PersonalDetailsProps) {
   const getAgeInputs = () => {
     return (
       <section className={styles.row}>
-        <h1 className={styles.fieldHeader}>Age</h1>
+        <h1 className={styles.fieldHeader}>Estimated Age</h1>
         <section className={styles.column}>
           <label className={styles.fieldLabel} htmlFor="years">
             Years
@@ -117,7 +117,7 @@ export function PersonalDetails(props: PersonalDetailsProps) {
   return (
     <main className={styles.container}>
       <section className={styles.row}>
-        <h1 className={styles.fieldHeader}>Name</h1>
+        <h1 className={styles.fieldHeader}>Preferred Name</h1>
         <section className={styles.column}>
           <input
             type="text"

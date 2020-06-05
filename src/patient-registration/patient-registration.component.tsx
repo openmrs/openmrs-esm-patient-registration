@@ -21,6 +21,13 @@ export function PatientRegistration(props: PatientRegistrationProps) {
     person: {
       names: [
         {
+          preferred: true,
+          givenName: '',
+          middleName: '',
+          familyName: '',
+        },
+        {
+          preferred: false,
           givenName: '',
           middleName: '',
           familyName: '',
@@ -59,6 +66,9 @@ export function PatientRegistration(props: PatientRegistrationProps) {
     patient.person.names[0].givenName = personalDetails.givenName;
     patient.person.names[0].middleName = personalDetails.middleName;
     patient.person.names[0].familyName = personalDetails.familyName;
+    patient.person.names[1].givenName = personalDetails.additionalGivenName;
+    patient.person.names[1].middleName = personalDetails.additionalMiddleName;
+    patient.person.names[1].familyName = personalDetails.additionalFamilyName;
   };
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
