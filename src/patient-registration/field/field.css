@@ -9,7 +9,13 @@
     flex-shrink: 0;
     margin-right: 5px;
     font-size: medium;
-    color: black;
+}
+
+.optionalField {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .fieldInput {
@@ -19,5 +25,4 @@
 .fieldLabel {
     margin-right: 5px;
     font-size: smaller;
-    color: grey;
 }

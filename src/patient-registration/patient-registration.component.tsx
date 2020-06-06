@@ -13,6 +13,7 @@ const IDENTIFIER_TYPE: string = '05a29f94-c0ed-11e2-94be-8c13b969e334';
 interface PatientRegistrationProps {}
 
 export function PatientRegistration(props: PatientRegistrationProps) {
+  const [unknown, setUnknown] = useState<boolean>(false);
   const [identifier, setIdentifier] = useState<Patient['identifiers'][0]['identifier']>('');
   const [location, setLocation] = useState<Patient['identifiers'][0]['location']>('');
   const [name, setName] = useState<Patient['person']['names'][0]>({
@@ -22,7 +23,7 @@ export function PatientRegistration(props: PatientRegistrationProps) {
     familyName: '',
   });
   const [additionalName, setAdditionalName] = useState<Patient['person']['names'][1]>({
-    preferred: true,
+    preferred: false,
     givenName: '',
     middleName: '',
     familyName: '',
@@ -97,11 +98,23 @@ export function PatientRegistration(props: PatientRegistrationProps) {
   return (
     <form onSubmit={onFormSubmit} className={styles.dashboard}>
       <h1 className={styles.title}>New Patient</h1>
-      <section className={styles.personalDetails}>
+      <section className={styles.formSection}>
         <h2 className={styles.subTitle}>Personal Details</h2>
         <hr className={styles.horizontalRule}></hr>
-        <Name fieldName="Preferred Name" value={name} onChange={setName} />
-        <Name fieldName="Additional Name" value={additionalName} onChange={setAdditionalName} />
+        <Name
+          fieldName="Preferred Name"
+          nameValue={name}
+          unknownValue={unknown}
+          onNameChange={setName}
+          onUnknownChange={setUnknown}
+        />
+        <Name
+          fieldName="Additional Name"
+          nameValue={additionalName}
+          unknownValue={unknown}
+          onNameChange={setAdditionalName}
+          onUnknownChange={setUnknown}
+        />
         <Gender value={gender} onChange={setGender} />
         <Birthdate
           birthdateValue={birthdate}
@@ -112,7 +125,7 @@ export function PatientRegistration(props: PatientRegistrationProps) {
           onBirthtimeChange={setBirthtime}
         />
       </section>
-      <section className={styles.addressInformation}>
+      <section className={styles.formSection}>
         <h2 className={styles.subTitle}>Address Information</h2>
         <hr className={styles.horizontalRule}></hr>
         <Address value={address} onChange={setAddress} />

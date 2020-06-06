@@ -4,30 +4,21 @@
     margin: 75px;
 }
 
-.personalDetails {
+.formSection {
     margin-bottom: 10px;
     padding: 30px;
     background-color: white;
-    box-shadow: 1.5px 1.5px 5px grey;
-}
-
-.addressInformation {
-    margin-bottom: 10px;
-    padding: 30px;
-    background-color: white;
-    box-shadow: 1.5px 1.5px 5px grey;
+    box-shadow: 1.5px 1.5px 5px grey;  
 }
 
 .title {
     margin-left: 10px;
     font-size: x-large;
-    color: black;
 }
 
 .subTitle {
     margin-left: 5px;
     font-size: larger;
-    color: black;
 }
 
 .horizontalRule {
