@@ -11,7 +11,7 @@ interface NameProps {
 
 export function Name(props: NameProps) {
   useEffect(() => {
-    let defaultName = props.unknownValue ? 'Unknown' : '';
+    let defaultName = props.unknownValue ? 'UNKNOWN' : '';
     props.onNameChange({
       ...props.nameValue,
       givenName: defaultName,
