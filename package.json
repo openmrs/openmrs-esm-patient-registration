@@ -1,10 +1,13 @@
 {
-  "name": "@openmrs/esm-patient-registration",
+  "name": "@openmrs/esm-patient-registration-app",
   "version": "0.1.0",
   "description": "Patient registration microfrontend for the OpenMRS SPA",
   "main": "dist/openmrs-esm-patient-registration.js",
+  "types": "src/index.ts",
+  "license": "MPL-2.0",
+  "homepage": "https://github.com/openmrs/openmrs-esm-patient-registration#readme",
   "scripts": {
-    "start": "webpack-dev-server --port 8081",
+    "start": "webpack-dev-server",
     "start-https": "webpack-dev-server --https",
     "build": "webpack --mode production",
     "lint": "eslint src --ext tsx",
@@ -24,17 +27,10 @@
       "pre-commit": "pretty-quick --staged && concurrently 'npm:test' 'npm:typescript' 'npm:lint'"
     }
   },
-  "types": "src/openmrs-esm-patient-registration.tsx",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/openmrs/openmrs-esm-patient-registration.git"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/openmrs/openmrs-esm-patient-registration/issues"
-  },
-  "homepage": "https://github.com/openmrs/openmrs-esm-patient-registration#readme",
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
