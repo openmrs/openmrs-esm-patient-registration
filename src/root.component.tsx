@@ -3,7 +3,7 @@ import { defineConfigSchema } from '@openmrs/esm-module-config';
 import openmrsRootDecorator from '@openmrs/react-root-decorator';
 import { BrowserRouter } from 'react-router-dom';
 
-defineConfigSchema('@openmrs/esm-patient-registration', {});
+defineConfigSchema('@openmrs/esm-patient-registration-app', {});
 
 function Root(props) {
   return (
@@ -15,5 +15,5 @@ function Root(props) {
 
 export default openmrsRootDecorator({
   featureName: 'patient-registration',
-  moduleName: '@openmrs/esm-patient-registration',
+  moduleName: '@openmrs/esm-patient-registration-app',
 })(Root);
