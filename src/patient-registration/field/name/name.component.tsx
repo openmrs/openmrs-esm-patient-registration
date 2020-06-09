@@ -45,7 +45,7 @@ export function Name(props: NameProps) {
       <h1 className={styles.fieldHeader}>{props.fieldName}</h1>
       <input
         type="text"
-        placeholder="Given Name"
+        placeholder={props.nameValue.preferred ? 'Given Name' : 'Additional Given Name'}
         value={props.nameValue.givenName}
         name="givenName"
         disabled={props.unknownValue}
@@ -54,7 +54,7 @@ export function Name(props: NameProps) {
       />
       <input
         type="text"
-        placeholder="Middle Name"
+        placeholder={props.nameValue.preferred ? 'Middle Name' : 'Additional Middle Name'}
         value={props.nameValue.middleName}
         name="middleName"
         disabled={props.unknownValue}
@@ -63,7 +63,7 @@ export function Name(props: NameProps) {
       />
       <input
         type="text"
-        placeholder="Family Name"
+        placeholder={props.nameValue.preferred ? 'Family Name' : 'Additional Family Name'}
         value={props.nameValue.familyName}
         name="familyName"
         disabled={props.unknownValue}
