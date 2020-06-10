@@ -31,6 +31,7 @@ export function Name(props: NameProps) {
         <input
           type="checkbox"
           id="unknown"
+          aria-label="unknown-checkbox"
           name="unknown"
           className={styles.fieldInput}
           checked={props.unknownValue}

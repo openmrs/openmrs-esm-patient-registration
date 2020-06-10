@@ -12,6 +12,7 @@ export function Gender(props: GenderProps) {
       <h1 className={styles.fieldHeader}>Gender</h1>
       <select
         name="gender"
+        aria-label="gender-select"
         className={styles.fieldInput}
         value={props.value}
         onChange={event => props.onChange(event.target.value)}>
