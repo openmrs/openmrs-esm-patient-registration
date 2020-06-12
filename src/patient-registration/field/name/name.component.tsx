@@ -31,7 +31,7 @@ export function Name(props: NameProps) {
         <input
           type="checkbox"
           id="unknown"
-          aria-label="unknown-checkbox"
+          aria-label="unknownCheckbox"
           name="unknown"
           className={styles.fieldInput}
           checked={props.unknownValue}
@@ -49,6 +49,7 @@ export function Name(props: NameProps) {
         placeholder={props.nameValue.preferred ? 'Given Name' : 'Additional Given Name'}
         value={props.nameValue.givenName}
         name="givenName"
+        aria-label={props.nameValue.preferred ? 'givenNameInput' : 'additionalGivenNameInput'}
         disabled={props.unknownValue}
         className={styles.fieldInput}
         onChange={handleNameChange}
@@ -58,6 +59,7 @@ export function Name(props: NameProps) {
         placeholder={props.nameValue.preferred ? 'Middle Name' : 'Additional Middle Name'}
         value={props.nameValue.middleName}
         name="middleName"
+        aria-label={props.nameValue.preferred ? 'middleNameInput' : 'additionalMiddleNameInput'}
         disabled={props.unknownValue}
         className={styles.fieldInput}
         onChange={handleNameChange}
@@ -67,6 +69,7 @@ export function Name(props: NameProps) {
         placeholder={props.nameValue.preferred ? 'Family Name' : 'Additional Family Name'}
         value={props.nameValue.familyName}
         name="familyName"
+        aria-label={props.nameValue.preferred ? 'familyNameInput' : 'additionalFamilyNameInput'}
         disabled={props.unknownValue}
         className={styles.fieldInput}
         onChange={handleNameChange}

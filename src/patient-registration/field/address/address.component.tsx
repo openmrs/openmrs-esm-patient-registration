@@ -43,6 +43,7 @@ export function Address(props: AddressProps) {
           type="text"
           value={props.value.address1}
           name="address1"
+          aria-label="address1Input"
           onChange={handleTextInputChange}
         />
       </section>
@@ -53,6 +54,7 @@ export function Address(props: AddressProps) {
           type="text"
           value={props.value.address2}
           name="address2"
+          aria-label="address2Input"
           onChange={handleTextInputChange}
         />
       </section>
@@ -63,6 +65,7 @@ export function Address(props: AddressProps) {
           type="text"
           value={props.value.cityVillage}
           name="cityVillage"
+          aria-label="cityVillageInput"
           onChange={handleTextInputChange}
         />
         <h1 className={styles.fieldHeader}>State/Province</h1>
@@ -71,6 +74,7 @@ export function Address(props: AddressProps) {
           type="text"
           value={props.value.stateProvince}
           name="stateProvince"
+          aria-label="stateProvinceInput"
           onChange={handleTextInputChange}
         />
       </section>
@@ -81,6 +85,7 @@ export function Address(props: AddressProps) {
           type="text"
           value={props.value.postalCode}
           name="postalCode"
+          aria-label="postalCodeInput"
           onChange={handleTextInputChange}
         />
         <h1 className={styles.fieldHeader}>Country</h1>
@@ -89,6 +94,7 @@ export function Address(props: AddressProps) {
           type="text"
           value={props.value.country}
           name="country"
+          aria-label="countryInput"
           onChange={handleTextInputChange}
         />
       </section>
@@ -99,6 +105,7 @@ export function Address(props: AddressProps) {
           type="text"
           value={props.value.latitude !== null ? props.value.latitude : ''}
           name="latitude"
+          aria-label="latitudeInput"
           onChange={handleTextInputChange}
         />
         <h1 className={styles.fieldHeader}>Longitude</h1>
@@ -107,6 +114,7 @@ export function Address(props: AddressProps) {
           type="text"
           value={props.value.longitude !== null ? props.value.longitude : ''}
           name="longitude"
+          aria-label="longitudeInput"
           onChange={handleTextInputChange}
         />
       </section>
@@ -117,6 +125,7 @@ export function Address(props: AddressProps) {
           type="date"
           value={props.value.startDate !== null ? dayjs(props.value.startDate).format('YYYY-MM-DD') : ''}
           name="startDate"
+          aria-label="startDateInput"
           onChange={event => props.onChange({ ...props.value, startDate: event.target.valueAsDate })}
         />
         <h1 className={styles.fieldHeader}>End Date</h1>
@@ -125,6 +134,7 @@ export function Address(props: AddressProps) {
           type="date"
           value={props.value.endDate !== null ? dayjs(props.value.endDate).format('YYYY-MM-DD') : ''}
           name="endDate"
+          aria-label="endDateInput"
           onChange={event => props.onChange({ ...props.value, endDate: event.target.valueAsDate })}
         />
       </section>

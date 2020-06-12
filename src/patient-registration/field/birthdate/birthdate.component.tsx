@@ -47,6 +47,7 @@ export function Birthdate(props: BirthdateProps) {
           type="number"
           id="years"
           name="years"
+          aria-label="yearsInput"
           value={age.years}
           className={styles.fieldInput}
           onChange={event => setAge({ ...age, years: event.target.valueAsNumber })}
@@ -58,6 +59,7 @@ export function Birthdate(props: BirthdateProps) {
           type="number"
           id="months"
           name="months"
+          aria-label="monthsInput"
           value={age.months}
           className={styles.fieldInput}
           onChange={event => setAge({ ...age, months: event.target.valueAsNumber })}
@@ -75,6 +77,7 @@ export function Birthdate(props: BirthdateProps) {
           type="date"
           id="birthdate"
           name="birthdate"
+          aria-label="birthdateInput"
           className={styles.fieldInput}
           disabled={props.birthdateEstimatedValue}
           value={props.birthdateValue !== null ? dayjs(props.birthdateValue).format('YYYY-MM-DD') : ''}
@@ -87,6 +90,7 @@ export function Birthdate(props: BirthdateProps) {
           type="time"
           id="birthtime"
           name="birthtime"
+          aria-label="birthtimeInput"
           className={styles.fieldInput}
           value={props.birthtimeValue !== null ? dayjs(props.birthtimeValue).format('HH:mm') : ''}
           onChange={event => props.onBirthtimeChange(event.target.valueAsDate)}
@@ -96,6 +100,7 @@ export function Birthdate(props: BirthdateProps) {
           type="checkbox"
           id="estimate"
           name="estimate"
+          aria-label="estimateCheckbox"
           className={styles.fieldInput}
           checked={props.birthdateEstimatedValue}
           onChange={event => props.onBirthdateEstimatedChange(event.target.checked)}

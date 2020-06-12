@@ -53,8 +53,6 @@
     "concurrently": "^5.0.0",
     "css-loader": "^3.2.0",
     "dayjs": "^1.8.16",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.2.1",
     "eslint-config-prettier": "^6.1.0",
     "eslint-config-ts-react-important-stuff": "^1.0.0",
@@ -82,9 +80,7 @@
     "@openmrs/esm-api": "^1.2.2",
     "@openmrs/esm-module-config": "^1.2.0",
     "@openmrs/esm-root-config": "^1.2.0",
-    "@types/enzyme": "^3.10.5",
     "@types/react-router": "^5.0.3",
-    "enzyme-to-json": "^3.4.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   }
