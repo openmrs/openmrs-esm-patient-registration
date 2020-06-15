@@ -75,20 +75,18 @@ export function Birthdate(props: BirthdateProps) {
         <h1 className={styles.fieldHeader}>Birth Date</h1>
         <input
           type="date"
-          id="birthdate"
           name="birthdate"
           aria-label="birthdateInput"
           className={styles.fieldInput}
           disabled={props.birthdateEstimatedValue}
           value={props.birthdateValue !== null ? dayjs(props.birthdateValue).format('YYYY-MM-DD') : ''}
-          min={'0000-01-01'}
-          max={'9999-12-31'}
+          min="0000-01-01"
+          max="9999-12-31"
           onChange={event => props.onBirthdateChange(event.target.valueAsDate)}
         />
         <h1 className={styles.fieldHeader}>Birth Time</h1>
         <input
           type="time"
-          id="birthtime"
           name="birthtime"
           aria-label="birthtimeInput"
           className={styles.fieldInput}
@@ -98,7 +96,6 @@ export function Birthdate(props: BirthdateProps) {
         <h1 className={styles.fieldHeader}>Estimate</h1>
         <input
           type="checkbox"
-          id="estimate"
           name="estimate"
           aria-label="estimateCheckbox"
           className={styles.fieldInput}

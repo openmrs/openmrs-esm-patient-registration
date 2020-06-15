@@ -30,7 +30,6 @@ export function Name(props: NameProps) {
         <h1 className={styles.fieldHeader}>Unknown</h1>
         <input
           type="checkbox"
-          id="unknown"
           aria-label="unknownCheckbox"
           name="unknown"
           className={styles.fieldInput}

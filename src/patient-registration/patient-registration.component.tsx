@@ -86,53 +86,51 @@ export function PatientRegistration(props: PatientRegistrationProps) {
     };
 
     savePatient(abortController, patient).then(
-      response => response.status == 201 && navigate(response.data.uuid),
+      response => response.status == 201 && props.history.push(`/patient/${response.data.uuid}/chart`),
       createErrorHandler(),
     );
   };
 
-  const navigate = (patientUuid: string) => {
-    window.location.href = `/openmrs/spa/patient/${patientUuid}/chart`;
-  };
-
   return (
-    <form onSubmit={onFormSubmit} className={styles.dashboard}>
-      <h1 className={styles.title}>New Patient</h1>
-      <section className={styles.formSection}>
-        <h2 className={styles.subTitle}>Personal Details</h2>
-        <hr className={styles.horizontalRule}></hr>
-        <Name
-          fieldName="Preferred Name"
-          nameValue={name}
-          unknownValue={unknown}
-          onNameChange={setName}
-          onUnknownChange={setUnknown}
-        />
-        <Name
-          fieldName="Additional Name"
-          nameValue={additionalName}
-          unknownValue={unknown}
-          onNameChange={setAdditionalName}
-          onUnknownChange={setUnknown}
-        />
-        <Gender value={gender} onChange={setGender} />
-        <Birthdate
-          birthdateValue={birthdate}
-          birthdateEstimatedValue={birthdateEstimated}
-          birthtimeValue={birthtime}
-          onBirthdateChange={setBirthdate}
-          onBirthdateEstimatedChange={setBirthdateEstimated}
-          onBirthtimeChange={setBirthtime}
-        />
-      </section>
-      <section className={styles.formSection}>
-        <h2 className={styles.subTitle}>Address Information</h2>
-        <hr className={styles.horizontalRule}></hr>
-        <Address value={address} onChange={setAddress} />
-      </section>
-      <button id="submit" type="submit" className={styles.submit}>
-        Submit
-      </button>
-    </form>
+    <main className="omrs-main-content">
+      <form onSubmit={onFormSubmit} className={styles.dashboard}>
+        <h1 className={styles.title}>New Patient</h1>
+        <section className={styles.formSection}>
+          <h2 className={styles.subTitle}>Personal Details</h2>
+          <hr className={styles.horizontalRule}></hr>
+          <Name
+            fieldName="Preferred Name"
+            nameValue={name}
+            unknownValue={unknown}
+            onNameChange={setName}
+            onUnknownChange={setUnknown}
+          />
+          <Name
+            fieldName="Additional Name"
+            nameValue={additionalName}
+            unknownValue={unknown}
+            onNameChange={setAdditionalName}
+            onUnknownChange={setUnknown}
+          />
+          <Gender value={gender} onChange={setGender} />
+          <Birthdate
+            birthdateValue={birthdate}
+            birthdateEstimatedValue={birthdateEstimated}
+            birthtimeValue={birthtime}
+            onBirthdateChange={setBirthdate}
+            onBirthdateEstimatedChange={setBirthdateEstimated}
+            onBirthtimeChange={setBirthtime}
+          />
+        </section>
+        <section className={styles.formSection}>
+          <h2 className={styles.subTitle}>Address Information</h2>
+          <hr className={styles.horizontalRule}></hr>
+          <Address value={address} onChange={setAddress} />
+        </section>
+        <button id="submit" type="submit" className={styles.submit}>
+          Submit
+        </button>
+      </form>
+    </main>
   );
 }
