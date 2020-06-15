@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { PatientRegistration } from './patient-registration.component';
 
 const setup = (labelText: string) => {
-  const utils = render(<PatientRegistration />);
+  const utils = render(<PatientRegistration history={null} location={null} match={null} />);
   const input = utils.getByLabelText(labelText) as HTMLInputElement;
   return {
     input,
@@ -46,7 +46,7 @@ describe('name field', () => {
 
 describe('gender field', () => {
   it('selects gender value', () => {
-    const utils = render(<PatientRegistration />);
+    const utils = render(<PatientRegistration history={null} location={null} match={null} />);
     const selectInput = utils.getByLabelText('genderSelect') as HTMLSelectElement;
     const genderValue = 'F';
     fireEvent.change(selectInput, { target: { value: genderValue } });

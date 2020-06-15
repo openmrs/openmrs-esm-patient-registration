@@ -7,7 +7,7 @@ export function savePatient(abortController: AbortController, patient: Patient) 
       'Content-Type': 'application/json',
     },
     method: 'POST',
-    body: { ...patient },
+    body: patient,
     signal: abortController.signal,
   });
 }

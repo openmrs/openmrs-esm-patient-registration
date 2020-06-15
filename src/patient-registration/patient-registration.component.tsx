@@ -7,10 +7,9 @@ import { Gender } from './field/gender/gender.component';
 import { Birthdate } from './field/birthdate/birthdate.component';
 import { Address } from './field/address/address.component';
 import styles from './patient-registration.css';
+import { RouteComponentProps } from 'react-router';
 
-const IDENTIFIER_TYPE: string = '05a29f94-c0ed-11e2-94be-8c13b969e334';
-
-interface PatientRegistrationProps {}
+interface PatientRegistrationProps extends RouteComponentProps {}
 
 export function PatientRegistration(props: PatientRegistrationProps) {
   const [unknown, setUnknown] = useState<boolean>(false);
@@ -71,7 +70,7 @@ export function PatientRegistration(props: PatientRegistrationProps) {
       identifiers: [
         {
           identifier: identifier,
-          identifierType: IDENTIFIER_TYPE,
+          identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334',
           location: location,
         },
       ],
