@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Patient } from './patient-registration-helper';
 import { getCurrentUserLocation, getUniquePatientIdentifier, savePatient } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
@@ -7,11 +8,10 @@ import { Gender } from './field/gender/gender.component';
 import { Birthdate } from './field/birthdate/birthdate.component';
 import { Address } from './field/address/address.component';
 import styles from './patient-registration.css';
-import { RouteComponentProps } from 'react-router';
 
-interface PatientRegistrationProps extends RouteComponentProps {}
+export function PatientRegistration() {
+  const history = useHistory();
 
-export function PatientRegistration(props: PatientRegistrationProps) {
   const [unknown, setUnknown] = useState<boolean>(false);
   const [identifier, setIdentifier] = useState<Patient['identifiers'][0]['identifier']>('');
   const [location, setLocation] = useState<Patient['identifiers'][0]['location']>('');
@@ -85,7 +85,7 @@ export function PatientRegistration(props: PatientRegistrationProps) {
     };
 
     savePatient(abortController, patient).then(
-      response => response.status == 201 && props.history.push(`/patient/${response.data.uuid}/chart`),
+      response => response.status == 201 && history.push(`/patient/${response.data.uuid}/chart`),
       createErrorHandler(),
     );
   };
