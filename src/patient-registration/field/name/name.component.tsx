@@ -1,11 +1,18 @@
 import React, { useEffect } from 'react';
 import styles from './../field.css';
 
+export interface NameValue {
+  preferred: boolean;
+  givenName: string;
+  middleName: string;
+  familyName: string;
+}
+
 interface NameProps {
   fieldName: string;
-  nameValue: { preferred: boolean; givenName: string; middleName: string; familyName: string };
+  nameValue: NameValue;
   unknownValue: boolean;
-  onNameChange(name: { preferred: boolean; givenName: string; middleName: string; familyName: string }): void;
+  onNameChange(name: NameValue): void;
   onUnknownChange(unknown: boolean): void;
 }
 

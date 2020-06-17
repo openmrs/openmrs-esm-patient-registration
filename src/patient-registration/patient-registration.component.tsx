@@ -3,35 +3,35 @@ import { useHistory } from 'react-router-dom';
 import { Patient } from './patient-registration-helper';
 import { getCurrentUserLocation, getUniquePatientIdentifier, savePatient } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
-import { Name } from './field/name/name.component';
+import { Name, NameValue } from './field/name/name.component';
 import { Gender } from './field/gender/gender.component';
 import { Birthdate } from './field/birthdate/birthdate.component';
-import { Address } from './field/address/address.component';
+import { Address, AddressValue } from './field/address/address.component';
 import styles from './patient-registration.css';
 
 export function PatientRegistration() {
   const history = useHistory();
 
   const [unknown, setUnknown] = useState<boolean>(false);
-  const [identifier, setIdentifier] = useState<Patient['identifiers'][0]['identifier']>('');
-  const [location, setLocation] = useState<Patient['identifiers'][0]['location']>('');
-  const [name, setName] = useState<Patient['person']['names'][0]>({
+  const [identifier, setIdentifier] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
+  const [name, setName] = useState<NameValue>({
     preferred: true,
     givenName: '',
     middleName: '',
     familyName: '',
   });
-  const [additionalName, setAdditionalName] = useState<Patient['person']['names'][1]>({
+  const [additionalName, setAdditionalName] = useState<NameValue>({
     preferred: false,
     givenName: '',
     middleName: '',
     familyName: '',
   });
-  const [gender, setGender] = useState<Patient['person']['gender']>('');
-  const [birthdate, setBirthdate] = useState<Patient['person']['birthdate']>(null);
-  const [birthdateEstimated, setBirthdateEstimated] = useState<Patient['person']['birthdateEstimated']>(false);
-  const [birthtime, setBirthtime] = useState<Patient['person']['birthtime']>(null);
-  const [address, setAddress] = useState<Patient['person']['addresses'][0]>({
+  const [gender, setGender] = useState<string>('');
+  const [birthdate, setBirthdate] = useState<Date>(null);
+  const [birthdateEstimated, setBirthdateEstimated] = useState<boolean>(false);
+  const [birthtime, setBirthtime] = useState<Date>(null);
+  const [address, setAddress] = useState<AddressValue>({
     address1: '',
     address2: '',
     cityVillage: '',

@@ -2,31 +2,22 @@ import React from 'react';
 import dayjs from 'dayjs';
 import styles from './../field.css';
 
+export interface AddressValue {
+  address1: string;
+  address2: string;
+  cityVillage: string;
+  stateProvince: string;
+  postalCode: string;
+  country: string;
+  latitude: string;
+  longitude: string;
+  startDate: Date;
+  endDate: Date;
+}
+
 interface AddressProps {
-  value: {
-    address1: string;
-    address2: string;
-    cityVillage: string;
-    stateProvince: string;
-    postalCode: string;
-    country: string;
-    latitude: string;
-    longitude: string;
-    startDate: Date;
-    endDate: Date;
-  };
-  onChange(address: {
-    address1: string;
-    address2: string;
-    cityVillage: string;
-    stateProvince: string;
-    postalCode: string;
-    country: string;
-    latitude: string;
-    longitude: string;
-    startDate: Date;
-    endDate: Date;
-  }): void;
+  value: AddressValue;
+  onChange(value: AddressValue): void;
 }
 
 export function Address(props: AddressProps) {
