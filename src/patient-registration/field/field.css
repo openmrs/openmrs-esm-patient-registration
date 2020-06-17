@@ -3,10 +3,10 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .fieldHeader {
-    flex-shrink: 0;
     margin-right: 5px;
     font-size: medium;
 }
@@ -16,6 +16,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .fieldInput {
