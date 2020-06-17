@@ -1,0 +1,29 @@
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.fieldHeader {
+    margin-right: 5px;
+    font-size: medium;
+}
+
+.optionalField {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.fieldInput {
+    margin-right: 5px;
+}
+
+.fieldLabel {
+    margin-right: 5px;
+    font-size: smaller;
+}

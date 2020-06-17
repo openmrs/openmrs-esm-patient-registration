@@ -1,14 +1,15 @@
 import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { defineConfigSchema } from '@openmrs/esm-module-config';
 import openmrsRootDecorator from '@openmrs/react-root-decorator';
-import { BrowserRouter } from 'react-router-dom';
+import { PatientRegistration } from './patient-registration/patient-registration.component';
 
 defineConfigSchema('@openmrs/esm-patient-registration-app', {});
 
-function Root(props) {
+function Root() {
   return (
     <BrowserRouter basename={window['getOpenmrsSpaBase']()}>
-      <div>Fill me with content!</div>
+      <Route path="/patient-registration" component={PatientRegistration} />
     </BrowserRouter>
   );
 }
