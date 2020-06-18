@@ -37,48 +37,26 @@ git clone https://github.com/openmrs/openmrs-esm-patient-registration.git
 ```
 npm i
 ```
-3. Run the module from `localhost:8081`
+3. Run the module from `localhost:8080`
 ```
 npm start -- --https
 ```
 
 *Note: the module URL: [https://openmrs-spa.org/openmrs/spa/patient-registration](https://openmrs-spa.org/openmrs/spa/patient-registration).*
 
-### Setup Root Config
-1. Clone the [openmrs-esm-root-config](https://github.com/openmrs/openmrs-esm-root-config) repo
-2. Install dependencies in the root directory of the repo
-```
-npm i
-```
-1. Open `./src/single-spa-applications/core-applications.js`
-2. Replace `export const coreApplications` with the following code block
-```
-export const coreApplications = {
-  "@openmrs/esm-login": shouldShowLogin,
-  "@openmrs/esm-devtools": shouldShowDevtools,
-  "@openmrs/esm-primary-navigation": shouldShowPrimaryNavigation,
-  "@openmrs/esm-patient-chart": shouldShowPatientChart,
-  "@openmrs/esm-home": shouldShowHome,
-  "@openmrs/esm-patient-registration": shouldShowPatientRegistration
-};
-```
-3. Add the following function
-```
-function shouldShowPatientRegistration(location) {
-  return routePrefix("patient-registration", location);
-}
-```
-4. Run the module from `https://localhost:8080/openmrs-esm-root-config.defaults.js`
-```
-npm start -- --https
-```
-
 ### Setup Dev Tools
 1. Follow the dev tools steps in the [setup guide](https://wiki.openmrs.org/display/projects/Setup+local+development+environment+for+OpenMRS+SPA)
 2. Click `Add new module` in the dev tools window
-3. Type in the `Module Name:` `@openmrs/esm-patient-registration`
-4. Type in the `Override URL:` `8081`
-5. Refresh the page
+3. Type in the `Module Name:` `@openmrs/esm-patient-registration-app`
+4. Type in the `Override URL:` `8080`
+5. Go to the browser's development tools (e.g. via `Inspect`)
+6. Go to the `Application` tab
+7. Go to `Local Storage`
+8. You should see a key called `import-map-override:@openmrs/esm-patient-registration-app`
+9. Update the corresponding value to `//localhost:8080/openmrs-esm-patient-registration.js`
+10. Refresh the page
+
+*Note: Currently OpenMRS dev tools are not able to update the correct link.*
 
 ## Tests
 To verify that all of the tests run:
