@@ -72,7 +72,7 @@ export function Birthdate(props: BirthdateProps) {
     <main>
       {props.birthdateEstimatedValue ? getAgeInputs() : null}
       <section className={styles.row}>
-        <h1 className={styles.fieldHeader}>Birth Date</h1>
+        <h1 className={styles.fieldHeader}>Birth Date*</h1>
         <input
           type="date"
           name="birthdate"
@@ -80,9 +80,9 @@ export function Birthdate(props: BirthdateProps) {
           className={styles.fieldInput}
           disabled={props.birthdateEstimatedValue}
           value={props.birthdateValue !== null ? dayjs(props.birthdateValue).format('YYYY-MM-DD') : ''}
-          min="0000-01-01"
-          max="9999-12-31"
+          max={dayjs(dayjs(), 'YYYY-MM-DD').format('YYYY-MM-DD')}
           onChange={event => props.onBirthdateChange(event.target.valueAsDate)}
+          required
         />
         <h1 className={styles.fieldHeader}>Birth Time</h1>
         <input

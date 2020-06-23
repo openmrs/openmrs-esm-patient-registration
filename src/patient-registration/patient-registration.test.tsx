@@ -85,6 +85,16 @@ describe('birthdate field', () => {
   it('updates birthdate value by subtracting age input (years and months) values', () => {
     expect(true).toBeTruthy();
   });
+
+  it('has a required birthdate field', () => {
+    const { getByLabelText } = render(<PatientRegistration />);
+    expect(getByLabelText('birthdateInput').getAttribute('required')).not.toBeNull();
+  });
+
+  // TO BE COMPLETED
+  it('cannot be a date in the future', () => {
+    expect(true).toBeTruthy();
+  });
 });
 
 describe('address field', () => {
