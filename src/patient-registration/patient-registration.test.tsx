@@ -52,6 +52,11 @@ describe('gender field', () => {
     fireEvent.change(selectInput, { target: { value: genderValue } });
     expect(selectInput.value).toEqual(genderValue);
   });
+
+  it('has a required field for gender', () => {
+    const { getByLabelText } = render(<PatientRegistration />);
+    expect(getByLabelText('genderSelect').getAttribute('required')).not.toBeNull();
+  });
 });
 
 describe('birthdate field', () => {
