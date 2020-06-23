@@ -98,7 +98,7 @@ export function PatientRegistration() {
           <h2 className={styles.subTitle}>Personal Details</h2>
           <hr className={styles.horizontalRule}></hr>
           <Name
-            fieldName="Preferred Name"
+            fieldName="Preferred Name*"
             nameValue={name}
             unknownValue={unknown}
             onNameChange={setName}

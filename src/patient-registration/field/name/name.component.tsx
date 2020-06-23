@@ -52,13 +52,14 @@ export function Name(props: NameProps) {
       <h1 className={styles.fieldHeader}>{props.fieldName}</h1>
       <input
         type="text"
-        placeholder={props.nameValue.preferred ? 'Given Name' : 'Additional Given Name'}
+        placeholder={props.nameValue.preferred ? 'Given Name*' : 'Additional Given Name'}
         value={props.nameValue.givenName}
         name="givenName"
         aria-label={props.nameValue.preferred ? 'givenNameInput' : 'additionalGivenNameInput'}
         disabled={props.unknownValue}
         className={styles.fieldInput}
         onChange={handleNameChange}
+        required={props.nameValue.preferred}
       />
       <input
         type="text"
@@ -72,13 +73,14 @@ export function Name(props: NameProps) {
       />
       <input
         type="text"
-        placeholder={props.nameValue.preferred ? 'Family Name' : 'Additional Family Name'}
+        placeholder={props.nameValue.preferred ? 'Family Name*' : 'Additional Family Name'}
         value={props.nameValue.familyName}
         name="familyName"
         aria-label={props.nameValue.preferred ? 'familyNameInput' : 'additionalFamilyNameInput'}
         disabled={props.unknownValue}
         className={styles.fieldInput}
         onChange={handleNameChange}
+        required={props.nameValue.preferred}
       />
       {props.nameValue.preferred ? getUnknownInput() : null}
     </main>

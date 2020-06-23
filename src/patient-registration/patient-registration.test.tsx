@@ -42,6 +42,12 @@ describe('name field', () => {
     expect(utils.getByLabelText('givenNameInput').getAttribute('value')).toEqual(unknownName);
     expect(utils.getByLabelText('familyNameInput').getAttribute('value')).toEqual(unknownName);
   });
+
+  it('has 2 required fields for given and family name', () => {
+    const { getByLabelText } = render(<PatientRegistration />);
+    expect(getByLabelText('givenNameInput').getAttribute('required')).not.toBeNull();
+    expect(getByLabelText('familyNameInput').getAttribute('required')).not.toBeNull();
+  });
 });
 
 describe('gender field', () => {
