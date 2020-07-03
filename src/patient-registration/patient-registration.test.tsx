@@ -33,12 +33,13 @@ describe('demographics section', () => {
   it('updates to correct gender', async () => {
     const { container } = render(<PatientRegistration />);
     const genderSelect = container.querySelector('select[name="gender"]') as HTMLSelectElement;
+    const expectedGender = 'M';
 
     await wait(() => {
-      fireEvent.change(genderSelect, { target: { value: 'M' } });
+      fireEvent.change(genderSelect, { target: { value: expectedGender } });
     });
 
-    expect(genderSelect.value).toEqual('M');
+    expect(genderSelect.value).toEqual(expectedGender);
   });
 
   it('update to correct birthdate', async () => {
