@@ -12,12 +12,14 @@ export const DateInput: React.FunctionComponent<DateInputProps> = ({ name }) => 
   return (
     <main className={styles.field}>
       <input
-        className={meta.touched && meta.error ? styles.errorInput : styles.input}
+        className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${styles.dateInput}`}
         type="date"
         {...field}
         value={field.value !== null ? field.value : ''}
       />
-      {meta.touched && meta.error ? <div className={styles.errorMessage}>{meta.error}</div> : null}
+      {meta.touched && meta.error ? (
+        <div className={`omrs-type-body-small ${styles.errorMessage}`}>{meta.error}</div>
+      ) : null}
     </main>
   );
 };

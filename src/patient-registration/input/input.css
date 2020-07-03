@@ -1,43 +1,61 @@
+.fieldRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
 .field {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 400px;
-    margin-bottom: 10px;
-}
-
-.subField {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 400px;
-    margin-bottom: 10px;
-    margin-top: 5px;
     margin-left: 10px;
+    padding: 5px;
 }
 
 .checkboxField {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    align-items: center;
     width: 400px;
-    margin-bottom: 10px;
+    margin-left: 10px;
+    padding: 5px;
 }
 
-.label {
-    font-weight: bold;
+.subField {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 400px;
+    padding: 10px;
 }
 
-.subLabel {
-    font-size: smaller;
-    font-weight: bold;
+.textInput {
+    width: 250px !important;
+    background-color: white !important;
+}
+
+.checkboxInput {
+    height: 1rem !important;
+    width: 1rem !important;
+}
+
+.selectInput {
+    width: 150px !important;
+    background-color: white !important;
+}
+
+.dateInput {
+    width: 200px !important;
+    background-color: white !important;
+    font-size: large !important;
 }
 
 .errorInput {
-    border: 2px solid red;
+    border: 2px solid var(--omrs-color-danger) !important;
 }
 
 .errorMessage {
-    font-size: small;
-    color: red;
+    color: var(--omrs-color-danger);
 }

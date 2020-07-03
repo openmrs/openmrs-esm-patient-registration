@@ -2,5 +2,18 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin: 75px;
+    background-color: var(--omrs-color-bg-high-contrast);
+    padding: 10px;
+}
+
+.title {
+    color: var(--omrs-color-brand-teal);
+}
+
+.submit {
+    width: 250px;
+}
+
+.submit:hover {
+    cursor: pointer;
 }

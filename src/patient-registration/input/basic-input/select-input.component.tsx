@@ -22,10 +22,16 @@ export const SelectInput: React.FunctionComponent<SelectInputProps> = ({ name, o
 
   return (
     <main className={styles.field}>
-      <select className={meta.touched && meta.error ? styles.errorInput : styles.input} {...field}>
+      <select
+        className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error ? styles.errorInput : null} ${
+          styles.selectInput
+        }`}
+        {...field}>
         {selectOptions}
       </select>
-      {meta.touched && meta.error ? <div className={styles.errorMessage}>{meta.error}</div> : null}
+      {meta.touched && meta.error ? (
+        <div className={`omrs-type-body-small ${styles.errorMessage}`}>{meta.error}</div>
+      ) : null}
     </main>
   );
 };

@@ -8,16 +8,23 @@ interface TextInputProps {
   name: string;
 }
 
-export const TextInput: React.FunctionComponent<TextInputProps> = ({ label, name }) => {
+export const TextInput: React.FunctionComponent<TextInputProps> = ({ label, name, placeholder }) => {
   const [field, meta] = useField(name);
 
   return (
     <main className={styles.field}>
-      <label className={styles.label} htmlFor={field.name}>
+      <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
         {label}
       </label>
-      <input className={meta.touched && meta.error ? styles.errorInput : styles.input} type="text" {...field} />
-      {meta.touched && meta.error ? <div className={styles.errorMessage}>{meta.error}</div> : null}
+      <input
+        className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${styles.textInput}`}
+        type="text"
+        placeholder={placeholder}
+        {...field}
+      />
+      {meta.touched && meta.error ? (
+        <div className={`omrs-type-body-small ${styles.errorMessage}`}>{meta.error}</div>
+      ) : null}
     </main>
   );
 };

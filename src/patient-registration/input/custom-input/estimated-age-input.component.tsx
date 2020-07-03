@@ -31,11 +31,11 @@ export const EstimatedAgeInput: React.FunctionComponent<EstimatedAgeInputProps> 
 
   return (
     <main className={styles.field}>
-      <label className={styles.label} htmlFor="estimatedAge">
-        Estimated Age
-      </label>
-      <NumberInput label="Years" name={yearsName} subField={true} />
-      <NumberInput label="Months" name={monthsName} subField={true} />
+      <h4 className={`omrs-type-body-large ${styles.subTitle}`}>Estimated Age</h4>
+      <section className={styles.subField}>
+        <NumberInput label="Years" name={yearsName} />
+        <NumberInput label="Months" name={monthsName} />
+      </section>
     </main>
   );
 };

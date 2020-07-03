@@ -109,7 +109,7 @@ export const PatientRegistration: React.FunctionComponent<{}> = () => {
   };
 
   return (
-    <main className="omrs-main-content">
+    <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
         validationSchema={Yup.object({
@@ -122,8 +122,8 @@ export const PatientRegistration: React.FunctionComponent<{}> = () => {
             .required('Birthdate is required')
             .max(Date(), 'Birthdate cannot be in the future')
             .nullable(),
-          estimatedYears: Yup.number().min(0, 'Years cannot be less than 0'),
-          estimatedMonths: Yup.number().min(0, 'Months cannot be less than 0'),
+          yearsEstimated: Yup.number().min(0, 'Years cannot be less than 0'),
+          monthsEstimated: Yup.number().min(0, 'Months cannot be less than 0'),
         })}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
@@ -131,10 +131,10 @@ export const PatientRegistration: React.FunctionComponent<{}> = () => {
         }}>
         {props => (
           <Form className={styles.form}>
-            <h1 className={styles.title}>New Patient</h1>
+            <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
-            <button className={styles.submit} type="submit">
+            <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient
             </button>
           </Form>

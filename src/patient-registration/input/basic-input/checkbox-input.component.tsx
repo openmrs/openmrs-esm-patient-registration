@@ -12,10 +12,10 @@ export const CheckboxInput: React.FunctionComponent<CheckboxInputProps> = ({ lab
 
   return (
     <main className={styles.checkboxField}>
-      <label className={styles.label} htmlFor={field.name}>
+      <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
         {label}
       </label>
-      <input className={styles.input} type="checkbox" {...field} />
+      <input className={`omrs-checkbox ${styles.checkboxInput}`} type="checkbox" {...field} />
     </main>
   );
 };

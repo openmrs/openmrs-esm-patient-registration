@@ -16,18 +16,18 @@ interface DemographicsSectionProps {
 export const DemographicsSection: React.FunctionComponent<DemographicsSectionProps> = ({ setFieldValue, values }) => {
   return (
     <section className={styles.formSection}>
-      <h2 className={styles.sectionTitle}>Demographics</h2>
+      <h2 className="omrs-type-title-2">Demographics</h2>
       <section className={styles.formGroup}>
-        <h3 className={styles.formGroupTitle}>Name</h3>
+        <h3 className="omrs-type-title-5">Name</h3>
         <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
         <UnidentifiedPatientInput label="Unidentified Patient" name="unidentifiedPatient" setName={setFieldValue} />
       </section>
       <section className={styles.formGroup}>
-        <h3 className={styles.formGroupTitle}>Gender</h3>
+        <h3 className="omrs-type-title-5">Gender</h3>
         <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} />
       </section>
       <section className={styles.formGroup}>
-        <h3 className={styles.formGroupTitle}>Birthdate</h3>
+        <h3 className="omrs-type-title-5">Birthdate</h3>
         <DateInput name="birthdate" />
         {values.birthdateEstimated ? (
           <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={setFieldValue} />
