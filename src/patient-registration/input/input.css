@@ -1,0 +1,43 @@
+.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 400px;
+    margin-bottom: 10px;
+}
+
+.subField {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 400px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.checkboxField {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 400px;
+    margin-bottom: 10px;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.subLabel {
+    font-size: smaller;
+    font-weight: bold;
+}
+
+.errorInput {
+    border: 2px solid red;
+}
+
+.errorMessage {
+    font-size: small;
+    color: red;
+}

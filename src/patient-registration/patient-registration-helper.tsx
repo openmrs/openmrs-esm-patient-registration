@@ -1,5 +1,18 @@
-import { NameValue } from './field/name/name.component';
-import { AddressValue } from './field/address/address.component';
+interface NameValue {
+  preferred: boolean;
+  givenName: string;
+  middleName: string;
+  familyName: string;
+}
+
+interface AddressValue {
+  address1: string;
+  address2: string;
+  cityVillage: string;
+  stateProvince: string;
+  postalCode: string;
+  country: string;
+}
 
 export type Patient = {
   identifiers: [
@@ -14,7 +27,6 @@ export type Patient = {
     gender: string;
     birthdate: Date;
     birthdateEstimated: boolean;
-    birthtime: Date;
     addresses: Array<AddressValue>;
   };
 };
