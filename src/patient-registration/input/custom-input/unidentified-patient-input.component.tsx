@@ -8,11 +8,7 @@ interface UnidentifiedPatientInputProps {
   setName(field: string, value: any, shouldValidate?: boolean): void;
 }
 
-export const UnidentifiedPatientInput: React.FunctionComponent<UnidentifiedPatientInputProps> = ({
-  label,
-  name,
-  setName,
-}) => {
+export const UnidentifiedPatientInput: React.FC<UnidentifiedPatientInputProps> = ({ label, name, setName }) => {
   const [field] = useField({ name });
 
   useEffect(() => {

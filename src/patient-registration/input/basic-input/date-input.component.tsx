@@ -6,7 +6,7 @@ interface DateInputProps {
   name: string;
 }
 
-export const DateInput: React.FunctionComponent<DateInputProps> = ({ name }) => {
+export const DateInput: React.FC<DateInputProps> = ({ name }) => {
   const [field, meta] = useField(name);
 
   return (

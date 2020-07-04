@@ -11,7 +11,7 @@ interface AddressInputProps {
   postalCodeName: string;
 }
 
-export const AddressInput: React.FunctionComponent<AddressInputProps> = ({
+export const AddressInput: React.FC<AddressInputProps> = ({
   address1Name,
   address2Name,
   cityVillageName,

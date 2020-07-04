@@ -7,7 +7,7 @@ interface SelectInputProps {
   options: Array<string>;
 }
 
-export const SelectInput: React.FunctionComponent<SelectInputProps> = ({ name, options }) => {
+export const SelectInput: React.FC<SelectInputProps> = ({ name, options }) => {
   const [field, meta] = useField(name);
   const selectOptions = [
     <option key="" value="" disabled>

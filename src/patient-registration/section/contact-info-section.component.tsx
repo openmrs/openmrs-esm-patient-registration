@@ -2,7 +2,7 @@ import React from 'react';
 import { AddressInput } from './../input/custom-input/address-input.component';
 import styles from './section.css';
 
-export const ContactInfoSection: React.FunctionComponent = () => {
+export const ContactInfoSection: React.FC = () => {
   return (
     <section className={styles.formSection}>
       <h2 className="omrs-type-title-2">Contact Info</h2>

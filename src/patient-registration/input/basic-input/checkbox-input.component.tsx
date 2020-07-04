@@ -7,7 +7,7 @@ interface CheckboxInputProps {
   name: string;
 }
 
-export const CheckboxInput: React.FunctionComponent<CheckboxInputProps> = ({ label, name }) => {
+export const CheckboxInput: React.FC<CheckboxInputProps> = ({ label, name }) => {
   const [field] = useField({ name });
 
   return (

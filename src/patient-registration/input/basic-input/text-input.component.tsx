@@ -8,7 +8,7 @@ interface TextInputProps {
   name: string;
 }
 
-export const TextInput: React.FunctionComponent<TextInputProps> = ({ label, name, placeholder }) => {
+export const TextInput: React.FC<TextInputProps> = ({ label, name, placeholder }) => {
   const [field, meta] = useField(name);
 
   return (

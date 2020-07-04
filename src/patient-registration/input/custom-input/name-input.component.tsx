@@ -8,7 +8,7 @@ interface NameInputProps {
   familyName: string;
 }
 
-export const NameInput: React.FunctionComponent<NameInputProps> = ({ givenName, middleName, familyName }) => {
+export const NameInput: React.FC<NameInputProps> = ({ givenName, middleName, familyName }) => {
   return (
     <main className={styles.fieldRow}>
       <TextInput label="Given Name" placeholder="Enter given name" name={givenName} />

@@ -10,11 +10,7 @@ interface EstimatedAgeInputProps {
   setBirthdate(field: string, value: any, shouldValidate?: boolean): void;
 }
 
-export const EstimatedAgeInput: React.FunctionComponent<EstimatedAgeInputProps> = ({
-  yearsName,
-  monthsName,
-  setBirthdate,
-}) => {
+export const EstimatedAgeInput: React.FC<EstimatedAgeInputProps> = ({ yearsName, monthsName, setBirthdate }) => {
   const [yearsField] = useField(yearsName);
   const [monthsField] = useField(monthsName);
 

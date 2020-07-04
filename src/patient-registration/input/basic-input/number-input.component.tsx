@@ -7,7 +7,7 @@ interface NumberInputProps {
   name: string;
 }
 
-export const NumberInput: React.FunctionComponent<NumberInputProps> = ({ label, name }) => {
+export const NumberInput: React.FC<NumberInputProps> = ({ label, name }) => {
   const [field, meta] = useField(name);
 
   return (

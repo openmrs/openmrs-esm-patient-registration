@@ -13,7 +13,7 @@ interface DemographicsSectionProps {
   values: FormValues;
 }
 
-export const DemographicsSection: React.FunctionComponent<DemographicsSectionProps> = ({ setFieldValue, values }) => {
+export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFieldValue, values }) => {
   return (
     <section className={styles.formSection}>
       <h2 className="omrs-type-title-2">Demographics</h2>
