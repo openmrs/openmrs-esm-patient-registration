@@ -27,10 +27,10 @@ export interface FormValues {
   postalCode: string;
 }
 
-export const PatientRegistration: React.FunctionComponent<{}> = () => {
+export const PatientRegistration: React.FC = () => {
   const history = useHistory();
-  const [identifier, setIdentifier] = useState<string>('');
-  const [location, setLocation] = useState<string>('');
+  const [identifier, setIdentifier] = useState('');
+  const [location, setLocation] = useState('');
   const initialFormValues: FormValues = {
     givenName: '',
     middleName: '',
