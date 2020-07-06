@@ -131,7 +131,10 @@ export const PatientRegistration: React.FC = () => {
         }}>
         {props => (
           <Form className={styles.form}>
-            <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
+            <div className={styles.formTitle}>
+              <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
+              <button className={`omrs-btn omrs-filled-neutral ${styles.dummyData}`}>Dummy Datas</button>
+            </div>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
