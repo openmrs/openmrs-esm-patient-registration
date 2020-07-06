@@ -4,9 +4,7 @@
 The Patient Registration form micro-frontend for OpenMRS SPA. It includes a configurable dashboard and form fields for new patient data.
 
 ## Overview
-The Patient Registration module is divided into 3 separate component types: Root, PatientRegistration, and Fields. The diagram below illustrates the hierarchy of these components and their general HTML skeletal structure.
-
-![Image of Patient Registration Hierarchy](./docs/images/patient-registration-hierarchy.png)
+The Patient Registration module is divided into 3 separate component types: Root, PatientRegistration, and Fields.
 
 ## Built With
 - [React (TypeScript)](https://reactjs.org/) - Front-end JS library
