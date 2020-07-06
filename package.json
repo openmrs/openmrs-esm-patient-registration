@@ -46,6 +46,7 @@
     "@types/react-router": "^5.1.7",
     "@types/react-router-dom": "^5.1.5",
     "@types/webpack-env": "^1.15.1",
+    "@types/yup": "^0.29.3",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
@@ -80,7 +81,9 @@
   "dependencies": {
     "@openmrs/esm-api": "^1.2.2",
     "@openmrs/esm-module-config": "^1.2.0",
+    "formik": "^2.1.4",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "yup": "^0.29.1"
   }
 }
