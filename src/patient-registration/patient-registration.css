@@ -6,8 +6,21 @@
     padding: 10px;
 }
 
+.formTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 .title {
     color: var(--omrs-color-brand-teal);
+}
+
+.dummyData {
+    margin-left: 10px;
+    width: fit-content;
 }
 
 .submit {
