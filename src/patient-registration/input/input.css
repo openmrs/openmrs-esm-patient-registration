@@ -27,12 +27,22 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    width: 400px;
-    padding: 10px;
+    flex-wrap: wrap;
+}
+
+.subTitle {
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 .textInput {
     width: 250px !important;
+    background-color: white !important;
+}
+
+.numberInput {
+    width: 150px !important;
+    height: 50px !important;
     background-color: white !important;
 }
 
