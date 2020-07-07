@@ -12,10 +12,14 @@ export const NumberInput: React.FC<NumberInputProps> = ({ label, name }) => {
 
   return (
     <main className={styles.field}>
-      <label className={styles.label} htmlFor={field.name}>
+      <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
         {label}
       </label>
-      <input className={meta.touched && meta.error ? styles.errorInput : styles.input} type="number" {...field} />
+      <input
+        className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${styles.numberInput}`}
+        type="number"
+        {...field}
+      />
       {meta.touched && meta.error ? (
         <div className={`omrs-type-body-small ${styles.errorMessage}`}>{meta.error}</div>
       ) : null}
