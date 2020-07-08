@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import dayjs from 'dayjs';
 import { Patient } from './patient-registration-helper';
 import { getCurrentUserLocation, getUniquePatientIdentifier, savePatient } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
