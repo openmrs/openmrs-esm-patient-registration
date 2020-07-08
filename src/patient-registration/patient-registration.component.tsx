@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import dayjs from 'dayjs';
 import { Patient } from './patient-registration-helper';
 import { getCurrentUserLocation, getUniquePatientIdentifier, savePatient } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
@@ -47,6 +48,23 @@ export const PatientRegistration: React.FC = () => {
     stateProvince: '',
     country: '',
     postalCode: '',
+  };
+  const dummyFormValues: FormValues = {
+    givenName: 'John',
+    middleName: '',
+    familyName: 'Smith',
+    unidentifiedPatient: false,
+    gender: 'M',
+    birthdate: null,
+    yearsEstimated: 1,
+    monthsEstimated: 2,
+    birthdateEstimated: true,
+    address1: 'Bom Jesus Street',
+    address2: '',
+    cityVillage: 'Recife',
+    stateProvince: 'Pernambuco',
+    country: 'Brazil',
+    postalCode: '50030-310',
   };
 
   useEffect(() => {
@@ -133,7 +151,12 @@ export const PatientRegistration: React.FC = () => {
           <Form className={styles.form}>
             <div className={styles.formTitle}>
               <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
-              <button className={`omrs-btn omrs-filled-neutral ${styles.dummyData}`}>Dummy Datas</button>
+              <button
+                onClick={() => props.setValues(dummyFormValues)}
+                className={`omrs-btn omrs-filled-neutral ${styles.dummyData}`}
+                type="button">
+                Dummy Datas
+              </button>
             </div>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
