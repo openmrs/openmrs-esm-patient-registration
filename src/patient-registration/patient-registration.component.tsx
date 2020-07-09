@@ -8,6 +8,7 @@ import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { DemographicsSection } from './section/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info-section.component';
 import styles from './patient-registration.css';
+import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 
 export interface FormValues {
   givenName: string;
@@ -27,44 +28,28 @@ export interface FormValues {
   postalCode: string;
 }
 
+const initialFormValues: FormValues = {
+  givenName: '',
+  middleName: '',
+  familyName: '',
+  unidentifiedPatient: false,
+  gender: '',
+  birthdate: null,
+  yearsEstimated: 0,
+  monthsEstimated: 0,
+  birthdateEstimated: false,
+  address1: '',
+  address2: '',
+  cityVillage: '',
+  stateProvince: '',
+  country: '',
+  postalCode: '',
+};
+
 export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [identifier, setIdentifier] = useState('');
   const [location, setLocation] = useState('');
-  const initialFormValues: FormValues = {
-    givenName: '',
-    middleName: '',
-    familyName: '',
-    unidentifiedPatient: false,
-    gender: '',
-    birthdate: null,
-    yearsEstimated: 0,
-    monthsEstimated: 0,
-    birthdateEstimated: false,
-    address1: '',
-    address2: '',
-    cityVillage: '',
-    stateProvince: '',
-    country: '',
-    postalCode: '',
-  };
-  const dummyFormValues: FormValues = {
-    givenName: 'John',
-    middleName: '',
-    familyName: 'Smith',
-    unidentifiedPatient: false,
-    gender: 'M',
-    birthdate: null,
-    yearsEstimated: 1,
-    monthsEstimated: 2,
-    birthdateEstimated: true,
-    address1: 'Bom Jesus Street',
-    address2: '',
-    cityVillage: 'Recife',
-    stateProvince: 'Pernambuco',
-    country: 'Brazil',
-    postalCode: '50030-310',
-  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -150,12 +135,7 @@ export const PatientRegistration: React.FC = () => {
           <Form className={styles.form}>
             <div className={styles.formTitle}>
               <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
-              <button
-                onClick={() => props.setValues(dummyFormValues)}
-                className={`omrs-btn omrs-filled-neutral ${styles.dummyData}`}
-                type="button">
-                Dummy Datas
-              </button>
+              <DummyDataInput setValues={props.setValues} />
             </div>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
