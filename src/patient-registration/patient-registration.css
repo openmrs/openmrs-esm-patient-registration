@@ -18,11 +18,6 @@
     color: var(--omrs-color-brand-teal);
 }
 
-.dummyData {
-    margin-left: 10px;
-    width: fit-content;
-}
-
 .submit {
     width: 250px;
 }
