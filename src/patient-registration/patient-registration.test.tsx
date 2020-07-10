@@ -56,6 +56,18 @@ describe('demographics section', () => {
 });
 
 describe('contact info section', () => {
+  it('update to correct phone number', async () => {
+    const { container } = render(<PatientRegistration />);
+    const phoneNumberInput = container.querySelector('input[name="phoneNumber"]') as HTMLInputElement;
+    const expectedPhoneNumber = '0800-00-1066';
+
+    await wait(() => {
+      fireEvent.change(phoneNumberInput, { target: { value: expectedPhoneNumber } });
+    });
+
+    expect(phoneNumberInput.value).toEqual(expectedPhoneNumber);
+  });
+
   const updateAddress = (name: string) => {
     it('updates to correct ' + name, async () => {
       const { container } = render(<PatientRegistration />);

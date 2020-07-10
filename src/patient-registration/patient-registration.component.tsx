@@ -19,6 +19,7 @@ export interface FormValues {
   yearsEstimated: number;
   monthsEstimated: number;
   birthdateEstimated: boolean;
+  phoneNumber: string;
   address1: string;
   address2: string;
   cityVillage: string;
@@ -41,6 +42,7 @@ export const PatientRegistration: React.FC = () => {
     yearsEstimated: 0,
     monthsEstimated: 0,
     birthdateEstimated: false,
+    phoneNumber: '',
     address1: '',
     address2: '',
     cityVillage: '',
@@ -89,6 +91,7 @@ export const PatientRegistration: React.FC = () => {
         gender: values.gender,
         birthdate: values.birthdate,
         birthdateEstimated: values.birthdateEstimated,
+        phoneNumber: values.phoneNumber,
         addresses: [
           {
             address1: values.address1,

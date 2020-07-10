@@ -27,6 +27,7 @@ export type Patient = {
     gender: string;
     birthdate: Date;
     birthdateEstimated: boolean;
+    phoneNumber: string;
     addresses: Array<AddressValue>;
   };
 };
