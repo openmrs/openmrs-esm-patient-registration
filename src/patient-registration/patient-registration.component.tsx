@@ -8,6 +8,7 @@ import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { DemographicsSection } from './section/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info-section.component';
 import styles from './patient-registration.css';
+import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 
 export interface FormValues {
   givenName: string;
@@ -27,27 +28,28 @@ export interface FormValues {
   postalCode: string;
 }
 
+const initialFormValues: FormValues = {
+  givenName: '',
+  middleName: '',
+  familyName: '',
+  unidentifiedPatient: false,
+  gender: '',
+  birthdate: null,
+  yearsEstimated: 0,
+  monthsEstimated: 0,
+  birthdateEstimated: false,
+  address1: '',
+  address2: '',
+  cityVillage: '',
+  stateProvince: '',
+  country: '',
+  postalCode: '',
+};
+
 export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [identifier, setIdentifier] = useState('');
   const [location, setLocation] = useState('');
-  const initialFormValues: FormValues = {
-    givenName: '',
-    middleName: '',
-    familyName: '',
-    unidentifiedPatient: false,
-    gender: '',
-    birthdate: null,
-    yearsEstimated: 0,
-    monthsEstimated: 0,
-    birthdateEstimated: false,
-    address1: '',
-    address2: '',
-    cityVillage: '',
-    stateProvince: '',
-    country: '',
-    postalCode: '',
-  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -131,7 +133,12 @@ export const PatientRegistration: React.FC = () => {
         }}>
         {props => (
           <Form className={styles.form}>
-            <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
+            <div className={styles.formTitle}>
+              <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
+              {localStorage.getItem('openmrs:devtools') === 'true' ? (
+                <DummyDataInput setValues={props.setValues} />
+              ) : null}
+            </div>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">

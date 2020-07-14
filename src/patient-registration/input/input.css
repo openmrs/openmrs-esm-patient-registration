@@ -69,3 +69,7 @@
 .errorMessage {
     color: var(--omrs-color-danger);
 }
+
+.dummyData {
+    cursor: pointer;
+}
