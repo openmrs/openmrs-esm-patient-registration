@@ -135,7 +135,9 @@ export const PatientRegistration: React.FC = () => {
           <Form className={styles.form}>
             <div className={styles.formTitle}>
               <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
-              <DummyDataInput setValues={props.setValues} />
+              {localStorage.getItem('openmrs:devtools') === 'true' ? (
+                <DummyDataInput setValues={props.setValues} />
+              ) : null}
             </div>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
