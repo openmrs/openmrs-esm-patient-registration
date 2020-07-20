@@ -7,6 +7,7 @@ import { getCurrentUserLocation, getUniquePatientIdentifier, savePatient } from 
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { DemographicsSection } from './section/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info-section.component';
+import { ContactPersonSection } from './section/contact-person-section.component';
 import styles from './patient-registration.css';
 
 export interface FormValues {
@@ -25,6 +26,9 @@ export interface FormValues {
   stateProvince: string;
   country: string;
   postalCode: string;
+  contactPersonGivenName: string;
+  contactPersonMiddleName: string;
+  contactPersonFamilyName: string;
 }
 
 export const PatientRegistration: React.FC = () => {
@@ -47,6 +51,9 @@ export const PatientRegistration: React.FC = () => {
     stateProvince: '',
     country: '',
     postalCode: '',
+    contactPersonGivenName: '',
+    contactPersonMiddleName: '',
+    contactPersonFamilyName: '',
   };
 
   useEffect(() => {
@@ -134,6 +141,7 @@ export const PatientRegistration: React.FC = () => {
             <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
+            <ContactPersonSection />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient
             </button>

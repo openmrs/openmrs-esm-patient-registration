@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { render, fireEvent, wait } from '@testing-library/react';
 import dayjs from 'dayjs';
 import { PatientRegistration } from './patient-registration.component';
+import { act } from 'react-dom/test-utils';
 
 describe('patient registration', () => {
   it('renders without crashing', () => {
@@ -76,4 +77,52 @@ describe('contact info section', () => {
   updateAddress('stateProvince');
   updateAddress('country');
   updateAddress('postalCode');
+});
+
+describe('contact person section', () => {
+  it('renders contact person section', async () => {
+    let contactPersonSection: HTMLElement[];
+
+    await wait(() => {
+      const { getAllByLabelText } = render(<PatientRegistration />);
+      contactPersonSection = getAllByLabelText('contactPersonSection');
+    });
+
+    expect(contactPersonSection).toHaveLength(1);
+  });
+
+  const checkNameExists = (name: string) => {
+    it('has a ' + name + ' field', async () => {
+      const { container } = render(<PatientRegistration />);
+      let contactPersonInput: HTMLInputElement;
+
+      await wait(() => {
+        contactPersonInput = container.querySelector('input[name="' + name + '"]') as HTMLInputElement;
+      });
+
+      expect(contactPersonInput).toBeTruthy();
+    });
+  };
+
+  checkNameExists('contactPersonGivenName');
+  checkNameExists('contactPersonMiddleName');
+  checkNameExists('contactPersonFamilyName');
+
+  const updateName = (name: string) => {
+    it('updates ' + name + ' to correct name', async () => {
+      const { container } = render(<PatientRegistration />);
+      const contactPersonInput = container.querySelector('input[name="' + name + '"]') as HTMLInputElement;
+      const expectedValue = 'Paul';
+
+      await wait(() => {
+        fireEvent.change(contactPersonInput, { target: { value: expectedValue } });
+      });
+
+      expect(contactPersonInput.value).toEqual(expectedValue);
+    });
+  };
+
+  updateName('contactPersonGivenName');
+  updateName('contactPersonMiddleName');
+  updateName('contactPersonFamilyName');
 });
