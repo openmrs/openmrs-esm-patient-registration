@@ -3,7 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { Patient } from './patient-registration-helper';
-import { getCurrentUserLocation, getUniquePatientIdentifier, savePatient } from './patient-registration.resource';
+import {
+  getCurrentUserLocation,
+  getUniquePatientIdentifier,
+  savePatient,
+  uuidTelephoneNumber,
+} from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { DemographicsSection } from './section/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info-section.component';
@@ -19,7 +24,7 @@ export interface FormValues {
   yearsEstimated: number;
   monthsEstimated: number;
   birthdateEstimated: boolean;
-  phoneNumber: string;
+  telephoneNumber: string;
   address1: string;
   address2: string;
   cityVillage: string;
@@ -42,7 +47,7 @@ export const PatientRegistration: React.FC = () => {
     yearsEstimated: 0,
     monthsEstimated: 0,
     birthdateEstimated: false,
-    phoneNumber: '',
+    telephoneNumber: '',
     address1: '',
     address2: '',
     cityVillage: '',
@@ -91,7 +96,12 @@ export const PatientRegistration: React.FC = () => {
         gender: values.gender,
         birthdate: values.birthdate,
         birthdateEstimated: values.birthdateEstimated,
-        phoneNumber: values.phoneNumber,
+        attributes: [
+          {
+            attributeType: uuidTelephoneNumber,
+            value: values.telephoneNumber,
+          },
+        ],
         addresses: [
           {
             address1: values.address1,
@@ -127,6 +137,7 @@ export const PatientRegistration: React.FC = () => {
             .nullable(),
           yearsEstimated: Yup.number().min(0, 'Years cannot be less than 0'),
           monthsEstimated: Yup.number().min(0, 'Months cannot be less than 0'),
+          telephoneNumber: Yup.number().min(0, 'Telephone number should only contain digits'),
         })}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);

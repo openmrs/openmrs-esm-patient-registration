@@ -62,6 +62,11 @@
     font-size: large !important;
 }
 
+.phoneNumberInput {
+    width: 300px !important;
+    background-color: white !important;
+}
+
 .errorInput {
     border: 2px solid var(--omrs-color-danger) !important;
 }
