@@ -108,16 +108,6 @@ describe('contact person section', () => {
   checkNameExists('contactPersonMiddleName');
   checkNameExists('contactPersonFamilyName');
 
-  it('check contact person phone field exist', async () => {
-    const { container } = render(<PatientRegistration />);
-    let contactPersonPhoneInput: HTMLInputElement;
-
-    await wait(() => {
-      contactPersonPhoneInput = container.querySelector('input[name="contactPersonPhone"]') as HTMLInputElement;
-    });
-    expect(contactPersonPhoneInput).toBeTruthy();
-  });
-
   const updateName = (name: string) => {
     it('updates ' + name + ' to correct name', async () => {
       const { container } = render(<PatientRegistration />);
@@ -135,4 +125,26 @@ describe('contact person section', () => {
   updateName('contactPersonGivenName');
   updateName('contactPersonMiddleName');
   updateName('contactPersonFamilyName');
+
+  it('check contact person phone field exist', async () => {
+    const { container } = render(<PatientRegistration />);
+    let contactPersonPhoneInput: HTMLInputElement;
+
+    await wait(() => {
+      contactPersonPhoneInput = container.querySelector('input[name="contactPersonPhone"]') as HTMLInputElement;
+    });
+    expect(contactPersonPhoneInput).toBeTruthy();
+  });
+
+  it('updates phone to correct phone', async () => {
+    const { container } = render(<PatientRegistration />);
+    const contactPersonPhoneInput = container.querySelector('input[name="contactPersonPhone"]') as HTMLInputElement;
+    const expectedValue = '9343949';
+
+    await wait(() => {
+      fireEvent.change(contactPersonPhoneInput, { target: { value: expectedValue } });
+    });
+
+    expect(contactPersonPhoneInput.value).toEqual(expectedValue);
+  });
 });

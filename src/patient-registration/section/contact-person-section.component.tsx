@@ -14,7 +14,10 @@ export const ContactPersonSection: React.FC = () => {
           middleName="contactPersonMiddleName"
           familyName="contactPersonFamilyName"
         />
-        <TextInput label="Phone" placeholder="Enter phone" name="contactPersonPhone" />
+      </section>
+      <section className={styles.formGroup}>
+        <h3 className="omrs-type-title-5">Phone</h3>
+        <TextInput label="" placeholder="Enter phone" name="contactPersonPhone" />
       </section>
     </section>
   );
