@@ -12,7 +12,6 @@ export const ContactPersonSection: React.FC = () => {
         middleName="contactPersonMiddleName"
         familyName="contactPersonFamilyName"
       />
-
       <TextInput label="Phone" placeholder="Enter phone" name="contactPersonPhone" />
     </section>
   );
