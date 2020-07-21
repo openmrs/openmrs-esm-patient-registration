@@ -6,13 +6,16 @@ import styles from './section.css';
 export const ContactPersonSection: React.FC = () => {
   return (
     <section aria-label="contactPersonSection" className={styles.formSection}>
-      <h3 className="omrs-type-title-5">Name</h3>
-      <NameInput
-        givenName="contactPersonGivenName"
-        middleName="contactPersonMiddleName"
-        familyName="contactPersonFamilyName"
-      />
-      <TextInput label="Phone" placeholder="Enter phone" name="contactPersonPhone" />
+      <h2 className="omrs-type-title-2">Contact Person Info</h2>
+      <section className={styles.formGroup}>
+        <h3 className="omrs-type-title-5">Name</h3>
+        <NameInput
+          givenName="contactPersonGivenName"
+          middleName="contactPersonMiddleName"
+          familyName="contactPersonFamilyName"
+        />
+        <TextInput label="Phone" placeholder="Enter phone" name="contactPersonPhone" />
+      </section>
     </section>
   );
 };
