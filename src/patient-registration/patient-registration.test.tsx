@@ -108,6 +108,16 @@ describe('contact person section', () => {
   checkNameExists('contactPersonMiddleName');
   checkNameExists('contactPersonFamilyName');
 
+  it('check contact person phone field exist', async () => {
+    const { container } = render(<PatientRegistration />);
+    let contactPersonPhoneInput: HTMLInputElement;
+
+    await wait(() => {
+      contactPersonPhoneInput = container.querySelector('input[name="contactPersonPhone"]') as HTMLInputElement;
+    });
+    expect(contactPersonPhoneInput).toBeTruthy();
+  });
+
   const updateName = (name: string) => {
     it('updates ' + name + ' to correct name', async () => {
       const { container } = render(<PatientRegistration />);
