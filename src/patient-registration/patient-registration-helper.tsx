@@ -14,6 +14,11 @@ interface AddressValue {
   country: string;
 }
 
+interface AttributeValue {
+  attributeType: string;
+  value: string;
+}
+
 export type Patient = {
   identifiers: [
     {
@@ -27,7 +32,7 @@ export type Patient = {
     gender: string;
     birthdate: Date;
     birthdateEstimated: boolean;
-    phoneNumber: string;
+    attributes: Array<AttributeValue>;
     addresses: Array<AddressValue>;
   };
 };
