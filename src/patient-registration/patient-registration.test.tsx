@@ -147,4 +147,16 @@ describe('contact person section', () => {
 
     expect(contactPersonPhoneInput.value).toEqual(expectedValue);
   });
+
+  it('check contact person relationship field exist', async () => {
+    const { container } = render(<PatientRegistration />);
+    let contactPersonRelationshipInput: HTMLInputElement;
+
+    await wait(() => {
+      contactPersonRelationshipInput = container.querySelector(
+        'select[name="contactPersonRelationship"]',
+      ) as HTMLInputElement;
+    });
+    expect(contactPersonRelationshipInput).toBeTruthy();
+  });
 });
