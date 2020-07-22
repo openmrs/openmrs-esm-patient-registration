@@ -4,6 +4,7 @@ import { render, fireEvent, wait, getByLabelText } from '@testing-library/react'
 import dayjs from 'dayjs';
 import { PatientRegistration } from './patient-registration.component';
 import { debug } from 'webpack';
+import { get } from 'https';
 
 describe('patient registration', () => {
   it('renders without crashing', () => {
@@ -58,25 +59,25 @@ describe('demographics section', () => {
 
 describe('contact info section', () => {
   it('contains input for telephone number', async () => {
-    const { container } = render(<PatientRegistration />);
-    const telephoneNumberInput = container.querySelector('input[name="telephoneNumber"]') as HTMLInputElement;
+    const { getByLabelText } = render(<PatientRegistration />);
+    const telephoneNumberInput = getByLabelText('telephoneNumber') as HTMLInputElement;
     await wait();
     expect(telephoneNumberInput.type).toEqual('tel');
   });
 
-  it('inputs data into the telephone number field', async () => {
+  it('inputs data into the telephone number input', async () => {
     const expectedTelephoneNumber = '0800001066';
     const actualTelephoneNumber = (await updateTelephoneNumber(expectedTelephoneNumber)).inputField.value;
     expect(actualTelephoneNumber).toEqual(expectedTelephoneNumber);
   });
 
-  it('does not display error when valid telephone number is inputted', async () => {
+  it('does not display error message when valid telephone number is inputted', async () => {
     const validTelephoneNumber = '0800001066';
     const telephoneNumberError = (await updateTelephoneNumber(validTelephoneNumber)).error;
     expect(telephoneNumberError).toBeNull();
   });
 
-  it('displays error when invalid telephone number is inputted', async () => {
+  it('displays error message when invalid telephone number is inputted', async () => {
     const invalidTelephoneNumber = '+0800001066';
     const telephoneNumberError = (await updateTelephoneNumber(invalidTelephoneNumber)).error;
     expect(telephoneNumberError.textContent).toEqual('Telephone number should only contain digits');
@@ -93,12 +94,9 @@ describe('contact info section', () => {
 
     return {
       inputField: telephoneNumberInput,
-      error: container.querySelector('div[aria-label="telephoneNumberError"]')
+      error: container.querySelector('div[aria-label="telephoneNumberError"]'),
     };
   };
-
-
-
 
   const updateAddress = (name: string) => {
     it('updates to correct ' + name, async () => {
