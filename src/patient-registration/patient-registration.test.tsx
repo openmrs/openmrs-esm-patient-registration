@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, wait, getByLabelText } from '@testing-library/react';
 import dayjs from 'dayjs';
 import { PatientRegistration } from './patient-registration.component';
+import { debug } from 'webpack';
 
 describe('patient registration', () => {
   it('renders without crashing', () => {
@@ -56,10 +57,45 @@ describe('demographics section', () => {
 });
 
 describe('contact info section', () => {
+  it('contains input for telephone number', async () => {
+    const { container } = render(<PatientRegistration />);
+    let telephoneNumberInput: HTMLInputElement;
+    await wait(() => {
+      telephoneNumberInput = container.querySelector('input[name="telephoneNumber"]');
+    });
+    expect(telephoneNumberInput.type).toEqual('tel');
+  });
+
+  it('does not display error when valid telephone number is inputted', async () => {
+    const { container, getByLabelText } = render(<PatientRegistration />);
+    const telephoneNumberInput = getByLabelText("telephoneNumber") as HTMLInputElement;
+    const validTelephoneNumber = '0800001066';
+
+    fireEvent.change(telephoneNumberInput, { target: { value: validTelephoneNumber } });
+    fireEvent.blur(telephoneNumberInput);
+
+    await wait();
+
+    expect(container.querySelector('div[aria-label="telephoneNumberError"]')).toBeNull();
+  });
+
+  it('displays error when invalid telephone number is inputted', async () => {
+    const { container, getByLabelText } = render(<PatientRegistration />);
+    const telephoneNumberInput = getByLabelText("telephoneNumber") as HTMLInputElement;
+    const invalidTelephoneNumber = '+0800001066';
+
+    fireEvent.change(telephoneNumberInput, { target: { value: invalidTelephoneNumber } });
+    fireEvent.blur(telephoneNumberInput);
+
+    await wait();
+
+    expect(container.querySelector('div[aria-label="telephoneNumberError"]').textContent).toEqual('Telephone number should only contain digits');
+  });
+
   it('inputs data into the telephone number field', async () => {
     const { container } = render(<PatientRegistration />);
     const telephoneNumberInput = container.querySelector('input[name="telephoneNumber"]') as HTMLInputElement;
-    const expectedTelephoneNumber = '0800-00-1066';
+    const expectedTelephoneNumber = '0800001066';
 
     await wait(() => {
       fireEvent.change(telephoneNumberInput, { target: { value: expectedTelephoneNumber } });

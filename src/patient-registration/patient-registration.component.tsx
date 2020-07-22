@@ -137,7 +137,7 @@ export const PatientRegistration: React.FC = () => {
             .nullable(),
           yearsEstimated: Yup.number().min(0, 'Years cannot be less than 0'),
           monthsEstimated: Yup.number().min(0, 'Months cannot be less than 0'),
-          telephoneNumber: Yup.number().min(0, 'Telephone number should only contain digits'),
+          telephoneNumber: Yup.string().matches(/^[0-9]*$/, 'Telephone number should only contain digits'),
         })}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);

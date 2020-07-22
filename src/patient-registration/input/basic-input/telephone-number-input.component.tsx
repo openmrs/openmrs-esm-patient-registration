@@ -21,11 +21,12 @@ export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ labe
           styles.phoneNumberInput
         }`}
         type="tel"
+        aria-label={field.name}
         placeholder={placeholder}
         {...field}
       />
       {meta.touched && meta.error ? (
-        <div className={`omrs-type-body-small ${styles.errorMessage}`}>{meta.error}</div>
+        <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>{meta.error}</div>
       ) : null}
     </main>
   );
