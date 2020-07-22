@@ -29,6 +29,7 @@ export interface FormValues {
   contactPersonGivenName: string;
   contactPersonMiddleName: string;
   contactPersonFamilyName: string;
+  contactPersonPhone: string;
 }
 
 export const PatientRegistration: React.FC = () => {
@@ -54,6 +55,7 @@ export const PatientRegistration: React.FC = () => {
     contactPersonGivenName: '',
     contactPersonMiddleName: '',
     contactPersonFamilyName: '',
+    contactPersonPhone: '',
   };
 
   useEffect(() => {
