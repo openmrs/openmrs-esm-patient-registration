@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
+import { validationSchema } from './patient-registration-validation';
 import { Patient } from './patient-registration-helper';
 import {
   getCurrentUserLocation,
@@ -125,20 +125,7 @@ export const PatientRegistration: React.FC = () => {
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={Yup.object({
-          givenName: Yup.string().required('Given name is required'),
-          familyName: Yup.string().required('Family name is required'),
-          gender: Yup.string()
-            .oneOf(['M', 'F', 'O', 'U'], 'Gender is unspecified')
-            .required('Gender is required'),
-          birthdate: Yup.date()
-            .required('Birthdate is required')
-            .max(Date(), 'Birthdate cannot be in the future')
-            .nullable(),
-          yearsEstimated: Yup.number().min(0, 'Years cannot be less than 0'),
-          monthsEstimated: Yup.number().min(0, 'Months cannot be less than 0'),
-          telephoneNumber: Yup.string().matches(/^[0-9]*$/, 'Telephone number should only contain digits'),
-        })}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);
