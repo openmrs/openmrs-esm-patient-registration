@@ -58,45 +58,54 @@ describe('demographics section', () => {
 });
 
 describe('contact info section', () => {
-  it('contains input for telephone number', async () => {
-    const { getByLabelText } = render(<PatientRegistration />);
-    const telephoneNumberInput = getByLabelText('telephoneNumber') as HTMLInputElement;
-    await wait();
-    expect(telephoneNumberInput.type).toEqual('tel');
-  });
+  describe('telephone number input', () => {
+    it('exists', async () => {
+      const { getByLabelText } = render(<PatientRegistration />);
+      const input = getByLabelText('telephoneNumber') as HTMLInputElement;
+      await wait();
+      expect(input.type).toEqual('tel');
+    });
 
-  it('inputs data into the telephone number input', async () => {
-    const expectedTelephoneNumber = '0800001066';
-    const actualTelephoneNumber = (await updateTelephoneNumber(expectedTelephoneNumber)).inputField.value;
-    expect(actualTelephoneNumber).toEqual(expectedTelephoneNumber);
-  });
+    it('can input data', async () => {
+      const expected = '0800001066';
+      const actual = (await updateTelephoneNumber(expected)).inputField.value;
+      expect(actual).toEqual(expected);
+    });
 
-  it('does not display error message when valid telephone number is inputted', async () => {
-    const validTelephoneNumber = '0800001066';
-    const telephoneNumberError = (await updateTelephoneNumber(validTelephoneNumber)).error;
-    expect(telephoneNumberError).toBeNull();
-  });
-
-  it('displays error message when invalid telephone number is inputted', async () => {
-    const invalidTelephoneNumber = '+0800001066';
-    const telephoneNumberError = (await updateTelephoneNumber(invalidTelephoneNumber)).error;
-    expect(telephoneNumberError.textContent).toEqual('Telephone number should only contain digits');
-  });
-
-  const updateTelephoneNumber = async (telephonNumber: string) => {
-    const { container } = render(<PatientRegistration />);
-    const telephoneNumberInput = container.querySelector('input[name="telephoneNumber"]') as HTMLInputElement;
-
-    fireEvent.change(telephoneNumberInput, { target: { value: telephonNumber } });
-    fireEvent.blur(telephoneNumberInput);
-
-    await wait();
-
-    return {
-      inputField: telephoneNumberInput,
-      error: container.querySelector('div[aria-label="telephoneNumberError"]'),
+    const testValidPhoneNumber = (validNumber: string) => {
+      it('does not display error message when ' + validNumber + ' is inputted', async () => {
+        const error = (await updateTelephoneNumber(validNumber)).error;
+        expect(error).toBeNull();
+      });
     };
-  };
+
+    const testInvalidPhoneNumber = (invalidNumber: string) => {
+      it('displays error message when ' + invalidNumber + ' is inputted', async () => {
+        const error = (await updateTelephoneNumber(invalidNumber)).error;
+        expect(error.textContent).toEqual('Telephone number should only contain digits');
+      });
+    };
+
+    testValidPhoneNumber('0800001066');
+    testInvalidPhoneNumber('not a phone number');
+    testInvalidPhoneNumber('+0800001066');
+    testInvalidPhoneNumber('(0800)001066');
+
+    const updateTelephoneNumber = async (number: string) => {
+      const { container, getByLabelText } = render(<PatientRegistration />);
+      const input = getByLabelText('telephoneNumber') as HTMLInputElement;
+
+      fireEvent.change(input, { target: { value: number } });
+      fireEvent.blur(input);
+
+      await wait();
+
+      return {
+        inputField: input,
+        error: container.querySelector('div[aria-label="telephoneNumberError"]'),
+      };
+    };
+  });
 
   const updateAddress = (name: string) => {
     it('updates to correct ' + name, async () => {
