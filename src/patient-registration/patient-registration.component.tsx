@@ -125,7 +125,7 @@ export const PatientRegistration: React.FC = () => {
           givenName: Yup.string().required('Given name is required'),
           familyName: Yup.string().required('Family name is required'),
           gender: Yup.string()
-            .oneOf(['M', 'F', 'O', 'U'], 'Gender is unspecified')
+            .oneOf(['Male', 'Female', 'Other', 'Unspecified'], 'Gender is unspecified')
             .required('Gender is required'),
           birthdate: Yup.date()
             .required('Birthdate is required')

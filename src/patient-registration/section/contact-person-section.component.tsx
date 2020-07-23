@@ -5,6 +5,17 @@ import { NameInput } from '../input/custom-input/name-input.component';
 import styles from './section.css';
 
 export const ContactPersonSection: React.FC = () => {
+  const relationshipOptions = [
+    'Doctor',
+    'Sibling',
+    'Parent',
+    'Aunt/Uncle',
+    'Supervisor',
+    'Patient',
+    'Child',
+    'Niece/Nephew',
+    'Supervisee',
+  ];
   return (
     <section aria-label="contactPersonSection" className={styles.formSection}>
       <h2 className="omrs-type-title-2">Contact Person Info</h2>
@@ -22,7 +33,7 @@ export const ContactPersonSection: React.FC = () => {
       </section>
       <section className={styles.formGroup}>
         <h3 className="omrs-type-title-5">Relationship</h3>
-        <SelectInput name="contactPersonRelationship" options={[]} />
+        <SelectInput name="contactPersonRelationship" options={relationshipOptions} />
       </section>
     </section>
   );

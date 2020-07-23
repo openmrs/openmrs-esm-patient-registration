@@ -34,7 +34,7 @@ describe('demographics section', () => {
   it('updates to correct gender', async () => {
     const { container } = render(<PatientRegistration />);
     const genderSelect = container.querySelector('select[name="gender"]') as HTMLSelectElement;
-    const expectedGender = 'M';
+    const expectedGender = 'Male';
 
     await wait(() => {
       fireEvent.change(genderSelect, { target: { value: expectedGender } });
@@ -158,5 +158,17 @@ describe('contact person section', () => {
       ) as HTMLInputElement;
     });
     expect(contactPersonRelationshipInput).toBeTruthy();
+  });
+
+  it('updates to correct relationship', async () => {
+    const { container } = render(<PatientRegistration />);
+    const relationshipSelect = container.querySelector('select[name="contactPersonRelationship"]') as HTMLSelectElement;
+    const expectedRelationship = 'Sibling';
+
+    await wait(() => {
+      fireEvent.change(relationshipSelect, { target: { value: expectedRelationship } });
+    });
+
+    expect(relationshipSelect.value).toEqual(expectedRelationship);
   });
 });
