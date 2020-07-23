@@ -14,6 +14,12 @@ interface AddressValue {
   country: string;
 }
 
+interface ContactPerson {
+  names: Array<NameValue>;
+  phoneNumber: string;
+  relationship: string;
+}
+
 export type Patient = {
   identifiers: [
     {
@@ -28,5 +34,6 @@ export type Patient = {
     birthdate: Date;
     birthdateEstimated: boolean;
     addresses: Array<AddressValue>;
+    contactPerson: ContactPerson;
   };
 };

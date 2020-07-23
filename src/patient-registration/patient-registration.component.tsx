@@ -30,6 +30,7 @@ export interface FormValues {
   contactPersonMiddleName: string;
   contactPersonFamilyName: string;
   contactPersonPhone: string;
+  contactPersonRelationship: string;
 }
 
 export const PatientRegistration: React.FC = () => {
@@ -56,6 +57,7 @@ export const PatientRegistration: React.FC = () => {
     contactPersonMiddleName: '',
     contactPersonFamilyName: '',
     contactPersonPhone: '',
+    contactPersonRelationship: '',
   };
 
   useEffect(() => {
@@ -108,6 +110,18 @@ export const PatientRegistration: React.FC = () => {
             country: values.country,
           },
         ],
+        contactPerson: {
+          names: [
+            {
+              preferred: true,
+              givenName: values.contactPersonGivenName,
+              middleName: values.contactPersonMiddleName,
+              familyName: values.contactPersonFamilyName,
+            },
+          ],
+          phoneNumber: values.contactPersonPhone,
+          relationship: values.contactPersonRelationship,
+        },
       },
     };
 
@@ -144,7 +158,7 @@ export const PatientRegistration: React.FC = () => {
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
             <ContactPersonSection />
-            <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
+            <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit" name="registerButton">
               Register Patient
             </button>
           </Form>
