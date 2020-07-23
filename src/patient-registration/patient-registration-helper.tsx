@@ -34,6 +34,6 @@ export type Patient = {
     birthdate: Date;
     birthdateEstimated: boolean;
     addresses: Array<AddressValue>;
-    contactPerson: ContactPerson;
+    contactPerson?: ContactPerson;
   };
 };

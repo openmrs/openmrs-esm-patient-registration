@@ -110,20 +110,23 @@ export const PatientRegistration: React.FC = () => {
             country: values.country,
           },
         ],
-        contactPerson: {
-          names: [
-            {
-              preferred: true,
-              givenName: values.contactPersonGivenName,
-              middleName: values.contactPersonMiddleName,
-              familyName: values.contactPersonFamilyName,
-            },
-          ],
-          phoneNumber: values.contactPersonPhone,
-          relationship: values.contactPersonRelationship,
-        },
       },
     };
+
+    if (values.contactPersonGivenName) {
+      patient.person.contactPerson = {
+        names: [
+          {
+            preferred: true,
+            givenName: values.contactPersonGivenName,
+            middleName: values.contactPersonMiddleName,
+            familyName: values.contactPersonFamilyName,
+          },
+        ],
+        phoneNumber: values.contactPersonPhone,
+        relationship: values.contactPersonRelationship,
+      };
+    }
 
     savePatient(abortController, patient).then(
       response => response.status == 201 && history.push(`/patient/${response.data.uuid}/chart`),
