@@ -20,6 +20,11 @@ interface ContactPerson {
   relationship: string;
 }
 
+interface AttributeValue {
+  attributeType: string;
+  value: string;
+}
+
 export type Patient = {
   identifiers: [
     {
@@ -33,6 +38,7 @@ export type Patient = {
     gender: string;
     birthdate: Date;
     birthdateEstimated: boolean;
+    attributes: Array<AttributeValue>;
     addresses: Array<AddressValue>;
     contactPerson?: ContactPerson;
   };
