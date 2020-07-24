@@ -42,3 +42,42 @@ describe('telephone number input', () => {
   testInvalidPhoneNumber('+0800001066');
   testInvalidPhoneNumber('(0800)001066');
 });
+
+describe('contact person telephone number input', () => {
+  const testValidPhoneNumber = (validNumber: string) => {
+    it('does not display error message when ' + validNumber + ' is inputted', async () => {
+      const error = await updateTelephoneNumberAndReturnError(validNumber);
+      expect(error).toBeNull();
+    });
+  };
+
+  const testInvalidPhoneNumber = (invalidNumber: string) => {
+    it('displays error message when ' + invalidNumber + ' is inputted', async () => {
+      const error = await updateTelephoneNumberAndReturnError(invalidNumber);
+      expect(error.textContent).toEqual('Telephone number should only contain digits');
+    });
+  };
+
+  const updateTelephoneNumberAndReturnError = async (number: string) => {
+    const { container, getByLabelText } = render(
+      <Formik initialValues={{ contactPersonPhone: '' }} onSubmit={null} validationSchema={validationSchema}>
+        <Form>
+          <TelephoneNumberInput label="" placeholder="Enter telephone number" name="contactPersonPhone" />
+        </Form>
+      </Formik>,
+    );
+    const input = getByLabelText('contactPersonPhone') as HTMLInputElement;
+
+    fireEvent.change(input, { target: { value: number } });
+    fireEvent.blur(input);
+
+    await wait();
+
+    return container.querySelector('div[aria-label="contactPersonPhoneError"]');
+  };
+
+  testValidPhoneNumber('0800001066');
+  testInvalidPhoneNumber('not a phone number');
+  testInvalidPhoneNumber('+0800001066');
+  testInvalidPhoneNumber('(0800)001066');
+});
