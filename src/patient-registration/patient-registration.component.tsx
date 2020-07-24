@@ -126,7 +126,7 @@ export const PatientRegistration: React.FC = () => {
       },
     };
 
-    if (values.contactPersonGivenName) {
+    if (values.contactPersonGivenName || values.contactPersonMiddleName || values.contactPersonFamilyName) {
       patient.person.contactPerson = {
         names: [
           {
