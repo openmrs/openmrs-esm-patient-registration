@@ -1,33 +1,60 @@
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
 import { Formik, Form } from 'formik';
+import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
 import { NameInput } from './input/custom-input/name-input.component';
 import { SelectInput } from './input/basic-input/select-input.component';
+import { DateInput } from './input/basic-input/date-input.component';
 import { TelephoneNumberInput } from './input/basic-input/telephone-number-input/telephone-number-input.component';
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
-    it('does not display error message when givenNameValue: ' + givenNameValue + ', middleNameValue: ' + middleNameValue + ', familyNameValue: ' + familyNameValue, async () => {
-      const error = await updateNameAndReturnError(givenNameValue, middleNameValue, familyNameValue);
-      Object.values(error).map(currentError => expect(currentError).toBeNull());
-    });
+    it(
+      'does not display error message when givenNameValue: ' +
+        givenNameValue +
+        ', middleNameValue: ' +
+        middleNameValue +
+        ', familyNameValue: ' +
+        familyNameValue,
+      async () => {
+        const error = await updateNameAndReturnError(givenNameValue, middleNameValue, familyNameValue);
+        Object.values(error).map(currentError => expect(currentError).toBeNull());
+      },
+    );
   };
 
-  const testInvalidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string, expectedError: string, errorType: string) => {
-    it('displays error message when givenNameValue: ' + givenNameValue + ', middleNameValue: ' + middleNameValue + ', familyNameValue: ' + familyNameValue, async () => {
-      const error = (await updateNameAndReturnError(givenNameValue, middleNameValue, familyNameValue))[errorType];
-      expect(error.textContent).toEqual(expectedError);
-    });
+  const testInvalidName = (
+    givenNameValue: string,
+    middleNameValue: string,
+    familyNameValue: string,
+    expectedError: string,
+    errorType: string,
+  ) => {
+    it(
+      'displays error message when givenNameValue: ' +
+        givenNameValue +
+        ', middleNameValue: ' +
+        middleNameValue +
+        ', familyNameValue: ' +
+        familyNameValue,
+      async () => {
+        const error = (await updateNameAndReturnError(givenNameValue, middleNameValue, familyNameValue))[errorType];
+        expect(error.textContent).toEqual(expectedError);
+      },
+    );
   };
 
   const updateNameAndReturnError = async (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{
-        givenName: '',
-        middleName: '',
-        familyName: '',
-      }} onSubmit={null} validationSchema={validationSchema}>
+      <Formik
+        initialValues={{
+          givenName: '',
+          middleName: '',
+          familyName: '',
+        }}
+        onSubmit={null}
+        validationSchema={validationSchema}>
         <Form>
           <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
         </Form>
@@ -99,6 +126,55 @@ describe('gender input', () => {
   testValidGender('O');
   testValidGender('U');
   testInvalidGender('', 'Gender is required');
+});
+
+describe('birthdate input', () => {
+  const testValidBirthdate = (validBirthdate: string) => {
+    it('does not display error message when ' + validBirthdate + ' is inputted', async () => {
+      const error = await updateBirthdateAndReturnError(validBirthdate);
+      expect(error).toBeNull();
+    });
+  };
+
+  const testInvalidBirthdate = (invalidBirthdate: string, expectedError: string) => {
+    it('displays error message when ' + invalidBirthdate + ' is inputted', async () => {
+      const error = await updateBirthdateAndReturnError(invalidBirthdate);
+      expect(error.textContent).toEqual(expectedError);
+    });
+  };
+
+  const updateBirthdateAndReturnError = async (birthdate: string) => {
+    const { container, getByLabelText } = render(
+      <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
+        <Form>
+          <DateInput name="birthdate" />
+        </Form>
+      </Formik>,
+    );
+    const input = getByLabelText('birthdate') as HTMLInputElement;
+
+    fireEvent.change(input, { target: { value: birthdate } });
+    fireEvent.blur(input);
+
+    await wait();
+
+    return container.querySelector('div[aria-label="birthdateError"]');
+  };
+
+  testValidBirthdate('1990-09-10');
+  testValidBirthdate(
+    dayjs()
+      .subtract(1, 'day')
+      .format('YYYY-MM-DD'),
+  );
+  testValidBirthdate(dayjs().format('YYYY-MM-DD'));
+  testInvalidBirthdate(
+    dayjs()
+      .add(1, 'day')
+      .format('YYYY-MM-DD'),
+    'Birthdate cannot be in the future',
+  );
+  testInvalidBirthdate(null, 'Birthdate is required');
 });
 
 describe('telephone number input', () => {
