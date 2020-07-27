@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { render, fireEvent, wait, getByLabelText } from '@testing-library/react';
 import dayjs from 'dayjs';
 import { PatientRegistration } from './patient-registration.component';
-import { act } from 'react-dom/test-utils';
 
 describe('patient registration', () => {
   it('renders without crashing', () => {

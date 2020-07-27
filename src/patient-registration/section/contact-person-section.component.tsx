@@ -1,5 +1,4 @@
 import React from 'react';
-import { TextInput } from '../input//basic-input/text-input.component';
 import { SelectInput } from '../input//basic-input/select-input.component';
 import { NameInput } from '../input/custom-input/name-input.component';
 import styles from './section.css';

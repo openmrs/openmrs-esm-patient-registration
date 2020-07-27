@@ -104,7 +104,7 @@ export const PatientRegistration: React.FC = () => {
             familyName: values.familyName,
           },
         ],
-        gender: values.gender,
+        gender: values.gender.charAt(0),
         birthdate: values.birthdate,
         birthdateEstimated: values.birthdateEstimated,
         attributes: [
@@ -162,7 +162,7 @@ export const PatientRegistration: React.FC = () => {
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
             <ContactPersonSection />
-            <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit" name="registerButton">
+            <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient
             </button>
           </Form>
