@@ -44,6 +44,7 @@ const initialFormValues: FormValues = {
   yearsEstimated: 0,
   monthsEstimated: 0,
   birthdateEstimated: false,
+  telephoneNumber: '',
   address1: '',
   address2: '',
   cityVillage: '',
