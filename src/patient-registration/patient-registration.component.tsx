@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
+import { validationSchema } from './patient-registration-validation';
 import { Patient } from './patient-registration-helper';
-import { getCurrentUserLocation, getUniquePatientIdentifier, savePatient } from './patient-registration.resource';
+import {
+  getCurrentUserLocation,
+  getUniquePatientIdentifier,
+  savePatient,
+  uuidTelephoneNumber,
+} from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { DemographicsSection } from './section/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info-section.component';
@@ -20,6 +25,7 @@ export interface FormValues {
   yearsEstimated: number;
   monthsEstimated: number;
   birthdateEstimated: boolean;
+  telephoneNumber: string;
   address1: string;
   address2: string;
   cityVillage: string;
@@ -38,6 +44,7 @@ const initialFormValues: FormValues = {
   yearsEstimated: 0,
   monthsEstimated: 0,
   birthdateEstimated: false,
+  telephoneNumber: '',
   address1: '',
   address2: '',
   cityVillage: '',
@@ -50,6 +57,24 @@ export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [identifier, setIdentifier] = useState('');
   const [location, setLocation] = useState('');
+  const initialFormValues: FormValues = {
+    givenName: '',
+    middleName: '',
+    familyName: '',
+    unidentifiedPatient: false,
+    gender: '',
+    birthdate: null,
+    yearsEstimated: 0,
+    monthsEstimated: 0,
+    birthdateEstimated: false,
+    telephoneNumber: '',
+    address1: '',
+    address2: '',
+    cityVillage: '',
+    stateProvince: '',
+    country: '',
+    postalCode: '',
+  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -91,6 +116,12 @@ export const PatientRegistration: React.FC = () => {
         gender: values.gender,
         birthdate: values.birthdate,
         birthdateEstimated: values.birthdateEstimated,
+        attributes: [
+          {
+            attributeType: uuidTelephoneNumber,
+            value: values.telephoneNumber,
+          },
+        ],
         addresses: [
           {
             address1: values.address1,
@@ -114,19 +145,7 @@ export const PatientRegistration: React.FC = () => {
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={Yup.object({
-          givenName: Yup.string().required('Given name is required'),
-          familyName: Yup.string().required('Family name is required'),
-          gender: Yup.string()
-            .oneOf(['M', 'F', 'O', 'U'], 'Gender is unspecified')
-            .required('Gender is required'),
-          birthdate: Yup.date()
-            .required('Birthdate is required')
-            .max(Date(), 'Birthdate cannot be in the future')
-            .nullable(),
-          yearsEstimated: Yup.number().min(0, 'Years cannot be less than 0'),
-          monthsEstimated: Yup.number().min(0, 'Months cannot be less than 0'),
-        })}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);

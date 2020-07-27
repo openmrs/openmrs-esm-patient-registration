@@ -26,12 +26,10 @@ export const AddressInput: React.FC<AddressInputProps> = ({
         <TextInput label="Address 2" placeholder="Enter second line of address" name={address2Name} />
       </section>
       <section className={styles.fieldRow}>
-        {' '}
         <TextInput label="City/Village" placeholder="Enter city/address" name={cityVillageName} />
         <TextInput label="State/Province" placeholder="Enter state/province" name={stateProvinceName} />
       </section>
       <section className={styles.fieldRow}>
-        {' '}
         <TextInput label="Country" placeholder="Enter country" name={countryName} />
         <TextInput label="Postal Code" placeholder="Enter postal code" name={postalCodeName} />
       </section>
