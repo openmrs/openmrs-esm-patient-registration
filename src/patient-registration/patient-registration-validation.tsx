@@ -14,4 +14,16 @@ export const validationSchema = Yup.object({
   monthsEstimated: Yup.number().min(0, 'Months cannot be less than 0'),
   telephoneNumber: Yup.string().matches(/^[0-9]*$/, 'Telephone number should only contain digits'),
   contactPersonPhone: Yup.string().matches(/^[0-9]*$/, 'Telephone number should only contain digits'),
+  contactPersonGivenName: Yup.string().when(['contactPersonPhone', 'contactPersonRelationship'], {
+    is: (contactPersonPhone, contactPersonRelationship) =>
+      (contactPersonPhone && contactPersonPhone.length > 0) ||
+      (contactPersonRelationship && contactPersonRelationship.length > 0),
+    then: Yup.string().required('Given name is required'),
+  }),
+  contactPersonFamilyName: Yup.string().when(['contactPersonPhone', 'contactPersonRelationship'], {
+    is: (contactPersonPhone, contactPersonRelationship) =>
+      (contactPersonPhone && contactPersonPhone.length > 0) ||
+      (contactPersonRelationship && contactPersonRelationship.length > 0),
+    then: Yup.string().required('Family name is required'),
+  }),
 });
