@@ -14,11 +14,14 @@ export const DateInput: React.FC<DateInputProps> = ({ name }) => {
       <input
         className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${styles.dateInput}`}
         type="date"
+        aria-label={field.name}
         {...field}
         value={field.value !== null ? field.value : ''}
       />
       {meta.touched && meta.error ? (
-        <div className={`omrs-type-body-small ${styles.errorMessage}`}>{meta.error}</div>
+        <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
+          {meta.error}
+        </div>
       ) : null}
     </main>
   );
