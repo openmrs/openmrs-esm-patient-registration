@@ -7,6 +7,7 @@ import { NameInput } from './input/custom-input/name-input.component';
 import { SelectInput } from './input/basic-input/select-input.component';
 import { DateInput } from './input/basic-input/date-input.component';
 import { TelephoneNumberInput } from './input/basic-input/telephone-number-input/telephone-number-input.component';
+import { EstimatedAgeInput } from './input/custom-input/estimated-age-input.component';
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
@@ -175,6 +176,67 @@ describe('birthdate input', () => {
     'Birthdate cannot be in the future',
   );
   testInvalidBirthdate(null, 'Birthdate is required');
+});
+
+describe('estimated age input', () => {
+  const testValidEstimatedAge = (validEstimatedAge: {years: number, months: number}) => {
+    it('does not display error message when ' + validEstimatedAge + ' is inputted', async () => {
+      const error = await updateEstimatedAgeAndReturnError(validEstimatedAge);
+      expect(error.yearsEstimatedError).toBeNull();
+      expect(error.monthsEstimatedError).toBeNull();
+    });
+  };
+
+  const testInvalidEstimatedYears = (invalidEstimatedAge: {years: number, months: number}, expectedError: string) => {
+    it('displays error message when ' + invalidEstimatedAge + ' is inputted', async () => {
+      const error = await updateEstimatedAgeAndReturnError(invalidEstimatedAge);
+      expect(error.yearsEstimatedError.textContent).toEqual(expectedError);
+    });
+  };
+
+  const testInvalidEstimatedMonths = (invalidEstimatedAge: {years: number, months: number}, expectedError: string) => {
+    it('displays error message when ' + invalidEstimatedAge + ' is inputted', async () => {
+      const error = await updateEstimatedAgeAndReturnError(invalidEstimatedAge);
+      expect(error.monthsEstimatedError.textContent).toEqual(expectedError);
+    });
+  };
+
+  const updateEstimatedAgeAndReturnError = async (estimatedAge: {years: number, months: number}) => {
+    const { container, getByLabelText } = render(
+      <Formik initialValues={{ yearsEstimated: 0, monthsEstimated: 0 }} onSubmit={null} validationSchema={validationSchema}>
+        <Form>
+          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={() => {}} />
+        </Form>
+      </Formik>,
+    );
+    const yearsEstimatedInput = getByLabelText('Years') as HTMLInputElement;
+    const monthsEstimatedInput = getByLabelText('Months') as HTMLInputElement;
+
+    fireEvent.change(yearsEstimatedInput, { target: { value: estimatedAge.years } });
+    fireEvent.blur(yearsEstimatedInput);
+    fireEvent.change(monthsEstimatedInput, { target: { value: estimatedAge.months } });
+    fireEvent.blur(monthsEstimatedInput);
+
+    await wait();
+
+    return {
+      yearsEstimatedError: container.querySelector('div[aria-label="yearsEstimatedError"]'),
+      monthsEstimatedError: container.querySelector('div[aria-label="monthsEstimatedError"]'),
+    };
+  };
+
+  testValidEstimatedAge({
+    years: 30,
+    months: 1
+  });
+  testInvalidEstimatedYears({
+    years: -10,
+    months: 2
+  }, 'Years cannot be less than 0');
+  testInvalidEstimatedMonths({
+    years: 20,
+    months: -10
+  }, 'Months cannot be less than 0');
 });
 
 describe('telephone number input', () => {
