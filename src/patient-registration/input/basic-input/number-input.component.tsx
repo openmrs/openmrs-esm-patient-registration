@@ -14,14 +14,18 @@ export const NumberInput: React.FC<NumberInputProps> = ({ label, name }) => {
     <main className={styles.field}>
       <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
         {label}
+        <input
+          className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${
+            styles.numberInput
+          }`}
+          type="number"
+          {...field}
+        />
       </label>
-      <input
-        className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${styles.numberInput}`}
-        type="number"
-        {...field}
-      />
       {meta.touched && meta.error ? (
-        <div className={`omrs-type-body-small ${styles.errorMessage}`}>{meta.error}</div>
+        <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
+          {meta.error}
+        </div>
       ) : null}
     </main>
   );
