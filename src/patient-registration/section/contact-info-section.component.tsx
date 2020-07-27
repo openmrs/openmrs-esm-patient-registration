@@ -1,4 +1,5 @@
 import React from 'react';
+import { TelephoneNumberInput } from '../input/basic-input/telephone-number-input/telephone-number-input.component';
 import { AddressInput } from './../input/custom-input/address-input.component';
 import styles from './section.css';
 
@@ -6,6 +7,10 @@ export const ContactInfoSection: React.FC = () => {
   return (
     <section className={styles.formSection}>
       <h2 className="omrs-type-title-2">Contact Info</h2>
+      <section className={styles.formGroup}>
+        <h3 className="omrs-type-title-5">Telephone Number</h3>
+        <TelephoneNumberInput label="" placeholder="Enter telephone number" name="telephoneNumber" />
+      </section>
       <section className={styles.formGroup}>
         <h3 className="omrs-type-title-5">Address</h3>
         <AddressInput

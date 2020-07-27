@@ -16,6 +16,7 @@ const dummyFormValues: FormValues = {
   yearsEstimated: 1,
   monthsEstimated: 2,
   birthdateEstimated: true,
+  telephoneNumber: '0800001066',
   address1: 'Bom Jesus Street',
   address2: '',
   cityVillage: 'Recife',
