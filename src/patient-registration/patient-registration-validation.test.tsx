@@ -60,20 +60,20 @@ describe('contact person telephone number input', () => {
 
   const updateTelephoneNumberAndReturnError = async (number: string) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{ contactPersonPhone: '' }} onSubmit={null} validationSchema={validationSchema}>
+      <Formik initialValues={{ contactPersonTelephoneNumber: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <TelephoneNumberInput label="" placeholder="Enter telephone number" name="contactPersonPhone" />
+          <TelephoneNumberInput label="" placeholder="Enter telephone number" name="contactPersonTelephoneNumber" />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('contactPersonPhone') as HTMLInputElement;
+    const input = getByLabelText('contactPersonTelephoneNumber') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: number } });
     fireEvent.blur(input);
 
     await wait();
 
-    return container.querySelector('div[aria-label="contactPersonPhoneError"]');
+    return container.querySelector('div[aria-label="contactPersonTelephoneNumberError"]');
   };
 
   testValidPhoneNumber('0800001066');

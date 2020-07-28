@@ -23,3 +23,4 @@ export function getUniquePatientIdentifier(abortController: AbortController) {
 }
 
 export const uuidTelephoneNumber = '14d4f066-15f5-102d-96e4-000c29c2a5d7';
+export const uuidContactPersonGivenName = '63b69b3d-38b2-4a34-a8ed-e2faccbe0c2e';

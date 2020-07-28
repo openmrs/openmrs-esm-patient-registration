@@ -8,6 +8,7 @@ import {
   getUniquePatientIdentifier,
   savePatient,
   uuidTelephoneNumber,
+  uuidContactPersonGivenName,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { DemographicsSection } from './section/demographics-section.component';
@@ -35,7 +36,7 @@ export interface FormValues {
   contactPersonGivenName: string;
   contactPersonMiddleName: string;
   contactPersonFamilyName: string;
-  contactPersonPhone: string;
+  contactPersonTelephoneNumber: string;
   contactPersonRelationship: string;
 }
 
@@ -63,7 +64,7 @@ export const PatientRegistration: React.FC = () => {
     contactPersonGivenName: '',
     contactPersonMiddleName: '',
     contactPersonFamilyName: '',
-    contactPersonPhone: '',
+    contactPersonTelephoneNumber: '',
     contactPersonRelationship: '',
   };
 
@@ -126,19 +127,12 @@ export const PatientRegistration: React.FC = () => {
       },
     };
 
-    if (values.contactPersonGivenName || values.contactPersonMiddleName || values.contactPersonFamilyName) {
-      patient.person.contactPerson = {
-        names: [
-          {
-            preferred: true,
-            givenName: values.contactPersonGivenName,
-            middleName: values.contactPersonMiddleName,
-            familyName: values.contactPersonFamilyName,
-          },
-        ],
-        phoneNumber: values.contactPersonPhone,
-        relationship: values.contactPersonRelationship,
+    if (values.contactPersonGivenName) {
+      const contactPersonAttributes = {
+        attributeType: uuidContactPersonGivenName,
+        value: values.contactPersonGivenName,
       };
+      patient.person.attributes.push(contactPersonAttributes);
     }
 
     savePatient(abortController, patient).then(

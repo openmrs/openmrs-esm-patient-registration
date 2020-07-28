@@ -40,6 +40,5 @@ export type Patient = {
     birthdateEstimated: boolean;
     attributes: Array<AttributeValue>;
     addresses: Array<AddressValue>;
-    contactPerson?: ContactPerson;
   };
 };
