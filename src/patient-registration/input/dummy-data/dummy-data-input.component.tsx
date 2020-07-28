@@ -23,6 +23,13 @@ const dummyFormValues: FormValues = {
   stateProvince: 'Pernambuco',
   country: 'Brazil',
   postalCode: '50030-310',
+  relationships: [
+    {
+      uuid: 'fde64618-4d3a-49e6-b252-e6fbcfa5cc14',
+      name: 'Kimberly Hill',
+      type: '8d919b58-c2cc-11de-8d13-0010c6dffd0f-A',
+    },
+  ],
 };
 
 export const DummyDataInput: React.FC<DummyDataInputProps> = ({ setValues }) => {

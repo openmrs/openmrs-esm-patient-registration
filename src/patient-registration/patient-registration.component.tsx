@@ -9,12 +9,14 @@ import {
   savePatient,
   uuidIdentifier,
   uuidTelephoneNumber,
+  saveRelationships,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { DemographicsSection } from './section/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import styles from './patient-registration.css';
+import { RelationshipSection } from './section/relationship-section.component';
 
 export interface FormValues {
   givenName: string;
@@ -33,6 +35,7 @@ export interface FormValues {
   stateProvince: string;
   country: string;
   postalCode: string;
+  relationships: any[];
 }
 
 export const PatientRegistration: React.FC = () => {
@@ -56,7 +59,9 @@ export const PatientRegistration: React.FC = () => {
     stateProvince: '',
     country: '',
     postalCode: '',
+    relationships: [{ uuid: '', name: '', type: '' }],
   };
+  const [tempRelationship, setTempRelationship] = useState({ personA: '', relationshipType: '', personB: '' });
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -76,8 +81,16 @@ export const PatientRegistration: React.FC = () => {
     return () => abortController.abort();
   }, []);
 
+  useEffect(() => {
+    if (tempRelationship.personA !== '') {
+      const abortController = new AbortController();
+      saveRelationships(abortController, tempRelationship).then(response => {}, createErrorHandler());
+    }
+  }, [tempRelationship]);
+
   const onFormSubmit = (values: FormValues) => {
     const abortController = new AbortController();
+    const relationships = values.relationships;
     const patient: Patient = {
       identifiers: [
         {
@@ -117,10 +130,33 @@ export const PatientRegistration: React.FC = () => {
       },
     };
 
-    savePatient(abortController, patient).then(
-      response => response.status == 201 && history.push(`/patient/${response.data.uuid}/chart`),
-      createErrorHandler(),
-    );
+    savePatient(abortController, patient).then(response => {
+      if (response.status == 201) {
+        relationships.map(relationship => {
+          if (relationship.uuid !== '' && relationship.type !== '') {
+            const relationshipDirection = relationship.type.slice(-1);
+            const relationshipTypeUuid = relationship.type.slice(0, -2);
+            const { data } = response;
+            if (relationshipDirection === 'A') {
+              setTempRelationship({
+                ...tempRelationship,
+                personA: relationship.uuid,
+                relationshipType: relationshipTypeUuid,
+                personB: data.uuid,
+              });
+            } else {
+              setTempRelationship({
+                ...tempRelationship,
+                personA: data.uuid,
+                relationshipType: relationshipTypeUuid,
+                personB: relationship.uuid,
+              });
+            }
+          }
+        });
+        history.push(`/patient/${response.data.uuid}/chart`);
+      }
+    }, createErrorHandler());
   };
 
   return (
@@ -142,6 +178,7 @@ export const PatientRegistration: React.FC = () => {
             </div>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
+            <RelationshipSection setFieldValue={props.setFieldValue} />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient
             </button>

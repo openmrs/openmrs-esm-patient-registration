@@ -83,6 +83,7 @@
     "@openmrs/esm-module-config": "^1.2.0",
     "formik": "^2.1.4",
     "react": "^16.9.0",
+    "react-autosuggest": "^10.0.2",
     "react-dom": "^16.9.0",
     "yup": "^0.29.1"
   }
