@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
-import { Patient, PatientIdentifierType, AttributeValue } from './patient-registration-helper';
+import { Patient, PatientIdentifierType, AttributeValue, Relationships } from './patient-registration-helper';
 import {
   getCurrentUserLocation,
   savePatient,
@@ -13,6 +13,9 @@ import {
   getAutoGenerationOptions,
   generateIdentifier,
   deletePersonName,
+  uuidIdentifier,
+  uuidTelephoneNumber,
+  saveRelationships,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
@@ -21,6 +24,7 @@ import { ContactInfoSection } from './section/contact-info/contact-info-section.
 import { DeathInfoSection } from './section/death-info/death-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import { PersonAttributesSection } from './section/person-attributes/person-attributes-section.component';
+import { RelationshipSection } from './section/relationship-section.component';
 
 import styles from './patient-registration.scss';
 import { IdentifierSection } from './section/identifier/identifiers-section.component';
@@ -60,6 +64,7 @@ export interface FormValues {
   isDead: boolean;
   deathDate: string;
   deathCause: string;
+  relationships: any[];
 }
 
 export const initialFormValues: FormValues = {
@@ -86,6 +91,7 @@ export const initialFormValues: FormValues = {
   isDead: false,
   deathDate: '',
   deathCause: '',
+  relationships: [{ uuid: '', name: '', type: '' }],
 };
 
 export const getDeathInfo = (values: FormValues) => {
@@ -116,6 +122,7 @@ export const PatientRegistration: React.FC = () => {
   const [addressTemplate, setAddressTemplate] = useState('');
   const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
   const { t } = useTranslation();
+  const [tempRelationship, setTempRelationship] = useState({ personA: '', relationshipType: '', personB: '' });
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -340,8 +347,16 @@ export const PatientRegistration: React.FC = () => {
     return null;
   };
 
+  useEffect(() => {
+    if (tempRelationship.personA !== '') {
+      const abortController = new AbortController();
+      saveRelationships(abortController, tempRelationship).then(response => {}, createErrorHandler());
+    }
+  }, [tempRelationship]);
+
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
+    const relationships = values.relationships;
     let identifiers = [];
     for (const type of identifierTypes) {
       const idValue = values[type.fieldName];
@@ -415,6 +430,28 @@ export const PatientRegistration: React.FC = () => {
     savePatient(abortController, patient, patientUuidMap['patientUuid'])
       .then(response => {
         if (response.ok) {
+          relationships.map(relationship => {
+            if (relationship.uuid !== '' && relationship.type !== '') {
+              const relationshipDirection = relationship.type.slice(-1);
+              const relationshipTypeUuid = relationship.type.slice(0, -2);
+              const { data } = response;
+              if (relationshipDirection === 'A') {
+                setTempRelationship({
+                  ...tempRelationship,
+                  personA: relationship.uuid,
+                  relationshipType: relationshipTypeUuid,
+                  personB: data.uuid,
+                });
+              } else {
+                setTempRelationship({
+                  ...tempRelationship,
+                  personA: data.uuid,
+                  relationshipType: relationshipTypeUuid,
+                  personB: relationship.uuid,
+                });
+              }
+            }
+          });
           navigate({ to: getAfterUrl(response.data.uuid) });
         }
       })
