@@ -15,7 +15,7 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({ label, name }) => 
       <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
         {label}
       </label>
-      <input className={`omrs-checkbox ${styles.checkboxInput}`} type="checkbox" checked={field.value} {...field} />
+      <input className={`omrs-checkbox ${styles.checkboxInput}`} type="checkbox" aria-label={field.name} checked={field.value} {...field} />
     </main>
   );
 };
