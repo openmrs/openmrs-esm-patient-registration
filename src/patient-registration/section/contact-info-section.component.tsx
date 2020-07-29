@@ -1,5 +1,5 @@
 import React from 'react';
-import { TelephoneNumberInput } from '../input/basic-input/telephone-number-input/telephone-number-input.component';
+import { TelephoneNumberInput } from '../input/basic-input/telephone-number/telephone-number-input.component';
 import { AddressInput } from './../input/custom-input/address-input.component';
 import styles from './section.css';
 

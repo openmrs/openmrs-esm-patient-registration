@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useField } from 'formik';
 import dayjs from 'dayjs';
-import { NumberInput } from '../basic-input/number-input.component';
+import { NumberInput } from '../basic-input/number/number-input.component';
 import styles from './../input.css';
 
 interface EstimatedAgeInputProps {

@@ -2,10 +2,10 @@ import React from 'react';
 import { FormValues } from './../patient-registration.component';
 import { NameInput } from '../input/custom-input/name-input.component';
 import { UnidentifiedPatientInput } from '../input/custom-input/unidentified-patient-input.component';
-import { SelectInput } from '../input/basic-input/select-input.component';
-import { DateInput } from '../input/basic-input/date-input.component';
+import { SelectInput } from '../input/basic-input/select/select-input.component';
+import { DateInput } from '../input/basic-input/date/date-input.component';
 import { EstimatedAgeInput } from '../input/custom-input/estimated-age-input.component';
-import { CheckboxInput } from '../input/basic-input/checkbox-input.component';
+import { CheckboxInput } from '../input/basic-input/checkbox/checkbox-input.component';
 import styles from './section.css';
 
 interface DemographicsSectionProps {
