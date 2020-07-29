@@ -79,6 +79,10 @@ describe('contact info section', () => {
 });
 
 describe('contact person section', () => {
+  beforeAll(() => {
+    localStorage.setItem('patient-registration:contact-person', 'true');
+  });
+
   it('renders contact person section', async () => {
     let contactPersonSection: HTMLElement[];
 
