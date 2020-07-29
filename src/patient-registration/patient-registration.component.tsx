@@ -9,6 +9,10 @@ import {
   savePatient,
   uuidTelephoneNumber,
   uuidContactPersonGivenName,
+  uuidContactPersonMiddleName,
+  uuidContactPersonFamilyName,
+  uuidContactPersonTelephoneNumber,
+  uuidContactPersonRelationship,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { DemographicsSection } from './section/demographics-section.component';
@@ -128,11 +132,29 @@ export const PatientRegistration: React.FC = () => {
     };
 
     if (values.contactPersonGivenName) {
-      const contactPersonAttributes = {
-        attributeType: uuidContactPersonGivenName,
-        value: values.contactPersonGivenName,
-      };
-      patient.person.attributes.push(contactPersonAttributes);
+      const contactPersonAttributes = [
+        {
+          attributeType: uuidContactPersonGivenName,
+          value: values.contactPersonGivenName,
+        },
+        {
+          attributeType: uuidContactPersonMiddleName,
+          value: values.contactPersonMiddleName,
+        },
+        {
+          attributeType: uuidContactPersonFamilyName,
+          value: values.contactPersonFamilyName,
+        },
+        {
+          attributeType: uuidContactPersonTelephoneNumber,
+          value: values.contactPersonTelephoneNumber,
+        },
+        {
+          attributeType: uuidContactPersonRelationship,
+          value: values.contactPersonRelationship,
+        },
+      ];
+      patient.person.attributes = patient.person.attributes.concat(contactPersonAttributes);
     }
 
     savePatient(abortController, patient).then(
@@ -155,7 +177,7 @@ export const PatientRegistration: React.FC = () => {
             <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
-            <ContactPersonSection />
+            {localStorage.getItem('patient-registration:contact-person') === 'true' && <ContactPersonSection />}
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient
             </button>
