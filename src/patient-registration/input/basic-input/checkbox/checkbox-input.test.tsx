@@ -8,7 +8,7 @@ describe('checkbox input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ checkbox: false }} onSubmit={null}>
         <Form>
-          <CheckboxInput label="" name="checkbox" />
+          <CheckboxInput label="checkbox" name="checkbox" />
         </Form>
       </Formik>,
     );
