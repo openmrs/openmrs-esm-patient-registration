@@ -1,6 +1,6 @@
 import React from 'react';
-import { TelephoneNumberInput } from '../input/basic-input/telephone-number/telephone-number-input.component';
-import { AddressInput } from '../input/custom-input/address/address-input.component';
+import { TelephoneNumberInput } from '../../input/basic-input/telephone-number/telephone-number-input.component';
+import { AddressInput } from '../../input/custom-input/address/address-input.component';
 import styles from './section.css';
 
 export const ContactInfoSection: React.FC = () => {
