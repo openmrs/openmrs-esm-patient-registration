@@ -23,18 +23,18 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options }) => {
   return (
     <main className={styles.field}>
       <select
-        className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error ? styles.errorInput : null} ${
+        className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
           styles.selectInput
         }`}
         aria-label={field.name}
         {...field}>
         {selectOptions}
       </select>
-      {meta.touched && meta.error ? (
+      {meta.touched && meta.error && (
         <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
           {meta.error}
         </div>
-      ) : null}
+      )}
     </main>
   );
 };
