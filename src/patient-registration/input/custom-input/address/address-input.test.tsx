@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { AddressInput } from './address-input.component';
 
-describe('telephone number input', () => {
+describe('address input', () => {
   const setupInput = async () => {
     const { getByLabelText } = render(
-      <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null}>
+      <Formik initialValues={{ }} onSubmit={null}>
         <Form>
           <AddressInput
             address1Name="address1Name"
