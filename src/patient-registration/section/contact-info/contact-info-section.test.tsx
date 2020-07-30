@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import { ContactInfoSection } from './contact-info-section.component';
 
 describe('contact info section', () => {
-  const setupInput = async () => {
+  const setupSection = async () => {
     const { container } = render(
       <Formik initialValues={{ }} onSubmit={null}>
         <Form>
@@ -19,17 +19,17 @@ describe('contact info section', () => {
   };
 
   it('has 7 inputs in total', async () => {
-    const inputNames = await setupInput();
+    const inputNames = await setupSection();
     expect(inputNames.length).toBe(7);
   });
 
   it('has telephone number input', async () => {
-    const inputNames = await setupInput();
+    const inputNames = await setupSection();
     expect(inputNames).toContain('telephoneNumber');
   });
 
   it('has address input', async () => {
-    const inputNames = await setupInput();
+    const inputNames = await setupSection();
     expect(inputNames).toContain('address1');
     expect(inputNames).toContain('address2');
     expect(inputNames).toContain('cityVillage');

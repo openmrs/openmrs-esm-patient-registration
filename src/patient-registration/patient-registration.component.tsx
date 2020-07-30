@@ -10,7 +10,7 @@ import {
   uuidTelephoneNumber,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
-import { DemographicsSection } from './section/demographics-section.component';
+import { DemographicsSection } from './section/demographics/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
 import styles from './patient-registration.css';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
