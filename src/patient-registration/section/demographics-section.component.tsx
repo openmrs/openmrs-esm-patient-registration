@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormValues } from './../patient-registration.component';
-import { NameInput } from '../input/custom-input/name-input.component';
+import { NameInput } from '../input/custom-input/name/name-input.component';
 import { UnidentifiedPatientInput } from '../input/custom-input/unidentified-patient-input.component';
 import { SelectInput } from '../input/basic-input/select/select-input.component';
 import { DateInput } from '../input/basic-input/date/date-input.component';
