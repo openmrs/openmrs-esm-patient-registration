@@ -7,13 +7,14 @@ import {
   getCurrentUserLocation,
   getUniquePatientIdentifier,
   savePatient,
+  uuidIdentifier,
   uuidTelephoneNumber,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { DemographicsSection } from './section/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info-section.component';
-import styles from './patient-registration.css';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
+import styles from './patient-registration.css';
 
 export interface FormValues {
   givenName: string;
@@ -100,7 +101,7 @@ export const PatientRegistration: React.FC = () => {
       identifiers: [
         {
           identifier: identifier,
-          identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334',
+          identifierType: uuidIdentifier,
           location: location,
         },
       ],
