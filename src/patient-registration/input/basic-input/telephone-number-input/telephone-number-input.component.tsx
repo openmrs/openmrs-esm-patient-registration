@@ -17,19 +17,17 @@ export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ labe
         {label}
       </label>
       <input
-        className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${
-          styles.phoneNumberInput
-        }`}
+        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.phoneNumberInput}`}
         type="tel"
         aria-label={field.name}
         placeholder={placeholder}
         {...field}
       />
-      {meta.touched && meta.error ? (
+      {meta.touched && meta.error && (
         <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
           {meta.error}
         </div>
-      ) : null}
+      )}
     </main>
   );
 };
