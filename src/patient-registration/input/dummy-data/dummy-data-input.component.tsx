@@ -23,6 +23,7 @@ export const dummyFormValues: FormValues = {
   stateProvince: 'Pernambuco',
   country: 'Brazil',
   postalCode: '50030-310',
+  attributes: [{ attributeType: 'uuidTelephoneNumber', value: '0785674744' }],
 };
 
 export const DummyDataInput: React.FC<DummyDataInputProps> = ({ setValues }) => {

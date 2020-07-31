@@ -1,0 +1,80 @@
+.fieldRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+.checkboxField {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 400px;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+.subField {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.subTitle {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.textInput {
+    width: 250px !important;
+    background-color: white !important;
+}
+
+.numberInput {
+    width: 150px !important;
+    height: 50px !important;
+    background-color: white !important;
+}
+
+.checkboxInput {
+    height: 1rem !important;
+    width: 1rem !important;
+}
+
+.selectInput {
+    width: 150px !important;
+    background-color: white !important;
+}
+
+.dateInput {
+    width: 200px !important;
+    background-color: white !important;
+    font-size: large !important;
+}
+
+.personAttributeInput {
+    width: 300px !important;
+    background-color: white !important;
+}
+
+.errorInput {
+    border: 2px solid var(--omrs-color-danger) !important;
+}
+
+.errorMessage {
+    color: var(--omrs-color-danger);
+}
+
+.dummyData {
+    cursor: pointer;
+}

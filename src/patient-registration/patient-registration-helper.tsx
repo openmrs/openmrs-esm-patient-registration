@@ -14,7 +14,7 @@ interface AddressValue {
   country: string;
 }
 
-interface AttributeValue {
+export interface AttributeValue {
   attributeType: string;
   value: string;
 }

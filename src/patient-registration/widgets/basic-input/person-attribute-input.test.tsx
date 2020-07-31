@@ -1,28 +1,32 @@
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
 import { Formik, Form } from 'formik';
-import { TelephoneNumberInput } from './telephone-number-input.component';
+import { PersonAttributeInput } from './person-attribute-input.component';
 
-describe('telephone number input', () => {
+describe('person attribute input', () => {
   const setupInput = async () => {
     const { getByLabelText } = render(
-      <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null}>
+      <Formik
+        initialValues={{
+          attributes: [],
+        }}
+        onSubmit={null}>
         <Form>
-          <TelephoneNumberInput
-            label="Telephone Number"
+          <PersonAttributeInput
+            id="id"
+            label="telephoneNumber"
             placeholder="Enter telephone number"
             name="telephoneNumber"
-            showLabel={true}
           />
         </Form>
       </Formik>,
     );
-    return getByLabelText('Telephone Number') as HTMLInputElement;
+    return getByLabelText('telephoneNumber') as HTMLInputElement;
   };
 
   it('exists', async () => {
     const input = await setupInput();
-    expect(input.type).toEqual('tel');
+    expect(input.type).toEqual('text');
   });
 
   it('can input data', async () => {
