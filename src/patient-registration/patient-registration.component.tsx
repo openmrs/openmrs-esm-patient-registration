@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { validationSchema } from './patient-registration-validation';
-import { Patient } from './patient-registration-helper';
+import { Patient, Relationships } from './patient-registration-helper';
 import {
   getCurrentUserLocation,
   getUniquePatientIdentifier,
@@ -35,7 +35,7 @@ export interface FormValues {
   stateProvince: string;
   country: string;
   postalCode: string;
-  relationships: any[];
+  relationships: Relationships[];
 }
 
 export const PatientRegistration: React.FC = () => {
