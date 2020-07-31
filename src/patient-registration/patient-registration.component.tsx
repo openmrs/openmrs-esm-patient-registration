@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
-import { Patient, PatientIdentifierType, AttributeValue } from './patient-registration-helper';
+import { Patient, PatientIdentifierType, AttributeValue, Relationships } from './patient-registration-helper';
 import {
   getCurrentUserLocation,
   savePatient,

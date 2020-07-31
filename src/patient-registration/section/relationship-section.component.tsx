@@ -11,7 +11,6 @@ export const RelationshipSection: React.FC<RelationshipProps> = ({ setFieldValue
     <section className={styles.formSection}>
       <h2 className="omrs-type-title-2">Relationships</h2>
       <section className={styles.formGroup}>
-        <h3 className="omrs-type-title-5">Relationship</h3>
         <RelationshipInput setFieldValue={setFieldValue} />
       </section>
     </section>
