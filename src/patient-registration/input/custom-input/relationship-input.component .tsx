@@ -12,17 +12,17 @@ interface RelationshipInputProps {
 }
 
 export const RelationshipInput: React.FC<RelationshipInputProps> = ({ setFieldValue }) => {
-  const [relationshipTypesOptions, setrelationshipTypesOptions] = useState([]);
+  const [relationshipTypesOptions, setRelationshipTypesOptions] = useState([]);
 
   useEffect(() => {
     const abortController = new AbortController();
     getAllRelationshipTypes(abortController).then(({ data }) => {
       data.results.map(option => {
-        setrelationshipTypesOptions(relationshipTypesOptions => [
+        setRelationshipTypesOptions(relationshipTypesOptions => [
           ...relationshipTypesOptions,
           { uuid: option.uuid + '-A', display: option.aIsToB },
         ]);
-        setrelationshipTypesOptions(relationshipTypesOptions => [
+        setRelationshipTypesOptions(relationshipTypesOptions => [
           ...relationshipTypesOptions,
           { uuid: option.uuid + '-B', display: option.bIsToA },
         ]);
@@ -32,7 +32,7 @@ export const RelationshipInput: React.FC<RelationshipInputProps> = ({ setFieldVa
   }, []);
 
   const [suggestions, setSuggestions] = useState([]);
-  const [personName, setpersonName] = useState([]);
+  const [personName, setPersonName] = useState([]);
 
   const handleSearch = query => {
     const abortController = new AbortController();
@@ -77,10 +77,10 @@ export const RelationshipInput: React.FC<RelationshipInputProps> = ({ setFieldVa
                       onChange: (_event, { newValue }) => {
                         if (index < personName.length) {
                           const personNameList = personName.splice(index, 1, newValue);
-                          setpersonName(personName);
+                          setPersonName(personName);
                         } else {
                           const personNameList = personName.concat(newValue);
-                          setpersonName(personNameList);
+                          setPersonName(personNameList);
                         }
                       },
                     }}
@@ -94,10 +94,10 @@ export const RelationshipInput: React.FC<RelationshipInputProps> = ({ setFieldVa
                       }
                       if (index < personName.length) {
                         const personNameList = personName.splice(index, 1, suggestion.display);
-                        setpersonName(personName);
+                        setPersonName(personName);
                       } else {
                         const personNameList = personName.concat(suggestion.display);
-                        setpersonName(personNameList);
+                        setPersonName(personNameList);
                       }
                       setFieldValue(`relationships[${index}].name`, suggestion.display);
                       setFieldValue(`relationships[${index}].uuid`, suggestion.id);
@@ -111,7 +111,7 @@ export const RelationshipInput: React.FC<RelationshipInputProps> = ({ setFieldVa
                         className="omrs-btn-icon-medium"
                         onClick={() => {
                           const personNameList = personName.splice(index, 1);
-                          setpersonName(personName);
+                          setPersonName(personName);
                           remove(index);
                         }}>
                         -
