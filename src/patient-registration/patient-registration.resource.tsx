@@ -23,8 +23,10 @@ export function getUniquePatientIdentifier(abortController: AbortController) {
 }
 
 export const uuidTelephoneNumber = '14d4f066-15f5-102d-96e4-000c29c2a5d7';
-export const uuidContactPersonGivenName = '63b69b3d-38b2-4a34-a8ed-e2faccbe0c2e';
-export const uuidContactPersonMiddleName = '604c6925-2a07-43f9-8fd9-c201496b7c06';
-export const uuidContactPersonFamilyName = 'b9bc03a0-5425-46c7-95ca-403605b40b3c';
-export const uuidContactPersonTelephoneNumber = '427fdcdf-8ebf-4ec8-91a6-2f86950f2fb9';
-export const uuidContactPersonRelationship = '7c792735-2301-4070-a3d7-77703f6da9f4';
+export const uuidContactPerson = {
+  givenName: '63b69b3d-38b2-4a34-a8ed-e2faccbe0c2e',
+  middleName: '604c6925-2a07-43f9-8fd9-c201496b7c06',
+  familyName: 'b9bc03a0-5425-46c7-95ca-403605b40b3c',
+  telephoneNumber: '427fdcdf-8ebf-4ec8-91a6-2f86950f2fb9',
+  relationship: '7c792735-2301-4070-a3d7-77703f6da9f4',
+};

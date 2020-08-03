@@ -14,12 +14,6 @@ interface AddressValue {
   country: string;
 }
 
-interface ContactPerson {
-  names: Array<NameValue>;
-  phoneNumber: string;
-  relationship: string;
-}
-
 interface AttributeValue {
   attributeType: string;
   value: string;
