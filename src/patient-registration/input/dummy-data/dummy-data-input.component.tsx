@@ -11,7 +11,7 @@ const dummyFormValues: FormValues = {
   middleName: '',
   familyName: 'Smith',
   unidentifiedPatient: false,
-  gender: 'M',
+  gender: 'Male',
   birthdate: null,
   yearsEstimated: 1,
   monthsEstimated: 2,

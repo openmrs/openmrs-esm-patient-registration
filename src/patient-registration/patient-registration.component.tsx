@@ -114,7 +114,7 @@ export const PatientRegistration: React.FC = () => {
             familyName: values.familyName,
           },
         ],
-        gender: values.gender,
+        gender: values.gender.charAt(0),
         birthdate: values.birthdate,
         birthdateEstimated: values.birthdateEstimated,
         attributes: [

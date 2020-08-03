@@ -14,7 +14,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options }) => {
       Select {name}
     </option>,
     options.map(currentOption => (
-      <option key={currentOption.charAt(0)} value={currentOption.charAt(0)}>
+      <option key={currentOption} value={currentOption}>
         {currentOption}
       </option>
     )),
