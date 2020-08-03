@@ -1,5 +1,5 @@
 import { openmrsFetch } from '@openmrs/esm-api';
-import { Patient } from './patient-registration-helper';
+import { Patient, tempRelationship } from './patient-registration-helper';
 import { camelCase } from 'lodash';
 import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
 
@@ -15,7 +15,7 @@ export function savePatient(abortController: AbortController, patient: Patient, 
   });
 }
 
-export function saveRelationships(abortController: AbortController, relationships: Object) {
+export function saveRelationships(abortController: AbortController, relationships: tempRelationship) {
   return openmrsFetch('/ws/rest/v1/relationship', {
     headers: {
       'Content-Type': 'application/json',
