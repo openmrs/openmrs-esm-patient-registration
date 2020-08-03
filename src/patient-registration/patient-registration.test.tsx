@@ -33,7 +33,7 @@ describe('demographics section', () => {
   it('updates to correct gender', async () => {
     const { container } = render(<PatientRegistration />);
     const genderSelect = container.querySelector('select[name="gender"]') as HTMLSelectElement;
-    const expectedGender = 'M';
+    const expectedGender = 'Male';
 
     await wait(() => {
       fireEvent.change(genderSelect, { target: { value: expectedGender } });

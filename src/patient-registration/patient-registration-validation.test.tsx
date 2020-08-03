@@ -122,10 +122,10 @@ describe('gender input', () => {
     return container.querySelector('div[aria-label="genderError"]');
   };
 
-  testValidGender('M');
-  testValidGender('F');
-  testValidGender('O');
-  testValidGender('U');
+  testValidGender('Male');
+  testValidGender('Female');
+  testValidGender('Other');
+  testValidGender('Unknown');
   testInvalidGender('', 'Gender is required');
 });
 
