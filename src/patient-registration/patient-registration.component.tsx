@@ -35,25 +35,6 @@ export interface FormValues {
   postalCode: string;
 }
 
-const initialFormValues: FormValues = {
-  givenName: '',
-  middleName: '',
-  familyName: '',
-  unidentifiedPatient: false,
-  gender: '',
-  birthdate: null,
-  yearsEstimated: 0,
-  monthsEstimated: 0,
-  birthdateEstimated: false,
-  telephoneNumber: '',
-  address1: '',
-  address2: '',
-  cityVillage: '',
-  stateProvince: '',
-  country: '',
-  postalCode: '',
-};
-
 export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [identifier, setIdentifier] = useState('');
