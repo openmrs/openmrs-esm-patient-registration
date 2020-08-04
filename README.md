@@ -70,15 +70,13 @@ This module is designed to be driven by configuration files. These files define 
 ## Resources
 - [JIRA Epic](https://issues.openmrs.org/browse/MF-248)
 
-## Authors
-* [Nick Hill](https://github.com/nickjhill14)
-* [Lucas Kummer](https://github.com/trepolus)
-
 ## Acknowledgements
+* [Nick Hill](https://github.com/nickjhill14) - maintainance, design, analysis, onboarding, and development.
 * [Florian Rappl](https://github.com/FlorianRappl) - module scaffolding, onboarding, guidance, and review.
-* [Romain Buisson](https://github.com/rbuisson) - design, inception, and analysis.
+* [Romain Buisson](https://github.com/rbuisson) - design, inception, and guidance.
 * [Dimitri Renault](https://github.com/mks-d) - design, inception, and guidance.
-* [Helena Lyhme](https://github.com/orgs/OpenMRS-Training-Project/people/illyz) - design, inception, and analysis.
+* [Helena Lyhme](https://github.com/illyz) - inception, onboarding, and analysis.
+* [Lucas Kummer](https://github.com/trepolus) - design, analysis, and development.
 
 ## License
 The project is licensed under the MIT License - see the [LICENSE.md](./LICENSE.md) file for details.
