@@ -6,8 +6,11 @@ import { validationSchema } from './patient-registration-validation';
 import { NameInput } from '../input/custom-input/name/name-input.component';
 import { SelectInput } from '../input/basic-input/select/select-input.component';
 import { DateInput } from '../input/basic-input/date/date-input.component';
-import { TelephoneNumberInput } from '../input/basic-input/telephone-number/telephone-number-input.component';
 import { EstimatedAgeInput } from '../input/custom-input/estimated-age/estimated-age-input.component';
+import { PersonAttributeSection } from '../widgets/section/person-attribute-section.component';
+import { ConfigMock } from '../../../__mocks__/openmrs-esm-config.mock';
+
+const mockUseConfigResult = ConfigMock;
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
@@ -251,7 +254,7 @@ describe('estimated age input', () => {
   );
 });
 
-/* describe('telephone number input', () => {
+describe('telephone number input', () => {
   const testValidTelephoneNumber = (validNumber: string) => {
     it('does not display error message when ' + validNumber + ' is inputted', async () => {
       const error = await updateTelephoneNumberAndReturnError(validNumber);
@@ -262,35 +265,35 @@ describe('estimated age input', () => {
   const testInvalidTelephoneNumber = (invalidNumber: string) => {
     it('displays error message when ' + invalidNumber + ' is inputted', async () => {
       const error = await updateTelephoneNumberAndReturnError(invalidNumber);
-      expect(error.textContent).toEqual('Telephone number should only contain digits');
+      expect(error.textContent).toEqual('Unexpected characters used in Telephone Number ');
     });
   };
 
   const updateTelephoneNumberAndReturnError = async (number: string) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null} validationSchema={validationSchema}>
+      <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null} validationSchema={validationSchema(mockUseConfigResult)}>
         <Form>
-          <TelephoneNumberInput
+         <PersonAttributeSection
+            key="14d4f066-15f5-102d-96e4-000c29c2a5d7"
             label="Telephone Number"
-            placeholder="Enter telephone number"
-            name="telephoneNumber"
-            showLabel={true}
+            placeholder="Enter Telephone Number"
+            name={`attributes[0].value`}
           />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('Telephone Number') as HTMLInputElement;
+    const input = getByLabelText('attributes[0].value') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: number } });
     fireEvent.blur(input);
 
     await wait();
 
-    return container.querySelector('div[aria-label="telephoneNumberError"]');
+    return container.querySelector('div[aria-label="attributes[0].valueError"]');
   };
 
   testValidTelephoneNumber('0800001066');
   testInvalidTelephoneNumber('not a phone number');
   testInvalidTelephoneNumber('+0800001066');
   testInvalidTelephoneNumber('(0800)001066');
-}); */
+}); 

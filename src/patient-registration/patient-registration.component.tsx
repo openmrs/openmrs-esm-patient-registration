@@ -108,13 +108,9 @@ export const PatientRegistration: React.FC = () => {
   useEffect(() => {
     config.personAttributes.map((c, i) => {
       const atts = {
-        title: c.title,
-        subTitle: c.subTitle,
         label: c.label,
         uuid: c.uuid,
-        name: c.name,
         placeholder: c.placeholder,
-        id: c.id,
       };
       setPersonAttConfig(personatt => [...personatt, atts]);
     });
@@ -160,7 +156,6 @@ export const PatientRegistration: React.FC = () => {
       createErrorHandler(),
     );
   };
-
   return (
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
@@ -186,6 +181,7 @@ export const PatientRegistration: React.FC = () => {
                 const { push, form } = fieldArrayProps;
                 const { values } = form;
                 const { attributes } = values;
+
                 return personAttConfig.length ? (
                   <section className={styles.formSection}>
                     <h2 className="omrs-type-title-2">Additional Patient Information</h2>
@@ -195,10 +191,7 @@ export const PatientRegistration: React.FC = () => {
                       }
                       return (
                         <PersonAttributeSection
-                          id={personAttConfig[i].id}
-                          key={personAttConfig[i].id}
-                          title={personAttConfig[i].title}
-                          subTitle={personAttConfig[i].subTitle}
+                          key={personAttConfig[i].uuid}
                           label={personAttConfig[i].label}
                           placeholder={personAttConfig[i].placeholder}
                           name={`attributes[${i}].value`}

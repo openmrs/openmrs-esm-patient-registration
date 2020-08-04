@@ -12,12 +12,7 @@ describe('person attribute input', () => {
         }}
         onSubmit={null}>
         <Form>
-          <PersonAttributeInput
-            id="id"
-            label="telephoneNumber"
-            placeholder="Enter telephone number"
-            name="telephoneNumber"
-          />
+          <PersonAttributeInput label="telephoneNumber" placeholder="Enter telephone number" name="telephoneNumber" />
         </Form>
       </Formik>,
     );

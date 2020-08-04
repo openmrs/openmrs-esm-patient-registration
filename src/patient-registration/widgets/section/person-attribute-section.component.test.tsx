@@ -1,6 +1,7 @@
 import { render, fireEvent, wait, screen, cleanup } from '@testing-library/react';
 import { useConfig } from '@openmrs/esm-module-config';
 import { ConfigMock } from '../../../../__mocks__/openmrs-esm-config.mock';
+//import { ConfigMock } from '../../../../__mocks__/openmrs-esm-module-config.mock';
 import { mockCurrentUserLocation } from '../../../../__mocks__/currentUserLocation.mock';
 import { mockUniquePatientIdentifiers } from '../../../../__mocks__/uniquePatientIdentifiers.mock';
 

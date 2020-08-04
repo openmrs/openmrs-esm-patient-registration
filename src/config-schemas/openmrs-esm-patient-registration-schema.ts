@@ -2,31 +2,26 @@ import { validators } from '@openmrs/esm-module-config';
 export const esmPatientRegistrationSchema = {
   personAttributes: {
     arrayElements: {
-      subTitle: { validators: [validators.isString] },
-      label: { validators: [validators.isString] },
-      uuid: { validators: [validators.isString] },
-      name: { validators: [validators.isString] },
-      placeholder: { validators: [validators.isString] },
-      id: { validators: [validators.isString] },
-      validation: { validators: [validators.isString] },
+      label: { validators: [validators.isString], description: 'The label of the input' },
+      uuid: { validators: [validators.isUuid], description: 'Person attributetype uuid used to save the attribute' },
+      placeholder: { validators: [validators.isString], description: 'Placeholder that will appear in the input.' },
+      validation: {
+        required: { default: false, validators: [validators.isBoolean] },
+        min: { default: 0, validators: [validators.isNumber] },
+        matches: { default: null, validators: [validators.isString] },
+      },
     },
     default: [
       {
-        subTitle: 'Telephone Number',
-        label: '',
+        label: 'Telephone Number',
         uuid: '14d4f066-15f5-102d-96e4-000c29c2a5d7',
-        name: 'phoneNumber',
         placeholder: 'Enter Telephone Number',
-        id: 'tel',
         validation: { required: true },
       },
       {
-        subTitle: 'Birth place',
-        label: '',
+        label: 'Birth place',
         uuid: '8d8718c2-c2cc-11de-8d13-0010c6dffd0f',
-        name: 'birth',
         placeholder: 'Enter Birth Place',
-        id: 'birth',
         validation: { required: true },
       },
     ],

@@ -6,20 +6,19 @@ interface PersonAttributeInputProps {
   label: string;
   placeholder: string;
   name: string;
-  id: string;
 }
 
-export const PersonAttributeInput: React.FC<PersonAttributeInputProps> = ({ id, label, placeholder, name }) => {
+export const PersonAttributeInput: React.FC<PersonAttributeInputProps> = ({ label, placeholder, name }) => {
   const [field, meta] = useField(name);
 
   return (
-    <main className={styles.field} key={id}>
+    <main className={styles.field}>
       <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
         {label}
       </label>
       <input
         className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${
-          styles.phoneNumberInput
+          styles.personAttributeInput
         }`}
         type="text"
         aria-label={field.name}
@@ -27,7 +26,7 @@ export const PersonAttributeInput: React.FC<PersonAttributeInputProps> = ({ id, 
         {...field}
       />
       {meta.touched && meta.error ? (
-        <div key={id} className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
+        <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
           {meta.error}
         </div>
       ) : null}
