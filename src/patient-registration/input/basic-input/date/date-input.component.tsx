@@ -1,6 +1,6 @@
 import React from 'react';
 import { useField } from 'formik';
-import styles from './../input.css';
+import styles from './../../input.css';
 
 interface DateInputProps {
   name: string;

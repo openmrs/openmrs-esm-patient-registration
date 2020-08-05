@@ -6,7 +6,7 @@ import { ContactInfoSection } from './contact-info-section.component';
 describe('contact info section', () => {
   const setupSection = async () => {
     const { container } = render(
-      <Formik initialValues={{ }} onSubmit={null}>
+      <Formik initialValues={{}} onSubmit={null}>
         <Form>
           <ContactInfoSection />
         </Form>
@@ -18,7 +18,7 @@ describe('contact info section', () => {
     return inputNames;
   };
 
-  it('has 7 inputs in total', async () => {
+  it('has the correct number of inputs', async () => {
     const inputNames = await setupSection();
     expect(inputNames.length).toBe(7);
   });

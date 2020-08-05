@@ -18,7 +18,7 @@ export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ labe
         <input
           className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${
             styles.phoneNumberInput
-            }`}
+          }`}
           type="tel"
           placeholder={placeholder}
           {...field}

@@ -1,11 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Formik, Form } from 'formik';
-import { DemographicsSection } from './demographics-section.component';
 import { FormValues } from '../../patient-registration.component';
+import { DemographicsSection } from './demographics-section.component';
 
 describe('demographics section', () => {
-
   const initialFormValues: FormValues = {
     givenName: '',
     middleName: '',
@@ -25,14 +24,11 @@ describe('demographics section', () => {
     postalCode: '',
   };
 
-  const setupSection = async (birthdateEstimated?:boolean) => {
+  const setupSection = async (birthdateEstimated?: boolean) => {
     const { container } = render(
-      <Formik initialValues={{...initialFormValues, birthdateEstimated}} onSubmit={null}>
+      <Formik initialValues={{ ...initialFormValues, birthdateEstimated }} onSubmit={null}>
         <Form>
-          <DemographicsSection 
-          setFieldValue = {() => {}}
-          values = {{...initialFormValues, birthdateEstimated}}
-          />
+          <DemographicsSection setFieldValue={() => {}} values={{ ...initialFormValues, birthdateEstimated }} />
         </Form>
       </Formik>,
     );
@@ -44,12 +40,12 @@ describe('demographics section', () => {
     return inputAndSelectNames;
   };
 
-  it('has 7 inputs and selects in total if birthdate not estimated', async () => {
+  it('has the correct number of inputs if birthdate is not estimated', async () => {
     const inputNames = await setupSection(false);
     expect(inputNames.length).toBe(7);
-  }); 
-  
-  it('has 9 inputs and selects in total', async () => {
+  });
+
+  it('has the correct number of inputs if birthdate is estimated', async () => {
     const inputNames = await setupSection(true);
     expect(inputNames.length).toBe(9);
   });
@@ -65,7 +61,7 @@ describe('demographics section', () => {
     const inputNames = await setupSection();
     expect(inputNames).toContain('unidentifiedPatient');
   });
-  
+
   it('has gender select input', async () => {
     const inputNames = await setupSection();
     expect(inputNames).toContain('gender');
@@ -75,19 +71,19 @@ describe('demographics section', () => {
     const inputNames = await setupSection();
     expect(inputNames).toContain('birthdate');
   });
-  
+
   it('has estimated age input', async () => {
     const inputNames = await setupSection(true);
     expect(inputNames).toContain('yearsEstimated');
     expect(inputNames).toContain('monthsEstimated');
   });
-  
+
   it('has no estimated age input if birthdate is not estimated', async () => {
     const inputNames = await setupSection(false);
     expect(inputNames).not.toContain('yearsEstimated');
     expect(inputNames).not.toContain('monthsEstimated');
   });
-  
+
   it('has birthdate checkbox input', async () => {
     const inputNames = await setupSection();
     expect(inputNames).toContain('birthdateEstimated');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import { validationSchema } from './patient-registration-validation';
+import { validationSchema } from './validation/patient-registration-validation';
 import { Patient } from './patient-registration-helper';
 import {
   getCurrentUserLocation,

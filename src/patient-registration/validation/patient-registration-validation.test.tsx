@@ -3,11 +3,11 @@ import { render, fireEvent, wait } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
-import { NameInput } from './input/custom-input/name/name-input.component';
-import { SelectInput } from './input/basic-input/select/select-input.component';
-import { DateInput } from './input/basic-input/date/date-input.component';
-import { TelephoneNumberInput } from './input/basic-input/telephone-number/telephone-number-input.component';
-import { EstimatedAgeInput } from './input/custom-input/estimated-age/estimated-age-input.component';
+import { NameInput } from '../input/custom-input/name/name-input.component';
+import { SelectInput } from '../input/basic-input/select/select-input.component';
+import { DateInput } from '../input/basic-input/date/date-input.component';
+import { TelephoneNumberInput } from '../input/basic-input/telephone-number/telephone-number-input.component';
+import { EstimatedAgeInput } from '../input/custom-input/estimated-age/estimated-age-input.component';
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
@@ -179,7 +179,7 @@ describe('birthdate input', () => {
 });
 
 describe('estimated age input', () => {
-  const testValidEstimatedAge = (validEstimatedAge: {years: number, months: number}) => {
+  const testValidEstimatedAge = (validEstimatedAge: { years: number; months: number }) => {
     it('does not display error message when ' + validEstimatedAge + ' is inputted', async () => {
       const error = await updateEstimatedAgeAndReturnError(validEstimatedAge);
       expect(error.yearsEstimatedError).toBeNull();
@@ -187,23 +187,29 @@ describe('estimated age input', () => {
     });
   };
 
-  const testInvalidEstimatedYears = (invalidEstimatedAge: {years: number, months: number}, expectedError: string) => {
+  const testInvalidEstimatedYears = (invalidEstimatedAge: { years: number; months: number }, expectedError: string) => {
     it('displays error message when ' + invalidEstimatedAge + ' is inputted', async () => {
       const error = await updateEstimatedAgeAndReturnError(invalidEstimatedAge);
       expect(error.yearsEstimatedError.textContent).toEqual(expectedError);
     });
   };
 
-  const testInvalidEstimatedMonths = (invalidEstimatedAge: {years: number, months: number}, expectedError: string) => {
+  const testInvalidEstimatedMonths = (
+    invalidEstimatedAge: { years: number; months: number },
+    expectedError: string,
+  ) => {
     it('displays error message when ' + invalidEstimatedAge + ' is inputted', async () => {
       const error = await updateEstimatedAgeAndReturnError(invalidEstimatedAge);
       expect(error.monthsEstimatedError.textContent).toEqual(expectedError);
     });
   };
 
-  const updateEstimatedAgeAndReturnError = async (estimatedAge: {years: number, months: number}) => {
+  const updateEstimatedAgeAndReturnError = async (estimatedAge: { years: number; months: number }) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{ yearsEstimated: 0, monthsEstimated: 0 }} onSubmit={null} validationSchema={validationSchema}>
+      <Formik
+        initialValues={{ yearsEstimated: 0, monthsEstimated: 0 }}
+        onSubmit={null}
+        validationSchema={validationSchema}>
         <Form>
           <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={() => {}} />
         </Form>
@@ -227,16 +233,22 @@ describe('estimated age input', () => {
 
   testValidEstimatedAge({
     years: 30,
-    months: 1
+    months: 1,
   });
-  testInvalidEstimatedYears({
-    years: -10,
-    months: 2
-  }, 'Years cannot be less than 0');
-  testInvalidEstimatedMonths({
-    years: 20,
-    months: -10
-  }, 'Months cannot be less than 0');
+  testInvalidEstimatedYears(
+    {
+      years: -10,
+      months: 2,
+    },
+    'Years cannot be less than 0',
+  );
+  testInvalidEstimatedMonths(
+    {
+      years: 20,
+      months: -10,
+    },
+    'Months cannot be less than 0',
+  );
 });
 
 describe('telephone number input', () => {
