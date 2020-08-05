@@ -1,6 +1,6 @@
 import React from 'react';
 import { useField } from 'formik';
-import styles from './../input.css';
+import styles from './../../input.css';
 
 interface CheckboxInputProps {
   label: string;
@@ -14,8 +14,8 @@ export const CheckboxInput: React.FC<CheckboxInputProps> = ({ label, name }) => 
     <main className={styles.checkboxField}>
       <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
         {label}
+        <input className={`omrs-checkbox ${styles.checkboxInput}`} type="checkbox" checked={field.value} {...field} />
       </label>
-      <input className={`omrs-checkbox ${styles.checkboxInput}`} type="checkbox" checked={field.value} {...field} />
     </main>
   );
 };

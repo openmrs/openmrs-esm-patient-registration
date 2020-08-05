@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useField } from 'formik';
-import { CheckboxInput } from '../basic-input/checkbox-input.component';
+import { CheckboxInput } from '../../basic-input/checkbox/checkbox-input.component';
 
 interface UnidentifiedPatientInputProps {
   label: string;

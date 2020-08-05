@@ -1,12 +1,12 @@
 import React from 'react';
-import { FormValues } from './../patient-registration.component';
-import { NameInput } from '../input/custom-input/name-input.component';
-import { UnidentifiedPatientInput } from '../input/custom-input/unidentified-patient-input.component';
-import { SelectInput } from '../input/basic-input/select-input.component';
-import { DateInput } from '../input/basic-input/date-input.component';
-import { EstimatedAgeInput } from '../input/custom-input/estimated-age-input.component';
-import { CheckboxInput } from '../input/basic-input/checkbox-input.component';
-import styles from './section.css';
+import { FormValues } from '../../patient-registration.component';
+import { NameInput } from '../../input/custom-input/name/name-input.component';
+import { UnidentifiedPatientInput } from '../../input/custom-input/unidentified-patient/unidentified-patient-input.component';
+import { SelectInput } from '../../input/basic-input/select/select-input.component';
+import { DateInput } from '../../input/basic-input/date/date-input.component';
+import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estimated-age-input.component';
+import { CheckboxInput } from '../../input/basic-input/checkbox/checkbox-input.component';
+import styles from './../section.css';
 
 interface DemographicsSectionProps {
   setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
@@ -15,7 +15,7 @@ interface DemographicsSectionProps {
 
 export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFieldValue, values }) => {
   return (
-    <section className={styles.formSection}>
+    <section className={styles.formSection} aria-label="demographics section">
       <h2 className="omrs-type-title-2">Demographics</h2>
       <section className={styles.formGroup}>
         <h3 className="omrs-type-title-5">Name</h3>
