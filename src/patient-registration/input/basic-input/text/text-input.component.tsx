@@ -16,17 +16,17 @@ export const TextInput: React.FC<TextInputProps> = ({ label, name, placeholder }
       <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
         {label}
         <input
-          className={`omrs-input-outlined ${meta.touched && meta.error ? styles.errorInput : null} ${styles.textInput}`}
+          className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.textInput}`}
           type="text"
           placeholder={placeholder}
           {...field}
         />
       </label>
-      {meta.touched && meta.error ? (
+      {meta.touched && meta.error && (
         <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
           {meta.error}
         </div>
-      ) : null}
+      )}
     </main>
   );
 };
