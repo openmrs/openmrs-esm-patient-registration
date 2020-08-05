@@ -28,7 +28,6 @@ describe('estimated age input', () => {
     expect(inputs.years.type).toEqual('number');
     expect(inputs.months.type).toEqual('number');
   });
-
   it('calls setBirthdate', async () => {
     mockSetBirthdate.mockReset();
     await setupInput();
