@@ -13,6 +13,11 @@
     padding: 5px;
 }
 
+.label {
+    display: flex;
+    flex-direction: column;
+}
+
 .checkboxField {
     display: flex;
     flex-direction: row;
