@@ -12,7 +12,6 @@ export const ContactInfoSection: React.FC = () => {
         <TelephoneNumberInput label="" placeholder="Telephone number" name="telephoneNumber" />
       </section>
       <section className={styles.formGroup}>
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Adress</p>
         <AddressInput
           address1Name="address1"
           address2Name="address2"

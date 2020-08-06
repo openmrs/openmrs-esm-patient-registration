@@ -5,6 +5,12 @@
     flex-wrap: wrap;
 }
 
+.formLabel {
+    width: 150px;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+
 .field {
     display: flex;
     flex-direction: column;
