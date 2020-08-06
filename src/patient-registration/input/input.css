@@ -36,34 +36,38 @@
 }
 
 .textInput {
-    width: 250px !important;
+    width: 200px !important;
+    height: 40px !important;
     background-color: white !important;
 }
 
 .numberInput {
-    width: 150px !important;
-    height: 50px !important;
+    width: 200px !important;
+    height: 40px !important;
     background-color: white !important;
 }
 
 .checkboxInput {
-    height: 1rem !important;
-    width: 1rem !important;
+    height: 1.5rem !important;
+    width: 1.5rem !important;
 }
 
 .selectInput {
     width: 150px !important;
+    height: 40px !important;
     background-color: white !important;
 }
 
 .dateInput {
     width: 200px !important;
+    height: 40px !important;
     background-color: white !important;
     font-size: large !important;
 }
 
 .phoneNumberInput {
-    width: 300px !important;
+    width: 200px !important;
+    height: 40px !important;
     background-color: white !important;
 }
 

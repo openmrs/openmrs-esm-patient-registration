@@ -9,7 +9,7 @@ export const ContactInfoSection: React.FC = () => {
       <h2 className="omrs-type-title-2">Contact Info</h2>
       <section className={styles.formGroup}>
         <h3 className="omrs-type-title-5">Telephone Number</h3>
-        <TelephoneNumberInput label="" placeholder="Enter telephone number" name="telephoneNumber" />
+        <TelephoneNumberInput label="" placeholder="Telephone number" name="telephoneNumber" />
       </section>
       <section className={styles.formGroup}>
         <h3 className="omrs-type-title-5">Address</h3>

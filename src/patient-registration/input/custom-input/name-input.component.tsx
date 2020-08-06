@@ -11,9 +11,9 @@ interface NameInputProps {
 export const NameInput: React.FC<NameInputProps> = ({ givenName, middleName, familyName }) => {
   return (
     <main className={styles.fieldRow}>
-      <TextInput label="Given Name" placeholder="Enter given name" name={givenName} />
-      <TextInput label="Middle Name" placeholder="Enter middle name" name={middleName} />
-      <TextInput label="Family Name" placeholder="Enter family name" name={familyName} />
+      <TextInput label="Given Name" placeholder="Given name" name={givenName} />
+      <TextInput label="Middle Name" placeholder="Middle name" name={middleName} />
+      <TextInput label="Family Name" placeholder="Family name" name={familyName} />
     </main>
   );
 };
