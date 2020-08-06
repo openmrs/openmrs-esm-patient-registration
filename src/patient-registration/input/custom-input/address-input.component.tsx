@@ -20,7 +20,7 @@ export const AddressInput: React.FC<AddressInputProps> = ({
   postalCodeName,
 }) => {
   return (
-    <main className={styles.field}>
+    <main>
       <section className={styles.fieldRow}>
         <TextInput label="Address 1" placeholder="First line of address" name={address1Name} />
         <TextInput label="Address 2" placeholder="Second line of address" name={address2Name} />

@@ -6,13 +6,13 @@ import styles from './section.css';
 export const ContactInfoSection: React.FC = () => {
   return (
     <section className={styles.formSection}>
-      <h2 className="omrs-type-title-2">Contact Info</h2>
+      <h2 className="omrs-type-title-5">Contact Info</h2>
       <section className={styles.formGroup}>
-        <h3 className="omrs-type-title-5">Telephone Number</h3>
+        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Telephone Number</p>
         <TelephoneNumberInput label="" placeholder="Telephone number" name="telephoneNumber" />
       </section>
       <section className={styles.formGroup}>
-        <h3 className="omrs-type-title-5">Address</h3>
+        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Adress</p>
         <AddressInput
           address1Name="address1"
           address2Name="address2"

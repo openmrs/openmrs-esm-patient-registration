@@ -36,15 +36,13 @@
 }
 
 .textInput {
-    width: 200px !important;
+    width: 300px !important;
     height: 40px !important;
-    background-color: white !important;
 }
 
 .numberInput {
     width: 200px !important;
     height: 40px !important;
-    background-color: white !important;
 }
 
 .checkboxInput {
@@ -55,20 +53,17 @@
 .selectInput {
     width: 150px !important;
     height: 40px !important;
-    background-color: white !important;
 }
 
 .dateInput {
     width: 200px !important;
     height: 40px !important;
-    background-color: white !important;
     font-size: large !important;
 }
 
 .phoneNumberInput {
-    width: 200px !important;
+    width: 300px !important;
     height: 40px !important;
-    background-color: white !important;
 }
 
 .errorInput {
