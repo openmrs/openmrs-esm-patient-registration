@@ -1,11 +1,11 @@
 import React from 'react';
-import { TelephoneNumberInput } from '../input/basic-input/telephone-number-input/telephone-number-input.component';
-import { AddressInput } from './../input/custom-input/address-input.component';
-import styles from './section.css';
+import { TelephoneNumberInput } from '../../input/basic-input/telephone-number/telephone-number-input.component';
+import { AddressInput } from '../../input/custom-input/address/address-input.component';
+import styles from './../section.css';
 
 export const ContactInfoSection: React.FC = () => {
   return (
-    <section className={styles.formSection}>
+    <section className={styles.formSection} aria-label="contact info section">
       <h2 className="omrs-type-title-2">Contact Info</h2>
       <section className={styles.formGroup}>
         <h3 className="omrs-type-title-5">Telephone Number</h3>
