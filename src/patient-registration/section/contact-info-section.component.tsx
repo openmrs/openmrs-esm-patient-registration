@@ -6,7 +6,7 @@ import styles from './section.css';
 export const ContactInfoSection: React.FC = () => {
   return (
     <section className={styles.formSection}>
-      <h2 className="omrs-type-title-5">Contact Info</h2>
+      <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Contact Info</h5>
       <section className={styles.formGroup}>
         <p className={`omrs-type-body-regular ${styles.formLabel}`}>Telephone Number</p>
         <TelephoneNumberInput label="" placeholder="Telephone number" name="telephoneNumber" />

@@ -16,7 +16,7 @@ interface DemographicsSectionProps {
 export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFieldValue, values }) => {
   return (
     <section className={styles.formSection}>
-      <h2 className="omrs-type-title-5">Demographics</h2>
+      <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Demographics</h5>
       <section className={styles.formGroup}>
         <p className={`omrs-type-body-regular ${styles.formLabel}`}>Name</p>
         <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
