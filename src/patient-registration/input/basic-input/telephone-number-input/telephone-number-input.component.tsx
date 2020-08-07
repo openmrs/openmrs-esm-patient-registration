@@ -14,9 +14,11 @@ export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ labe
 
   return (
     <main className={styles.fieldRow}>
-      <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
-        Telephone Number
-      </label>
+      {showLabel && (
+        <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
+          {label}
+        </label>
+      )}
       <input
         className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.phoneNumberInput}`}
         type="tel"
