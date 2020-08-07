@@ -11,7 +11,7 @@ interface NameInputProps {
 export const NameInput: React.FC<NameInputProps> = ({ givenName, middleName, familyName }) => {
   return (
     <main className={styles.fieldRow}>
-      <label className={`omrs-type-body-regular ${styles.fieldLabel}`} htmlFor="name">
+      <label className={`omrs-type-body-regular ${styles.label}`} htmlFor="name">
         Name
       </label>
       <TextInput label="Given Name" placeholder="Given name" name={givenName} showLabel={false} />

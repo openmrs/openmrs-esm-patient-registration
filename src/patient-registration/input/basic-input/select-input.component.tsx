@@ -23,7 +23,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label }
 
   return (
     <main className={styles.fieldRow}>
-      <label className={`omrs-type-body-regular ${styles.fieldLabel}`} htmlFor={field.name}>
+      <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
         {label}
       </label>
       <select
