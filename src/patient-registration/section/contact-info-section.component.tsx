@@ -7,11 +7,15 @@ export const ContactInfoSection: React.FC = () => {
   return (
     <section className={styles.formSection}>
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Contact Info</h5>
-      <section className={styles.formGroup}>
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Telephone Number</p>
-        <TelephoneNumberInput label="" placeholder="Telephone number" name="telephoneNumber" />
+      <section className={styles.fieldGroup}>
+        <TelephoneNumberInput
+          label="Telephone number"
+          placeholder="Telephone number"
+          name="telephoneNumber"
+          showLabel={true}
+        />
       </section>
-      <section className={styles.formGroup}>
+      <section className={styles.fieldGroup}>
         <AddressInput
           address1Name="address1"
           address2Name="address2"

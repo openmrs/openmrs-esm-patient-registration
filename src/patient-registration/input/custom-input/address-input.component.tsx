@@ -22,22 +22,16 @@ export const AddressInput: React.FC<AddressInputProps> = ({
   return (
     <main>
       <section className={styles.fieldRow}>
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Adress 1</p>
-        <TextInput label="Adress 1" placeholder="First line of address" name={address1Name} />
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Address 2</p>
-        <TextInput label="Address 2" placeholder="Second line of address" name={address2Name} />
+        <TextInput label="Adress 1" placeholder="First line of address" name={address1Name} showLabel={true} />
+        <TextInput label="Address 2" placeholder="Second line of address" name={address2Name} showLabel={true} />
       </section>
       <section className={styles.fieldRow}>
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>City/Village</p>
-        <TextInput label="City/Village" placeholder="City/Village" name={cityVillageName} />
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>State/Province</p>
-        <TextInput label="State/Province" placeholder="State/province" name={stateProvinceName} />
+        <TextInput label="City/Village" placeholder="City/Village" name={cityVillageName} showLabel={true} />
+        <TextInput label="State/Province" placeholder="State/province" name={stateProvinceName} showLabel={true} />
       </section>
       <section className={styles.fieldRow}>
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Country</p>
-        <TextInput label="Country" placeholder="Country" name={countryName} />
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Postal Code</p>
-        <TextInput label="Postal Code" placeholder="Postal code" name={postalCodeName} />
+        <TextInput label="Country" placeholder="Country" name={countryName} showLabel={true} />
+        <TextInput label="Postal Code" placeholder="Postal code" name={postalCodeName} showLabel={true} />
       </section>
     </main>
   );

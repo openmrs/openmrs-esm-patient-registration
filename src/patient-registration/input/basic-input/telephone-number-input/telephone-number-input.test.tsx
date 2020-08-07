@@ -8,7 +8,12 @@ describe('telephone number input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null}>
         <Form>
-          <TelephoneNumberInput label="" placeholder="Enter telephone number" name="telephoneNumber" />
+          <TelephoneNumberInput
+            label=""
+            placeholder="Enter telephone number"
+            name="telephoneNumber"
+            showLabel={false}
+          />
         </Form>
       </Formik>,
     );

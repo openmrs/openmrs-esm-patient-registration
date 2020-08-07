@@ -25,7 +25,7 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
         <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" />
       </section>
       <section className={styles.fieldGroup}>
-        <DateInput name="birthdate" />
+        <DateInput label="Date of Birth" name="birthdate" showLabel={true} />
         <CheckboxInput label="Estimated Birthdate" name="birthdateEstimated" />
       </section>
       {values.birthdateEstimated ? (

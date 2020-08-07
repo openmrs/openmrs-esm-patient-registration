@@ -5,9 +5,10 @@ import styles from './../input.css';
 interface NumberInputProps {
   label: string;
   name: string;
+  showLabel: boolean;
 }
 
-export const NumberInput: React.FC<NumberInputProps> = ({ label, name }) => {
+export const NumberInput: React.FC<NumberInputProps> = ({ label, name, showLabel }) => {
   const [field, meta] = useField(name);
 
   return (
