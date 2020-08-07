@@ -17,23 +17,22 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
   return (
     <section className={styles.formSection}>
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Demographics</h5>
-      <section className={styles.formGroup}>
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Name</p>
+      <section className={styles.fieldGroup}>
         <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
         <UnidentifiedPatientInput label="Unidentified Patient" name="unidentifiedPatient" setName={setFieldValue} />
       </section>
-      <section className={styles.formGroup}>
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Gender</p>
-        <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} />
+      <section className={styles.fieldGroup}>
+        <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" />
       </section>
-      <section className={styles.formGroup}>
-        <p className={`omrs-type-body-regular ${styles.formLabel}`}>Date of Birth</p>
+      <section className={styles.fieldGroup}>
         <DateInput name="birthdate" />
-        {values.birthdateEstimated ? (
-          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={setFieldValue} />
-        ) : null}
         <CheckboxInput label="Estimated Birthdate" name="birthdateEstimated" />
       </section>
+      {values.birthdateEstimated ? (
+        <section className={styles.fieldGroup}>
+          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={setFieldValue} />
+        </section>
+      ) : null}
     </section>
   );
 };

@@ -3,11 +3,11 @@
     flex-direction: row;
     justify-content: flex-start;
     flex-wrap: wrap;
+    align-items: center;
 }
 
-.formLabel {
-    width: 150px;
-    margin-bottom: 10px;
+.fieldLabel {
+    width: 100px;
     text-align: right;
   }
 

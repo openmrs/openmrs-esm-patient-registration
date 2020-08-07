@@ -27,7 +27,6 @@ export const EstimatedAgeInput: React.FC<EstimatedAgeInputProps> = ({ yearsName,
 
   return (
     <main className={styles.field}>
-      <h4 className={`omrs-type-body-large ${styles.subTitle}`}>Estimated Age</h4>
       <section className={styles.subField}>
         <NumberInput label="Years" name={yearsName} />
         <NumberInput label="Months" name={monthsName} />

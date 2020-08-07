@@ -5,19 +5,13 @@
     box-shadow: 1.5px 1.5px 5px var(--omrs-color-ink-medium-contrast);
 }
 
-.formGroup {
+.fieldGroup {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    flex-wrap: wrap;
+    align-items: center;
 }
 
-.formLabel {
-    width: 150px;
-    margin-bottom: 10px;
-    text-align: right;
-  }
-
-  .formSectionTitle {
-      margin: 5px;
-  }
+.formSectionTitle {
+    margin: 5px;
+}
