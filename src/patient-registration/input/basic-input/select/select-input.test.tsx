@@ -8,11 +8,11 @@ describe('select input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ select: '' }} onSubmit={null}>
         <Form>
-          <SelectInput name="select" options={['A Option', 'B Option']} />
+          <SelectInput label="Select" showLabel={true} name="select" options={['A Option', 'B Option']} />
         </Form>
       </Formik>,
     );
-    return getByLabelText('select') as HTMLInputElement;
+    return getByLabelText('Select') as HTMLInputElement;
   };
 
   it('exists', async () => {
@@ -20,9 +20,9 @@ describe('select input', () => {
     expect(input.type).toEqual('select-one');
   });
 
-  it('can input data (cutting off option after first char)', async () => {
+  it('can input data', async () => {
     const input = await setupInput();
-    const expected = 'A';
+    const expected = 'A Option';
 
     fireEvent.change(input, { target: { value: expected } });
     fireEvent.blur(input);

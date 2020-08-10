@@ -35,7 +35,7 @@ export interface FormValues {
   postalCode: string;
 }
 
-const initialFormValues: FormValues = {
+export const initialFormValues: FormValues = {
   givenName: '',
   middleName: '',
   familyName: '',
@@ -58,24 +58,6 @@ export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [identifier, setIdentifier] = useState('');
   const [location, setLocation] = useState('');
-  const initialFormValues: FormValues = {
-    givenName: '',
-    middleName: '',
-    familyName: '',
-    unidentifiedPatient: false,
-    gender: '',
-    birthdate: null,
-    yearsEstimated: 0,
-    monthsEstimated: 0,
-    birthdateEstimated: false,
-    telephoneNumber: '',
-    address1: '',
-    address2: '',
-    cityVillage: '',
-    stateProvince: '',
-    country: '',
-    postalCode: '',
-  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -114,7 +96,7 @@ export const PatientRegistration: React.FC = () => {
             familyName: values.familyName,
           },
         ],
-        gender: values.gender,
+        gender: values.gender.charAt(0),
         birthdate: values.birthdate,
         birthdateEstimated: values.birthdateEstimated,
         attributes: [

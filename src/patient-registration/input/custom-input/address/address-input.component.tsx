@@ -20,18 +20,18 @@ export const AddressInput: React.FC<AddressInputProps> = ({
   postalCodeName,
 }) => {
   return (
-    <main className={styles.field}>
-      <section className={styles.fieldRow}>
-        <TextInput label="Address 1" placeholder="Enter first line of address" name={address1Name} />
-        <TextInput label="Address 2" placeholder="Enter second line of address" name={address2Name} />
+    <main>
+      <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
+        <TextInput label="Address 1" placeholder="First line of address" name={address1Name} showLabel={true} />
+        <TextInput label="Address 2" placeholder="Second line of address" name={address2Name} showLabel={true} />
       </section>
-      <section className={styles.fieldRow}>
-        <TextInput label="City/Village" placeholder="Enter city/address" name={cityVillageName} />
-        <TextInput label="State/Province" placeholder="Enter state/province" name={stateProvinceName} />
+      <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
+        <TextInput label="City/Village" placeholder="City/Village" name={cityVillageName} showLabel={true} />
+        <TextInput label="State/Province" placeholder="State/province" name={stateProvinceName} showLabel={true} />
       </section>
-      <section className={styles.fieldRow}>
-        <TextInput label="Country" placeholder="Enter country" name={countryName} />
-        <TextInput label="Postal Code" placeholder="Enter postal code" name={postalCodeName} />
+      <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
+        <TextInput label="Country" placeholder="Country" name={countryName} showLabel={true} />
+        <TextInput label="Postal Code" placeholder="Postal code" name={postalCodeName} showLabel={true} />
       </section>
     </main>
   );

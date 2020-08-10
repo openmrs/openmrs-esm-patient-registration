@@ -1,37 +1,20 @@
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
 import { DummyDataInput, dummyFormValues } from './dummy-data-input.component';
-import { FormValues } from '../../patient-registration.component';
+import { FormValues, initialFormValues } from '../../patient-registration.component';
 
 describe('dummy data input', () => {
-  let expectedFormValues: FormValues = {
-    givenName: '',
-    middleName: '',
-    familyName: '',
-    unidentifiedPatient: false,
-    gender: '',
-    birthdate: null,
-    yearsEstimated: 0,
-    monthsEstimated: 0,
-    birthdateEstimated: false,
-    telephoneNumber: '',
-    address1: '',
-    address2: '',
-    cityVillage: '',
-    stateProvince: '',
-    country: '',
-    postalCode: '',
-  };
+  let formValues: FormValues = initialFormValues;
 
   const setupInput = async () => {
     const { getByLabelText } = render(
       <DummyDataInput
         setValues={values => {
-          expectedFormValues = values;
+          formValues = values;
         }}
       />,
     );
-    return getByLabelText('dummy data input') as HTMLButtonElement;
+    return getByLabelText('Dummy Data Input') as HTMLButtonElement;
   };
 
   it('exists', async () => {
@@ -45,6 +28,6 @@ describe('dummy data input', () => {
     fireEvent.click(input);
     await wait();
 
-    expect(expectedFormValues).toEqual(dummyFormValues);
+    expect(formValues).toEqual(dummyFormValues);
   });
 });

@@ -19,6 +19,6 @@ describe('patient registration sections', () => {
     });
   };
 
-  testSectionExists('demographics section');
-  testSectionExists('contact info section');
+  testSectionExists('Demographics Section');
+  testSectionExists('Contact Info Section');
 });
