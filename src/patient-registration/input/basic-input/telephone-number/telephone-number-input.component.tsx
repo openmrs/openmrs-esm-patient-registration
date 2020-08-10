@@ -6,20 +6,25 @@ interface TelephoneNumberInputProps {
   label: string;
   placeholder: string;
   name: string;
+  showLabel: boolean;
 }
 
-export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ label, placeholder, name }) => {
+export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ label, placeholder, name, showLabel }) => {
   const [field, meta] = useField(name);
 
   return (
-    <main className={styles.field}>
-      <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
-        {label}
-      </label>
+    <main className={styles.fieldRow}>
+      {showLabel && (
+        <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
+          {label}
+        </label>
+      )}
       <input
-        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.phoneNumberInput}`}
+        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.phoneNumberInput} ${
+          styles.input
+        }`}
         type="tel"
-        aria-label={field.name}
+        aria-label={label}
         placeholder={placeholder}
         {...field}
       />

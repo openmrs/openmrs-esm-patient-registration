@@ -1,28 +1,28 @@
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
 import { Formik, Form } from 'formik';
-import { TelephoneNumberInput } from './telephone-number-input.component';
+import { DateInput } from './date-input.component';
 
-describe('telephone number input', () => {
+describe('date input', () => {
   const setupInput = async () => {
     const { getByLabelText } = render(
-      <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null}>
+      <Formik initialValues={{ date: '' }} onSubmit={null}>
         <Form>
-          <TelephoneNumberInput label="" placeholder="Enter telephone number" name="telephoneNumber" />
+          <DateInput label="date" showLabel={false} name="date" />
         </Form>
       </Formik>,
     );
-    return getByLabelText('telephoneNumber') as HTMLInputElement;
+    return getByLabelText('date') as HTMLInputElement;
   };
 
   it('exists', async () => {
     const input = await setupInput();
-    expect(input.type).toEqual('tel');
+    expect(input.type).toEqual('date');
   });
 
   it('can input data', async () => {
     const input = await setupInput();
-    const expected = '0800001066';
+    const expected = '1990-09-10';
 
     fireEvent.change(input, { target: { value: expected } });
     fireEvent.blur(input);

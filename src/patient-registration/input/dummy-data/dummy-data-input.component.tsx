@@ -6,7 +6,7 @@ interface DummyDataInputProps {
   setValues(values: FormValues, shouldValidate?: boolean): void;
 }
 
-const dummyFormValues: FormValues = {
+export const dummyFormValues: FormValues = {
   givenName: 'John',
   middleName: '',
   familyName: 'Smith',
@@ -27,11 +27,12 @@ const dummyFormValues: FormValues = {
 
 export const DummyDataInput: React.FC<DummyDataInputProps> = ({ setValues }) => {
   return (
-    <main className={styles.field}>
+    <main>
       <button
         onClick={() => setValues(dummyFormValues)}
         className={`omrs-btn omrs-filled-neutral ${styles.dummyData}`}
-        type="button">
+        type="button"
+        aria-label="Dummy Data Input">
         Input Dummy Data
       </button>
     </main>

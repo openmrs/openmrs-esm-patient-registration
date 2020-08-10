@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useField } from 'formik';
 import dayjs from 'dayjs';
-import { NumberInput } from '../basic-input/number-input.component';
-import styles from './../input.css';
+import { NumberInput } from '../../basic-input/number/number-input.component';
+import styles from './../../input.css';
 
 interface EstimatedAgeInputProps {
   yearsName: string;
@@ -26,12 +26,9 @@ export const EstimatedAgeInput: React.FC<EstimatedAgeInputProps> = ({ yearsName,
   }, [yearsField.value, monthsField.value, setBirthdate]);
 
   return (
-    <main className={styles.field}>
-      <h4 className={`omrs-type-body-large ${styles.subTitle}`}>Estimated Age</h4>
-      <section className={styles.subField}>
-        <NumberInput label="Years" name={yearsName} />
-        <NumberInput label="Months" name={monthsName} />
-      </section>
+    <main className={styles.fieldRow}>
+      <NumberInput label="Years" name={yearsName} showLabel={true} />
+      <NumberInput label="Months" name={monthsName} showLabel={true} />
     </main>
   );
 };
