@@ -21,6 +21,20 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
         <h3 className="omrs-type-title-5">Name</h3>
         <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
         <UnidentifiedPatientInput label="Unidentified Patient" name="unidentifiedPatient" setName={setFieldValue} />
+
+        {values.addNameInLocalLanguage ? (
+          <div>
+            <h3 className="omrs-type-title-5">Name in local language</h3>
+            <NameInput
+              givenName="additionalGivenName"
+              middleName="additionalMiddleName"
+              familyName="additionalFamilyName"
+            />
+          </div>
+        ) : null}
+        <div className="inline-form-container">
+          <CheckboxInput label="Add name in local language" name="addNameInLocalLanguage" />
+        </div>
       </section>
       <section className={styles.formGroup}>
         <h3 className="omrs-type-title-5">Gender</h3>

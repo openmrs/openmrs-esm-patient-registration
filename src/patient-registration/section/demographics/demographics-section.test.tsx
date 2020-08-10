@@ -10,6 +10,10 @@ describe('demographics section', () => {
     middleName: '',
     familyName: '',
     unidentifiedPatient: false,
+    additionalGivenName: '',
+    additionalMiddleName: '',
+    additionalFamilyName: '',
+    addNameInLocalLanguage: false,
     gender: '',
     birthdate: null,
     yearsEstimated: 0,
@@ -24,11 +28,14 @@ describe('demographics section', () => {
     postalCode: '',
   };
 
-  const setupSection = async (birthdateEstimated?: boolean) => {
+  const setupSection = async (birthdateEstimated?: boolean, addNameInLocalLanguage?: boolean) => {
     const { container } = render(
-      <Formik initialValues={{ ...initialFormValues, birthdateEstimated }} onSubmit={null}>
+      <Formik initialValues={{ ...initialFormValues, birthdateEstimated, addNameInLocalLanguage }} onSubmit={null}>
         <Form>
-          <DemographicsSection setFieldValue={() => {}} values={{ ...initialFormValues, birthdateEstimated }} />
+          <DemographicsSection
+            setFieldValue={() => {}}
+            values={{ ...initialFormValues, birthdateEstimated, addNameInLocalLanguage }}
+          />
         </Form>
       </Formik>,
     );
@@ -42,12 +49,12 @@ describe('demographics section', () => {
 
   it('has the correct number of inputs if birthdate is not estimated', async () => {
     const inputNames = await setupSection(false);
-    expect(inputNames.length).toBe(7);
+    expect(inputNames.length).toBe(8);
   });
 
   it('has the correct number of inputs if birthdate is estimated', async () => {
     const inputNames = await setupSection(true);
-    expect(inputNames.length).toBe(9);
+    expect(inputNames.length).toBe(10);
   });
 
   it('has name input', async () => {
@@ -55,6 +62,25 @@ describe('demographics section', () => {
     expect(inputNames).toContain('givenName');
     expect(inputNames).toContain('middleName');
     expect(inputNames).toContain('familyName');
+  });
+
+  it('has name in local language checkbox', async () => {
+    const inputNames = await setupSection();
+    expect(inputNames).toContain('addNameInLocalLanguage');
+  });
+
+  it('has name in local language input fields when checkbox is clicked', async () => {
+    const inputNames = await setupSection(false, true);
+    expect(inputNames).toContain('additionalGivenName');
+    expect(inputNames).toContain('additionalMiddleName');
+    expect(inputNames).toContain('additionalFamilyName');
+  });
+
+  it('does not have name in local language input fields when checkbox is unclicked', async () => {
+    const inputNames = await setupSection(false, false);
+    expect(inputNames).not.toContain('additionalGivenName');
+    expect(inputNames).not.toContain('additionalMiddleName');
+    expect(inputNames).not.toContain('additionalFamilyName');
   });
 
   it('has unidentified patient input', async () => {
