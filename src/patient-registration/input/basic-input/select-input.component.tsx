@@ -6,9 +6,10 @@ interface SelectInputProps {
   name: string;
   options: Array<string>;
   label: string;
+  showLabel: boolean;
 }
 
-export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label }) => {
+export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, showLabel }) => {
   const [field, meta] = useField(name);
   const selectOptions = [
     <option key="" value="" disabled>
@@ -23,13 +24,15 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label }
 
   return (
     <main className={styles.fieldRow}>
-      <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
-        {label}
-      </label>
+      {showLabel && (
+        <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
+          {label}
+        </label>
+      )}
       <select
         className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
-          styles.selectInput
-        }`}
+          styles.input
+        } ${styles.selectInput}`}
         aria-label={label}
         {...field}>
         {selectOptions}

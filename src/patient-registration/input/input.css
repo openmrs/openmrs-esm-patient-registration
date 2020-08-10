@@ -6,17 +6,18 @@
     align-items: center;
 }
 
+.subFieldRow{
+    margin-bottom: 5px;
+}
+
 .label {
     width: 150px;
     text-align: right;
+    margin-right: 5px;
   }
 
-.field {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-left: 10px;
-    padding: 5px;
+.input {
+    margin-right: 5px;
 }
 
 .checkboxField {
@@ -27,18 +28,6 @@
     width: 400px;
     margin-left: 10px;
     padding: 5px;
-}
-
-.subField {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-}
-
-.subTitle {
-    margin-top: 10px;
-    font-weight: bold;
 }
 
 .textInput {

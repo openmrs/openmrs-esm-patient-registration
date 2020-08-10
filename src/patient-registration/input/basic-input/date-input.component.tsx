@@ -19,7 +19,9 @@ export const DateInput: React.FC<DateInputProps> = ({ label, name, showLabel }) 
         </label>
       )}
       <input
-        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.dateInput}`}
+        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.dateInput} ${
+          styles.input
+        }`}
         type="date"
         aria-label={label}
         {...field}

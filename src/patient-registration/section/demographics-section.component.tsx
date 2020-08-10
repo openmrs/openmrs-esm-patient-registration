@@ -19,10 +19,10 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Demographics</h5>
       <section className={styles.fieldGroup}>
         <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
-        <UnidentifiedPatientInput label="Unidentified Patient" name="unidentifiedPatient" setName={setFieldValue} />
+        <UnidentifiedPatientInput name="unidentifiedPatient" setName={setFieldValue} />
       </section>
       <section className={styles.fieldGroup}>
-        <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" />
+        <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
       </section>
       <section className={styles.fieldGroup}>
         <DateInput label="Date of Birth" name="birthdate" showLabel={true} />

@@ -20,7 +20,9 @@ export const TextInput: React.FC<TextInputProps> = ({ label, name, placeholder, 
         </label>
       )}
       <input
-        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.textInput}`}
+        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.input} ${
+          styles.textInput
+        }`}
         type="text"
         aria-label={label}
         placeholder={placeholder}

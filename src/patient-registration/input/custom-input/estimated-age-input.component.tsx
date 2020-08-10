@@ -26,11 +26,9 @@ export const EstimatedAgeInput: React.FC<EstimatedAgeInputProps> = ({ yearsName,
   }, [yearsField.value, monthsField.value, setBirthdate]);
 
   return (
-    <main className={styles.field}>
-      <section className={styles.subField}>
-        <NumberInput label="Years" name={yearsName} showLabel={true} />
-        <NumberInput label="Months" name={monthsName} showLabel={true} />
-      </section>
+    <main className={styles.fieldRow}>
+      <NumberInput label="Years" name={yearsName} showLabel={true} />
+      <NumberInput label="Months" name={monthsName} showLabel={true} />
     </main>
   );
 };

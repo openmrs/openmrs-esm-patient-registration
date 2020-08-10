@@ -108,7 +108,7 @@ describe('gender input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" />
+          <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
         </Form>
       </Formik>,
     );
@@ -215,8 +215,8 @@ describe('estimated age input', () => {
         </Form>
       </Formik>,
     );
-    const yearsEstimatedInput = getByLabelText('Years') as HTMLInputElement;
-    const monthsEstimatedInput = getByLabelText('Months') as HTMLInputElement;
+    const yearsEstimatedInput = getByLabelText('yearsEstimated') as HTMLInputElement;
+    const monthsEstimatedInput = getByLabelText('monthsEstimated') as HTMLInputElement;
 
     fireEvent.change(yearsEstimatedInput, { target: { value: estimatedAge.years } });
     fireEvent.blur(yearsEstimatedInput);
