@@ -15,25 +15,24 @@ interface DemographicsSectionProps {
 
 export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFieldValue, values }) => {
   return (
-    <section className={styles.formSection} aria-label="demographics section">
-      <h2 className="omrs-type-title-2">Demographics</h2>
-      <section className={styles.formGroup}>
-        <h3 className="omrs-type-title-5">Name</h3>
+    <section className={styles.formSection} aria-label="Demographics Section">
+      <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Demographics</h5>
+      <section className={styles.fieldGroup}>
         <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
-        <UnidentifiedPatientInput label="Unidentified Patient" name="unidentifiedPatient" setName={setFieldValue} />
+        <UnidentifiedPatientInput name="unidentifiedPatient" setName={setFieldValue} />
       </section>
-      <section className={styles.formGroup}>
-        <h3 className="omrs-type-title-5">Gender</h3>
-        <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} />
+      <section className={styles.fieldGroup}>
+        <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
       </section>
-      <section className={styles.formGroup}>
-        <h3 className="omrs-type-title-5">Birthdate</h3>
-        <DateInput name="birthdate" />
-        {values.birthdateEstimated ? (
-          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={setFieldValue} />
-        ) : null}
+      <section className={styles.fieldGroup}>
+        <DateInput label="Date of Birth" name="birthdate" showLabel={true} />
         <CheckboxInput label="Estimated Birthdate" name="birthdateEstimated" />
       </section>
+      {values.birthdateEstimated ? (
+        <section className={styles.fieldGroup}>
+          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={setFieldValue} />
+        </section>
+      ) : null}
     </section>
   );
 };

@@ -8,11 +8,11 @@ describe('select input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ select: '' }} onSubmit={null}>
         <Form>
-          <SelectInput name="select" options={['A Option', 'B Option']} />
+          <SelectInput label="Select" showLabel={true} name="select" options={['A Option', 'B Option']} />
         </Form>
       </Formik>,
     );
-    return getByLabelText('select') as HTMLInputElement;
+    return getByLabelText('Select') as HTMLInputElement;
   };
 
   it('exists', async () => {

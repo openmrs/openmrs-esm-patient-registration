@@ -108,11 +108,11 @@ describe('gender input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} />
+          <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('gender') as HTMLSelectElement;
+    const input = getByLabelText('Gender') as HTMLSelectElement;
 
     fireEvent.change(input, { target: { value: gender } });
     fireEvent.blur(input);
@@ -148,11 +148,11 @@ describe('birthdate input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <DateInput name="birthdate" />
+          <DateInput label="Date of Birth" name="birthdate" showLabel={true} />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('birthdate') as HTMLInputElement;
+    const input = getByLabelText('Date of Birth') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: birthdate } });
     fireEvent.blur(input);
@@ -270,11 +270,16 @@ describe('telephone number input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <TelephoneNumberInput label="telephoneNumber" placeholder="Enter telephone number" name="telephoneNumber" />
+          <TelephoneNumberInput
+            label="Telephone Number"
+            placeholder="Enter telephone number"
+            name="telephoneNumber"
+            showLabel={true}
+          />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('telephoneNumber') as HTMLInputElement;
+    const input = getByLabelText('Telephone Number') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: number } });
     fireEvent.blur(input);

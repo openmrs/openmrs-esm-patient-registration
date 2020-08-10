@@ -3,14 +3,21 @@
     flex-direction: row;
     justify-content: flex-start;
     flex-wrap: wrap;
+    align-items: center;
 }
 
-.field {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-left: 10px;
-    padding: 5px;
+.subFieldRow{
+    margin-bottom: 5px;
+}
+
+.label {
+    width: 150px;
+    text-align: right;
+    margin-right: 5px;
+  }
+
+.input {
+    margin-right: 5px;
 }
 
 .label {
@@ -28,48 +35,35 @@
     padding: 5px;
 }
 
-.subField {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-}
-
-.subTitle {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
 .textInput {
-    width: 250px !important;
-    background-color: white !important;
+    width: 300px !important;
+    height: 40px !important;
 }
 
 .numberInput {
-    width: 150px !important;
-    height: 50px !important;
-    background-color: white !important;
+    width: 200px !important;
+    height: 40px !important;
 }
 
 .checkboxInput {
-    height: 1rem !important;
-    width: 1rem !important;
+    height: 1.5rem !important;
+    width: 1.5rem !important;
 }
 
 .selectInput {
     width: 150px !important;
-    background-color: white !important;
+    height: 40px !important;
 }
 
 .dateInput {
     width: 200px !important;
-    background-color: white !important;
+    height: 40px !important;
     font-size: large !important;
 }
 
 .phoneNumberInput {
     width: 300px !important;
-    background-color: white !important;
+    height: 40px !important;
 }
 
 .errorInput {
@@ -82,4 +76,5 @@
 
 .dummyData {
     cursor: pointer;
+    margin-left: 5px;
 }
