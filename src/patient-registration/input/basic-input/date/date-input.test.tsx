@@ -8,7 +8,7 @@ describe('date input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ date: '' }} onSubmit={null}>
         <Form>
-          <DateInput name="date" />
+          <DateInput label="date" showLabel={false} name="date" />
         </Form>
       </Formik>,
     );

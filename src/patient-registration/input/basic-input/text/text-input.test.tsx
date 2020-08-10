@@ -8,11 +8,11 @@ describe('telephone number input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ text: '' }} onSubmit={null}>
         <Form>
-          <TextInput label="text" placeholder="Enter text" name="text" />
+          <TextInput label="Text" showLabel={true} placeholder="Enter text" name="text" />
         </Form>
       </Formik>,
     );
-    return getByLabelText('text') as HTMLInputElement;
+    return getByLabelText('Text') as HTMLInputElement;
   };
 
   it('exists', async () => {

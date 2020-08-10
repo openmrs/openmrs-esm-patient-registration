@@ -1,34 +1,17 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Formik, Form } from 'formik';
-import { FormValues } from '../../patient-registration.component';
+import { FormValues, initialFormValues } from '../../patient-registration.component';
 import { DemographicsSection } from './demographics-section.component';
 
 describe('demographics section', () => {
-  const initialFormValues: FormValues = {
-    givenName: '',
-    middleName: '',
-    familyName: '',
-    unidentifiedPatient: false,
-    gender: '',
-    birthdate: null,
-    yearsEstimated: 0,
-    monthsEstimated: 0,
-    birthdateEstimated: false,
-    telephoneNumber: '',
-    address1: '',
-    address2: '',
-    cityVillage: '',
-    stateProvince: '',
-    country: '',
-    postalCode: '',
-  };
+  const formValues: FormValues = initialFormValues;
 
   const setupSection = async (birthdateEstimated?: boolean) => {
     const { container } = render(
-      <Formik initialValues={{ ...initialFormValues, birthdateEstimated }} onSubmit={null}>
+      <Formik initialValues={{ ...formValues, birthdateEstimated }} onSubmit={null}>
         <Form>
-          <DemographicsSection setFieldValue={() => {}} values={{ ...initialFormValues, birthdateEstimated }} />
+          <DemographicsSection setFieldValue={() => {}} values={{ ...formValues, birthdateEstimated }} />
         </Form>
       </Formik>,
     );
