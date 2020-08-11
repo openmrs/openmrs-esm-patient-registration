@@ -10,7 +10,7 @@ interface IndentifierInputProps {
 export const IdentifierInput: React.FC<IndentifierInputProps> = ({ name, label }) => {
   return (
     <div className={styles.fieldRow}>
-      <TextInput label={label} placeholder="Enter Identifier" name={name} />
+      <TextInput showLabel={false} label="" placeholder={label} name={name} />
     </div>
   );
 };
