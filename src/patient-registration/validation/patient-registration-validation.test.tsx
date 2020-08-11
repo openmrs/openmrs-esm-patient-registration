@@ -54,7 +54,7 @@ describe('name input', () => {
           familyName: '',
         }}
         onSubmit={null}
-        validationSchema={validationSchema}>
+        validationSchema={Yup.object(validationSchema)}>
         <Form>
           <NameInput
             givenName="givenName"
@@ -218,7 +218,7 @@ describe('gender input', () => {
 
   const updateGenderAndReturnError = async (gender: string) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
+      <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={Yup.object(validationSchema)}>
         <Form>
           <SelectInput
             name="gender"
@@ -263,7 +263,7 @@ describe('birthdate input', () => {
 
   const updateBirthdateAndReturnError = async (birthdate: string) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
+      <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={Yup.object(validationSchema)}>
         <Form>
           <Input type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />
         </Form>
@@ -326,7 +326,7 @@ describe('estimated age input', () => {
       <Formik
         initialValues={{ yearsEstimated: 0, monthsEstimated: 0 }}
         onSubmit={null}
-        validationSchema={validationSchema}>
+        validationSchema={Yup.object(validationSchema)}>
         <Form>
           <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={() => {}} />
         </Form>
@@ -385,7 +385,7 @@ describe('telephone number input', () => {
 
   const updateTelephoneNumberAndReturnError = async (number: string) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null} validationSchema={validationSchema}>
+      <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null} validationSchema={Yup.object(validationSchema)}>
         <Form>
           <Input type="tel" label="Telephone Number" placeholder="Enter telephone number" name="telephoneNumber" />
         </Form>

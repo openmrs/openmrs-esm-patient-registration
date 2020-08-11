@@ -6,13 +6,16 @@ import { SelectInput } from '../../input/basic-input/select/select-input.compone
 import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estimated-age-input.component';
 import { Input } from '../../input/basic-input/input/input.component';
 import styles from './../section.css';
+import { IdentifierSection } from '../identifiers-section.component';
+import { PatientIdentifierType } from '../../patient-registration-helper';
 
 interface DemographicsSectionProps {
   setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
   values: FormValues;
+  identifierTypes: Array<PatientIdentifierType>;
 }
 
-export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFieldValue, values }) => {
+export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFieldValue, values, identifierTypes }) => {
   return (
     <section className={styles.formSection} aria-label="Demographics Section">
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Demographics</h5>

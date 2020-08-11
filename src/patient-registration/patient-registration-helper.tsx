@@ -20,13 +20,7 @@ interface AttributeValue {
 }
 
 export type Patient = {
-  identifiers: [
-    {
-      identifier: string;
-      identifierType: string;
-      location: string;
-    },
-  ];
+  identifiers: Array<PatientIdentifier>;
   person: {
     names: Array<NameValue>;
     gender: string;
@@ -36,3 +30,17 @@ export type Patient = {
     addresses: Array<AddressValue>;
   };
 };
+
+export interface PatientIdentifierType {
+  name: string;
+  required: boolean;
+  uuid: string;
+  fieldName: string;
+  format: string;
+}
+
+export interface PatientIdentifier {
+  identifier: string;
+  identifierType: string;
+  location: string;
+}

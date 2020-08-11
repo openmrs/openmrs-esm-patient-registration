@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { validationSchema } from './validation/patient-registration-validation';
-import { Patient } from './patient-registration-helper';
+import * as Yup from 'yup';
+import { Patient, PatientIdentifierType } from './patient-registration-helper';
 import {
   getCurrentUserLocation,
   getUniquePatientIdentifier,
   savePatient,
   uuidIdentifier,
   uuidTelephoneNumber,
+  getPrimaryIdentifierType,
+  getSecondaryIdentifierTypes,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
+import { showToast } from '@openmrs/esm-styleguide';
 import { DemographicsSection } from './section/demographics/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
@@ -66,7 +70,8 @@ export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [identifier, setIdentifier] = useState('');
   const [location, setLocation] = useState('');
-
+  const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
+  
   useEffect(() => {
     const abortController = new AbortController();
     getCurrentUserLocation(abortController).then(
@@ -105,17 +110,45 @@ export const PatientRegistration: React.FC = () => {
 
     return names;
   };
+  
+  useEffect(() => {
+    const abortController = new AbortController();
+    getPrimaryIdentifierType(abortController).then(primaryIdentifierType => {
+      getSecondaryIdentifierTypes(abortController).then(secondaryIdentifierTypes => {
+        const idTypes = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean) as PatientIdentifierType[];
+        idTypes.forEach(type => {
+          // update form initial values and validation schema
+          initialFormValues[type.fieldName] = '';
+          let fieldValidationProps = Yup.string();
+          if (type.required) {
+            fieldValidationProps = fieldValidationProps.required("Identifier can't be blank!");
+          }
+          if (type.format) {
+            fieldValidationProps = fieldValidationProps.matches(new RegExp(type.format), 'Invalid identifier format!');
+          }
+          validationSchema[type.fieldName] = fieldValidationProps;
+        });
+        setIdentifierTypes(idTypes);
+      }, createErrorHandler());
+    }, createErrorHandler());
+    return () => abortController.abort();
+  }, []);
 
   const onFormSubmit = (values: FormValues) => {
+    const patIdentifiers = identifierTypes.reduce(function(ids, id) {
+      const idValue = values[id.fieldName];
+      if (idValue) {
+        ids.push({
+          identifier: idValue,
+          identifierType: id.uuid,
+          location: location,
+        });
+      }
+      return ids;
+    }, []);
     const abortController = new AbortController();
     const patient: Patient = {
-      identifiers: [
-        {
-          identifier: identifier,
-          identifierType: uuidIdentifier,
-          location: location,
-        },
-      ],
+      identifiers: patIdentifiers,
       person: {
         names: getNames(values),
         gender: values.gender.charAt(0),
@@ -139,18 +172,24 @@ export const PatientRegistration: React.FC = () => {
         ],
       },
     };
-
-    savePatient(abortController, patient).then(
-      response => response.status == 201 && history.push(`/patient/${response.data.uuid}/chart`),
-      createErrorHandler(),
-    );
+    savePatient(abortController, patient)
+      .then(response => response.status == 201 && history.push(`/patient/${response.data.uuid}/chart`))
+      .catch(response => {
+        if (response.responseBody.error.globalErrors) {
+          response.responseBody.error.globalErrors.forEach(error => {
+            showToast({ description: error.message });
+          });
+        } else {
+          createErrorHandler();
+        }
+      });
   };
 
   return (
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={validationSchema}
+        validationSchema={Yup.object(validationSchema)}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);
@@ -161,7 +200,11 @@ export const PatientRegistration: React.FC = () => {
               <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
               {localStorage.getItem('openmrs:devtools') === 'true' && <DummyDataInput setValues={props.setValues} />}
             </div>
-            <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
+            <DemographicsSection
+              setFieldValue={props.setFieldValue}
+              values={props.values}
+              identifierTypes={identifierTypes}
+            />
             <ContactInfoSection />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient

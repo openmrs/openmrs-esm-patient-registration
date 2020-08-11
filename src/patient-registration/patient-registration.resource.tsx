@@ -1,5 +1,6 @@
 import { openmrsFetch } from '@openmrs/esm-api';
 import { Patient } from './patient-registration-helper';
+import { camelCase } from 'lodash';
 
 export function savePatient(abortController: AbortController, patient: Patient) {
   return openmrsFetch('/ws/rest/v1/patient', {
@@ -20,6 +21,57 @@ export function getCurrentUserLocation(abortController: AbortController) {
 
 export function getUniquePatientIdentifier(abortController: AbortController) {
   return openmrsFetch('/module/idgen/generateIdentifier.form?source=1');
+}
+
+export function getPrimaryIdentifierType(abortController: AbortController) {
+  return openmrsFetch('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType', {
+    signal: abortController.signal,
+  }).then(response => {
+    return openmrsFetch('/ws/rest/v1/patientidentifiertype/' + response.data.results[0].metadataUuid, {
+      signal: abortController.signal,
+    }).then(response => ({
+      name: response.data.name,
+      fieldName: camelCase(response.data.name),
+      required: response.data.required,
+      uuid: response.data.uuid,
+      format: response.data.format,
+    }));
+  });
+}
+
+export async function getSecondaryIdentifierTypes(abortController: AbortController) {
+  const response = await openmrsFetch(
+    '/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.extraPatientIdentifierTypes',
+    {
+      signal: abortController.signal,
+    },
+  );
+  if (response.data.results) {
+    const extraIdentifierTypesSetUuid = response.data.results[0].metadataUuid;
+    const secIdSet = await openmrsFetch(
+      '/ws/rest/v1/metadatamapping/metadataset/' + extraIdentifierTypesSetUuid + '/members',
+      {
+        signal: abortController.signal,
+      },
+    );
+    if (secIdSet.data.results) {
+      const ret = await Promise.all(
+        secIdSet.data.results.map(async setMember => {
+          const type = await openmrsFetch('/ws/rest/v1/patientidentifiertype/' + setMember.metadataUuid, {
+            signal: abortController.signal,
+          });
+          return {
+            name: type.data.name,
+            fieldName: camelCase(type.data.name),
+            required: type.data.required,
+            uuid: type.data.uuid,
+            format: response.data.format,
+          };
+        }),
+      );
+      return ret;
+    }
+  }
 }
 
 export const uuidIdentifier = '05a29f94-c0ed-11e2-94be-8c13b969e334';
