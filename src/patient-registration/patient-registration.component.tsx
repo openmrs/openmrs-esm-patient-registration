@@ -115,7 +115,8 @@ export const PatientRegistration: React.FC = () => {
     const abortController = new AbortController();
     getPrimaryIdentifierType(abortController).then(primaryIdentifierType => {
       getSecondaryIdentifierTypes(abortController).then(secondaryIdentifierTypes => {
-        const idTypes = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean) as PatientIdentifierType[];
+        let idTypes = [];
+        idTypes = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean);
         idTypes.forEach(type => {
           // update form initial values and validation schema
           initialFormValues[type.fieldName] = '';
