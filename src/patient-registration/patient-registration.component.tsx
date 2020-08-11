@@ -10,6 +10,7 @@ import {
   uuidTelephoneNumber,
   getPrimaryIdentifierType,
   getSecondaryIdentifierTypes,
+  getAddressTemplate,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
@@ -70,6 +71,7 @@ export const PatientRegistration: React.FC = () => {
   const [location, setLocation] = useState('');
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
+  const [addressTemplate, setAddressTemplate] = useState('');
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -127,6 +129,13 @@ export const PatientRegistration: React.FC = () => {
     })();
     return () => abortController.abort();
   }, [validationSchema]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    getAddressTemplate(abortController).then(({ data }) => {
+      setAddressTemplate(data.results[0].value);
+    });
+  }, []);
 
   const onFormSubmit = (values: FormValues) => {
     const identifiers = identifierTypes.reduce(function(ids, id) {
@@ -199,7 +208,7 @@ export const PatientRegistration: React.FC = () => {
             </div>
             <IdentifierSection identifierTypes={identifierTypes} />
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
-            <ContactInfoSection />
+            <ContactInfoSection addressTemplate={addressTemplate} />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient
             </button>

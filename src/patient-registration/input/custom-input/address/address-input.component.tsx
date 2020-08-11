@@ -9,16 +9,47 @@ interface AddressInputProps {
   stateProvinceName: string;
   countryName: string;
   postalCodeName: string;
+  addressTemplate?: string;
 }
 
-export const AddressInput: React.FC<AddressInputProps> = ({
+export const AddressInput: React.FC<AddressInputProps> = props => {
+  return <AddressFieldRenderer {...props} />;
+};
+
+function AddressFieldRenderer(props: AddressInputProps) {
+  if (props.addressTemplate) return <AddressTemplateFieldRenderer addressTemplate={props.addressTemplate} />;
+  else return <DefaultAddressFieldRenderer {...props} />;
+}
+
+function AddressTemplateFieldRenderer({ addressTemplate }) {
+  function renderAddressFields() {
+    const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
+    let lines = templateXmlDoc.getElementsByTagName('lineByLineFormat')[0].getElementsByTagName('string');
+    let linesText: string[][] = Array.prototype.map.call(lines, ({ textContent }) => textContent.split(' '));
+    return (
+      <main className={styles.fiield}>
+        {linesText.map((sections, index) => (
+          <section className={styles.fieldRow} key={`Section ${index}`}>
+            {sections.map(field => (
+              <TextInput label={field} name={field} placeholder="" key={field} showLabel={true} />
+            ))}
+          </section>
+        ))}
+      </main>
+    );
+  }
+
+  return <div>{renderAddressFields()}</div>;
+}
+
+function DefaultAddressFieldRenderer({
   address1Name,
   address2Name,
   cityVillageName,
   stateProvinceName,
   countryName,
   postalCodeName,
-}) => {
+}: AddressInputProps) {
   return (
     <main>
       <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
@@ -35,4 +66,4 @@ export const AddressInput: React.FC<AddressInputProps> = ({
       </section>
     </main>
   );
-};
+}
