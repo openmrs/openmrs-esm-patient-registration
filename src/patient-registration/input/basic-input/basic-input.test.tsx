@@ -13,7 +13,6 @@ describe('number input', () => {
                       label="Number"
                       showLabel={true}
                       name="number"
-                      placeholder="Enter number"
                     />
                 </Form>
             </Formik>,
