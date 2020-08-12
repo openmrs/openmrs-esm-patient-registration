@@ -2,9 +2,9 @@ import React from 'react';
 import { FormValues } from '../../patient-registration.component';
 import { NameInput } from '../../input/custom-input/name/name-input.component';
 import { UnidentifiedPatientInput } from '../../input/custom-input/unidentified-patient/unidentified-patient-input.component';
-import { SelectInput } from '../../input/basic-input/select/select-input.component';
+import { BasicSelect } from '../../input/basic-input/select/basic-select.component';
 import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estimated-age-input.component';
-import { BasicInput } from '../../input/basic-input/basic-input.component';
+import { BasicInput } from '../../input/basic-input/input/basic-input.component';
 import styles from './../section.css';
 
 interface DemographicsSectionProps {
@@ -21,7 +21,7 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
         <UnidentifiedPatientInput name="unidentifiedPatient" setName={setFieldValue} />
       </section>
       <section className={styles.fieldGroup}>
-        <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
+        <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
       </section>
       <section className={styles.fieldGroup}>
         <BasicInput type="date" label="Date of Birth" name="birthdate" showLabel={true} />

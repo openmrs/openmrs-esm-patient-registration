@@ -2,14 +2,14 @@ import React from 'react';
 import { useField } from 'formik';
 import styles from './../../input.css';
 
-interface SelectInputProps {
+interface BasicSelectProps {
   name: string;
   options: Array<string>;
   label: string;
   showLabel: boolean;
 }
 
-export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, showLabel }) => {
+export const BasicSelect: React.FC<BasicSelectProps> = ({ name, options, label, showLabel }) => {
   const [field, meta] = useField(name);
   const selectOptions = [
     <option key="" value="" disabled>

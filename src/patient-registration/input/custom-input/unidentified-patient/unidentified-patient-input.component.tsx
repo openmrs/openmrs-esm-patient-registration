@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useField } from 'formik';
-import { BasicInput } from '../../basic-input/basic-input.component';
+import { BasicInput } from '../../basic-input/input/basic-input.component';
 
 interface UnidentifiedPatientInputProps {
   name: string;

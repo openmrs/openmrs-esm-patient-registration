@@ -1,5 +1,5 @@
 import React from 'react';
-import { BasicInput } from '../../input/basic-input/basic-input.component';
+import { BasicInput } from '../../input/basic-input/input/basic-input.component';
 import { AddressInput } from '../../input/custom-input/address/address-input.component';
 import styles from './../section.css';
 

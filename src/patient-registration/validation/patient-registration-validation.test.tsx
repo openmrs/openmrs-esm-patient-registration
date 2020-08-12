@@ -4,9 +4,9 @@ import { Formik, Form } from 'formik';
 import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
 import { NameInput } from './../input/custom-input/name/name-input.component';
-import { SelectInput } from './../input/basic-input/select/select-input.component';
+import { BasicSelect } from '../input/basic-input/select/basic-select.component';
 import { EstimatedAgeInput } from './../input/custom-input/estimated-age/estimated-age-input.component';
-import { BasicInput } from './../input/basic-input/basic-input.component';
+import { BasicInput } from '../input/basic-input/input/basic-input.component';
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
@@ -107,7 +107,7 @@ describe('gender input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
+          <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
         </Form>
       </Formik>,
     );
