@@ -77,7 +77,9 @@ export async function getSecondaryIdentifierTypes(abortController: AbortControll
 }
 
 export function getAddressTemplate(abortController: AbortController) {
-  return openmrsFetch('/ws/rest/v1/systemsetting?q=layout.address.format&v=custom:(value)');
+  return openmrsFetch('/ws/rest/v1/systemsetting?q=layout.address.format&v=custom:(value)', {
+    signal: abortController.signal,
+  });
 }
 
 export const uuidIdentifier = '05a29f94-c0ed-11e2-94be-8c13b969e334';

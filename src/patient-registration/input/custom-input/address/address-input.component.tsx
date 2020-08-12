@@ -22,16 +22,36 @@ function AddressFieldRenderer(props: AddressInputProps) {
 }
 
 function AddressTemplateFieldRenderer({ addressTemplate }) {
+  function getNameMappingsAsDocument(template: XMLDocument) {
+    let tmp = template.getElementsByTagName('nameMappings')[0];
+    return new DOMParser().parseFromString(tmp.outerHTML, 'text/xml');
+  }
+
   function renderAddressFields() {
     const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
     let lines = templateXmlDoc.getElementsByTagName('lineByLineFormat')[0].getElementsByTagName('string');
     let linesText: string[][] = Array.prototype.map.call(lines, ({ textContent }) => textContent.split(' '));
+    let nameMappings = getNameMappingsAsDocument(templateXmlDoc);
+    type Field = {
+      name: string;
+      value: string;
+    };
+    let linesObj: Field[][] = linesText.map(sections => {
+      let new_sections = sections.map(field => {
+        let value = nameMappings.getElementsByName(field)[0].getAttribute('value');
+        return {
+          name: field,
+          value: value,
+        };
+      });
+      return new_sections;
+    });
     return (
       <main className={styles.fiield}>
-        {linesText.map((sections, index) => (
+        {linesObj.map((sections, index) => (
           <section className={styles.fieldRow} key={`Section ${index}`}>
             {sections.map(field => (
-              <TextInput label={field} name={field} placeholder="" key={field} showLabel={true} />
+              <TextInput label={field.value} name={field.name} placeholder="" key={field.name} showLabel={true} />
             ))}
           </section>
         ))}
