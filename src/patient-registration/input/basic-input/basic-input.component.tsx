@@ -7,9 +7,10 @@ interface BasicInputProps {
   label: string;
   name: string;
   showLabel: boolean;
+  placeholder?: string;
 }
 
-export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showLabel }) => {
+export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showLabel, placeholder }) => {
   const [field, meta] = useField(name);
 
   return (
@@ -25,6 +26,7 @@ export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showL
         }`}
         type={type}
         aria-label={label}
+        placeholder={placeholder}
         {...field}
         //Needed for date input?
         //Can this cause problems for other inputs? (esp. checkbox)

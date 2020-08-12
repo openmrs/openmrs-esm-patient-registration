@@ -8,7 +8,13 @@ describe('number input', () => {
         const { getByLabelText } = render(
             <Formik initialValues={{ number: 0 }} onSubmit={null}>
                 <Form>
-                    <BasicInput type="number" label="Number" showLabel={true} name="number" />
+                    <BasicInput
+                      type="number"
+                      label="Number"
+                      showLabel={true}
+                      name="number"
+                      placeholder="Enter number"
+                    />
                 </Form>
             </Formik>,
         );
@@ -38,7 +44,13 @@ describe('text input', () => {
         const { getByLabelText } = render(
             <Formik initialValues={{ text: '' }} onSubmit={null}>
                 <Form>
-                    <BasicInput type="text" label="Text" showLabel={true} name="text" />
+                    <BasicInput
+                      type="text"
+                      label="Text"
+                      showLabel={true}
+                      name="text"
+                      placeholder="Enter text"
+                    />
                 </Form>
             </Formik>,
         );
@@ -73,6 +85,7 @@ describe('telephone number input', () => {
                         label="Telephone Number"
                         name="telephoneNumber"
                         showLabel={true}
+                        placeholder="Enter telephone number"
                     />
                 </Form>
             </Formik>,
@@ -103,7 +116,12 @@ describe('date input', () => {
         const { getByLabelText } = render(
             <Formik initialValues={{ date: '' }} onSubmit={null}>
                 <Form>
-                    <BasicInput type="date" label="date" showLabel={false} name="date" />
+                    <BasicInput
+                      type="date"
+                      label="date"
+                      showLabel={false}
+                      name="date"
+                    />
                 </Form>
             </Formik>,
         );
@@ -133,7 +151,12 @@ describe('checkbox input', () => {
         const { getByLabelText } = render(
             <Formik initialValues={{ checkbox: false }} onSubmit={null}>
                 <Form>
-                    <BasicInput type="checkbox" label="checkbox" showLabel={true} name="checkbox" />
+                    <BasicInput
+                      type="checkbox"
+                      label="checkbox"
+                      showLabel={true}
+                      name="checkbox"
+                    />
                 </Form>
             </Formik>,
         );
