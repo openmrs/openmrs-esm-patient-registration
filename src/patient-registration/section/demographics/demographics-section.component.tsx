@@ -5,7 +5,7 @@ import { UnidentifiedPatientInput } from '../../input/custom-input/unidentified-
 import { SelectInput } from '../../input/basic-input/select/select-input.component';
 import { DateInput } from '../../input/basic-input/date/date-input.component';
 import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estimated-age-input.component';
-import { CheckboxInput } from '../../input/basic-input/checkbox/checkbox-input.component';
+import { BasicInput } from '../../input/basic-input/basic-input.component';
 import styles from './../section.css';
 
 interface DemographicsSectionProps {
@@ -26,7 +26,7 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
       </section>
       <section className={styles.fieldGroup}>
         <DateInput label="Date of Birth" name="birthdate" showLabel={true} />
-        <CheckboxInput label="Estimated Birthdate" name="birthdateEstimated" />
+        <BasicInput type="checkbox" label="Estimated Birthdate" name="birthdateEstimated" showLabel={true} />
       </section>
       {values.birthdateEstimated ? (
         <section className={styles.fieldGroup}>
