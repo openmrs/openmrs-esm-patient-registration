@@ -1,15 +1,15 @@
 import React from 'react';
 import { useField } from 'formik';
-import styles from './../../input.css';
+import styles from './../input.css';
 
-interface TelephoneNumberInputProps {
+interface BasicInputProps {
+  type: string;
   label: string;
-  placeholder: string;
   name: string;
   showLabel: boolean;
 }
 
-export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ label, placeholder, name, showLabel }) => {
+export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showLabel }) => {
   const [field, meta] = useField(name);
 
   return (
@@ -20,13 +20,16 @@ export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ labe
         </label>
       )}
       <input
-        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.telInput} ${
+        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles[type + 'Input']} ${
           styles.input
         }`}
-        type="tel"
+        type={type}
         aria-label={label}
-        placeholder={placeholder}
         {...field}
+        //Needed for date input?
+        //Can this cause problems for other inputs? (esp. checkbox)
+        value={field.value !== null ? field.value : ''}
+        checked={type === 'checkbox' ? field.value : null}
       />
       {meta.touched && meta.error && (
         <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
