@@ -6,16 +6,18 @@ interface DateInputProps {
   label: string;
   name: string;
   showLabel: boolean;
+  labelRequired: boolean;
 }
 
-export const DateInput: React.FC<DateInputProps> = ({ label, name, showLabel }) => {
+export const DateInput: React.FC<DateInputProps> = ({ label, name, showLabel, labelRequired }) => {
   const [field, meta] = useField(name);
 
   return (
     <main className={styles.fieldRow}>
       {showLabel && (
         <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
-          {label}
+          <span>{label}</span>
+          {labelRequired && <span className={styles.requiredField}> *</span>}
         </label>
       )}
       <input

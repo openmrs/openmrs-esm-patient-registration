@@ -16,13 +16,12 @@
     margin-right: 5px;
   }
 
-.input {
-    margin-right: 5px;
+.requiredField {
+    color: red;
 }
 
-.label {
-    display: flex;
-    flex-direction: column;
+.input {
+    margin-right: 5px;
 }
 
 .checkboxField {
