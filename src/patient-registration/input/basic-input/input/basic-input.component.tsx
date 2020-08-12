@@ -28,8 +28,6 @@ export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showL
         aria-label={label}
         placeholder={placeholder}
         {...field}
-        //Needed for date input?
-        //Can this cause problems for other inputs? (esp. checkbox)
         value={field.value !== null ? field.value : ''}
         checked={type === 'checkbox' ? field.value : null}
       />
