@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
 import { NameInput } from './../input/custom-input/name/name-input.component';
 import { SelectInput } from './../input/basic-input/select/select-input.component';
-import { DateInput } from './../input/basic-input/date/date-input.component';
 import { EstimatedAgeInput } from './../input/custom-input/estimated-age/estimated-age-input.component';
 import { BasicInput } from './../input/basic-input/basic-input.component';
 
@@ -148,7 +147,7 @@ describe('birthdate input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <DateInput label="Date of Birth" name="birthdate" showLabel={true} />
+          <BasicInput type="date" label="Date of Birth" name="birthdate" showLabel={true} />
         </Form>
       </Formik>,
     );

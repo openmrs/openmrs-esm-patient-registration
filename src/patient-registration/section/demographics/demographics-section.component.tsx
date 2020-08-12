@@ -3,7 +3,6 @@ import { FormValues } from '../../patient-registration.component';
 import { NameInput } from '../../input/custom-input/name/name-input.component';
 import { UnidentifiedPatientInput } from '../../input/custom-input/unidentified-patient/unidentified-patient-input.component';
 import { SelectInput } from '../../input/basic-input/select/select-input.component';
-import { DateInput } from '../../input/basic-input/date/date-input.component';
 import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estimated-age-input.component';
 import { BasicInput } from '../../input/basic-input/basic-input.component';
 import styles from './../section.css';
@@ -25,7 +24,7 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
         <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
       </section>
       <section className={styles.fieldGroup}>
-        <DateInput label="Date of Birth" name="birthdate" showLabel={true} />
+        <BasicInput type="date" label="Date of Birth" name="birthdate" showLabel={true} />
         <BasicInput type="checkbox" label="Estimated Birthdate" name="birthdateEstimated" showLabel={true} />
       </section>
       {values.birthdateEstimated ? (
