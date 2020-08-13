@@ -17,7 +17,7 @@
   }
 
 .requiredField {
-    color: red;
+    color: var(--omrs-color-danger);
 }
 
 .input {
