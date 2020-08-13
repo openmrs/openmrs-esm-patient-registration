@@ -3,7 +3,6 @@
     flex-direction: row;
     justify-content: flex-start;
     flex-wrap: wrap;
-    align-items: center;
 }
 
 .subFieldRow{
@@ -14,7 +13,8 @@
     width: 150px;
     text-align: right;
     margin-right: 5px;
-  }
+    align-self: center;
+}
 
 .requiredField {
     color: var(--omrs-color-danger);
@@ -71,6 +71,7 @@
 
 .errorMessage {
     color: var(--omrs-color-danger);
+    align-self: center;
 }
 
 .dummyData {
