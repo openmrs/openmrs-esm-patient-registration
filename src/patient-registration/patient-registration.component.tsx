@@ -113,30 +113,32 @@ export const PatientRegistration: React.FC = () => {
   
   useEffect(() => {
     const abortController = new AbortController();
-    getPrimaryIdentifierType(abortController).then(primaryIdentifierType => {
-      getSecondaryIdentifierTypes(abortController).then(secondaryIdentifierTypes => {
-        let idTypes = [];
-        idTypes = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean);
-        idTypes.forEach(type => {
-          // update form initial values and validation schema
-          initialFormValues[type.fieldName] = '';
-          let fieldValidationProps = Yup.string();
-          if (type.required) {
-            fieldValidationProps = fieldValidationProps.required("Identifier can't be blank!");
-          }
-          if (type.format) {
-            fieldValidationProps = fieldValidationProps.matches(new RegExp(type.format), 'Invalid identifier format!');
-          }
-          validationSchema[type.fieldName] = fieldValidationProps;
-        });
-        setIdentifierTypes(idTypes);
-      }, createErrorHandler());
-    }, createErrorHandler());
+    (async () => {
+      const [primaryIdentifierType, secondaryIdentifierTypes] = await Promise.all([
+        getPrimaryIdentifierType(abortController),
+        getSecondaryIdentifierTypes(abortController),
+      ]);
+      let types = [];
+      types = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean);
+      types.forEach(type => {
+        // update form initial values and validation schema
+        initialFormValues[type.fieldName] = '';
+        let fieldValidationProps = Yup.string();
+        if (type.required) {
+          fieldValidationProps = fieldValidationProps.required("Identifier can't be blank!");
+        }
+        if (type.format) {
+          fieldValidationProps = fieldValidationProps.matches(new RegExp(type.format), 'Invalid identifier format!');
+        }
+        validationSchema[type.fieldName] = fieldValidationProps;
+      });
+      setIdentifierTypes(types);
+    })();
     return () => abortController.abort();
   }, []);
 
   const onFormSubmit = (values: FormValues) => {
-    const patIdentifiers = identifierTypes.reduce(function(ids, id) {
+    const identifiers = identifierTypes.reduce(function(ids, id) {
       const idValue = values[id.fieldName];
       if (idValue) {
         ids.push({
@@ -149,7 +151,7 @@ export const PatientRegistration: React.FC = () => {
     }, []);
     const abortController = new AbortController();
     const patient: Patient = {
-      identifiers: patIdentifiers,
+      identifiers: identifiers,
       person: {
         names: getNames(values),
         gender: values.gender.charAt(0),
@@ -180,8 +182,6 @@ export const PatientRegistration: React.FC = () => {
           response.responseBody.error.globalErrors.forEach(error => {
             showToast({ description: error.message });
           });
-        } else {
-          createErrorHandler();
         }
       });
   };
