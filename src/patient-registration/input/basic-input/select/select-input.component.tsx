@@ -31,19 +31,21 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, 
           {labelRequired && <span className={styles.requiredField}> *</span>}
         </label>
       )}
-      <select
-        className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
-          styles.input
-        } ${styles.selectInput}`}
-        aria-label={label}
-        {...field}>
-        {selectOptions}
-      </select>
-      {meta.touched && meta.error && (
-        <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
-          {meta.error}
-        </div>
-      )}
+      <div>
+        <select
+          className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
+            styles.input
+            } ${styles.selectInput}`}
+          aria-label={label}
+          {...field}>
+          {selectOptions}
+        </select>
+        {meta.touched && meta.error && (
+          <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
+            {meta.error}
+          </div>
+        )}
+      </div>
     </main>
   );
 };
