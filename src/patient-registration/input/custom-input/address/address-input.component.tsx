@@ -24,19 +24,19 @@ function AddressFieldRenderer(props: AddressInputProps) {
   }
 }
 
+function parseString(v: string) {
+  return new DOMParser().parseFromString(v, 'text/xml');
+}
+
 function AddressTemplateFieldRenderer({ addressTemplate }) {
   function getTagAsDocument(tagName: string, template: XMLDocument) {
     let tmp = template.getElementsByTagName(tagName)[0];
-    return new DOMParser().parseFromString(tmp.outerHTML, 'text/xml');
+    return tmp ? parseString(tmp.outerHTML) : parseString('');
   }
 
   function getFieldValue(field: string, doc: XMLDocument) {
     let fieldElement = doc.getElementsByName(field)[0];
-    if (fieldElement) {
-      return fieldElement.getAttribute('value');
-    } else {
-      return '';
-    }
+    return fieldElement ? fieldElement.getAttribute('value') : '';
   }
 
   function isRequired(field: string, doc: XMLDocument) {
