@@ -13,7 +13,7 @@
     width: 150px;
     text-align: right;
     margin-right: 5px;
-    align-self: center;
+    padding-top: 8px;
 }
 
 .requiredField {
@@ -28,10 +28,8 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
     width: 400px;
     margin-left: 10px;
-    padding: 5px;
 }
 
 .textInput {
@@ -47,6 +45,7 @@
 .checkboxInput {
     height: 1.5rem !important;
     width: 1.5rem !important;
+    margin-top: 8px;
 }
 
 .selectInput {
