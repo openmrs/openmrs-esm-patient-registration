@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { useConfig } from '@openmrs/esm-module-config';
 import { AttributeValue } from './patient-registration-helper';
 
-export function validationSchema(props) {
+export function validationSchema(config) {
   return Yup.object({
     givenName: Yup.string().required('Given name is required'),
     familyName: Yup.string().required('Family name is required'),
@@ -15,21 +15,58 @@ export function validationSchema(props) {
       .nullable(),
     yearsEstimated: Yup.number().min(0, 'Years cannot be less than 0'),
     monthsEstimated: Yup.number().min(0, 'Months cannot be less than 0'),
-    //telephoneNumber: Yup.string().matches(/^[0-9]*$/, 'Telephone number should only contain digits'),
     attributes: Yup.array().of(
-      Yup.object().shape({
-        value: Yup.string().required('Required'),
-      }),
-    ),
-    /*  attributes: Yup.array(),
-    'attributes[0]': Yup.object().shape({
-      value: Yup.string().test("test1", "Type something", function () {
-        return this.parent && this.parent.attributes && this.parent.attributes[0] === ""
-      }),
-    }),   */
+      Yup.object()
+        .shape({})
+        .test('Attribute test', 'Attribute validation', function() {
+          if (config.personAttributes.length) {
+            const attributes = this.parent;
+            config.personAttributes.map((p, i) => {
+              if (p.validation.required && attributes[i].value === undefined) {
+                throw this.createError({
+                  path: `attributes[${i}].value`,
+                  message: `${p.label} is required`,
+                });
+              }
 
-    /* 'attributes[1]': Yup.object().shape({
-      value: Yup.string().required('Given name is required'),
-    }),   */
+              if (p.validation.min && attributes[i].value === undefined) {
+                throw this.createError({
+                  path: `attributes[${i}].value`,
+                  message: `${p.label} is required`,
+                });
+              } else if (p.validation.min && attributes[i].value.length < p.validation.min) {
+                throw this.createError({
+                  path: `attributes[${i}].value`,
+                  message: `${p.label} should be greater than  ${p.validation.min} characters`,
+                });
+              }
+
+              if (p.validation.max && attributes[i].value === undefined) {
+                throw this.createError({
+                  path: `attributes[${i}].value`,
+                  message: `${p.label} is required`,
+                });
+              } else if (p.validation.max && attributes[i].value.length > p.validation.max) {
+                throw this.createError({
+                  path: `attributes[${i}].value`,
+                  message: `${p.label} should be lesser than  ${p.validation.max} characters`,
+                });
+              }
+
+              if (p.validation.matches && p.validation.matches != '') {
+                const regex = RegExp(p.validation.matches);
+                if (!regex.test(attributes[i].value)) {
+                  throw this.createError({
+                    path: `attributes[${i}].value`,
+                    message: `Unexpected characters used in ${p.label} `,
+                  });
+                }
+              }
+            });
+          }
+
+          return true;
+        }),
+    ),
   });
 }

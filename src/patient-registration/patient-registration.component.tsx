@@ -14,11 +14,9 @@ import { DemographicsSection } from './section/demographics/demographics-section
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import styles from './patient-registration.css';
-
 import { useConfig } from '@openmrs/esm-module-config';
 import { PersonAttributeSection } from './widgets/section/person-attribute-section.component';
-//To do
-//add a type check here
+
 export interface FormValues {
   givenName: string;
   middleName: string;
@@ -80,10 +78,9 @@ export const PatientRegistration: React.FC = () => {
     stateProvince: '',
     country: '',
     postalCode: '',
-    attributes: [
-      /*  { attributeType: '', value: '' }  */
-    ],
+    attributes: [{ attributeType: '', value: '' }],
   };
+  const config = useConfig();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -102,19 +99,7 @@ export const PatientRegistration: React.FC = () => {
     );
     return () => abortController.abort();
   }, []);
-  const config = useConfig();
-  const [personAttConfig, setPersonAttConfig] = useState([]);
 
-  useEffect(() => {
-    config.personAttributes.map((c, i) => {
-      const atts = {
-        label: c.label,
-        uuid: c.uuid,
-        placeholder: c.placeholder,
-      };
-      setPersonAttConfig(personatt => [...personatt, atts]);
-    });
-  }, []);
   const onFormSubmit = (values: FormValues) => {
     const abortController = new AbortController();
     const patient: Patient = {
@@ -160,7 +145,7 @@ export const PatientRegistration: React.FC = () => {
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={validationSchema(initialFormValues)}
+        validationSchema={validationSchema(config)}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);
@@ -176,24 +161,27 @@ export const PatientRegistration: React.FC = () => {
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
 
-            <FieldArray name="attributes">
+            <FieldArray name="personattributes">
               {fieldArrayProps => {
                 const { push, form } = fieldArrayProps;
                 const { values } = form;
                 const { attributes } = values;
-
-                return personAttConfig.length ? (
+                return config.personAttributes.length ? (
                   <section className={styles.formSection}>
                     <h2 className="omrs-type-title-2">Additional Patient Information</h2>
-                    {personAttConfig.map((p, i) => {
-                      if (attributes.length < personAttConfig.length) {
-                        attributes.push({ attributeType: p.uuid, value: '' });
+                    {config.personAttributes.map((p, i) => {
+                      if (attributes.length < config.personAttributes.length) {
+                        if (i == 0) {
+                          attributes.splice(0, 1, { attributeType: p.uuid, value: '' });
+                        } else {
+                          attributes.push({ attributeType: p.uuid, value: '' });
+                        }
                       }
                       return (
                         <PersonAttributeSection
-                          key={personAttConfig[i].uuid}
-                          label={personAttConfig[i].label}
-                          placeholder={personAttConfig[i].placeholder}
+                          key={p.uuid}
+                          label={p.label}
+                          placeholder={p.placeholder}
                           name={`attributes[${i}].value`}
                         />
                       );

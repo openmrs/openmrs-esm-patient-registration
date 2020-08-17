@@ -4,7 +4,7 @@ export const ConfigMock = {
       label: 'Telephone Number',
       uuid: '14d4f066-15f5-102d-96e4-000c29c2a5d7',
       placeholder: 'Enter Telephone Number',
-      validation: { required: true },
+      validation: { matches: '^[0-9]*$' },
     },
     {
       label: 'Birth place',

@@ -58,7 +58,7 @@ describe('name input', () => {
           familyName: '',
         }}
         onSubmit={null}
-        validationSchema={validationSchema([])}>
+        validationSchema={validationSchema}>
         <Form>
           <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
         </Form>
@@ -109,7 +109,7 @@ describe('gender input', () => {
 
   const updateGenderAndReturnError = async (gender: string) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema([])}>
+      <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
           <SelectInput name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
         </Form>
@@ -149,7 +149,7 @@ describe('birthdate input', () => {
 
   const updateBirthdateAndReturnError = async (birthdate: string) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema([])}>
+      <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
           <DateInput label="Date of Birth" name="birthdate" showLabel={true} />
         </Form>
@@ -212,7 +212,7 @@ describe('estimated age input', () => {
       <Formik
         initialValues={{ yearsEstimated: 0, monthsEstimated: 0 }}
         onSubmit={null}
-        validationSchema={validationSchema([])}>
+        validationSchema={validationSchema}>
         <Form>
           <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={() => {}} />
         </Form>
@@ -271,9 +271,12 @@ describe('telephone number input', () => {
 
   const updateTelephoneNumberAndReturnError = async (number: string) => {
     const { container, getByLabelText } = render(
-      <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null} validationSchema={validationSchema(mockUseConfigResult)}>
+      <Formik
+        initialValues={{ telephoneNumber: '' }}
+        onSubmit={null}
+        validationSchema={validationSchema(mockUseConfigResult)}>
         <Form>
-         <PersonAttributeSection
+          <PersonAttributeSection
             key="14d4f066-15f5-102d-96e4-000c29c2a5d7"
             label="Telephone Number"
             placeholder="Enter Telephone Number"
