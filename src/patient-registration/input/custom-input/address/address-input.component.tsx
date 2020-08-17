@@ -39,6 +39,18 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
     }
   }
 
+  function isRequired(field: string, doc: XMLDocument) {
+    let fields = doc.getElementsByTagName('requiredElements')[0];
+    if (fields) {
+      let fieldsText: string[] = Array.prototype.map.call(
+        fields.getElementsByTagName('string'),
+        ({ textContent }) => textContent,
+      );
+      return fieldsText.includes(field);
+    }
+    return false;
+  }
+
   function renderAddressFields() {
     const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
     let lines = templateXmlDoc.getElementsByTagName('lineByLineFormat')[0].getElementsByTagName('string');
@@ -49,6 +61,7 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
       name: string;
       label: string;
       defaultValue: string;
+      required: boolean;
     };
     let linesObj: Field[][] = linesText.map(sections => {
       let new_sections = sections.map(field => {
@@ -58,6 +71,7 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
           name: field,
           label,
           defaultValue,
+          required: isRequired(field, templateXmlDoc),
         };
       });
       return new_sections;
@@ -74,6 +88,7 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
                 key={field.name}
                 showLabel={true}
                 defaultValue={field.defaultValue}
+                required={field.required}
               />
             ))}
           </section>
