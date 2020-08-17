@@ -17,31 +17,47 @@ export const AddressInput: React.FC<AddressInputProps> = props => {
 };
 
 function AddressFieldRenderer(props: AddressInputProps) {
-  if (props.addressTemplate) return <AddressTemplateFieldRenderer addressTemplate={props.addressTemplate} />;
-  else return <DefaultAddressFieldRenderer {...props} />;
+  if (props.addressTemplate) {
+    return <AddressTemplateFieldRenderer addressTemplate={props.addressTemplate} />;
+  } else {
+    return <DefaultAddressFieldRenderer {...props} />;
+  }
 }
 
 function AddressTemplateFieldRenderer({ addressTemplate }) {
-  function getNameMappingsAsDocument(template: XMLDocument) {
-    let tmp = template.getElementsByTagName('nameMappings')[0];
+  function getTagAsDocument(tagName: string, template: XMLDocument) {
+    let tmp = template.getElementsByTagName(tagName)[0];
     return new DOMParser().parseFromString(tmp.outerHTML, 'text/xml');
+  }
+
+  function getFieldValue(field: string, doc: XMLDocument) {
+    let fieldElement = doc.getElementsByName(field)[0];
+    if (fieldElement) {
+      return fieldElement.getAttribute('value');
+    } else {
+      return '';
+    }
   }
 
   function renderAddressFields() {
     const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
     let lines = templateXmlDoc.getElementsByTagName('lineByLineFormat')[0].getElementsByTagName('string');
     let linesText: string[][] = Array.prototype.map.call(lines, ({ textContent }) => textContent.split(' '));
-    let nameMappings = getNameMappingsAsDocument(templateXmlDoc);
+    let nameMappings = getTagAsDocument('nameMappings', templateXmlDoc);
+    let elementDefaults = getTagAsDocument('elementDefaults', templateXmlDoc);
     type Field = {
       name: string;
-      value: string;
+      label: string;
+      defaultValue: string;
     };
     let linesObj: Field[][] = linesText.map(sections => {
       let new_sections = sections.map(field => {
-        let value = nameMappings.getElementsByName(field)[0].getAttribute('value');
+        let label = getFieldValue(field, nameMappings);
+        let defaultValue = getFieldValue(field, elementDefaults);
         return {
           name: field,
-          value: value,
+          label,
+          defaultValue,
         };
       });
       return new_sections;
@@ -51,7 +67,14 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
         {linesObj.map((sections, index) => (
           <section className={styles.fieldRow} key={`Section ${index}`}>
             {sections.map(field => (
-              <TextInput label={field.value} name={field.name} placeholder="" key={field.name} showLabel={true} />
+              <TextInput
+                label={field.label}
+                name={field.name}
+                placeholder=""
+                key={field.name}
+                showLabel={true}
+                defaultValue={field.defaultValue}
+              />
             ))}
           </section>
         ))}
