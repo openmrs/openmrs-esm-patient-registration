@@ -7,7 +7,7 @@ import { NameInput } from '../input/custom-input/name/name-input.component';
 import { SelectInput } from '../input/basic-input/select/select-input.component';
 import { DateInput } from '../input/basic-input/date/date-input.component';
 import { EstimatedAgeInput } from '../input/custom-input/estimated-age/estimated-age-input.component';
-import { PersonAttributeSection } from '../widgets/section/person-attribute-section.component';
+import { PersonAttributeSection } from '../section/person-attribute/person-attribute-section.component';
 import { ConfigMock } from '../../../__mocks__/openmrs-esm-config.mock';
 
 const mockUseConfigResult = ConfigMock;
@@ -285,7 +285,7 @@ describe('telephone number input', () => {
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('attributes[0].value') as HTMLInputElement;
+    const input = getByLabelText('Telephone Number') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: number } });
     fireEvent.blur(input);
@@ -299,4 +299,4 @@ describe('telephone number input', () => {
   testInvalidTelephoneNumber('not a phone number');
   testInvalidTelephoneNumber('+0800001066');
   testInvalidTelephoneNumber('(0800)001066');
-}); 
+});

@@ -1,6 +1,4 @@
 import * as Yup from 'yup';
-import { useConfig } from '@openmrs/esm-module-config';
-import { AttributeValue } from './patient-registration-helper';
 
 export function validationSchema(config) {
   return Yup.object({
@@ -34,10 +32,10 @@ export function validationSchema(config) {
                   path: `attributes[${i}].value`,
                   message: `${p.label} is required`,
                 });
-              } else if (p.validation.min && attributes[i].value.length < p.validation.min) {
+              } else if (p.validation.min && attributes[i].value.length <= p.validation.min) {
                 throw this.createError({
                   path: `attributes[${i}].value`,
-                  message: `${p.label} should be greater than  ${p.validation.min} characters`,
+                  message: `${p.label} should have a minimum of  ${p.validation.min} characters`,
                 });
               }
 
@@ -49,7 +47,7 @@ export function validationSchema(config) {
               } else if (p.validation.max && attributes[i].value.length > p.validation.max) {
                 throw this.createError({
                   path: `attributes[${i}].value`,
-                  message: `${p.label} should be lesser than  ${p.validation.max} characters`,
+                  message: `${p.label} should have a maximum of ${p.validation.max} characters`,
                 });
               }
 

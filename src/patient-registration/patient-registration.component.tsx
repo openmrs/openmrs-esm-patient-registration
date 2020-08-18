@@ -15,7 +15,7 @@ import { ContactInfoSection } from './section/contact-info/contact-info-section.
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import styles from './patient-registration.css';
 import { useConfig } from '@openmrs/esm-module-config';
-import { PersonAttributeSection } from './widgets/section/person-attribute-section.component';
+import { PersonAttributeSection } from './section/person-attribute/person-attribute-section.component';
 
 export interface FormValues {
   givenName: string;
@@ -163,11 +163,11 @@ export const PatientRegistration: React.FC = () => {
 
             <FieldArray name="personattributes">
               {fieldArrayProps => {
-                const { push, form } = fieldArrayProps;
+                const { form } = fieldArrayProps;
                 const { values } = form;
                 const { attributes } = values;
                 return config.personAttributes.length ? (
-                  <section className={styles.formSection}>
+                  <section className={styles.formSection} aria-label="Person Attribute Section">
                     <h2 className="omrs-type-title-2">Additional Patient Information</h2>
                     {config.personAttributes.map((p, i) => {
                       if (attributes.length < config.personAttributes.length) {

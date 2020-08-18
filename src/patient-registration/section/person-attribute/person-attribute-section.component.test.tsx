@@ -4,8 +4,7 @@ import { ConfigMock } from '../../../../__mocks__/openmrs-esm-config.mock';
 //import { ConfigMock } from '../../../../__mocks__/openmrs-esm-module-config.mock';
 import { mockCurrentUserLocation } from '../../../../__mocks__/currentUserLocation.mock';
 import { mockUniquePatientIdentifiers } from '../../../../__mocks__/uniquePatientIdentifiers.mock';
-
-import { getCurrentUserLocation, getUniquePatientIdentifier } from './../../patient-registration.resource';
+import { getCurrentUserLocation, getUniquePatientIdentifier } from '../../patient-registration.resource';
 import { PatientRegistration } from '../../patient-registration.component';
 import React from 'react';
 
