@@ -72,6 +72,7 @@ export const PatientRegistration: React.FC = () => {
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
+  const [addressValidationSchema, setAddressValidationSchema] = useState(Yup.object({}));
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -137,6 +138,33 @@ export const PatientRegistration: React.FC = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (addressTemplate) {
+      const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
+      let sizeMappings = Array.prototype.map.call(
+        templateXmlDoc.getElementsByTagName('sizeMappings')[0].getElementsByTagName('property'),
+        (property: Element) => ({
+          name: property.getAttribute('name'),
+          value: property.getAttribute('value'),
+        }),
+      );
+      let addressValidationSchemaTmp = Yup.object(
+        Array.prototype.reduce.call(
+          sizeMappings,
+          (final, current) => {
+            final[current.name] = Yup.string().max(
+              current.value,
+              `${current.name} cannot be longer than ${current.value}`,
+            );
+            return final;
+          },
+          {},
+        ),
+      );
+      setAddressValidationSchema(addressValidationSchemaTmp);
+    }
+  }, [addressTemplate]);
+
   const onFormSubmit = (values: FormValues) => {
     const identifiers = identifierTypes.reduce(function(ids, id) {
       const idValue = values[id.fieldName];
@@ -195,7 +223,7 @@ export const PatientRegistration: React.FC = () => {
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={validationSchema}
+        validationSchema={validationSchema.concat(addressValidationSchema)}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);
