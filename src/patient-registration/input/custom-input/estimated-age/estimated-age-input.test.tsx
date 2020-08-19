@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { EstimatedAgeInput } from './estimated-age-input.component';
 
@@ -28,7 +28,6 @@ describe('estimated age input', () => {
     expect(inputs.years.type).toEqual('number');
     expect(inputs.months.type).toEqual('number');
   });
-
   it('calls setBirthdate', async () => {
     mockSetBirthdate.mockReset();
     await setupInput();

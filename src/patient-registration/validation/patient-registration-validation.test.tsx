@@ -3,11 +3,11 @@ import { render, fireEvent, wait } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
-import { NameInput } from '../input/custom-input/name/name-input.component';
-import { SelectInput } from '../input/basic-input/select/select-input.component';
-import { DateInput } from '../input/basic-input/date/date-input.component';
-import { TelephoneNumberInput } from '../input/basic-input/telephone-number/telephone-number-input.component';
-import { EstimatedAgeInput } from '../input/custom-input/estimated-age/estimated-age-input.component';
+import { NameInput } from './../input/custom-input/name/name-input.component';
+import { SelectInput } from './../input/basic-input/select/select-input.component';
+import { DateInput } from './../input/basic-input/date/date-input.component';
+import { EstimatedAgeInput } from './../input/custom-input/estimated-age/estimated-age-input.component';
+import { TelephoneNumberInput } from './../input/basic-input/telephone-number/telephone-number-input.component';
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
