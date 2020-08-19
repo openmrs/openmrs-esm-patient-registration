@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput } from '../../basic-input/text/text-input.component';
+import { BasicInput } from '../../basic-input/input/basic-input.component';
 import styles from './../../input.css';
 
 interface AddressInputProps {
@@ -22,16 +22,16 @@ export const AddressInput: React.FC<AddressInputProps> = ({
   return (
     <main>
       <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
-        <TextInput label="Address 1" placeholder="" name={address1Name} showLabel={true} />
-        <TextInput label="Address 2" placeholder="" name={address2Name} showLabel={true} />
+        <BasicInput type="text" label="Address 1" name={address1Name} />
+        <BasicInput type="text" label="Address 2" name={address2Name} />
       </section>
       <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
-        <TextInput label="City/Village" placeholder="" name={cityVillageName} showLabel={true} />
-        <TextInput label="State/Province" placeholder="" name={stateProvinceName} showLabel={true} />
+        <BasicInput type="text" label="City/Village" name={cityVillageName} />
+        <BasicInput type="text" label="State/Province" name={stateProvinceName} />
       </section>
       <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
-        <TextInput label="Country" placeholder="" name={countryName} showLabel={true} />
-        <TextInput label="Postal Code" placeholder="" name={postalCodeName} showLabel={true} />
+        <BasicInput type="text" label="Country" name={countryName} />
+        <BasicInput type="text" label="Postal Code" name={postalCodeName} />
       </section>
     </main>
   );

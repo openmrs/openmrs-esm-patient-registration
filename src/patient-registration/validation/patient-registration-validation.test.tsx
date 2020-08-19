@@ -4,10 +4,9 @@ import { Formik, Form } from 'formik';
 import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
 import { NameInput } from './../input/custom-input/name/name-input.component';
-import { SelectInput } from './../input/basic-input/select/select-input.component';
-import { DateInput } from './../input/basic-input/date/date-input.component';
+import { BasicSelect } from '../input/basic-input/select/basic-select.component';
 import { EstimatedAgeInput } from './../input/custom-input/estimated-age/estimated-age-input.component';
-import { TelephoneNumberInput } from './../input/basic-input/telephone-number/telephone-number-input.component';
+import { BasicInput } from '../input/basic-input/input/basic-input.component';
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
@@ -57,13 +56,18 @@ describe('name input', () => {
         onSubmit={null}
         validationSchema={validationSchema}>
         <Form>
-          <NameInput givenName="givenName" middleName="middleName" familyName="familyName" labelRequired={true} />
+          <NameInput
+            givenName="givenName"
+            middleName="middleName"
+            familyName="familyName"
+            showRequiredAsterisk={true}
+          />
         </Form>
       </Formik>,
     );
-    const givenNameInput = getByLabelText('Given Name') as HTMLInputElement;
-    const middleNameInput = getByLabelText('Middle Name') as HTMLInputElement;
-    const familyNameInput = getByLabelText('Family Name') as HTMLInputElement;
+    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
+    const middleNameInput = getByLabelText('middleName') as HTMLInputElement;
+    const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
 
     fireEvent.change(givenNameInput, { target: { value: givenNameValue } });
     fireEvent.blur(givenNameInput);
@@ -108,17 +112,16 @@ describe('gender input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <SelectInput
+          <BasicSelect
             name="gender"
             options={['Male', 'Female', 'Other', 'Unknown']}
             label="Gender"
-            showLabel={true}
-            labelRequired={true}
+            showRequiredAsterisk={true}
           />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('Gender') as HTMLSelectElement;
+    const input = getByLabelText('gender') as HTMLSelectElement;
 
     fireEvent.change(input, { target: { value: gender } });
     fireEvent.blur(input);
@@ -154,11 +157,11 @@ describe('birthdate input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <DateInput label="Date of Birth" name="birthdate" showLabel={true} labelRequired={true} />
+          <BasicInput type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('Date of Birth') as HTMLInputElement;
+    const input = getByLabelText('birthdate') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: birthdate } });
     fireEvent.blur(input);
@@ -221,8 +224,8 @@ describe('estimated age input', () => {
         </Form>
       </Formik>,
     );
-    const yearsEstimatedInput = getByLabelText('Years') as HTMLInputElement;
-    const monthsEstimatedInput = getByLabelText('Months') as HTMLInputElement;
+    const yearsEstimatedInput = getByLabelText('yearsEstimated') as HTMLInputElement;
+    const monthsEstimatedInput = getByLabelText('monthsEstimated') as HTMLInputElement;
 
     fireEvent.change(yearsEstimatedInput, { target: { value: estimatedAge.years } });
     fireEvent.blur(yearsEstimatedInput);
@@ -276,16 +279,11 @@ describe('telephone number input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <TelephoneNumberInput
-            label="Telephone Number"
-            placeholder="Enter telephone number"
-            name="telephoneNumber"
-            showLabel={true}
-          />
+          <BasicInput type="tel" label="Telephone Number" placeholder="Enter telephone number" name="telephoneNumber" />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('Telephone Number') as HTMLInputElement;
+    const input = getByLabelText('telephoneNumber') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: number } });
     fireEvent.blur(input);

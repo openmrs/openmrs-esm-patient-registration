@@ -2,15 +2,14 @@ import React from 'react';
 import { useField } from 'formik';
 import styles from './../../input.css';
 
-interface SelectInputProps {
+interface BasicSelectProps {
   name: string;
   options: Array<string>;
-  label: string;
-  showLabel: boolean;
-  labelRequired: boolean;
+  label?: string;
+  showRequiredAsterisk?: boolean;
 }
 
-export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, showLabel, labelRequired }) => {
+export const BasicSelect: React.FC<BasicSelectProps> = ({ name, options, label, showRequiredAsterisk }) => {
   const [field, meta] = useField(name);
   const selectOptions = [
     <option key="" value="" disabled>
@@ -25,10 +24,10 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, 
 
   return (
     <main className={styles.fieldRow}>
-      {showLabel && (
+      {label && (
         <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
           <span>{label}</span>
-          {labelRequired && <span className={styles.requiredField}> *</span>}
+          {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
         </label>
       )}
       <div>
@@ -36,7 +35,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, 
           className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
             styles.input
           } ${styles.selectInput}`}
-          aria-label={label}
+          aria-label={name}
           {...field}>
           {selectOptions}
         </select>
