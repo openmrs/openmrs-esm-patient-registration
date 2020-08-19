@@ -8,12 +8,7 @@ describe('basic select', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ select: '' }} onSubmit={null}>
         <Form>
-          <BasicSelect
-            label="Select"
-            name="select"
-            options={['A Option', 'B Option']}
-            showRequiredAsterisk={true}
-          />
+          <BasicSelect label="Select" name="select" options={['A Option', 'B Option']} showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );

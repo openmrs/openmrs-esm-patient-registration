@@ -21,7 +21,12 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
         <UnidentifiedPatientInput name="unidentifiedPatient" setName={setFieldValue} />
       </section>
       <section className={styles.fieldGroup}>
-        <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showRequiredAsterisk={true} />
+        <BasicSelect
+          name="gender"
+          options={['Male', 'Female', 'Other', 'Unknown']}
+          label="Gender"
+          showRequiredAsterisk={true}
+        />
       </section>
       <section className={styles.fieldGroup}>
         <BasicInput type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />

@@ -34,7 +34,7 @@ export const BasicSelect: React.FC<BasicSelectProps> = ({ name, options, label, 
         <select
           className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
             styles.input
-            } ${styles.selectInput}`}
+          } ${styles.selectInput}`}
           aria-label={name}
           {...field}>
           {selectOptions}

@@ -23,9 +23,9 @@ export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showR
       )}
       <div>
         <input
-          className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles[type + 'Input']} ${
-            styles.input
-            }`}
+          className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${
+            styles[type + 'Input']
+          } ${styles.input}`}
           type={type}
           aria-label={name}
           placeholder={placeholder}
