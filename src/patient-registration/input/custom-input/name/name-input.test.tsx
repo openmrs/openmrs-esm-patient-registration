@@ -8,7 +8,7 @@ describe('name input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
-          <NameInput givenName="givenName" middleName="middleName" familyName="familyName" labelRequired={true} />
+          <NameInput givenName="givenName" middleName="middleName" familyName="familyName" showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );

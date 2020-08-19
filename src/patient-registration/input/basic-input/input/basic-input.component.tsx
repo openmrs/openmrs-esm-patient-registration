@@ -6,20 +6,20 @@ interface BasicInputProps {
   type: string;
   label: string;
   name: string;
-  showLabel: boolean;
-  labelRequired?: boolean;
+  hideLabel?: boolean;
+  showRequiredAsterisk?: boolean;
   placeholder?: string;
 }
 
-export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showLabel, labelRequired, placeholder }) => {
+export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, hideLabel, showRequiredAsterisk, placeholder }) => {
   const [field, meta] = useField(name);
 
   return (
     <main className={styles.fieldRow}>
-      {showLabel && (
+      {!hideLabel && (
         <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
           <span>{label}</span>
-          {labelRequired && <span className={styles.requiredField}> *</span>}
+          {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
         </label>
       )}
       <div>

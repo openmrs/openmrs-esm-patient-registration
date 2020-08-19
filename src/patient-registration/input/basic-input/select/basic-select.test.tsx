@@ -10,10 +10,9 @@ describe('basic select', () => {
         <Form>
           <BasicSelect
             label="Select"
-            showLabel={true}
             name="select"
             options={['A Option', 'B Option']}
-            labelRequired={true}
+            showRequiredAsterisk={true}
           />
         </Form>
       </Formik>,

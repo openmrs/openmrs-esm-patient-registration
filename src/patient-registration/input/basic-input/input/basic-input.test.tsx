@@ -11,7 +11,6 @@ describe('number input', () => {
                     <BasicInput
                       type="number"
                       label="Number"
-                      showLabel={true}
                       name="number"
                     />
                 </Form>
@@ -46,7 +45,6 @@ describe('text input', () => {
                     <BasicInput
                       type="text"
                       label="Text"
-                      showLabel={true}
                       name="text"
                       placeholder="Enter text"
                     />
@@ -83,7 +81,6 @@ describe('telephone number input', () => {
                         type="tel"
                         label="Telephone Number"
                         name="telephoneNumber"
-                        showLabel={true}
                         placeholder="Enter telephone number"
                     />
                 </Form>
@@ -118,7 +115,6 @@ describe('date input', () => {
                     <BasicInput
                       type="date"
                       label="date"
-                      showLabel={false}
                       name="date"
                     />
                 </Form>
@@ -153,7 +149,6 @@ describe('checkbox input', () => {
                     <BasicInput
                       type="checkbox"
                       label="checkbox"
-                      showLabel={true}
                       name="checkbox"
                     />
                 </Form>

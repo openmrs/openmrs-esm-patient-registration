@@ -12,7 +12,6 @@ export const ContactInfoSection: React.FC = () => {
           type="tel"
           label="Telephone number"
           name="telephoneNumber"
-          showLabel={true}
         />
       </section>
       <section className={styles.fieldGroup}>

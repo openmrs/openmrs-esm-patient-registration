@@ -56,7 +56,7 @@ describe('name input', () => {
         onSubmit={null}
         validationSchema={validationSchema}>
         <Form>
-          <NameInput givenName="givenName" middleName="middleName" familyName="familyName" labelRequired={true} />
+          <NameInput givenName="givenName" middleName="middleName" familyName="familyName" showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
@@ -107,7 +107,7 @@ describe('gender input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} labelRequired={true} />
+          <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" hideLabel={true} showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
@@ -147,7 +147,7 @@ describe('birthdate input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicInput type="date" label="Date of Birth" name="birthdate" showLabel={true} labelRequired={true} />
+          <BasicInput type="date" label="Date of Birth" name="birthdate" hideLabel={true} showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
@@ -274,7 +274,7 @@ describe('telephone number input', () => {
             label="Telephone Number"
             placeholder="Enter telephone number"
             name="telephoneNumber"
-            showLabel={true}
+            hideLabel={true}
           />
         </Form>
       </Formik>,

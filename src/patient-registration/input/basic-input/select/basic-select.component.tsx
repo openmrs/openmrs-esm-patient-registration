@@ -6,11 +6,11 @@ interface BasicSelectProps {
   name: string;
   options: Array<string>;
   label: string;
-  showLabel: boolean;
-  labelRequired: boolean;
+  hideLabel?: boolean;
+  showRequiredAsterisk?: boolean;
 }
 
-export const BasicSelect: React.FC<BasicSelectProps> = ({ name, options, label, showLabel, labelRequired }) => {
+export const BasicSelect: React.FC<BasicSelectProps> = ({ name, options, label, hideLabel, showRequiredAsterisk }) => {
   const [field, meta] = useField(name);
   const selectOptions = [
     <option key="" value="" disabled>
@@ -25,10 +25,10 @@ export const BasicSelect: React.FC<BasicSelectProps> = ({ name, options, label, 
 
   return (
     <main className={styles.fieldRow}>
-      {showLabel && (
+      {!hideLabel && (
         <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
           <span>{label}</span>
-          {labelRequired && <span className={styles.requiredField}> *</span>}
+          {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
         </label>
       )}
       <div>

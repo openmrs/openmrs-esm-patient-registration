@@ -18,5 +18,5 @@ export const UnidentifiedPatientInput: React.FC<UnidentifiedPatientInputProps> =
     setName('familyName', newName);
   }, [field.value, setName]);
 
-  return <BasicInput type="checkbox" label="Unidentified Patient" name={name} showLabel={true} />;
+  return <BasicInput type="checkbox" label="Unidentified Patient" name={name} />;
 };
