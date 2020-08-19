@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { UnidentifiedPatientInput } from './unidentified-patient-input.component';
 

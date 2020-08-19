@@ -8,12 +8,7 @@ export const ContactInfoSection: React.FC = () => {
     <section className={styles.formSection} aria-label="Contact Info Section">
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Contact Info</h5>
       <section className={styles.fieldGroup}>
-        <TelephoneNumberInput
-          label="Telephone number"
-          placeholder="Telephone number"
-          name="telephoneNumber"
-          showLabel={true}
-        />
+        <TelephoneNumberInput label="Telephone number" placeholder="" name="telephoneNumber" showLabel={true} />
       </section>
       <section className={styles.fieldGroup}>
         <AddressInput
