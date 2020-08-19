@@ -17,14 +17,14 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
     <section className={styles.formSection} aria-label="Demographics Section">
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Demographics</h5>
       <section className={styles.fieldGroup}>
-        <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
+        <NameInput givenName="givenName" middleName="middleName" familyName="familyName" labelRequired={true} />
         <UnidentifiedPatientInput name="unidentifiedPatient" setName={setFieldValue} />
       </section>
       <section className={styles.fieldGroup}>
-        <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
+        <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} labelRequired={true} />
       </section>
       <section className={styles.fieldGroup}>
-        <BasicInput type="date" label="Date of Birth" name="birthdate" showLabel={true} />
+        <BasicInput type="date" label="Date of Birth" name="birthdate" showLabel={true} labelRequired={true} />
         <BasicInput type="checkbox" label="Estimated Birthdate" name="birthdateEstimated" showLabel={true} />
       </section>
       {values.birthdateEstimated ? (

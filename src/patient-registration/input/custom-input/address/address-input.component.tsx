@@ -22,16 +22,16 @@ export const AddressInput: React.FC<AddressInputProps> = ({
   return (
     <main>
       <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
-        <BasicInput type="text" label="Address 1" placeholder="First line of address" name={address1Name} showLabel={true} />
-        <BasicInput type="text" label="Address 2" placeholder="Second line of address" name={address2Name} showLabel={true} />
+        <BasicInput type="text" label="Address 1" name={address1Name} showLabel={true} />
+        <BasicInput type="text" label="Address 2" name={address2Name} showLabel={true} />
       </section>
       <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
-        <BasicInput type="text" label="City/Village" placeholder="City/Village" name={cityVillageName} showLabel={true} />
-        <BasicInput type="text" label="State/Province" placeholder="State/province" name={stateProvinceName} showLabel={true} />
+        <BasicInput type="text" label="City/Village" name={cityVillageName} showLabel={true} />
+        <BasicInput type="text" label="State/Province" name={stateProvinceName} showLabel={true} />
       </section>
       <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
-        <BasicInput type="text" label="Country" placeholder="Country" name={countryName} showLabel={true} />
-        <BasicInput type="text" label="Postal Code" placeholder="Postal code" name={postalCodeName} showLabel={true} />
+        <BasicInput type="text" label="Country" name={countryName} showLabel={true} />
+        <BasicInput type="text" label="Postal Code" name={postalCodeName} showLabel={true} />
       </section>
     </main>
   );

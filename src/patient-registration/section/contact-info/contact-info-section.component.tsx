@@ -11,7 +11,6 @@ export const ContactInfoSection: React.FC = () => {
         <BasicInput
           type="tel"
           label="Telephone number"
-          placeholder="Telephone number"
           name="telephoneNumber"
           showLabel={true}
         />

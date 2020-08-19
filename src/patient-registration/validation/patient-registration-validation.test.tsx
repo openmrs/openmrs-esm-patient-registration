@@ -56,7 +56,7 @@ describe('name input', () => {
         onSubmit={null}
         validationSchema={validationSchema}>
         <Form>
-          <NameInput givenName="givenName" middleName="middleName" familyName="familyName" />
+          <NameInput givenName="givenName" middleName="middleName" familyName="familyName" labelRequired={true} />
         </Form>
       </Formik>,
     );
@@ -107,7 +107,7 @@ describe('gender input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} />
+          <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showLabel={true} labelRequired={true} />
         </Form>
       </Formik>,
     );
@@ -147,7 +147,7 @@ describe('birthdate input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicInput type="date" label="Date of Birth" name="birthdate" showLabel={true} />
+          <BasicInput type="date" label="Date of Birth" name="birthdate" showLabel={true} labelRequired={true} />
         </Form>
       </Formik>,
     );
