@@ -22,7 +22,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({ label, name, showLabel
         <input
           className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.numberInput} ${
             styles.input
-            }`}
+          }`}
           type="number"
           aria-label={label}
           {...field}

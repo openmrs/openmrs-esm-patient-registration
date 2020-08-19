@@ -21,9 +21,9 @@ export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ labe
       )}
       <div>
         <input
-          className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.phoneNumberInput} ${
-            styles.input
-            }`}
+          className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${
+            styles.phoneNumberInput
+          } ${styles.input}`}
           type="tel"
           aria-label={label}
           placeholder={placeholder}

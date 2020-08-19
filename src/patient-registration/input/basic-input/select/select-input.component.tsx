@@ -35,7 +35,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, 
         <select
           className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
             styles.input
-            } ${styles.selectInput}`}
+          } ${styles.selectInput}`}
           aria-label={label}
           {...field}>
           {selectOptions}
