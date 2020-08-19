@@ -14,7 +14,7 @@ describe('unidentified patient input', () => {
         </Form>
       </Formik>,
     );
-    return getByLabelText('Unidentified Patient') as HTMLInputElement;
+    return getByLabelText('unidentifiedPatient') as HTMLInputElement;
   };
 
   it('exists', async () => {

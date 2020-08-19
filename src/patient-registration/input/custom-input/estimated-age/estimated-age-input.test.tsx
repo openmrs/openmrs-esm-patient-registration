@@ -14,8 +14,8 @@ describe('estimated age input', () => {
         </Form>
       </Formik>,
     );
-    const years = getByLabelText('Years') as HTMLInputElement;
-    const months = getByLabelText('Months') as HTMLInputElement;
+    const years = getByLabelText('years') as HTMLInputElement;
+    const months = getByLabelText('months') as HTMLInputElement;
 
     return {
       years,

@@ -31,10 +31,10 @@ describe('form submit', () => {
     const { getByText, getByLabelText } = render(<PatientRegistration />);
     await wait();
 
-    const givenNameInput = getByLabelText('Given Name') as HTMLInputElement;
-    const familyNameInput = getByLabelText('Family Name') as HTMLInputElement;
-    const dateOfBirthInput = getByLabelText('Date of Birth') as HTMLInputElement;
-    const genderSelect = getByLabelText('Gender') as HTMLSelectElement;
+    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
+    const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
+    const dateOfBirthInput = getByLabelText('birthdate') as HTMLInputElement;
+    const genderSelect = getByLabelText('gender') as HTMLSelectElement;
 
     fireEvent.change(givenNameInput, { target: { value: 'Paul' } });
     fireEvent.blur(givenNameInput);
@@ -68,7 +68,7 @@ describe('form submit', () => {
     const { getByText, getByLabelText } = render(<PatientRegistration />);
     await wait();
 
-    const givenNameInput = getByLabelText('Given Name') as HTMLInputElement;
+    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
 
     fireEvent.change(givenNameInput, { target: { value: '' } });
     fireEvent.blur(givenNameInput);

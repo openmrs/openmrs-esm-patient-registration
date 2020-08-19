@@ -4,19 +4,18 @@ import styles from './../../input.css';
 
 interface BasicInputProps {
   type: string;
-  label: string;
+  label?: string;
   name: string;
-  hideLabel?: boolean;
   showRequiredAsterisk?: boolean;
   placeholder?: string;
 }
 
-export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, hideLabel, showRequiredAsterisk, placeholder }) => {
+export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showRequiredAsterisk, placeholder }) => {
   const [field, meta] = useField(name);
 
   return (
     <main className={styles.fieldRow}>
-      {!hideLabel && (
+      {label && (
         <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
           <span>{label}</span>
           {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
@@ -28,7 +27,7 @@ export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, hideL
             styles.input
             }`}
           type={type}
-          aria-label={label}
+          aria-label={name}
           placeholder={placeholder}
           {...field}
           value={field.value !== null ? field.value : ''}

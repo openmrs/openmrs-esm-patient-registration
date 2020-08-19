@@ -17,7 +17,7 @@ describe('basic select', () => {
         </Form>
       </Formik>,
     );
-    return getByLabelText('Select') as HTMLInputElement;
+    return getByLabelText('select') as HTMLInputElement;
   };
 
   it('exists', async () => {

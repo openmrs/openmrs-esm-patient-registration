@@ -16,9 +16,9 @@ export const NameInput: React.FC<NameInputProps> = ({ givenName, middleName, fam
         <span>Name</span>
         {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
       </label>
-      <BasicInput type="text" label="Given Name" placeholder="Given name" name={givenName} hideLabel={true} />
-      <BasicInput type="text" label="Middle Name" placeholder="Middle name" name={middleName} hideLabel={true} />
-      <BasicInput type="text" label="Family Name" placeholder="Family name" name={familyName} hideLabel={true} />
+      <BasicInput type="text" placeholder="Given name" name={givenName} />
+      <BasicInput type="text" placeholder="Middle name" name={middleName} />
+      <BasicInput type="text" placeholder="Family name" name={familyName} />
     </main>
   );
 };

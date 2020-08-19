@@ -12,9 +12,9 @@ describe('name input', () => {
         </Form>
       </Formik>,
     );
-    const givenNameInput = getByLabelText('Given Name') as HTMLInputElement;
-    const middleNameInput = getByLabelText('Middle Name') as HTMLInputElement;
-    const familyNameInput = getByLabelText('Family Name') as HTMLInputElement;
+    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
+    const middleNameInput = getByLabelText('middleName') as HTMLInputElement;
+    const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
 
     return {
       givenNameInput,

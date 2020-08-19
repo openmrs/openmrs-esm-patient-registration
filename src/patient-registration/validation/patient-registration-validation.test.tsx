@@ -60,9 +60,9 @@ describe('name input', () => {
         </Form>
       </Formik>,
     );
-    const givenNameInput = getByLabelText('Given Name') as HTMLInputElement;
-    const middleNameInput = getByLabelText('Middle Name') as HTMLInputElement;
-    const familyNameInput = getByLabelText('Family Name') as HTMLInputElement;
+    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
+    const middleNameInput = getByLabelText('middleName') as HTMLInputElement;
+    const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
 
     fireEvent.change(givenNameInput, { target: { value: givenNameValue } });
     fireEvent.blur(givenNameInput);
@@ -107,11 +107,11 @@ describe('gender input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" hideLabel={true} showRequiredAsterisk={true} />
+          <BasicSelect name="gender" options={['Male', 'Female', 'Other', 'Unknown']} label="Gender" showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('Gender') as HTMLSelectElement;
+    const input = getByLabelText('gender') as HTMLSelectElement;
 
     fireEvent.change(input, { target: { value: gender } });
     fireEvent.blur(input);
@@ -147,11 +147,11 @@ describe('birthdate input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicInput type="date" label="Date of Birth" name="birthdate" hideLabel={true} showRequiredAsterisk={true} />
+          <BasicInput type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('Date of Birth') as HTMLInputElement;
+    const input = getByLabelText('birthdate') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: birthdate } });
     fireEvent.blur(input);
@@ -214,8 +214,8 @@ describe('estimated age input', () => {
         </Form>
       </Formik>,
     );
-    const yearsEstimatedInput = getByLabelText('Years') as HTMLInputElement;
-    const monthsEstimatedInput = getByLabelText('Months') as HTMLInputElement;
+    const yearsEstimatedInput = getByLabelText('yearsEstimated') as HTMLInputElement;
+    const monthsEstimatedInput = getByLabelText('monthsEstimated') as HTMLInputElement;
 
     fireEvent.change(yearsEstimatedInput, { target: { value: estimatedAge.years } });
     fireEvent.blur(yearsEstimatedInput);
@@ -274,12 +274,11 @@ describe('telephone number input', () => {
             label="Telephone Number"
             placeholder="Enter telephone number"
             name="telephoneNumber"
-            hideLabel={true}
           />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('Telephone Number') as HTMLInputElement;
+    const input = getByLabelText('telephoneNumber') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: number } });
     fireEvent.blur(input);

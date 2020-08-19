@@ -16,7 +16,7 @@ describe('number input', () => {
                 </Form>
             </Formik>,
         );
-        return getByLabelText('Number') as HTMLInputElement;
+        return getByLabelText('number') as HTMLInputElement;
     };
 
     it('exists', async () => {
@@ -51,7 +51,7 @@ describe('text input', () => {
                 </Form>
             </Formik>,
         );
-        return getByLabelText('Text') as HTMLInputElement;
+        return getByLabelText('text') as HTMLInputElement;
     };
 
     it('exists', async () => {
@@ -86,7 +86,7 @@ describe('telephone number input', () => {
                 </Form>
             </Formik>,
         );
-        return getByLabelText('Telephone Number') as HTMLInputElement;
+        return getByLabelText('telephoneNumber') as HTMLInputElement;
     };
 
     it('exists', async () => {
