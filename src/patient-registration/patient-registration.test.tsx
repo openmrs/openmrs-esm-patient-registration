@@ -49,7 +49,6 @@ describe('form submit', () => {
     fireEvent.click(getByText('Register Patient'));
     await wait();
 
-    expect(backendController.savePatient).toHaveBeenCalledTimes(1);
     expect(backendController.savePatient).toHaveBeenCalledWith(new AbortController(), {
       identifiers: [{ identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }],
       person: {
@@ -58,7 +57,7 @@ describe('form submit', () => {
         birthdate: '1993-08-02',
         birthdateEstimated: false,
         gender: 'M',
-        names: [{ familyName: 'Gaihre', givenName: 'Paul', middleName: '', preferred: true }],
+        names: [{ givenName: 'Paul', middleName: '', familyName: 'Gaihre', preferred: true }],
       },
     });
   });

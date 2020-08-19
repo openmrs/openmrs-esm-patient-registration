@@ -81,7 +81,7 @@
   "dependencies": {
     "@openmrs/esm-api": "^1.2.2",
     "@openmrs/esm-module-config": "^1.2.0",
-    "formik": "^2.1.4",
+    "formik": "^2.1.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "yup": "^0.29.1"

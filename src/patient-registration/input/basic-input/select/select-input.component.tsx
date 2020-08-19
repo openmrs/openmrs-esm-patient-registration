@@ -7,9 +7,10 @@ interface SelectInputProps {
   options: Array<string>;
   label: string;
   showLabel: boolean;
+  labelRequired: boolean;
 }
 
-export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, showLabel }) => {
+export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, showLabel, labelRequired }) => {
   const [field, meta] = useField(name);
   const selectOptions = [
     <option key="" value="" disabled>
@@ -26,22 +27,25 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, 
     <main className={styles.fieldRow}>
       {showLabel && (
         <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
-          {label}
+          <span>{label}</span>
+          {labelRequired && <span className={styles.requiredField}> *</span>}
         </label>
       )}
-      <select
-        className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
-          styles.input
-        } ${styles.selectInput}`}
-        aria-label={label}
-        {...field}>
-        {selectOptions}
-      </select>
-      {meta.touched && meta.error && (
-        <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
-          {meta.error}
-        </div>
-      )}
+      <div>
+        <select
+          className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
+            styles.input
+          } ${styles.selectInput}`}
+          aria-label={label}
+          {...field}>
+          {selectOptions}
+        </select>
+        {meta.touched && meta.error && (
+          <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
+            {meta.error}
+          </div>
+        )}
+      </div>
     </main>
   );
 };
