@@ -19,20 +19,22 @@ export const TelephoneNumberInput: React.FC<TelephoneNumberInputProps> = ({ labe
           {label}
         </label>
       )}
-      <input
-        className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${styles.phoneNumberInput} ${
-          styles.input
-        }`}
-        type="tel"
-        aria-label={label}
-        placeholder={placeholder}
-        {...field}
-      />
-      {meta.touched && meta.error && (
-        <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
-          {meta.error}
-        </div>
-      )}
+      <div>
+        <input
+          className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${
+            styles.phoneNumberInput
+          } ${styles.input}`}
+          type="tel"
+          aria-label={label}
+          placeholder={placeholder}
+          {...field}
+        />
+        {meta.touched && meta.error && (
+          <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
+            {meta.error}
+          </div>
+        )}
+      </div>
     </main>
   );
 };
