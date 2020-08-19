@@ -1,24 +1,24 @@
 import React from 'react';
-import { TextInput } from '../../basic-input/text/text-input.component';
+import { BasicInput } from '../../basic-input/input/basic-input.component';
 import styles from './../../input.css';
 
 interface NameInputProps {
   givenName: string;
   middleName: string;
   familyName: string;
-  labelRequired: Boolean;
+  showRequiredAsterisk: Boolean;
 }
 
-export const NameInput: React.FC<NameInputProps> = ({ givenName, middleName, familyName, labelRequired }) => {
+export const NameInput: React.FC<NameInputProps> = ({ givenName, middleName, familyName, showRequiredAsterisk }) => {
   return (
     <main className={styles.fieldRow}>
       <label className={`omrs-type-body-regular ${styles.label}`} htmlFor="name">
         <span>Name</span>
-        {labelRequired && <span className={styles.requiredField}> *</span>}
+        {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
       </label>
-      <TextInput label="Given Name" placeholder="Given name" name={givenName} showLabel={false} />
-      <TextInput label="Middle Name" placeholder="Middle name" name={middleName} showLabel={false} />
-      <TextInput label="Family Name" placeholder="Family name" name={familyName} showLabel={false} />
+      <BasicInput type="text" placeholder="Given name" name={givenName} />
+      <BasicInput type="text" placeholder="Middle name" name={middleName} />
+      <BasicInput type="text" placeholder="Family name" name={familyName} />
     </main>
   );
 };

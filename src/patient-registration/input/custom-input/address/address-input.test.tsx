@@ -19,12 +19,12 @@ describe('address input', () => {
         </Form>
       </Formik>,
     );
-    const address1Input = getByLabelText('Address 1') as HTMLInputElement;
-    const address2Input = getByLabelText('Address 2') as HTMLInputElement;
-    const cityVillageInput = getByLabelText('City/Village') as HTMLInputElement;
-    const stateProvinceInput = getByLabelText('State/Province') as HTMLInputElement;
-    const countryInput = getByLabelText('Country') as HTMLInputElement;
-    const postalCodeInput = getByLabelText('Postal Code') as HTMLInputElement;
+    const address1Input = getByLabelText('address1Name') as HTMLInputElement;
+    const address2Input = getByLabelText('address2Name') as HTMLInputElement;
+    const cityVillageInput = getByLabelText('cityVillageName') as HTMLInputElement;
+    const stateProvinceInput = getByLabelText('stateProvinceName') as HTMLInputElement;
+    const countryInput = getByLabelText('countryName') as HTMLInputElement;
+    const postalCodeInput = getByLabelText('postalCodeName') as HTMLInputElement;
 
     return {
       address1Input,
