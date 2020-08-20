@@ -168,7 +168,7 @@ export const PatientRegistration: React.FC = () => {
       let addressValidationSchemaTmp = Yup.object(
         validationSchemaObjs.reduce((final, current) => {
           final[current.name] = Yup.string()
-            .max(current.size, `${current.label} cannot be longer than ${current.size}`)
+            .max(current.size, `${current.label} cannot be longer than ${current.size} characters`)
             .matches(current.regex, current.regexFormat);
           return final;
         }, {}),
