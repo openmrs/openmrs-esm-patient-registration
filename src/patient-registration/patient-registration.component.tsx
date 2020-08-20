@@ -66,6 +66,14 @@ export const initialFormValues: FormValues = {
   postalCode: '',
 };
 
+interface AddressValidationSchemaType {
+  name: string;
+  label: string;
+  size: number;
+  regex: RegExp;
+  regexFormat: string;
+}
+
 export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [location, setLocation] = useState('');
@@ -141,29 +149,46 @@ export const PatientRegistration: React.FC = () => {
   useEffect(() => {
     if (addressTemplate) {
       const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
-      let sizeMappings = Array.prototype.map.call(
-        templateXmlDoc.getElementsByTagName('sizeMappings')[0].getElementsByTagName('property'),
-        (property: Element) => ({
-          name: property.getAttribute('name'),
-          value: property.getAttribute('value'),
-        }),
-      );
+      let nameMappings = templateXmlDoc.querySelector('nameMappings').querySelectorAll('property');
+      let validationSchemaObjs: AddressValidationSchemaType[] = Array.prototype.map.call(nameMappings, nameMapping => {
+        let field = nameMapping.getAttribute('name');
+        let label = nameMapping.getAttribute('value');
+        let size = getValueIfItExists(field, 'sizeMappings', templateXmlDoc);
+        let regex = getValueIfItExists(field, 'elementRegex', templateXmlDoc);
+        let regexFormat = getValueIfItExists(field, 'elementRegexFormats', templateXmlDoc);
+
+        return {
+          name: field,
+          label,
+          size,
+          regex: regex || '.*',
+          regexFormat: regexFormat || '',
+        };
+      });
       let addressValidationSchemaTmp = Yup.object(
-        Array.prototype.reduce.call(
-          sizeMappings,
-          (final, current) => {
-            final[current.name] = Yup.string().max(
-              current.value,
-              `${current.name} cannot be longer than ${current.value}`,
-            );
-            return final;
-          },
-          {},
-        ),
+        validationSchemaObjs.reduce((final, current) => {
+          final[current.name] = Yup.string()
+            .max(current.size, `${current.label} cannot be longer than ${current.size}`)
+            .matches(current.regex, current.regexFormat);
+          return final;
+        }, {}),
       );
       setAddressValidationSchema(addressValidationSchemaTmp);
     }
   }, [addressTemplate]);
+
+  const getValueIfItExists = (field: string, selector: string, doc: XMLDocument) => {
+    let element = doc.querySelector(selector);
+    if (element) {
+      let property = element.querySelector(`[name=${field}]`);
+      if (property) {
+        return property.getAttribute('value');
+      } else {
+        return null;
+      }
+    }
+    return null;
+  };
 
   const onFormSubmit = (values: FormValues) => {
     const identifiers = identifierTypes.reduce(function(ids, id) {
