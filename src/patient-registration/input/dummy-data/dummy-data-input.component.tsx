@@ -15,7 +15,7 @@ export const dummyFormValues: FormValues = {
   additionalMiddleName: '',
   additionalFamilyName: '',
   addNameInLocalLanguage: false,
-  gender: 'M',
+  gender: 'Male',
   birthdate: null,
   yearsEstimated: 1,
   monthsEstimated: 2,

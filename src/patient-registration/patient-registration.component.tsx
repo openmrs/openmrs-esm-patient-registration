@@ -85,6 +85,25 @@ export const PatientRegistration: React.FC = () => {
     return () => abortController.abort();
   }, []);
 
+  const getNames = (values: FormValues) => {
+    const names = [{
+        preferred: true,
+        givenName: values.givenName,
+        middleName: values.middleName,
+        familyName: values.familyName,
+      }];
+
+    values.addNameInLocalLanguage &&
+      names.push({
+        preferred: false,
+        givenName: values.additionalGivenName,
+        middleName: values.additionalMiddleName,
+        familyName: values.additionalFamilyName,
+      });
+
+    return names;
+  };
+
   const onFormSubmit = (values: FormValues) => {
     const abortController = new AbortController();
     const patient: Patient = {
@@ -96,14 +115,7 @@ export const PatientRegistration: React.FC = () => {
         },
       ],
       person: {
-        names: [
-          {
-            preferred: true,
-            givenName: values.givenName,
-            middleName: values.middleName,
-            familyName: values.familyName,
-          },
-        ],
+        names: getNames(values),
         gender: values.gender.charAt(0),
         birthdate: values.birthdate,
         birthdateEstimated: values.birthdateEstimated,
