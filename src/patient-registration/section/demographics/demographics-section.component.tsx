@@ -19,20 +19,20 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
       <section className={styles.fieldGroup}>
         <NameInput givenName="givenName" middleName="middleName" familyName="familyName" showRequiredAsterisk={true} />
         <UnidentifiedPatientInput name="unidentifiedPatient" setName={setFieldValue} />
-
-        {/* {values.addNameInLocalLanguage ? (
-          <div>
-            <h3 className="omrs-type-title-5">Name in local language</h3>
-            <NameInput
-              givenName="additionalGivenName"
-              middleName="additionalMiddleName"
-              familyName="additionalFamilyName"
-            />
-          </div>
-        ) : null}
+      </section>
+      <section className={styles.fieldGroup}>
+        {values.addNameInLocalLanguage && (
+          <NameInput
+            givenName="additionalGivenName"
+            middleName="additionalMiddleName"
+            familyName="additionalFamilyName"
+            showRequiredAsterisk={true}
+            label="Name in local language"
+          />
+        )}
         <div className="inline-form-container">
-          <CheckboxInput label="Add name in local language" name="addNameInLocalLanguage" />
-        </div> */}
+          <BasicInput type="checkbox" label="Add name in local language" name="addNameInLocalLanguage" />
+        </div>
       </section>
       <section className={styles.fieldGroup}>
         <BasicSelect

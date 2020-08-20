@@ -21,10 +21,10 @@ export interface FormValues {
   middleName: string;
   familyName: string;
   unidentifiedPatient: boolean;
-  // additionalGivenName: string;
-  // additionalMiddleName: string;
-  // additionalFamilyName: string;
-  // addNameInLocalLanguage: boolean;
+  additionalGivenName: string;
+  additionalMiddleName: string;
+  additionalFamilyName: string;
+  addNameInLocalLanguage: boolean;
   gender: string;
   birthdate: Date;
   yearsEstimated: number;
@@ -44,10 +44,10 @@ export const initialFormValues: FormValues = {
   middleName: '',
   familyName: '',
   unidentifiedPatient: false,
-  // additionalGivenName: '',
-  // additionalMiddleName: '',
-  // additionalFamilyName: '',
-  // addNameInLocalLanguage: false,
+  additionalGivenName: '',
+  additionalMiddleName: '',
+  additionalFamilyName: '',
+  addNameInLocalLanguage: false,
   gender: '',
   birthdate: null,
   yearsEstimated: 0,

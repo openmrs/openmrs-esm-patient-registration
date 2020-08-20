@@ -7,13 +7,20 @@ interface NameInputProps {
   middleName: string;
   familyName: string;
   showRequiredAsterisk: Boolean;
+  label?: string;
 }
 
-export const NameInput: React.FC<NameInputProps> = ({ givenName, middleName, familyName, showRequiredAsterisk }) => {
+export const NameInput: React.FC<NameInputProps> = ({
+  givenName,
+  middleName,
+  familyName,
+  showRequiredAsterisk,
+  label = 'Name',
+}) => {
   return (
     <main className={styles.fieldRow}>
       <label className={`omrs-type-body-regular ${styles.label}`} htmlFor="name">
-        <span>Name</span>
+        <span>{label}</span>
         {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
       </label>
       <BasicInput type="text" placeholder="Given name" name={givenName} />
