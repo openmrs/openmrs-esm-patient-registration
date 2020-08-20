@@ -1,13 +1,17 @@
 .formSection {
     margin-bottom: 10px;
-    padding: 30px;
+    padding: 10px 30px;
     background-color: var(--omrs-color-bg-high-contrast);
     box-shadow: 1.5px 1.5px 5px var(--omrs-color-ink-medium-contrast);
 }
 
-.formGroup {
-    margin: 19px;
-    padding: 15px;
-    background-color: var(--omrs-color-bg-medium-contrast);
-    box-shadow: 1.5px 1.5px 5px var(--omrs-color-bg-lowest-contrast);
+.fieldGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 5px;
+}
+
+.formSectionTitle {
+    margin: 5px;
 }

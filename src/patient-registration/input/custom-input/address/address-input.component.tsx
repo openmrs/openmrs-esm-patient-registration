@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput } from '../../basic-input/text/text-input.component';
+import { BasicInput } from '../../basic-input/input/basic-input.component';
 import styles from './../../input.css';
 
 interface AddressInputProps {
@@ -20,18 +20,18 @@ export const AddressInput: React.FC<AddressInputProps> = ({
   postalCodeName,
 }) => {
   return (
-    <main className={styles.field}>
-      <section className={styles.fieldRow}>
-        <TextInput label="Address 1" placeholder="Enter first line of address" name={address1Name} />
-        <TextInput label="Address 2" placeholder="Enter second line of address" name={address2Name} />
+    <main>
+      <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
+        <BasicInput type="text" label="Address 1" name={address1Name} />
+        <BasicInput type="text" label="Address 2" name={address2Name} />
       </section>
-      <section className={styles.fieldRow}>
-        <TextInput label="City/Village" placeholder="Enter city/address" name={cityVillageName} />
-        <TextInput label="State/Province" placeholder="Enter state/province" name={stateProvinceName} />
+      <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
+        <BasicInput type="text" label="City/Village" name={cityVillageName} />
+        <BasicInput type="text" label="State/Province" name={stateProvinceName} />
       </section>
-      <section className={styles.fieldRow}>
-        <TextInput label="Country" placeholder="Enter country" name={countryName} />
-        <TextInput label="Postal Code" placeholder="Enter postal code" name={postalCodeName} />
+      <section className={`${styles.fieldRow} ${styles.subFieldRow}`}>
+        <BasicInput type="text" label="Country" name={countryName} />
+        <BasicInput type="text" label="Postal Code" name={postalCodeName} />
       </section>
     </main>
   );

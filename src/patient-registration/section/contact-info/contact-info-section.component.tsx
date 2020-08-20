@@ -1,18 +1,16 @@
 import React from 'react';
-import { TelephoneNumberInput } from '../../input/basic-input/telephone-number/telephone-number-input.component';
+import { BasicInput } from '../../input/basic-input/input/basic-input.component';
 import { AddressInput } from '../../input/custom-input/address/address-input.component';
 import styles from './../section.css';
 
 export const ContactInfoSection: React.FC = () => {
   return (
-    <section className={styles.formSection} aria-label="contact info section">
-      <h2 className="omrs-type-title-2">Contact Info</h2>
-      <section className={styles.formGroup}>
-        <h3 className="omrs-type-title-5">Telephone Number</h3>
-        <TelephoneNumberInput label="" placeholder="Enter telephone number" name="telephoneNumber" />
+    <section className={styles.formSection} aria-label="Contact Info Section">
+      <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Contact Info</h5>
+      <section className={styles.fieldGroup}>
+        <BasicInput type="tel" label="Telephone number" name="telephoneNumber" />
       </section>
-      <section className={styles.formGroup}>
-        <h3 className="omrs-type-title-5">Address</h3>
+      <section className={styles.fieldGroup}>
         <AddressInput
           address1Name="address1"
           address2Name="address2"

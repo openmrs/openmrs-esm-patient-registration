@@ -3,9 +3,6 @@ interface NameValue {
   givenName: string;
   middleName: string;
   familyName: string;
-  additionalGivenName: string;
-  additionalMiddleName: string;
-  additionalFamilyName: string;
 }
 
 interface AddressValue {

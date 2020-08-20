@@ -10,11 +10,11 @@ describe('unidentified patient input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ unidentifiedPatient: false }} onSubmit={null}>
         <Form>
-          <UnidentifiedPatientInput label="label" name="unidentifiedPatient" setName={mockSetName} />
+          <UnidentifiedPatientInput name="unidentifiedPatient" setName={mockSetName} />
         </Form>
       </Formik>,
     );
-    return getByLabelText('label') as HTMLInputElement;
+    return getByLabelText('unidentifiedPatient') as HTMLInputElement;
   };
 
   it('exists', async () => {

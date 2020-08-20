@@ -11,10 +11,10 @@ export const dummyFormValues: FormValues = {
   middleName: '',
   familyName: 'Smith',
   unidentifiedPatient: false,
-  additionalGivenName: '',
-  additionalMiddleName: '',
-  additionalFamilyName: '',
-  addNameInLocalLanguage: false,
+  // additionalGivenName: '',
+  // additionalMiddleName: '',
+  // additionalFamilyName: '',
+  // addNameInLocalLanguage: false,
   gender: 'M',
   birthdate: null,
   yearsEstimated: 1,
@@ -31,12 +31,12 @@ export const dummyFormValues: FormValues = {
 
 export const DummyDataInput: React.FC<DummyDataInputProps> = ({ setValues }) => {
   return (
-    <main className={styles.field}>
+    <main>
       <button
         onClick={() => setValues(dummyFormValues)}
         className={`omrs-btn omrs-filled-neutral ${styles.dummyData}`}
         type="button"
-        aria-label="dummy data input">
+        aria-label="Dummy Data Input">
         Input Dummy Data
       </button>
     </main>

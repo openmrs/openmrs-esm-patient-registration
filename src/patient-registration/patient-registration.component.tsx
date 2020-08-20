@@ -21,10 +21,10 @@ export interface FormValues {
   middleName: string;
   familyName: string;
   unidentifiedPatient: boolean;
-  additionalGivenName: string;
-  additionalMiddleName: string;
-  additionalFamilyName: string;
-  addNameInLocalLanguage: boolean;
+  // additionalGivenName: string;
+  // additionalMiddleName: string;
+  // additionalFamilyName: string;
+  // addNameInLocalLanguage: boolean;
   gender: string;
   birthdate: Date;
   yearsEstimated: number;
@@ -39,15 +39,15 @@ export interface FormValues {
   postalCode: string;
 }
 
-const initialFormValues: FormValues = {
+export const initialFormValues: FormValues = {
   givenName: '',
   middleName: '',
   familyName: '',
   unidentifiedPatient: false,
-  additionalGivenName: '',
-  additionalMiddleName: '',
-  additionalFamilyName: '',
-  addNameInLocalLanguage: false,
+  // additionalGivenName: '',
+  // additionalMiddleName: '',
+  // additionalFamilyName: '',
+  // addNameInLocalLanguage: false,
   gender: '',
   birthdate: null,
   yearsEstimated: 0,
@@ -66,28 +66,6 @@ export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [identifier, setIdentifier] = useState('');
   const [location, setLocation] = useState('');
-  const initialFormValues: FormValues = {
-    givenName: '',
-    middleName: '',
-    familyName: '',
-    unidentifiedPatient: false,
-    additionalGivenName: '',
-    additionalMiddleName: '',
-    additionalFamilyName: '',
-    addNameInLocalLanguage: false,
-    gender: '',
-    birthdate: null,
-    yearsEstimated: 0,
-    monthsEstimated: 0,
-    birthdateEstimated: false,
-    telephoneNumber: '',
-    address1: '',
-    address2: '',
-    cityVillage: '',
-    stateProvince: '',
-    country: '',
-    postalCode: '',
-  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -124,12 +102,9 @@ export const PatientRegistration: React.FC = () => {
             givenName: values.givenName,
             middleName: values.middleName,
             familyName: values.familyName,
-            additionalGivenName: values.additionalGivenName,
-            additionalMiddleName: values.additionalMiddleName,
-            additionalFamilyName: values.additionalFamilyName,
           },
         ],
-        gender: values.gender,
+        gender: values.gender.charAt(0),
         birthdate: values.birthdate,
         birthdateEstimated: values.birthdateEstimated,
         attributes: [
@@ -170,9 +145,7 @@ export const PatientRegistration: React.FC = () => {
           <Form className={styles.form}>
             <div className={styles.formTitle}>
               <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
-              {localStorage.getItem('openmrs:devtools') === 'true' ? (
-                <DummyDataInput setValues={props.setValues} />
-              ) : null}
+              {localStorage.getItem('openmrs:devtools') === 'true' && <DummyDataInput setValues={props.setValues} />}
             </div>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
