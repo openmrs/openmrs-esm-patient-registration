@@ -93,6 +93,114 @@ describe('name input', () => {
   testInvalidName('No', 'Family Name', '', 'Family name is required', 'familyNameError');
 });
 
+describe('additional name input', () => {
+  const testValidAdditionalName = (
+    givenNameValue: string,
+    middleNameValue: string,
+    familyNameValue: string,
+    addNameInLocalLanguage: boolean,
+  ) => {
+    it(
+      'does not display error message when givenNameValue: ' +
+        givenNameValue +
+        ', middleNameValue: ' +
+        middleNameValue +
+        ', familyNameValue: ' +
+        familyNameValue +
+        ', addNameInLocalLanguage: ' +
+        addNameInLocalLanguage,
+      async () => {
+        const error = await updateNameAndReturnError(
+          givenNameValue,
+          middleNameValue,
+          familyNameValue,
+          addNameInLocalLanguage,
+        );
+        Object.values(error).map(currentError => expect(currentError).toBeNull());
+      },
+    );
+  };
+
+  const testInvalidAdditionalName = (
+    givenNameValue: string,
+    middleNameValue: string,
+    familyNameValue: string,
+    expectedError: string,
+    errorType: string,
+  ) => {
+    it(
+      'displays error message when givenNameValue: ' +
+        givenNameValue +
+        ', middleNameValue: ' +
+        middleNameValue +
+        ', familyNameValue: ' +
+        familyNameValue +
+        ', addNameInLocalLanguage: true',
+      async () => {
+        const error = (await updateNameAndReturnError(givenNameValue, middleNameValue, familyNameValue, true))[
+          errorType
+        ];
+        expect(error.textContent).toEqual(expectedError);
+      },
+    );
+  };
+
+  const updateNameAndReturnError = async (
+    givenNameValue: string,
+    middleNameValue: string,
+    familyNameValue: string,
+    addNameInLocalLanguage: boolean,
+  ) => {
+    const { container, getByLabelText } = render(
+      <Formik
+        initialValues={{
+          additionalGivenName: '',
+          additionalMiddleName: '',
+          additionalFamilyName: '',
+          addNameInLocalLanguage,
+        }}
+        onSubmit={null}
+        validationSchema={validationSchema}>
+        <Form>
+          <NameInput
+            givenName="additionalGivenName"
+            middleName="additionalMiddleName"
+            familyName="additionalFamilyName"
+            showRequiredAsterisk={true}
+          />
+          <BasicInput type="checkbox" label="Add name" name="addNameInLocalLanguage" />
+        </Form>
+      </Formik>,
+    );
+    const givenNameInput = getByLabelText('additionalGivenName') as HTMLInputElement;
+    const middleNameInput = getByLabelText('additionalMiddleName') as HTMLInputElement;
+    const familyNameInput = getByLabelText('additionalFamilyName') as HTMLInputElement;
+
+    fireEvent.change(givenNameInput, { target: { value: givenNameValue } });
+    fireEvent.blur(givenNameInput);
+    fireEvent.change(middleNameInput, { target: { value: middleNameValue } });
+    fireEvent.blur(middleNameInput);
+    fireEvent.change(familyNameInput, { target: { value: familyNameValue } });
+    fireEvent.blur(familyNameInput);
+
+    await wait();
+
+    return {
+      givenNameError: container.querySelector('div[aria-label="additionalGivenNameError"]'),
+      middleNameError: container.querySelector('div[aria-label="additionalMiddleNameError"]'),
+      familyNameError: container.querySelector('div[aria-label="additionalFamilyNameError"]'),
+    };
+  };
+
+  testValidAdditionalName('Aaron', 'A', 'Aaronson', true);
+  testValidAdditionalName('No', '', 'Middle Name', true);
+  testValidAdditionalName('', '', '', false);
+  testInvalidAdditionalName('', '', '', 'Given name is required', 'givenNameError');
+  testInvalidAdditionalName('', '', '', 'Family name is required', 'familyNameError');
+  testInvalidAdditionalName('', 'No', 'Given Name', 'Given name is required', 'givenNameError');
+  testInvalidAdditionalName('No', 'Family Name', '', 'Family name is required', 'familyNameError');
+});
+
 describe('gender input', () => {
   const testValidGender = (validGender: string) => {
     it('does not display error message when ' + validGender + ' is inputted', async () => {
