@@ -86,12 +86,14 @@ export const PatientRegistration: React.FC = () => {
   }, []);
 
   const getNames = (values: FormValues) => {
-    const names = [{
+    const names = [
+      {
         preferred: true,
         givenName: values.givenName,
         middleName: values.middleName,
         familyName: values.familyName,
-      }];
+      },
+    ];
 
     values.addNameInLocalLanguage &&
       names.push({
