@@ -2,16 +2,25 @@ import React from 'react';
 import { useField } from 'formik';
 import styles from './../../input.css';
 
-interface BasicInputProps {
-  type: string;
-  label?: string;
+interface SelectInputProps {
   name: string;
+  options: Array<string>;
+  label?: string;
   showRequiredAsterisk?: boolean;
-  placeholder?: string;
 }
 
-export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showRequiredAsterisk, placeholder }) => {
+export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, showRequiredAsterisk }) => {
   const [field, meta] = useField(name);
+  const selectOptions = [
+    <option key="" value="" disabled>
+      Select {name}
+    </option>,
+    options.map(currentOption => (
+      <option key={currentOption} value={currentOption}>
+        {currentOption}
+      </option>
+    )),
+  ];
 
   return (
     <main className={styles.fieldRow}>
@@ -22,17 +31,14 @@ export const BasicInput: React.FC<BasicInputProps> = ({ type, label, name, showR
         </label>
       )}
       <div>
-        <input
-          className={`omrs-input-outlined ${meta.touched && meta.error && styles.errorInput} ${
-            styles[type + 'Input']
-          } ${styles.input}`}
-          type={type}
+        <select
+          className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
+            styles.input
+          } ${styles.selectInput}`}
           aria-label={name}
-          placeholder={placeholder}
-          {...field}
-          value={field.value !== null ? field.value : ''}
-          checked={type === 'checkbox' ? field.value : null}
-        />
+          {...field}>
+          {selectOptions}
+        </select>
         {meta.touched && meta.error && (
           <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
             {meta.error}

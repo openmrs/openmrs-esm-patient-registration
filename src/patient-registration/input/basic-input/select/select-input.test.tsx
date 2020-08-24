@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
 import { Formik, Form } from 'formik';
-import { BasicSelect } from './basic-select.component';
+import { SelectInput } from './select-input.component';
 
-describe('basic select', () => {
+describe('select input', () => {
   const setupSelect = async () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ select: '' }} onSubmit={null}>
         <Form>
-          <BasicSelect label="Select" name="select" options={['A Option', 'B Option']} showRequiredAsterisk={true} />
+          <SelectInput label="Select" name="select" options={['A Option', 'B Option']} showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );

@@ -4,9 +4,9 @@ import { Formik, Form } from 'formik';
 import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
 import { NameInput } from './../input/custom-input/name/name-input.component';
-import { BasicSelect } from '../input/basic-input/select/basic-select.component';
+import { SelectInput } from '../input/basic-input/select/select-input.component';
 import { EstimatedAgeInput } from './../input/custom-input/estimated-age/estimated-age-input.component';
-import { BasicInput } from '../input/basic-input/input/basic-input.component';
+import { Input } from '../input/basic-input/input/input.component';
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
@@ -168,7 +168,7 @@ describe('additional name input', () => {
             familyName="additionalFamilyName"
             showRequiredAsterisk={true}
           />
-          <BasicInput type="checkbox" label="Add name" name="addNameInLocalLanguage" />
+          <Input type="checkbox" label="Add name" name="addNameInLocalLanguage" />
         </Form>
       </Formik>,
     );
@@ -220,7 +220,7 @@ describe('gender input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicSelect
+          <SelectInput
             name="gender"
             options={['Male', 'Female', 'Other', 'Unknown']}
             label="Gender"
@@ -265,7 +265,7 @@ describe('birthdate input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicInput type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />
+          <Input type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
@@ -387,7 +387,7 @@ describe('telephone number input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicInput type="tel" label="Telephone Number" placeholder="Enter telephone number" name="telephoneNumber" />
+          <Input type="tel" label="Telephone Number" placeholder="Enter telephone number" name="telephoneNumber" />
         </Form>
       </Formik>,
     );
