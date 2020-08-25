@@ -5,10 +5,10 @@ import styles from './section.css';
 
 export const IdentifierSection: React.FC<{ identifierTypes: PatientIdentifierType[] }> = ({ identifierTypes }) => {
   return (
-    <section className={styles.formGroup}>
-      <h3 className="omrs-type-title-5">Identifiers</h3>
+    <section className={styles.formSection}>
+      <h5 className="omrs-type-title-5">Identifiers</h5>
       {identifierTypes.map(identifierType => (
-        <IdentifierInput name={identifierType.fieldName} label={identifierType.name} key={identifierType.fieldName} />
+        <IdentifierInput key={identifierType.fieldName} type={identifierType} />
       ))}
     </section>
   );

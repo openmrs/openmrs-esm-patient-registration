@@ -1,16 +1,24 @@
 import React from 'react';
 import styles from './../input.css';
-import { TextInput } from '../basic-input/text/text-input.component';
+import { BasicInput } from '../basic-input/input/basic-input.component';
+import { PatientIdentifierType } from '../../patient-registration-helper';
 
 interface IndentifierInputProps {
-  name: string;
-  label: string;
+  type: PatientIdentifierType;
 }
 
-export const IdentifierInput: React.FC<IndentifierInputProps> = ({ name, label }) => {
+export const IdentifierInput: React.FC<IndentifierInputProps> = ({ type }) => {
   return (
     <div className={styles.fieldRow}>
-      <TextInput showLabel={false} label="" placeholder={label} name={name} />
+      <div className={styles.subFieldRow}>
+        <BasicInput
+          type="text"
+          label={type.name}
+          placeholder="Enter identifier"
+          name={type.fieldName}
+          showRequiredAsterisk={type.required}
+        />
+      </div>
     </div>
   );
 };

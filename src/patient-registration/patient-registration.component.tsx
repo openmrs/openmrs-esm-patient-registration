@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import { validationSchema } from './validation/patient-registration-validation';
+import { validationSchema as initSchema } from './validation/patient-registration-validation';
 import * as Yup from 'yup';
 import { Patient, PatientIdentifierType } from './patient-registration-helper';
 import {
   getCurrentUserLocation,
-  getUniquePatientIdentifier,
   savePatient,
   uuidIdentifier,
   uuidTelephoneNumber,
@@ -19,6 +18,7 @@ import { DemographicsSection } from './section/demographics/demographics-section
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import styles from './patient-registration.css';
+import { IdentifierSection } from './section/identifiers-section.component';
 
 export interface FormValues {
   givenName: string;
@@ -68,23 +68,14 @@ export const initialFormValues: FormValues = {
 
 export const PatientRegistration: React.FC = () => {
   const history = useHistory();
-  const [identifier, setIdentifier] = useState('');
   const [location, setLocation] = useState('');
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
-  
+  const [validationSchema, setValidationSchema] = useState(initSchema);
+
   useEffect(() => {
     const abortController = new AbortController();
     getCurrentUserLocation(abortController).then(
       ({ data }) => setLocation(data.sessionLocation.uuid),
-      createErrorHandler(),
-    );
-    return () => abortController.abort();
-  }, []);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    getUniquePatientIdentifier(abortController).then(
-      ({ data }) => setIdentifier(data.identifiers[0]),
       createErrorHandler(),
     );
     return () => abortController.abort();
@@ -120,6 +111,7 @@ export const PatientRegistration: React.FC = () => {
       ]);
       let types = [];
       types = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean);
+      let identifiersValidationSchema: any = {};
       types.forEach(type => {
         // update form initial values and validation schema
         initialFormValues[type.fieldName] = '';
@@ -130,8 +122,9 @@ export const PatientRegistration: React.FC = () => {
         if (type.format) {
           fieldValidationProps = fieldValidationProps.matches(new RegExp(type.format), 'Invalid identifier format!');
         }
-        validationSchema[type.fieldName] = fieldValidationProps;
+        identifiersValidationSchema[type.fieldName] = fieldValidationProps;
       });
+      setValidationSchema(validationSchema.concat(Yup.object(identifiersValidationSchema)));
       setIdentifierTypes(types);
     })();
     return () => abortController.abort();
@@ -145,6 +138,7 @@ export const PatientRegistration: React.FC = () => {
           identifier: idValue,
           identifierType: id.uuid,
           location: location,
+          preferred: idValue.isPrimary,
         });
       }
       return ids;
@@ -182,15 +176,18 @@ export const PatientRegistration: React.FC = () => {
           response.responseBody.error.globalErrors.forEach(error => {
             showToast({ description: error.message });
           });
+        } else if (response.responseBody.error.message) {
+          showToast({ description: response.responseBody.error.message });
+        } else {
+          createErrorHandler()(response);
         }
       });
   };
-
   return (
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={Yup.object(validationSchema)}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);
@@ -201,11 +198,8 @@ export const PatientRegistration: React.FC = () => {
               <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
               {localStorage.getItem('openmrs:devtools') === 'true' && <DummyDataInput setValues={props.setValues} />}
             </div>
-            <DemographicsSection
-              setFieldValue={props.setFieldValue}
-              values={props.values}
-              identifierTypes={identifierTypes}
-            />
+            <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
+            <IdentifierSection identifierTypes={identifierTypes} />
             <ContactInfoSection />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient

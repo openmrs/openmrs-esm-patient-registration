@@ -54,7 +54,7 @@ describe('form submit', () => {
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(new AbortController(), {
-      identifiers: [{ identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }],
+      identifiers: [],
       person: {
         addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
         attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],

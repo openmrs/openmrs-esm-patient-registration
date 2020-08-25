@@ -35,6 +35,7 @@ export function getPrimaryIdentifierType(abortController: AbortController) {
       required: response.data.required,
       uuid: response.data.uuid,
       format: response.data.format,
+      isPrimary: true,
     }));
   });
 }
@@ -66,6 +67,7 @@ export async function getSecondaryIdentifierTypes(abortController: AbortControll
             required: type.data.required,
             uuid: type.data.uuid,
             format: response.data.format,
+            isPrimary: false,
           };
         }),
       );
