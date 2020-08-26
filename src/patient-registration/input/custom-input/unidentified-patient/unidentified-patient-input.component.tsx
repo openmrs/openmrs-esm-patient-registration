@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useField } from 'formik';
-import { BasicInput } from '../../basic-input/input/basic-input.component';
+import { Input } from '../../basic-input/input/input.component';
 
 interface UnidentifiedPatientInputProps {
   name: string;
@@ -18,5 +18,5 @@ export const UnidentifiedPatientInput: React.FC<UnidentifiedPatientInputProps> =
     setName('familyName', newName);
   }, [field.value, setName]);
 
-  return <BasicInput type="checkbox" label="Unidentified Patient" name={name} />;
+  return <Input type="checkbox" label="Unidentified Patient" name={name} />;
 };

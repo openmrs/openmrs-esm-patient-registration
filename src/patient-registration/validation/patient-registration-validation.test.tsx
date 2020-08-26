@@ -4,9 +4,9 @@ import { Formik, Form } from 'formik';
 import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
 import { NameInput } from './../input/custom-input/name/name-input.component';
-import { BasicSelect } from '../input/basic-input/select/basic-select.component';
+import { SelectInput } from '../input/basic-input/select/select-input.component';
 import { EstimatedAgeInput } from './../input/custom-input/estimated-age/estimated-age-input.component';
-import { BasicInput } from '../input/basic-input/input/basic-input.component';
+import { Input } from '../input/basic-input/input/input.component';
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
@@ -93,6 +93,114 @@ describe('name input', () => {
   testInvalidName('No', 'Family Name', '', 'Family name is required', 'familyNameError');
 });
 
+describe('additional name input', () => {
+  const testValidAdditionalName = (
+    givenNameValue: string,
+    middleNameValue: string,
+    familyNameValue: string,
+    addNameInLocalLanguage: boolean,
+  ) => {
+    it(
+      'does not display error message when givenNameValue: ' +
+        givenNameValue +
+        ', middleNameValue: ' +
+        middleNameValue +
+        ', familyNameValue: ' +
+        familyNameValue +
+        ', addNameInLocalLanguage: ' +
+        addNameInLocalLanguage,
+      async () => {
+        const error = await updateNameAndReturnError(
+          givenNameValue,
+          middleNameValue,
+          familyNameValue,
+          addNameInLocalLanguage,
+        );
+        Object.values(error).map(currentError => expect(currentError).toBeNull());
+      },
+    );
+  };
+
+  const testInvalidAdditionalName = (
+    givenNameValue: string,
+    middleNameValue: string,
+    familyNameValue: string,
+    expectedError: string,
+    errorType: string,
+  ) => {
+    it(
+      'displays error message when givenNameValue: ' +
+        givenNameValue +
+        ', middleNameValue: ' +
+        middleNameValue +
+        ', familyNameValue: ' +
+        familyNameValue +
+        ', addNameInLocalLanguage: true',
+      async () => {
+        const error = (await updateNameAndReturnError(givenNameValue, middleNameValue, familyNameValue, true))[
+          errorType
+        ];
+        expect(error.textContent).toEqual(expectedError);
+      },
+    );
+  };
+
+  const updateNameAndReturnError = async (
+    givenNameValue: string,
+    middleNameValue: string,
+    familyNameValue: string,
+    addNameInLocalLanguage: boolean,
+  ) => {
+    const { container, getByLabelText } = render(
+      <Formik
+        initialValues={{
+          additionalGivenName: '',
+          additionalMiddleName: '',
+          additionalFamilyName: '',
+          addNameInLocalLanguage,
+        }}
+        onSubmit={null}
+        validationSchema={validationSchema}>
+        <Form>
+          <NameInput
+            givenName="additionalGivenName"
+            middleName="additionalMiddleName"
+            familyName="additionalFamilyName"
+            showRequiredAsterisk={true}
+          />
+          <Input type="checkbox" label="Add name" name="addNameInLocalLanguage" />
+        </Form>
+      </Formik>,
+    );
+    const givenNameInput = getByLabelText('additionalGivenName') as HTMLInputElement;
+    const middleNameInput = getByLabelText('additionalMiddleName') as HTMLInputElement;
+    const familyNameInput = getByLabelText('additionalFamilyName') as HTMLInputElement;
+
+    fireEvent.change(givenNameInput, { target: { value: givenNameValue } });
+    fireEvent.blur(givenNameInput);
+    fireEvent.change(middleNameInput, { target: { value: middleNameValue } });
+    fireEvent.blur(middleNameInput);
+    fireEvent.change(familyNameInput, { target: { value: familyNameValue } });
+    fireEvent.blur(familyNameInput);
+
+    await wait();
+
+    return {
+      givenNameError: container.querySelector('div[aria-label="additionalGivenNameError"]'),
+      middleNameError: container.querySelector('div[aria-label="additionalMiddleNameError"]'),
+      familyNameError: container.querySelector('div[aria-label="additionalFamilyNameError"]'),
+    };
+  };
+
+  testValidAdditionalName('Aaron', 'A', 'Aaronson', true);
+  testValidAdditionalName('No', '', 'Middle Name', true);
+  testValidAdditionalName('', '', '', false);
+  testInvalidAdditionalName('', '', '', 'Given name is required', 'givenNameError');
+  testInvalidAdditionalName('', '', '', 'Family name is required', 'familyNameError');
+  testInvalidAdditionalName('', 'No', 'Given Name', 'Given name is required', 'givenNameError');
+  testInvalidAdditionalName('No', 'Family Name', '', 'Family name is required', 'familyNameError');
+});
+
 describe('gender input', () => {
   const testValidGender = (validGender: string) => {
     it('does not display error message when ' + validGender + ' is inputted', async () => {
@@ -112,7 +220,7 @@ describe('gender input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicSelect
+          <SelectInput
             name="gender"
             options={['Male', 'Female', 'Other', 'Unknown']}
             label="Gender"
@@ -157,7 +265,7 @@ describe('birthdate input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicInput type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />
+          <Input type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
@@ -279,7 +387,7 @@ describe('telephone number input', () => {
     const { container, getByLabelText } = render(
       <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
-          <BasicInput type="tel" label="Telephone Number" placeholder="Enter telephone number" name="telephoneNumber" />
+          <Input type="tel" label="Telephone Number" placeholder="Enter telephone number" name="telephoneNumber" />
         </Form>
       </Formik>,
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BasicInput } from '../../basic-input/input/basic-input.component';
+import { Input } from '../../basic-input/input/input.component';
 import styles from './../../input.css';
 
 interface NameInputProps {
@@ -7,18 +7,25 @@ interface NameInputProps {
   middleName: string;
   familyName: string;
   showRequiredAsterisk: Boolean;
+  label?: string;
 }
 
-export const NameInput: React.FC<NameInputProps> = ({ givenName, middleName, familyName, showRequiredAsterisk }) => {
+export const NameInput: React.FC<NameInputProps> = ({
+  givenName,
+  middleName,
+  familyName,
+  showRequiredAsterisk,
+  label = 'Name',
+}) => {
   return (
     <main className={styles.fieldRow}>
       <label className={`omrs-type-body-regular ${styles.label}`} htmlFor="name">
-        <span>Name</span>
+        <span>{label}</span>
         {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
       </label>
-      <BasicInput type="text" placeholder="Given name" name={givenName} />
-      <BasicInput type="text" placeholder="Middle name" name={middleName} />
-      <BasicInput type="text" placeholder="Family name" name={familyName} />
+      <Input type="text" placeholder="Given name" name={givenName} />
+      <Input type="text" placeholder="Middle name" name={middleName} />
+      <Input type="text" placeholder="Family name" name={familyName} />
     </main>
   );
 };

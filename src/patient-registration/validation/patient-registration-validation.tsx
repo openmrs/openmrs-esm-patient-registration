@@ -3,6 +3,16 @@ import * as Yup from 'yup';
 export const validationSchema = Yup.object({
   givenName: Yup.string().required('Given name is required'),
   familyName: Yup.string().required('Family name is required'),
+  additionalGivenName: Yup.string().when('addNameInLocalLanguage', {
+    is: true,
+    then: Yup.string().required('Given name is required'),
+    otherwise: Yup.string().notRequired(),
+  }),
+  additionalFamilyName: Yup.string().when('addNameInLocalLanguage', {
+    is: true,
+    then: Yup.string().required('Family name is required'),
+    otherwise: Yup.string().notRequired(),
+  }),
   gender: Yup.string()
     .oneOf(['Male', 'Female', 'Other', 'Unknown'], 'Gender is unspecified')
     .required('Gender is required'),

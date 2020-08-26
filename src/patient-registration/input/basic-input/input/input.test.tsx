@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
 import { Formik, Form } from 'formik';
-import { BasicInput } from './basic-input.component';
+import { Input } from './input.component';
 
 describe('number input', () => {
   const setupInput = async () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ number: 0 }} onSubmit={null}>
         <Form>
-          <BasicInput type="number" label="Number" name="number" />
+          <Input type="number" label="Number" name="number" />
         </Form>
       </Formik>,
     );
@@ -38,7 +38,7 @@ describe('text input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ text: '' }} onSubmit={null}>
         <Form>
-          <BasicInput type="text" label="Text" name="text" placeholder="Enter text" />
+          <Input type="text" label="Text" name="text" placeholder="Enter text" />
         </Form>
       </Formik>,
     );
@@ -68,7 +68,7 @@ describe('telephone number input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null}>
         <Form>
-          <BasicInput type="tel" label="Telephone Number" name="telephoneNumber" placeholder="Enter telephone number" />
+          <Input type="tel" label="Telephone Number" name="telephoneNumber" placeholder="Enter telephone number" />
         </Form>
       </Formik>,
     );
@@ -98,7 +98,7 @@ describe('date input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ date: '' }} onSubmit={null}>
         <Form>
-          <BasicInput type="date" label="date" name="date" />
+          <Input type="date" label="date" name="date" />
         </Form>
       </Formik>,
     );
@@ -128,7 +128,7 @@ describe('checkbox input', () => {
     const { getByLabelText } = render(
       <Formik initialValues={{ checkbox: false }} onSubmit={null}>
         <Form>
-          <BasicInput type="checkbox" label="checkbox" name="checkbox" />
+          <Input type="checkbox" label="checkbox" name="checkbox" />
         </Form>
       </Formik>,
     );
