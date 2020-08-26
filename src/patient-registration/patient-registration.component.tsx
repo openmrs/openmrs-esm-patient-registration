@@ -172,11 +172,11 @@ export const PatientRegistration: React.FC = () => {
     savePatient(abortController, patient)
       .then(response => response.status == 201 && history.push(`/patient/${response.data.uuid}/chart`))
       .catch(response => {
-        if (response.responseBody.error.globalErrors) {
+        if (response.responseBody && response.responseBody.error.globalErrors) {
           response.responseBody.error.globalErrors.forEach(error => {
             showToast({ description: error.message });
           });
-        } else if (response.responseBody.error.message) {
+        } else if (response.responseBody && response.responseBody.error.message) {
           showToast({ description: response.responseBody.error.message });
         } else {
           createErrorHandler()(response);
