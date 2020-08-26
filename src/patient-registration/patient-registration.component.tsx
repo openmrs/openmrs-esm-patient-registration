@@ -101,7 +101,7 @@ export const PatientRegistration: React.FC = () => {
 
     return names;
   };
-  
+
   useEffect(() => {
     const abortController = new AbortController();
     (async () => {
