@@ -30,7 +30,7 @@ describe('form submit', () => {
     const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
     const dateOfBirthInput = getByLabelText('birthdate') as HTMLInputElement;
     const genderSelect = getByLabelText('gender') as HTMLSelectElement;
-  
+
     fireEvent.change(givenNameInput, { target: { value: 'Paul' } });
     fireEvent.blur(givenNameInput);
     fireEvent.change(familyNameInput, { target: { value: 'Gaihre' } });
@@ -54,7 +54,7 @@ describe('form submit', () => {
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(new AbortController(), {
-      identifiers: [{ identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }],
+      identifiers: [],
       person: {
         addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
         attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
@@ -75,7 +75,7 @@ describe('form submit', () => {
     await fillRequiredFields(getByLabelText);
 
     const addNameInLocalLanguageCheckbox = getByLabelText('addNameInLocalLanguage') as HTMLInputElement;
-    
+
     fireEvent.click(addNameInLocalLanguageCheckbox);
     fireEvent.blur(addNameInLocalLanguageCheckbox);
     await wait();
@@ -95,7 +95,7 @@ describe('form submit', () => {
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(new AbortController(), {
-      identifiers: [{ identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }],
+      identifiers: [],
       person: {
         addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
         attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
@@ -104,7 +104,12 @@ describe('form submit', () => {
         gender: 'M',
         names: [
           { givenName: 'Paul', middleName: '', familyName: 'Gaihre', preferred: true },
-          { givenName: 'Local Given Name', middleName: 'Local Middle Name', familyName: 'Local Family Name', preferred: false },
+          {
+            givenName: 'Local Given Name',
+            middleName: 'Local Middle Name',
+            familyName: 'Local Family Name',
+            preferred: false,
+          },
         ],
       },
     });
@@ -127,4 +132,3 @@ describe('form submit', () => {
     expect(backendController.savePatient).not.toHaveBeenCalled();
   });
 });
-
