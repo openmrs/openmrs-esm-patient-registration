@@ -81,7 +81,7 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
         {linesObj.map((sections, index) => (
           <section className={styles.fieldRow} key={`Section ${index}`}>
             {sections.map(field => (
-              <BasicInput
+              <Input
                 type="text"
                 label={field.label}
                 name={field.name}
