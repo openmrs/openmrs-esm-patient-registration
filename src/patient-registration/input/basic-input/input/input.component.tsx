@@ -28,7 +28,7 @@ export const Input: React.FC<InputProps> = ({
       {label && (
         <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
           <span>{label}</span>
-          {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
+          {(showRequiredAsterisk || required) && <span className={styles.requiredField}> *</span>}
         </label>
       )}
       <div>
