@@ -69,7 +69,6 @@ export const initialFormValues: FormValues = {
 interface AddressValidationSchemaType {
   name: string;
   label: string;
-  size: number;
   regex: RegExp;
   regexFormat: string;
 }
@@ -153,23 +152,19 @@ export const PatientRegistration: React.FC = () => {
       let validationSchemaObjs: AddressValidationSchemaType[] = Array.prototype.map.call(nameMappings, nameMapping => {
         let field = nameMapping.getAttribute('name');
         let label = nameMapping.getAttribute('value');
-        let size = getValueIfItExists(field, 'sizeMappings', templateXmlDoc);
         let regex = getValueIfItExists(field, 'elementRegex', templateXmlDoc);
         let regexFormat = getValueIfItExists(field, 'elementRegexFormats', templateXmlDoc);
 
         return {
           name: field,
           label,
-          size,
           regex: regex || '.*',
           regexFormat: regexFormat || '',
         };
       });
       let addressValidationSchemaTmp = Yup.object(
         validationSchemaObjs.reduce((final, current) => {
-          final[current.name] = Yup.string()
-            .max(current.size, `${current.label} cannot be longer than ${current.size} characters`)
-            .matches(current.regex, current.regexFormat);
+          final[current.name] = Yup.string().matches(current.regex, current.regexFormat);
           return final;
         }, {}),
       );
