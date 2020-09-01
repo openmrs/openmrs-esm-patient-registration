@@ -126,7 +126,7 @@ export const PatientRegistration: React.FC = () => {
       setIdentifierTypes(types);
     })();
     return () => abortController.abort();
-  }, []);
+  }, [validationSchema]);
 
   const onFormSubmit = (values: FormValues) => {
     const identifiers = identifierTypes.reduce(function(ids, id) {
