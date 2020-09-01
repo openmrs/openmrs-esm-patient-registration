@@ -19,18 +19,6 @@ interface AttributeValue {
   value: string;
 }
 
-export type Patient = {
-  identifiers: Array<PatientIdentifier>;
-  person: {
-    names: Array<NameValue>;
-    gender: string;
-    birthdate: Date;
-    birthdateEstimated: boolean;
-    attributes: Array<AttributeValue>;
-    addresses: Array<AddressValue>;
-  };
-};
-
 export interface PatientIdentifierType {
   name: string;
   required: boolean;
@@ -44,3 +32,15 @@ export interface PatientIdentifier {
   identifierType: string;
   location: string;
 }
+
+export type Patient = {
+  identifiers: Array<PatientIdentifier>;
+  person: {
+    names: Array<NameValue>;
+    gender: string;
+    birthdate: Date;
+    birthdateEstimated: boolean;
+    attributes: Array<AttributeValue>;
+    addresses: Array<AddressValue>;
+  };
+};

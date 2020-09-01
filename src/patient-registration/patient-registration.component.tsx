@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import { validationSchema as initSchema } from './validation/patient-registration-validation';
+import { validationSchema as initialSchema } from './validation/patient-registration-validation';
 import * as Yup from 'yup';
 import { Patient, PatientIdentifierType } from './patient-registration-helper';
 import {
   getCurrentUserLocation,
   savePatient,
-  uuidIdentifier,
   uuidTelephoneNumber,
   getPrimaryIdentifierType,
   getSecondaryIdentifierTypes,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
+import { IdentifierSection } from './section/identifier/identifier-section.component';
 import { DemographicsSection } from './section/demographics/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import styles from './patient-registration.css';
-import { IdentifierSection } from './section/identifiers-section.component';
 
 export interface FormValues {
   givenName: string;
@@ -70,7 +69,7 @@ export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [location, setLocation] = useState('');
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
-  const [validationSchema, setValidationSchema] = useState(initSchema);
+  const [validationSchema, setValidationSchema] = useState(initialSchema);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -113,14 +112,13 @@ export const PatientRegistration: React.FC = () => {
       types = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean);
       let identifiersValidationSchema: any = {};
       types.forEach(type => {
-        // update form initial values and validation schema
         initialFormValues[type.fieldName] = '';
         let fieldValidationProps = Yup.string();
         if (type.required) {
-          fieldValidationProps = fieldValidationProps.required("Identifier can't be blank!");
+          fieldValidationProps = fieldValidationProps.required('Identifier cannot be blank');
         }
         if (type.format) {
-          fieldValidationProps = fieldValidationProps.matches(new RegExp(type.format), 'Invalid identifier format!');
+          fieldValidationProps = fieldValidationProps.matches(new RegExp(type.format), 'Invalid identifier format');
         }
         identifiersValidationSchema[type.fieldName] = fieldValidationProps;
       });
@@ -183,6 +181,7 @@ export const PatientRegistration: React.FC = () => {
         }
       });
   };
+
   return (
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
@@ -198,8 +197,8 @@ export const PatientRegistration: React.FC = () => {
               <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
               {localStorage.getItem('openmrs:devtools') === 'true' && <DummyDataInput setValues={props.setValues} />}
             </div>
-            <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <IdentifierSection identifierTypes={identifierTypes} />
+            <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient

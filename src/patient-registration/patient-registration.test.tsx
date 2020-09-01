@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, wait, fireEvent } from '@testing-library/react';
-import { PatientRegistration } from './patient-registration.component';
 import * as backendController from './patient-registration.resource';
+import { PatientRegistration } from './patient-registration.component';
 
 describe('patient registration', () => {
   it('renders without crashing', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './../input.css';
-import { PatientIdentifierType } from '../../patient-registration-helper';
-import { Input } from '../basic-input/input/input.component';
+import { PatientIdentifierType } from '../../../patient-registration-helper';
+import { Input } from '../../basic-input/input/input.component';
+import styles from './../../input.css';
 
 interface IndentifierInputProps {
   type: PatientIdentifierType;
