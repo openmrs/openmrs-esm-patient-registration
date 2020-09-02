@@ -26,7 +26,7 @@ describe('patient registration sections', () => {
 
 describe('form submit', () => {
   it('saves the patient', async () => {
-    spyOn(backendController, 'savePatient');
+    spyOn(backendController, 'savePatient').and.callThrough();
 
     const { getByText, getByLabelText } = render(<PatientRegistration />);
     await wait();
@@ -49,7 +49,7 @@ describe('form submit', () => {
     fireEvent.click(getByText('Register Patient'));
     await wait();
 
-    expect(backendController.savePatient).toHaveBeenCalledWith(new AbortController(), {
+    expect(backendController.savePatient).toHaveBeenCalledWith(expect.anything(), {
       identifiers: [{ identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }],
       person: {
         addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
