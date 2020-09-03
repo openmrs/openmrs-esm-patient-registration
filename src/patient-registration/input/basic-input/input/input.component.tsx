@@ -40,7 +40,7 @@ export const Input: React.FC<InputProps> = ({
           aria-label={name}
           placeholder={placeholder}
           {...field}
-          value={field.value !== null ? field.value : defaultValue || ''}
+          value={defaultValue ?? field.value ?? ''}
           checked={type === 'checkbox' ? field.value : null}
           required={required}
         />

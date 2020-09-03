@@ -36,7 +36,7 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
 
   function getFieldValue(field: string, doc: XMLDocument) {
     let fieldElement = doc.getElementsByName(field)[0];
-    return fieldElement ? fieldElement.getAttribute('value') : '';
+    return fieldElement ? fieldElement.getAttribute('value') : null;
   }
 
   function isRequired(field: string, doc: XMLDocument) {
@@ -52,7 +52,7 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
   }
 
   function renderAddressFields() {
-    const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
+    const templateXmlDoc = parseString(addressTemplate);
     let lines = templateXmlDoc.getElementsByTagName('lineByLineFormat')[0].getElementsByTagName('string');
     let linesText: string[][] = Array.prototype.map.call(lines, ({ textContent }) => textContent.split(' '));
     let nameMappings = getTagAsDocument('nameMappings', templateXmlDoc);
