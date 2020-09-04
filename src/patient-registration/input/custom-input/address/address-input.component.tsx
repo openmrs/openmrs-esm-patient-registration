@@ -87,7 +87,6 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
                 name={field.name}
                 placeholder=""
                 key={field.name}
-                defaultValue={field.defaultValue}
                 required={field.required}
               />
             ))}

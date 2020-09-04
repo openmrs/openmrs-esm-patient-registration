@@ -8,19 +8,10 @@ interface InputProps {
   name: string;
   showRequiredAsterisk?: boolean;
   placeholder?: string;
-  defaultValue?: string;
   required?: boolean;
 }
 
-export const Input: React.FC<InputProps> = ({
-  type,
-  label,
-  name,
-  showRequiredAsterisk,
-  placeholder,
-  defaultValue,
-  required,
-}) => {
+export const Input: React.FC<InputProps> = ({ type, label, name, showRequiredAsterisk, placeholder, required }) => {
   const [field, meta] = useField(name);
 
   return (
