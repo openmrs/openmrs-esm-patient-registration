@@ -168,6 +168,13 @@ export const PatientRegistration: React.FC = () => {
           return final;
         }, {}),
       );
+
+      Array.prototype.forEach.call(nameMappings, nameMapping => {
+        let name = nameMapping.getAttribute('name');
+        let defaultValue = getValueIfItExists(name, 'elementDefaults', templateXmlDoc);
+        initialFormValues[name] = defaultValue ?? '';
+      });
+
       setAddressValidationSchema(addressValidationSchemaTmp);
     }
   }, [addressTemplate]);
