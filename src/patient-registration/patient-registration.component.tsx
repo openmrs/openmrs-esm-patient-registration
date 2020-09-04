@@ -16,6 +16,7 @@ import { showToast } from '@openmrs/esm-styleguide';
 import { IdentifierSection } from './section/identifier/identifier-section.component';
 import { DemographicsSection } from './section/demographics/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
+import { DeathInfoSection } from './section/death-info/death-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import styles from './patient-registration.css';
 
@@ -40,6 +41,9 @@ export interface FormValues {
   stateProvince: string;
   country: string;
   postalCode: string;
+  isDead: boolean;
+  deathDate: Date;
+  deathCause: string;
 }
 
 export const initialFormValues: FormValues = {
@@ -63,6 +67,9 @@ export const initialFormValues: FormValues = {
   stateProvince: '',
   country: '',
   postalCode: '',
+  isDead: false,
+  deathDate: null,
+  deathCause: '',
 };
 
 export const PatientRegistration: React.FC = () => {
@@ -200,6 +207,7 @@ export const PatientRegistration: React.FC = () => {
             <IdentifierSection identifierTypes={identifierTypes} />
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection />
+            <DeathInfoSection values={props.values} />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient
             </button>

@@ -27,6 +27,9 @@ export const dummyFormValues: FormValues = {
   stateProvince: 'Pernambuco',
   country: 'Brazil',
   postalCode: '50030-310',
+  isDead: false,
+  deathDate: null,
+  deathCause: '',
 };
 
 export const DummyDataInput: React.FC<DummyDataInputProps> = ({ setValues }) => {
