@@ -10,6 +10,7 @@ import {
   uuidTelephoneNumber,
   getPrimaryIdentifierType,
   getSecondaryIdentifierTypes,
+  getAddressTemplate,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
@@ -65,11 +66,20 @@ export const initialFormValues: FormValues = {
   postalCode: '',
 };
 
+interface AddressValidationSchemaType {
+  name: string;
+  label: string;
+  regex: RegExp;
+  regexFormat: string;
+}
+
 export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [location, setLocation] = useState('');
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
+  const [addressTemplate, setAddressTemplate] = useState('');
+  const [addressValidationSchema, setAddressValidationSchema] = useState(Yup.object({}));
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -127,6 +137,60 @@ export const PatientRegistration: React.FC = () => {
     })();
     return () => abortController.abort();
   }, [validationSchema]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    getAddressTemplate(abortController).then(({ data }) => {
+      setAddressTemplate(data.results[0].value);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (addressTemplate) {
+      const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
+      let nameMappings = templateXmlDoc.querySelector('nameMappings').querySelectorAll('property');
+      let validationSchemaObjs: AddressValidationSchemaType[] = Array.prototype.map.call(nameMappings, nameMapping => {
+        let field = nameMapping.getAttribute('name');
+        let label = nameMapping.getAttribute('value');
+        let regex = getValueIfItExists(field, 'elementRegex', templateXmlDoc);
+        let regexFormat = getValueIfItExists(field, 'elementRegexFormats', templateXmlDoc);
+
+        return {
+          name: field,
+          label,
+          regex: regex || '.*',
+          regexFormat: regexFormat || '',
+        };
+      });
+      let addressValidationSchemaTmp = Yup.object(
+        validationSchemaObjs.reduce((final, current) => {
+          final[current.name] = Yup.string().matches(current.regex, current.regexFormat);
+          return final;
+        }, {}),
+      );
+
+      Array.prototype.forEach.call(nameMappings, nameMapping => {
+        let name = nameMapping.getAttribute('name');
+        let defaultValue = getValueIfItExists(name, 'elementDefaults', templateXmlDoc);
+        initialFormValues[name] = defaultValue ?? '';
+      });
+
+      setAddressValidationSchema(addressValidationSchemaTmp);
+    }
+  }, [addressTemplate]);
+
+  const getValueIfItExists = (field: string, selector: string, doc: XMLDocument) => {
+    let element = doc.querySelector(selector);
+    if (element) {
+      let property = element.querySelector(`[name=${field}]`);
+      if (property) {
+        return property.getAttribute('value');
+      } else {
+        return null;
+      }
+    }
+    return null;
+  };
 
   const onFormSubmit = (values: FormValues) => {
     const identifiers = identifierTypes.reduce(function(ids, id) {
@@ -186,7 +250,7 @@ export const PatientRegistration: React.FC = () => {
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={validationSchema}
+        validationSchema={validationSchema.concat(addressValidationSchema)}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);
@@ -199,7 +263,7 @@ export const PatientRegistration: React.FC = () => {
             </div>
             <IdentifierSection identifierTypes={identifierTypes} />
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
-            <ContactInfoSection />
+            <ContactInfoSection addressTemplate={addressTemplate} />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient
             </button>

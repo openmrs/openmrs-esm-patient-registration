@@ -3,7 +3,11 @@ import { Input } from '../../input/basic-input/input/input.component';
 import { AddressInput } from '../../input/custom-input/address/address-input.component';
 import styles from './../section.css';
 
-export const ContactInfoSection: React.FC = () => {
+interface ContactInfoSectionProps {
+  addressTemplate?: string;
+}
+
+export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ addressTemplate }) => {
   return (
     <section className={styles.formSection} aria-label="Contact Info Section">
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Contact Info</h5>
@@ -18,6 +22,7 @@ export const ContactInfoSection: React.FC = () => {
           stateProvinceName="stateProvince"
           countryName="country"
           postalCodeName="postalCode"
+          addressTemplate={addressTemplate}
         />
       </section>
     </section>
