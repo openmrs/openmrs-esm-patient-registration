@@ -15,6 +15,6 @@ function Root() {
 }
 
 export default openmrsRootDecorator({
-  featureName: 'patient-registration',
+  featureName: 'Patient Registration',
   moduleName: '@openmrs/esm-patient-registration-app',
 })(Root);
