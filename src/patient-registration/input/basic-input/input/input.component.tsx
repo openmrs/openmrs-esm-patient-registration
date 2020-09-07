@@ -9,9 +9,20 @@ interface InputProps {
   showRequiredAsterisk?: boolean;
   placeholder?: string;
   required?: boolean;
+  disabled?: boolean;
+  helperText?: string;
 }
 
-export const Input: React.FC<InputProps> = ({ type, label, name, showRequiredAsterisk, placeholder, required }) => {
+export const Input: React.FC<InputProps> = ({
+  type,
+  label,
+  name,
+  showRequiredAsterisk,
+  placeholder,
+  required,
+  disabled = false,
+  helperText,
+}) => {
   const [field, meta] = useField(name);
 
   return (
@@ -30,6 +41,7 @@ export const Input: React.FC<InputProps> = ({ type, label, name, showRequiredAst
           type={type}
           aria-label={name}
           placeholder={placeholder}
+          disabled={disabled}
           {...field}
           value={field.value || ''}
           checked={type === 'checkbox' ? field.value : null}
@@ -38,6 +50,11 @@ export const Input: React.FC<InputProps> = ({ type, label, name, showRequiredAst
         {meta.touched && meta.error && (
           <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
             {meta.error}
+          </div>
+        )}
+        {helperText && type === 'text' && (
+          <div>
+            <span className="omrs-input-helper">{helperText}</span>
           </div>
         )}
       </div>

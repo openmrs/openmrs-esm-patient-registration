@@ -66,6 +66,7 @@
 
 .errorInput {
     border: 2px solid var(--omrs-color-danger) !important;
+    padding-left: 0.875rem !important;
 }
 
 .errorMessage {
@@ -76,4 +77,8 @@
 .dummyData {
     cursor: pointer;
     margin-left: 5px;
+}
+
+.identifierInput {
+    height: 80px !important;
 }
