@@ -39,12 +39,6 @@ export interface FormValues {
   monthsEstimated: number;
   birthdateEstimated: boolean;
   telephoneNumber: string;
-  address1: string;
-  address2: string;
-  cityVillage: string;
-  stateProvince: string;
-  country: string;
-  postalCode: string;
 }
 
 export const initialFormValues: FormValues = {
@@ -62,13 +56,9 @@ export const initialFormValues: FormValues = {
   monthsEstimated: 0,
   birthdateEstimated: false,
   telephoneNumber: '',
-  address1: '',
-  address2: '',
-  cityVillage: '',
-  stateProvince: '',
-  country: '',
-  postalCode: '',
 };
+
+export const initialAddressFieldValues = {};
 
 interface AddressValidationSchemaType {
   name: string;
@@ -176,9 +166,10 @@ export const PatientRegistration: React.FC = () => {
       Array.prototype.forEach.call(nameMappings, nameMapping => {
         let name = nameMapping.getAttribute('name');
         let defaultValue = getValueIfItExists(name, 'elementDefaults', templateXmlDoc);
-        initialFormValues[name] = defaultValue ?? '';
+        initialAddressFieldValues[name] = defaultValue ?? '';
       });
 
+      Object.assign(initialFormValues, initialAddressFieldValues);
       setAddressValidationSchema(addressValidationSchemaTmp);
     }
   }, [addressTemplate]);
@@ -218,6 +209,10 @@ export const PatientRegistration: React.FC = () => {
         });
       }
     }
+    let addressObj = {};
+    Object.keys(initialAddressFieldValues).forEach(fieldName => {
+      addressObj[fieldName] = values[fieldName];
+    });
     const patient: Patient = {
       identifiers: identifiers,
       person: {
@@ -231,16 +226,7 @@ export const PatientRegistration: React.FC = () => {
             value: values.telephoneNumber,
           },
         ],
-        addresses: [
-          {
-            address1: values.address1,
-            address2: values.address2,
-            cityVillage: values.cityVillage,
-            stateProvince: values.stateProvince,
-            postalCode: values.postalCode,
-            country: values.country,
-          },
-        ],
+        addresses: [addressObj],
       },
     };
     savePatient(abortController, patient)

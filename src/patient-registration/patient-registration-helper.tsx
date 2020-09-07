@@ -5,15 +5,6 @@ interface NameValue {
   familyName: string;
 }
 
-interface AddressValue {
-  address1: string;
-  address2: string;
-  cityVillage: string;
-  stateProvince: string;
-  postalCode: string;
-  country: string;
-}
-
 interface AttributeValue {
   attributeType: string;
   value: string;
@@ -44,7 +35,7 @@ export type Patient = {
     birthdate: Date;
     birthdateEstimated: boolean;
     attributes: Array<AttributeValue>;
-    addresses: Array<AddressValue>;
+    addresses: Array<any>;
   };
 };
 
