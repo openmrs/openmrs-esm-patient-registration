@@ -406,3 +406,51 @@ describe('telephone number input', () => {
   testInvalidTelephoneNumber('+0800001066');
   testInvalidTelephoneNumber('(0800)001066');
 });
+
+describe('date of death input', () => {
+  const testValidDeathDate = (validDeathDate: string) => {
+    it('does not display error message when ' + validDeathDate + ' is inputted', async () => {
+      const error = await updateDeathDateAndReturnError(validDeathDate);
+      expect(error).toBeNull();
+    });
+  };
+
+  const testInvalidDeathDate = (invalidDeathDate: string, expectedError: string) => {
+    it('displays error message when ' + invalidDeathDate + ' is inputted', async () => {
+      const error = await updateDeathDateAndReturnError(invalidDeathDate);
+      expect(error.textContent).toEqual(expectedError);
+    });
+  };
+
+  const updateDeathDateAndReturnError = async (deathDate: string) => {
+    const { container, getByLabelText } = render(
+      <Formik initialValues={{ deathDate: null }} onSubmit={null} validationSchema={validationSchema}>
+        <Form>
+          <Input type="date" label="Date of Death" name="deathDate" />
+        </Form>
+      </Formik>,
+    );
+    const input = getByLabelText('deathDate') as HTMLInputElement;
+
+    fireEvent.change(input, { target: { value: deathDate } });
+    fireEvent.blur(input);
+
+    await wait();
+
+    return container.querySelector('div[aria-label="deathDateError"]');
+  };
+
+  testValidDeathDate('2020-01-01');
+  testValidDeathDate(
+    dayjs()
+      .subtract(1, 'day')
+      .format('YYYY-MM-DD'),
+  );
+  testValidDeathDate(dayjs().format('YYYY-MM-DD'));
+  testInvalidDeathDate(
+    dayjs()
+      .add(1, 'day')
+      .format('YYYY-MM-DD'),
+    'Date of Death cannot be in the future',
+  );
+});
