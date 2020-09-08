@@ -26,117 +26,110 @@ describe('patient registration sections', () => {
 });
 
 describe('form submit', () => {
-  async function fillRequiredFields(getByLabelText) {
-    it('saves the patient', async () => {
-      spyOn(backendController, 'savePatient').and.callThrough();
+  const fillRequiredFields = async getByLabelText => {
+    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
+    const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
+    const dateOfBirthInput = getByLabelText('birthdate') as HTMLInputElement;
+    const genderSelect = getByLabelText('gender') as HTMLSelectElement;
 
-      const { getByText, getByLabelText } = render(<PatientRegistration />);
-      await wait();
+    fireEvent.change(givenNameInput, { target: { value: 'Paul' } });
+    fireEvent.blur(givenNameInput);
+    fireEvent.change(familyNameInput, { target: { value: 'Gaihre' } });
+    fireEvent.blur(familyNameInput);
+    fireEvent.change(dateOfBirthInput, { target: { value: '1993-08-02' } });
+    fireEvent.blur(dateOfBirthInput);
+    fireEvent.change(genderSelect, { target: { value: 'Male' } });
+    fireEvent.blur(genderSelect);
+    await wait();
+  };
 
-      const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
-      const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
-      const dateOfBirthInput = getByLabelText('birthdate') as HTMLInputElement;
-      const genderSelect = getByLabelText('gender') as HTMLSelectElement;
+  it('saves the patient', async () => {
+    spyOn(backendController, 'savePatient').and.callThrough();
 
-      fireEvent.change(givenNameInput, { target: { value: 'Paul' } });
-      fireEvent.blur(givenNameInput);
-      fireEvent.change(familyNameInput, { target: { value: 'Gaihre' } });
-      fireEvent.blur(familyNameInput);
-      fireEvent.change(dateOfBirthInput, { target: { value: '1993-08-02' } });
-      fireEvent.blur(dateOfBirthInput);
-      fireEvent.change(genderSelect, { target: { value: 'Male' } });
-      fireEvent.blur(genderSelect);
-      await wait();
+    const { getByText, getByLabelText } = render(<PatientRegistration />);
+    await wait();
+
+    await fillRequiredFields(getByLabelText);
+
+    fireEvent.click(getByText('Register Patient'));
+    await wait();
+
+    expect(backendController.savePatient).toHaveBeenCalledWith(expect.anything(), {
+      identifiers: [], //TODO when the identifer story is finished: { identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }
+      person: {
+        addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
+        attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
+        birthdate: '1993-08-02',
+        birthdateEstimated: false,
+        gender: 'M',
+        names: [{ givenName: 'Paul', middleName: '', familyName: 'Gaihre', preferred: true }],
+      },
     });
+  });
 
-    it('saves the patient', async () => {
-      spyOn(backendController, 'savePatient');
+  it('saves the patient with their additional name', async () => {
+    spyOn(backendController, 'savePatient').and.callThrough();
 
-      const { getByText, getByLabelText } = render(<PatientRegistration />);
-      await wait();
+    const { getByText, getByLabelText } = render(<PatientRegistration />);
+    await wait();
 
-      await fillRequiredFields(getByLabelText);
+    await fillRequiredFields(getByLabelText);
 
-      fireEvent.click(getByText('Register Patient'));
-      await wait();
+    const addNameInLocalLanguageCheckbox = getByLabelText('addNameInLocalLanguage') as HTMLInputElement;
 
-      expect(backendController.savePatient).toHaveBeenCalledWith(expect.anything(), {
-        identifiers: [{ identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }],
-        person: {
-          addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
-          attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
-          birthdate: '1993-08-02',
-          birthdateEstimated: false,
-          gender: 'M',
-          names: [{ givenName: 'Paul', middleName: '', familyName: 'Gaihre', preferred: true }],
-        },
-      });
+    fireEvent.click(addNameInLocalLanguageCheckbox);
+    fireEvent.blur(addNameInLocalLanguageCheckbox);
+    await wait();
+
+    const additionalGivenNameInput = getByLabelText('additionalGivenName') as HTMLInputElement;
+    const additionalMiddleNameInput = getByLabelText('additionalMiddleName') as HTMLInputElement;
+    const additionalFamilyNameInput = getByLabelText('additionalFamilyName') as HTMLInputElement;
+
+    fireEvent.change(additionalGivenNameInput, { target: { value: 'Local Given Name' } });
+    fireEvent.blur(additionalGivenNameInput);
+    fireEvent.change(additionalMiddleNameInput, { target: { value: 'Local Middle Name' } });
+    fireEvent.blur(additionalMiddleNameInput);
+    fireEvent.change(additionalFamilyNameInput, { target: { value: 'Local Family Name' } });
+    fireEvent.blur(additionalFamilyNameInput);
+
+    fireEvent.click(getByText('Register Patient'));
+    await wait();
+
+    expect(backendController.savePatient).toHaveBeenCalledWith(expect.anything(), {
+      identifiers: [],
+      person: {
+        addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
+        attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
+        birthdate: '1993-08-02',
+        birthdateEstimated: false,
+        gender: 'M',
+        names: [
+          { givenName: 'Paul', middleName: '', familyName: 'Gaihre', preferred: true },
+          {
+            givenName: 'Local Given Name',
+            middleName: 'Local Middle Name',
+            familyName: 'Local Family Name',
+            preferred: false,
+          },
+        ],
+      },
     });
+  });
 
-    it('saves the patient with their additional name', async () => {
-      spyOn(backendController, 'savePatient');
+  it('should not save the patient if validation fails', async () => {
+    spyOn(backendController, 'savePatient');
+    const { getByText, getByLabelText } = render(<PatientRegistration />);
+    await wait();
 
-      const { getByText, getByLabelText } = render(<PatientRegistration />);
-      await wait();
+    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
 
-      await fillRequiredFields(getByLabelText);
+    fireEvent.change(givenNameInput, { target: { value: '' } });
+    fireEvent.blur(givenNameInput);
+    await wait();
 
-      const addNameInLocalLanguageCheckbox = getByLabelText('addNameInLocalLanguage') as HTMLInputElement;
+    fireEvent.click(getByText('Register Patient'));
+    await wait();
 
-      fireEvent.click(addNameInLocalLanguageCheckbox);
-      fireEvent.blur(addNameInLocalLanguageCheckbox);
-      await wait();
-
-      const additionalGivenNameInput = getByLabelText('additionalGivenName') as HTMLInputElement;
-      const additionalMiddleNameInput = getByLabelText('additionalMiddleName') as HTMLInputElement;
-      const additionalFamilyNameInput = getByLabelText('additionalFamilyName') as HTMLInputElement;
-
-      fireEvent.change(additionalGivenNameInput, { target: { value: 'Local Given Name' } });
-      fireEvent.blur(additionalGivenNameInput);
-      fireEvent.change(additionalMiddleNameInput, { target: { value: 'Local Middle Name' } });
-      fireEvent.blur(additionalMiddleNameInput);
-      fireEvent.change(additionalFamilyNameInput, { target: { value: 'Local Family Name' } });
-      fireEvent.blur(additionalFamilyNameInput);
-
-      fireEvent.click(getByText('Register Patient'));
-      await wait();
-
-      expect(backendController.savePatient).toHaveBeenCalledWith(new AbortController(), {
-        identifiers: [],
-        person: {
-          addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
-          attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
-          birthdate: '1993-08-02',
-          birthdateEstimated: false,
-          gender: 'M',
-          names: [
-            { givenName: 'Paul', middleName: '', familyName: 'Gaihre', preferred: true },
-            {
-              givenName: 'Local Given Name',
-              middleName: 'Local Middle Name',
-              familyName: 'Local Family Name',
-              preferred: false,
-            },
-          ],
-        },
-      });
-    });
-
-    it('should not save the patient if validation fails', async () => {
-      spyOn(backendController, 'savePatient');
-      const { getByText, getByLabelText } = render(<PatientRegistration />);
-      await wait();
-
-      const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
-
-      fireEvent.change(givenNameInput, { target: { value: '' } });
-      fireEvent.blur(givenNameInput);
-      await wait();
-
-      fireEvent.click(getByText('Register Patient'));
-      await wait();
-
-      expect(backendController.savePatient).not.toHaveBeenCalled();
-    });
-  }
+    expect(backendController.savePatient).not.toHaveBeenCalled();
+  });
 });
