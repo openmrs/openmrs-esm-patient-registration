@@ -209,9 +209,10 @@ export const PatientRegistration: React.FC = () => {
         });
       }
     }
-    let addressObj = {};
+
+    let addressFieldValues: Record<string, string> = {};
     Object.keys(initialAddressFieldValues).forEach(fieldName => {
-      addressObj[fieldName] = values[fieldName];
+      addressFieldValues[fieldName] = values[fieldName];
     });
     const patient: Patient = {
       identifiers: identifiers,
@@ -226,7 +227,7 @@ export const PatientRegistration: React.FC = () => {
             value: values.telephoneNumber,
           },
         ],
-        addresses: [addressObj],
+        addresses: [addressFieldValues],
       },
     };
     savePatient(abortController, patient)

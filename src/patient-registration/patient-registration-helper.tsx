@@ -35,7 +35,7 @@ export type Patient = {
     birthdate: Date;
     birthdateEstimated: boolean;
     attributes: Array<AttributeValue>;
-    addresses: Array<any>;
+    addresses: Array<Record<string, string>>;
   };
 };
 
