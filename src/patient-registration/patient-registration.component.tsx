@@ -108,6 +108,18 @@ export const PatientRegistration: React.FC = () => {
     return names;
   };
 
+  const getDeathInfo = (values: FormValues) => {
+    const patientIsDead = {
+      dead: true,
+      deathDate: values.deathDate,
+      causeOfDeath: values.deathCause,
+    };
+
+    const patientIsNotDead = { dead: false };
+
+    return values.isDead ? patientIsDead : patientIsNotDead;
+  };
+
   useEffect(() => {
     const abortController = new AbortController();
     (async () => {
@@ -149,31 +161,36 @@ export const PatientRegistration: React.FC = () => {
       return ids;
     }, []);
     const abortController = new AbortController();
+
+    const person = {
+      names: getNames(values),
+      gender: values.gender.charAt(0),
+      birthdate: values.birthdate,
+      birthdateEstimated: values.birthdateEstimated,
+      attributes: [
+        {
+          attributeType: uuidTelephoneNumber,
+          value: values.telephoneNumber,
+        },
+      ],
+      addresses: [
+        {
+          address1: values.address1,
+          address2: values.address2,
+          cityVillage: values.cityVillage,
+          stateProvince: values.stateProvince,
+          postalCode: values.postalCode,
+          country: values.country,
+        },
+      ],
+      ...getDeathInfo(values),
+    };
+
     const patient: Patient = {
       identifiers: identifiers,
-      person: {
-        names: getNames(values),
-        gender: values.gender.charAt(0),
-        birthdate: values.birthdate,
-        birthdateEstimated: values.birthdateEstimated,
-        attributes: [
-          {
-            attributeType: uuidTelephoneNumber,
-            value: values.telephoneNumber,
-          },
-        ],
-        addresses: [
-          {
-            address1: values.address1,
-            address2: values.address2,
-            cityVillage: values.cityVillage,
-            stateProvince: values.stateProvince,
-            postalCode: values.postalCode,
-            country: values.country,
-          },
-        ],
-      },
+      person: { ...person },
     };
+
     savePatient(abortController, patient)
       .then(response => response.status == 201 && history.push(`/patient/${response.data.uuid}/chart`))
       .catch(response => {

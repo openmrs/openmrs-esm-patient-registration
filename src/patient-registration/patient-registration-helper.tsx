@@ -42,5 +42,8 @@ export type Patient = {
     birthdateEstimated: boolean;
     attributes: Array<AttributeValue>;
     addresses: Array<AddressValue>;
+    dead: boolean;
+    deathDate?: Date;
+    causeOfDeath?: string;
   };
 };

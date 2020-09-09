@@ -63,6 +63,7 @@ describe('form submit', () => {
         birthdateEstimated: false,
         gender: 'M',
         names: [{ givenName: 'Paul', middleName: '', familyName: 'Gaihre', preferred: true }],
+        dead: false,
       },
     });
   });
@@ -112,6 +113,48 @@ describe('form submit', () => {
             preferred: false,
           },
         ],
+        dead: false,
+      },
+    });
+  });
+
+  it('saves the patient with death info', async () => {
+    spyOn(backendController, 'savePatient').and.callThrough();
+
+    const { getByText, getByLabelText } = render(<PatientRegistration />);
+    await wait();
+
+    await fillRequiredFields(getByLabelText);
+
+    const isDeadCheckbox = getByLabelText('isDead') as HTMLInputElement;
+
+    fireEvent.click(isDeadCheckbox);
+    fireEvent.blur(isDeadCheckbox);
+    await wait();
+
+    const deathDate = getByLabelText('deathDate') as HTMLInputElement;
+    const deathCause = getByLabelText('deathCause') as HTMLSelectElement;
+
+    fireEvent.change(deathDate, { target: { value: '2020-01-01' } });
+    fireEvent.blur(deathDate);
+    fireEvent.change(deathCause, { target: { value: 'stroke' } });
+    fireEvent.blur(deathCause);
+
+    fireEvent.click(getByText('Register Patient'));
+    await wait();
+
+    expect(backendController.savePatient).toHaveBeenCalledWith(expect.anything(), {
+      identifiers: [], //TODO when the identifer story is finished: { identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }
+      person: {
+        addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
+        attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
+        birthdate: '1993-08-02',
+        birthdateEstimated: false,
+        gender: 'M',
+        names: [{ givenName: 'Paul', middleName: '', familyName: 'Gaihre', preferred: true }],
+        dead: true,
+        deathDate: '2020-01-01',
+        causeOfDeath: 'stroke',
       },
     });
   });
