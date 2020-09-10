@@ -72,7 +72,7 @@ export const initialFormValues: FormValues = {
   deathCause: '',
 };
 
-export const getDeathInfo = (values: FormValues) => {
+export const getDeathInfo = values => {
   const patientIsDead = {
     dead: true,
     deathDate: values.deathDate,

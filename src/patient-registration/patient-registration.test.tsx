@@ -25,16 +25,15 @@ describe('patient registration sections', () => {
   testSectionExists('Death Info Section');
 });
 
-xdescribe('getDeathInfo', () => {
+describe('getDeathInfo', () => {
   it('builds deathInfo for dead patient', () => {
     const expected = {
       dead: true,
-      deathDate: new Date('2020-01-01'),
+      deathDate: '2020-01-01',
       causeOfDeath: 'stroke',
     };
 
-    const values = { ...initialFormValues, isDead: true, deathDate: new Date('2020-01-01'), deathCause: 'stroke' };
-
+    const values = { ...initialFormValues, isDead: true, deathDate: '2020-01-01', deathCause: 'stroke' };
     expect(getDeathInfo(values)).toStrictEqual(expected);
   });
 
@@ -43,7 +42,7 @@ xdescribe('getDeathInfo', () => {
       dead: false,
     };
 
-    expect(getDeathInfo(initialFormValues)).toBe(expected);
+    expect(getDeathInfo(initialFormValues)).toStrictEqual(expected);
   });
 });
 
