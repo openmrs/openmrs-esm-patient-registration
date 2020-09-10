@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, wait, fireEvent } from '@testing-library/react';
 import * as backendController from './patient-registration.resource';
-import { PatientRegistration } from './patient-registration.component';
+import { PatientRegistration, getDeathInfo, initialFormValues } from './patient-registration.component';
 
 describe('patient registration', () => {
   it('renders without crashing', () => {
@@ -23,6 +23,28 @@ describe('patient registration sections', () => {
   testSectionExists('Demographics Section');
   testSectionExists('Contact Info Section');
   testSectionExists('Death Info Section');
+});
+
+xdescribe('getDeathInfo', () => {
+  it('builds deathInfo for dead patient', () => {
+    const expected = {
+      dead: true,
+      deathDate: new Date('2020-01-01'),
+      causeOfDeath: 'stroke',
+    };
+
+    const values = { ...initialFormValues, isDead: true, deathDate: new Date('2020-01-01'), deathCause: 'stroke' };
+
+    expect(getDeathInfo(values)).toStrictEqual(expected);
+  });
+
+  it('builds deathInfo for not dead patient', () => {
+    const expected = {
+      dead: false,
+    };
+
+    expect(getDeathInfo(initialFormValues)).toBe(expected);
+  });
 });
 
 describe('form submit', () => {

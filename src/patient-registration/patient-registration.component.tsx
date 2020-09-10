@@ -72,6 +72,18 @@ export const initialFormValues: FormValues = {
   deathCause: '',
 };
 
+export const getDeathInfo = (values: FormValues) => {
+  const patientIsDead = {
+    dead: true,
+    deathDate: values.deathDate,
+    causeOfDeath: values.deathCause,
+  };
+
+  const patientIsNotDead = { dead: false };
+
+  return values.isDead ? patientIsDead : patientIsNotDead;
+};
+
 export const PatientRegistration: React.FC = () => {
   const history = useHistory();
   const [location, setLocation] = useState('');
@@ -106,18 +118,6 @@ export const PatientRegistration: React.FC = () => {
       });
 
     return names;
-  };
-
-  const getDeathInfo = (values: FormValues) => {
-    const patientIsDead = {
-      dead: true,
-      deathDate: values.deathDate,
-      causeOfDeath: values.deathCause,
-    };
-
-    const patientIsNotDead = { dead: false };
-
-    return values.isDead ? patientIsDead : patientIsNotDead;
   };
 
   useEffect(() => {
