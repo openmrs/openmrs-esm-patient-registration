@@ -25,6 +25,9 @@ export interface PatientIdentifierType {
   uuid: string;
   fieldName: string;
   format: string;
+  identifierSources: Array<IdentifierSource>;
+  autoGenerationSource: IdentifierSource;
+  isPrimary: boolean;
 }
 
 export interface PatientIdentifier {
@@ -44,3 +47,12 @@ export type Patient = {
     addresses: Array<AddressValue>;
   };
 };
+
+export interface IdentifierSource {
+  uuid: string;
+  name: string;
+  autoGenerationOption: {
+    manualEntryEnabled: boolean;
+    automaticGenerationEnabled: boolean;
+  };
+}

@@ -1,6 +1,7 @@
 import { openmrsFetch } from '@openmrs/esm-api';
 import { Patient } from './patient-registration-helper';
 import { camelCase } from 'lodash';
+import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
 
 export function savePatient(abortController: AbortController, patient: Patient) {
   return openmrsFetch('/ws/rest/v1/patient', {
@@ -82,5 +83,27 @@ export function getAddressTemplate(abortController: AbortController) {
   });
 }
 
+export function getIdentifierSources(identifierType: string, abortController: AbortController) {
+  return openmrsFetch('/ws/rest/v1/idgen/identifiersource?v=full&identifierType=' + identifierType, {
+    signal: abortController.signal,
+  });
+}
+
+export function getAutoGenerationOptions(identifierType: string, abortController: AbortController) {
+  // return openmrsFetch('/ws/rest/v1/idgen/autogenerationoption?v=full&identifierType=' + identifierType, {
+  //   signal: abortController.signal,
+  // });
+  return Promise.resolve(mockAutoGenerationOptionsResult);
+}
+
+export function generateIdentifier(source: string, abortController: AbortController) {
+  return openmrsFetch('/ws/rest/v1/idgen/identifiersource/' + source + '/identifier', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: {},
+  });
+}
 export const uuidIdentifier = '05a29f94-c0ed-11e2-94be-8c13b969e334';
 export const uuidTelephoneNumber = '14d4f066-15f5-102d-96e4-000c29c2a5d7';
