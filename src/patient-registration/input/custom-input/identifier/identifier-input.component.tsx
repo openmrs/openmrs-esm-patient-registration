@@ -26,7 +26,7 @@ export const IdentifierInput: React.FC<IdentifierInputProps> = ({
     automaticGenerationEnabled: undefined,
   });
   const [selectSourceField] = useField('source-for-' + name);
-  const [identifierValidationSchema, setIdentifierValidationSchema] = useState({});
+  const [identifierValidationSchema, setIdentifierValidationSchema] = useState(Yup.object({}));
 
   useEffect(() => {
     if (sources.length == 1) {
@@ -44,27 +44,32 @@ export const IdentifierInput: React.FC<IdentifierInputProps> = ({
     if (identifierType.format) {
       validatorProps = validatorProps.matches(new RegExp(identifierType.format), 'Invalid identifier format!');
     }
+    let schemaBuilder = {};
+    schemaBuilder[identifierType.fieldName] = validatorProps;
     identifierValidationSchema[identifierType.fieldName] = validatorProps;
-    setValidationSchema(validationSchema.concat(Yup.object(identifierValidationSchema)));
+    setIdentifierValidationSchema(Yup.object(schemaBuilder));
   }, []);
 
   useEffect(() => {
-    const selectedSource = find(sources, { name: selectSourceField.value });
-
-    if (selectedSource && selectedSource.autoGenerationOption) {
-      setAutoGenerationOption(selectedSource.autoGenerationOption);
-      if (selectedSource.autoGenerationOption.automaticGenerationEnabled) {
-        identifierType.autoGenerationSource = selectedSource;
-        if (validationSchema.fields[identifierType.fieldName]) {
-          validationSchema.fields[identifierType.fieldName] = Yup.string();
+    if (selectSourceField.value) {
+      const selectedSource = find(sources, { name: selectSourceField.value });
+      if (selectedSource && selectedSource.autoGenerationOption) {
+        setAutoGenerationOption(selectedSource.autoGenerationOption);
+        if (selectedSource.autoGenerationOption.automaticGenerationEnabled) {
+          identifierType.autoGenerationSource = selectedSource;
+          if (validationSchema.fields[identifierType.fieldName]) {
+            validationSchema.fields[identifierType.fieldName] = Yup.string();
+          }
+        } else {
+          setValidationSchema(validationSchema.concat(identifierValidationSchema));
         }
+      } else {
+        setValidationSchema(validationSchema.concat(identifierValidationSchema));
+        setAutoGenerationOption({
+          manualEntryEnabled: true,
+          automaticGenerationEnabled: false,
+        });
       }
-    } else {
-      setValidationSchema(validationSchema.concat(Yup.object(identifierValidationSchema)));
-      setAutoGenerationOption({
-        manualEntryEnabled: true,
-        automaticGenerationEnabled: false,
-      });
     }
   }, [selectSourceField.value]);
 
