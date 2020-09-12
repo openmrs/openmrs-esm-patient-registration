@@ -1,3 +1,6 @@
 {
-    "demographics": "Demographics"
+    "demographics": "Demographics",
+    "phoneNumber": "Telephone Number",
+    "phoneNumberPlaceHolder": "Enter Telephone Number",
+    "additionalPersonAttributesSectionHeader": "Additional Person Attributes"
 }

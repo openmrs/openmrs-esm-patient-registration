@@ -20,12 +20,7 @@ describe('contact info section', () => {
 
   it('has the correct number of inputs', async () => {
     const inputNames = await setupSection();
-    expect(inputNames.length).toBe(7);
-  });
-
-  it('has telephone number input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('telephoneNumber');
+    expect(inputNames.length).toBe(6);
   });
 
   it('has address input', async () => {

@@ -77,7 +77,7 @@ function AddressTemplateFieldRenderer({ addressTemplate }) {
       return new_sections;
     });
     return (
-      <div className={styles.fiield}>
+      <div className={styles.field}>
         {linesObj.map((sections, index) => (
           <section className={styles.fieldRow} key={`Section ${index}`}>
             {sections.map(field => (
