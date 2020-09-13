@@ -73,7 +73,6 @@ export const PatientRegistration: React.FC = () => {
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
-  const [addressValidationSchema, setAddressValidationSchema] = useState(Yup.object({}));
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -170,7 +169,7 @@ export const PatientRegistration: React.FC = () => {
       });
 
       Object.assign(initialFormValues, initialAddressFieldValues);
-      setAddressValidationSchema(addressValidationSchemaTmp);
+      setValidationSchema(validationSchema => validationSchema.concat(addressValidationSchemaTmp));
     }
   }, [addressTemplate]);
 
@@ -249,7 +248,7 @@ export const PatientRegistration: React.FC = () => {
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={validationSchema.concat(addressValidationSchema)}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);
