@@ -39,12 +39,6 @@ export interface FormValues {
   monthsEstimated: number;
   birthdateEstimated: boolean;
   telephoneNumber: string;
-  address1: string;
-  address2: string;
-  cityVillage: string;
-  stateProvince: string;
-  country: string;
-  postalCode: string;
 }
 
 export const initialFormValues: FormValues = {
@@ -62,13 +56,9 @@ export const initialFormValues: FormValues = {
   monthsEstimated: 0,
   birthdateEstimated: false,
   telephoneNumber: '',
-  address1: '',
-  address2: '',
-  cityVillage: '',
-  stateProvince: '',
-  country: '',
-  postalCode: '',
 };
+
+export const initialAddressFieldValues = {};
 
 interface AddressValidationSchemaType {
   name: string;
@@ -83,7 +73,6 @@ export const PatientRegistration: React.FC = () => {
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
-  const [addressValidationSchema, setAddressValidationSchema] = useState(Yup.object({}));
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -176,10 +165,11 @@ export const PatientRegistration: React.FC = () => {
       Array.prototype.forEach.call(nameMappings, nameMapping => {
         let name = nameMapping.getAttribute('name');
         let defaultValue = getValueIfItExists(name, 'elementDefaults', templateXmlDoc);
-        initialFormValues[name] = defaultValue ?? '';
+        initialAddressFieldValues[name] = defaultValue ?? '';
       });
 
-      setAddressValidationSchema(addressValidationSchemaTmp);
+      Object.assign(initialFormValues, initialAddressFieldValues);
+      setValidationSchema(validationSchema => validationSchema.concat(addressValidationSchemaTmp));
     }
   }, [addressTemplate]);
 
@@ -218,6 +208,11 @@ export const PatientRegistration: React.FC = () => {
         });
       }
     }
+
+    let addressFieldValues: Record<string, string> = {};
+    Object.keys(initialAddressFieldValues).forEach(fieldName => {
+      addressFieldValues[fieldName] = values[fieldName];
+    });
     const patient: Patient = {
       identifiers: identifiers,
       person: {
@@ -231,16 +226,7 @@ export const PatientRegistration: React.FC = () => {
             value: values.telephoneNumber,
           },
         ],
-        addresses: [
-          {
-            address1: values.address1,
-            address2: values.address2,
-            cityVillage: values.cityVillage,
-            stateProvince: values.stateProvince,
-            postalCode: values.postalCode,
-            country: values.country,
-          },
-        ],
+        addresses: [addressFieldValues],
       },
     };
     savePatient(abortController, patient)
@@ -262,7 +248,7 @@ export const PatientRegistration: React.FC = () => {
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={validationSchema.concat(addressValidationSchema)}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);
