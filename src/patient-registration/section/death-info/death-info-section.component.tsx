@@ -14,9 +14,11 @@ export const DeathInfoSection: React.FC<DeathInfoSectionProps> = ({ values }) =>
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Death Info</h5>
       <section className={styles.fieldGroup}>
         <Input type="checkbox" label="Is Dead" name="isDead" />
-        {values.isDead && <Input type="date" label="Date of Death" name="deathDate" />}
         {values.isDead && (
-          <SelectInput options={['Unknown cause of death', 'stroke']} label="Cause of Death" name="deathCause" />
+          <>
+            <Input type="date" label="Date of Death" name="deathDate" />
+            <SelectInput options={['Unknown cause of death', 'stroke']} label="Cause of Death" name="deathCause" />
+          </>
         )}
       </section>
     </section>
