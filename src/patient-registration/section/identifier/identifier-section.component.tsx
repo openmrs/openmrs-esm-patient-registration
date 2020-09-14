@@ -3,7 +3,11 @@ import { IdentifierInput } from '../../input/custom-input/identifier/identifier-
 import { PatientIdentifierType } from '../../patient-registration-helper';
 import styles from './../section.css';
 
-export const IdentifierSection: React.FC<{ identifierTypes: PatientIdentifierType[] }> = ({ identifierTypes }) => {
+interface IdentifierSectionProps {
+  identifierTypes: Array<PatientIdentifierType>;
+}
+
+export const IdentifierSection: React.FC<IdentifierSectionProps> = ({ identifierTypes }) => {
   return (
     <section className={styles.formSection}>
       <h5 className="omrs-type-title-5">Identifiers</h5>
