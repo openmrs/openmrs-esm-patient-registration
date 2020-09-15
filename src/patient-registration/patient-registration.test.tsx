@@ -158,7 +158,7 @@ describe('form submit', () => {
 
     fireEvent.change(deathDate, { target: { value: '2020-01-01' } });
     fireEvent.blur(deathDate);
-    fireEvent.change(deathCause, { target: { value: 'stroke' } });
+    fireEvent.change(deathCause, { target: { value: 'Stroke' } });
     fireEvent.blur(deathCause);
 
     fireEvent.click(getByText('Register Patient'));
@@ -175,7 +175,7 @@ describe('form submit', () => {
         names: [{ givenName: 'Paul', middleName: '', familyName: 'Gaihre', preferred: true }],
         dead: true,
         deathDate: '2020-01-01',
-        causeOfDeath: 'stroke',
+        causeOfDeath: 'Stroke',
       },
     });
   });

@@ -17,7 +17,7 @@ export const DeathInfoSection: React.FC<DeathInfoSectionProps> = ({ values }) =>
         {values.isDead && (
           <>
             <Input type="date" label="Date of Death" name="deathDate" />
-            <SelectInput options={['Unknown cause of death', 'stroke']} label="Cause of Death" name="deathCause" />
+            <SelectInput options={['Unknown', 'Stroke']} label="Cause of Death" name="deathCause" />
           </>
         )}
       </section>
