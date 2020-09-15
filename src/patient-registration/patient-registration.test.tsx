@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { render, wait, fireEvent } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import * as backendController from './patient-registration.resource';
 import { PatientRegistration, getDeathInfo, initialFormValues } from './patient-registration.component';
 
@@ -53,14 +54,11 @@ describe('form submit', () => {
     const dateOfBirthInput = getByLabelText('birthdate') as HTMLInputElement;
     const genderSelect = getByLabelText('gender') as HTMLSelectElement;
 
-    fireEvent.change(givenNameInput, { target: { value: 'Paul' } });
-    fireEvent.blur(givenNameInput);
-    fireEvent.change(familyNameInput, { target: { value: 'Gaihre' } });
-    fireEvent.blur(familyNameInput);
-    fireEvent.change(dateOfBirthInput, { target: { value: '1993-08-02' } });
-    fireEvent.blur(dateOfBirthInput);
-    fireEvent.change(genderSelect, { target: { value: 'Male' } });
-    fireEvent.blur(genderSelect);
+    userEvent.type(givenNameInput, 'Paul');
+    userEvent.type(familyNameInput, 'Gaihre');
+    userEvent.type(dateOfBirthInput, '1993-08-02');
+    userEvent.selectOptions(genderSelect, 'Male');
+
     await wait();
   };
 
@@ -72,7 +70,7 @@ describe('form submit', () => {
 
     await fillRequiredFields(getByLabelText);
 
-    fireEvent.click(getByText('Register Patient'));
+    userEvent.click(getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(expect.anything(), {
@@ -99,22 +97,18 @@ describe('form submit', () => {
 
     const addNameInLocalLanguageCheckbox = getByLabelText('addNameInLocalLanguage') as HTMLInputElement;
 
-    fireEvent.click(addNameInLocalLanguageCheckbox);
-    fireEvent.blur(addNameInLocalLanguageCheckbox);
+    userEvent.click(addNameInLocalLanguageCheckbox);
     await wait();
 
     const additionalGivenNameInput = getByLabelText('additionalGivenName') as HTMLInputElement;
     const additionalMiddleNameInput = getByLabelText('additionalMiddleName') as HTMLInputElement;
     const additionalFamilyNameInput = getByLabelText('additionalFamilyName') as HTMLInputElement;
 
-    fireEvent.change(additionalGivenNameInput, { target: { value: 'Local Given Name' } });
-    fireEvent.blur(additionalGivenNameInput);
-    fireEvent.change(additionalMiddleNameInput, { target: { value: 'Local Middle Name' } });
-    fireEvent.blur(additionalMiddleNameInput);
-    fireEvent.change(additionalFamilyNameInput, { target: { value: 'Local Family Name' } });
-    fireEvent.blur(additionalFamilyNameInput);
+    userEvent.type(additionalGivenNameInput, 'Local Given Name');
+    userEvent.type(additionalMiddleNameInput, 'Local Middle Name');
+    userEvent.type(additionalFamilyNameInput, 'Local Family Name');
 
-    fireEvent.click(getByText('Register Patient'));
+    userEvent.click(getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(expect.anything(), {
@@ -149,19 +143,16 @@ describe('form submit', () => {
 
     const isDeadCheckbox = getByLabelText('isDead') as HTMLInputElement;
 
-    fireEvent.click(isDeadCheckbox);
-    fireEvent.blur(isDeadCheckbox);
+    userEvent.click(isDeadCheckbox);
     await wait();
 
     const deathDate = getByLabelText('deathDate') as HTMLInputElement;
     const deathCause = getByLabelText('deathCause') as HTMLSelectElement;
 
-    fireEvent.change(deathDate, { target: { value: '2020-01-01' } });
-    fireEvent.blur(deathDate);
-    fireEvent.change(deathCause, { target: { value: 'Stroke' } });
-    fireEvent.blur(deathCause);
+    userEvent.type(deathDate, '2020-01-01');
+    userEvent.selectOptions(deathCause, 'Stroke');
 
-    fireEvent.click(getByText('Register Patient'));
+    userEvent.click(getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(expect.anything(), {
@@ -187,11 +178,10 @@ describe('form submit', () => {
 
     const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
 
-    fireEvent.change(givenNameInput, { target: { value: '' } });
-    fireEvent.blur(givenNameInput);
+    userEvent.type(givenNameInput, '');
     await wait();
 
-    fireEvent.click(getByText('Register Patient'));
+    userEvent.click(getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).not.toHaveBeenCalled();
