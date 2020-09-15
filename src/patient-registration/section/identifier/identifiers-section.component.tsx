@@ -6,6 +6,7 @@ import styles from './../section.css';
 interface IdentifierSectionProps {
   identifierTypes: PatientIdentifierType[];
   validationSchema: any;
+  inEditMode: boolean;
   setValidationSchema(value: any): void;
 }
 
@@ -21,6 +22,7 @@ function containsSourceWithAnOption(sources: Array<IdentifierSource>): boolean {
 export const IdentifierSection: React.FC<IdentifierSectionProps> = ({
   identifierTypes,
   validationSchema,
+  inEditMode,
   setValidationSchema,
 }) => {
   const identifierInputs = identifierTypes
@@ -44,6 +46,7 @@ export const IdentifierSection: React.FC<IdentifierSectionProps> = ({
             key={identifierType.fieldName}
             identifierType={identifierType}
             validationSchema={validationSchema}
+            inEditMode={inEditMode}
             setValidationSchema={setValidationSchema}
           />
         );

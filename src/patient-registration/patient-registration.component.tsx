@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
 import { Patient, PatientIdentifierType } from './patient-registration-helper';
+
 import {
   getCurrentUserLocation,
   savePatient,
@@ -13,6 +14,7 @@ import {
   getIdentifierSources,
   getAutoGenerationOptions,
   generateIdentifier,
+  deletePersonName,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
@@ -21,9 +23,14 @@ import { ContactInfoSection } from './section/contact-info/contact-info-section.
 import { DeathInfoSection } from './section/death-info/death-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import styles from './patient-registration.css';
-import { find } from 'lodash';
 import { IdentifierSection } from './section/identifier/identifiers-section.component';
 import * as Yup from 'yup';
+import { useCurrentPatient } from '@openmrs/esm-api';
+import { camelCase, capitalize, find } from 'lodash';
+
+export const initialAddressFieldValues = {};
+const patientUuidMap = {};
+const deletedNames = [];
 
 export interface FormValues {
   givenName: string;
@@ -35,7 +42,7 @@ export interface FormValues {
   additionalFamilyName: string;
   addNameInLocalLanguage: boolean;
   gender: string;
-  birthdate: Date;
+  birthdate: string;
   yearsEstimated: number;
   monthsEstimated: number;
   birthdateEstimated: boolean;
@@ -89,8 +96,6 @@ export const getDeathInfo = (values: FormValues) => {
   return values.isDead ? patientIsDead : patientIsNotDead;
 };
 
-export const initialAddressFieldValues = {};
-
 interface AddressValidationSchemaType {
   name: string;
   label: string;
@@ -99,11 +104,13 @@ interface AddressValidationSchemaType {
 }
 
 export const PatientRegistration: React.FC = () => {
+  const { search } = useLocation();
   const history = useHistory();
   const [location, setLocation] = useState('');
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
+  const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -114,22 +121,99 @@ export const PatientRegistration: React.FC = () => {
     return () => abortController.abort();
   }, []);
 
+  useEffect(() => {
+    if (existingPatient) {
+      patientUuidMap['patientUuid'] = existingPatient.id;
+      // set names
+      if (existingPatient.name) {
+        existingPatient.name.forEach((name, index) => {
+          if (index === 0) {
+            patientUuidMap['preferredNameUuid'] = name.id;
+            initialFormValues.givenName = name.given[0];
+            initialFormValues.middleName = name.given[1];
+            initialFormValues.familyName = name.family;
+          }
+          if (index === 1) {
+            patientUuidMap['additionalNameUuid'] = name.id;
+            initialFormValues.addNameInLocalLanguage = true;
+            initialFormValues.additionalGivenName = name.given[0];
+            initialFormValues.additionalMiddleName = name.given[1];
+            initialFormValues.additionalFamilyName = name.family;
+          }
+        });
+      } else {
+        initialFormValues.unidentifiedPatient = true;
+      }
+      initialFormValues.gender = capitalize(existingPatient.gender);
+      initialFormValues.birthdate = existingPatient.birthDate;
+      initialFormValues.telephoneNumber = existingPatient.telecom ? existingPatient.telecom[0].value : '';
+
+      existingPatient.identifier.forEach(id => {
+        const key = id.system ? camelCase(id.system) : camelCase(id.type.text);
+        patientUuidMap[key] = {
+          uuid: id.id,
+          value: id.value,
+        };
+        initialFormValues[key] = id.value;
+      });
+
+      if (existingPatient.address && existingPatient.address[0]) {
+        const address = existingPatient.address[0];
+        Object.keys(address).forEach(prop => {
+          switch (prop) {
+            case 'id':
+              patientUuidMap['preferredAddressUuid'] = address[prop];
+              break;
+            case 'city':
+              initialAddressFieldValues['cityVillage'] = address[prop];
+              break;
+            case 'state':
+              initialAddressFieldValues['stateProvince'] = address[prop];
+              break;
+            case 'district':
+              initialAddressFieldValues['countyDistrict'] = address[prop];
+              break;
+            case 'extension':
+              address[prop].forEach(ext => {
+                ext.extension.forEach(extension => {
+                  initialAddressFieldValues[extension.url.split('#')[1]] = extension.valueString;
+                });
+              });
+              break;
+            default:
+              if (prop === 'country' || prop === 'postalCode') {
+                initialAddressFieldValues[prop] = address[prop];
+              }
+          }
+        });
+      }
+    }
+  }, [existingPatient]);
+
   const getNames = (values: FormValues) => {
     const names = [
       {
+        uuid: patientUuidMap['preferredNameUuid'],
         preferred: true,
         givenName: values.givenName,
         middleName: values.middleName,
         familyName: values.familyName,
       },
     ];
-    values.addNameInLocalLanguage &&
+    if (values.addNameInLocalLanguage) {
       names.push({
+        uuid: patientUuidMap['additionalNameUuid'],
         preferred: false,
         givenName: values.additionalGivenName,
         middleName: values.additionalMiddleName,
         familyName: values.additionalFamilyName,
       });
+    } else if (patientUuidMap['additionalNameUuid']) {
+      deletedNames.push({
+        nameUuid: patientUuidMap['additionalNameUuid'],
+        personUuid: patientUuidMap['patientUuid'],
+      });
+    }
     return names;
   };
 
@@ -153,7 +237,9 @@ export const PatientRegistration: React.FC = () => {
           return source;
         });
         // update form initial values
-        initialFormValues[type.fieldName] = '';
+        if (!initialFormValues[type.fieldName]) {
+          initialFormValues[type.fieldName] = '';
+        }
         initialFormValues['source-for-' + type.fieldName] =
           type.identifierSources.length > 0 ? type.identifierSources[0].name : '';
       }
@@ -195,8 +281,10 @@ export const PatientRegistration: React.FC = () => {
 
       Array.prototype.forEach.call(nameMappings, nameMapping => {
         let name = nameMapping.getAttribute('name');
-        let defaultValue = getValueIfItExists(name, 'elementDefaults', templateXmlDoc);
-        initialAddressFieldValues[name] = defaultValue ?? '';
+        if (!initialAddressFieldValues[name]) {
+          let defaultValue = getValueIfItExists(name, 'elementDefaults', templateXmlDoc);
+          initialAddressFieldValues[name] = defaultValue ?? '';
+        }
       });
 
       Object.assign(initialFormValues, initialAddressFieldValues);
@@ -224,6 +312,7 @@ export const PatientRegistration: React.FC = () => {
       const idValue = values[type.fieldName];
       if (idValue) {
         identifiers.push({
+          uuid: patientUuidMap[type.fieldName] ? patientUuidMap[type.fieldName].uuid : undefined,
           identifier: idValue,
           identifierType: type.uuid,
           location: location,
@@ -246,6 +335,7 @@ export const PatientRegistration: React.FC = () => {
     });
 
     const person = {
+      uuid: patientUuidMap['patientUuid'],
       names: getNames(values),
       gender: values.gender.charAt(0),
       birthdate: values.birthdate,
@@ -261,12 +351,23 @@ export const PatientRegistration: React.FC = () => {
     };
 
     const patient: Patient = {
+      uuid: patientUuidMap['patientUuid'],
       identifiers: identifiers,
       person: { ...person },
     };
-
-    savePatient(abortController, patient)
-      .then(response => response.status == 201 && history.push(`/patient/${response.data.uuid}/chart`))
+    
+    // handle deleted names
+    deletedNames.forEach(async name => {
+      await deletePersonName(name.nameUuid, name.personUuid, abortController);
+    });
+    // handle save patient
+    savePatient(abortController, patient, patientUuidMap['patientUuid'])
+      .then(response => {
+        if (response.ok) {
+          const url = new URLSearchParams(search).get('afterUrl') || `/patient/${response.data.uuid}/chart`;
+          // history.push(url);
+        }
+      })
       .catch(response => {
         if (response.responseBody && response.responseBody.error.globalErrors) {
           response.responseBody.error.globalErrors.forEach(error => {
@@ -292,8 +393,10 @@ export const PatientRegistration: React.FC = () => {
         {props => (
           <Form className={styles.form}>
             <div className={styles.formTitle}>
-              <h1 className={`omrs-type-title-1 ${styles.title}`}>New Patient</h1>
-              {localStorage.getItem('openmrs:devtools') === 'true' && <DummyDataInput setValues={props.setValues} />}
+              <h1 className={`omrs-type-title-1 ${styles.title}`}>{!!existingPatient ? 'Edit' : 'New'} Patient</h1>
+              {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
+                <DummyDataInput setValues={props.setValues} />
+              )}
             </div>
             <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
             <ContactInfoSection addressTemplate={addressTemplate} />
@@ -301,10 +404,11 @@ export const PatientRegistration: React.FC = () => {
               identifierTypes={identifierTypes}
               validationSchema={validationSchema}
               setValidationSchema={setValidationSchema}
+              inEditMode={!!existingPatient}
             />
             <DeathInfoSection values={props.values} />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
-              Register Patient
+              {!!existingPatient ? 'Save Patient' : 'Register Patient'}
             </button>
           </Form>
         )}

@@ -11,13 +11,16 @@ interface IdentifierInputProps {
   identifierType: PatientIdentifierType;
   validationSchema: Yup.ObjectSchema;
   setValidationSchema(value: any): void;
+  inEditMode: boolean;
 }
 
 export const IdentifierInput: React.FC<IdentifierInputProps> = ({
   identifierType,
   setValidationSchema,
   validationSchema,
+  inEditMode,
 }) => {
+  const [field, meta] = useField(identifierType.fieldName);
   const sources = identifierType.identifierSources;
   const name = identifierType.fieldName;
 
@@ -98,7 +101,7 @@ export const IdentifierInput: React.FC<IdentifierInputProps> = ({
               : 'Enter identifier'
           }
           name={name}
-          disabled={!option.manualEntryEnabled}
+          disabled={!option.manualEntryEnabled || (field.value && inEditMode) ? true : false}
           helperText={
             option.manualEntryEnabled && option.automaticGenerationEnabled ? 'Leave blank to auto-generate' : ''
           }

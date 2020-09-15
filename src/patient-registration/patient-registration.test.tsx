@@ -6,6 +6,13 @@ import * as backendController from './patient-registration.resource';
 import { PatientRegistration, getDeathInfo, initialFormValues } from './patient-registration.component';
 import { getAddressTemplateMock } from '../../__mocks__/openmrs-esm-api.mock';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => ({
+    pathname: 'openmrs/spa/patient-registration',
+  }),
+}));
+
 describe('patient registration', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');

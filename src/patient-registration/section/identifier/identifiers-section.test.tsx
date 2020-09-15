@@ -63,6 +63,7 @@ describe('identifiers section', () => {
             identifierTypes={identifierTypes}
             validationSchema={validationSchema}
             setValidationSchema={() => {}}
+            inEditMode={false}
           />
         </Form>
       </Formik>,
