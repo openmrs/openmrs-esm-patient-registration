@@ -42,7 +42,7 @@ export interface FormValues {
   country: string;
   postalCode: string;
   isDead: boolean;
-  deathDate: Date;
+  deathDate: string;
   deathCause: string;
 }
 
@@ -68,11 +68,11 @@ export const initialFormValues: FormValues = {
   country: '',
   postalCode: '',
   isDead: false,
-  deathDate: null,
+  deathDate: '',
   deathCause: '',
 };
 
-export const getDeathInfo = values => {
+export const getDeathInfo = (values: FormValues) => {
   const patientIsDead = {
     dead: true,
     deathDate: values.deathDate,
