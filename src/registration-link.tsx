@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import singleSpaReact, { singleSpaNavigate } from 'single-spa-react';
+import singleSpaReact from 'single-spa-react';
+import { navigateToUrl } from 'single-spa';
 
 export default singleSpaReact({
   React,
@@ -12,7 +13,7 @@ export function RegistrationLink(props) {
   const className = `omrs-link omrs-filled-neutral`;
   const url = '/openmrs/spa/patient-registration';
   const button = (
-    <a className={className} href={url} onClick={event => singleSpaNavigate(event, url)}>
+    <a className={className} href={url} onClick={event => navigateToUrl(event, url)}>
       Patient Registration
     </a>
   );
