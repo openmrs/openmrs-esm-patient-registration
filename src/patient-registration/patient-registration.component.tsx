@@ -18,6 +18,7 @@ import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
 import { DemographicsSection } from './section/demographics/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
+import { DeathInfoSection } from './section/death-info/death-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import styles from './patient-registration.css';
 import { find } from 'lodash';
@@ -39,6 +40,15 @@ export interface FormValues {
   monthsEstimated: number;
   birthdateEstimated: boolean;
   telephoneNumber: string;
+  address1: string;
+  address2: string;
+  cityVillage: string;
+  stateProvince: string;
+  country: string;
+  postalCode: string;
+  isDead: boolean;
+  deathDate: string;
+  deathCause: string;
 }
 
 export const initialFormValues: FormValues = {
@@ -56,6 +66,27 @@ export const initialFormValues: FormValues = {
   monthsEstimated: 0,
   birthdateEstimated: false,
   telephoneNumber: '',
+  address1: '',
+  address2: '',
+  cityVillage: '',
+  stateProvince: '',
+  country: '',
+  postalCode: '',
+  isDead: false,
+  deathDate: '',
+  deathCause: '',
+};
+
+export const getDeathInfo = (values: FormValues) => {
+  const patientIsDead = {
+    dead: true,
+    deathDate: values.deathDate,
+    causeOfDeath: values.deathCause,
+  };
+
+  const patientIsNotDead = { dead: false };
+
+  return values.isDead ? patientIsDead : patientIsNotDead;
 };
 
 export const initialAddressFieldValues = {};
@@ -213,22 +244,27 @@ export const PatientRegistration: React.FC = () => {
     Object.keys(initialAddressFieldValues).forEach(fieldName => {
       addressFieldValues[fieldName] = values[fieldName];
     });
+
+    const person = {
+      names: getNames(values),
+      gender: values.gender.charAt(0),
+      birthdate: values.birthdate,
+      birthdateEstimated: values.birthdateEstimated,
+      attributes: [
+        {
+          attributeType: uuidTelephoneNumber,
+          value: values.telephoneNumber,
+        },
+      ],
+      addresses: [addressFieldValues],
+      ...getDeathInfo(values),
+    };
+
     const patient: Patient = {
       identifiers: identifiers,
-      person: {
-        names: getNames(values),
-        gender: values.gender.charAt(0),
-        birthdate: values.birthdate,
-        birthdateEstimated: values.birthdateEstimated,
-        attributes: [
-          {
-            attributeType: uuidTelephoneNumber,
-            value: values.telephoneNumber,
-          },
-        ],
-        addresses: [addressFieldValues],
-      },
+      person: { ...person },
     };
+
     savePatient(abortController, patient)
       .then(response => response.status == 201 && history.push(`/patient/${response.data.uuid}/chart`))
       .catch(response => {
@@ -266,6 +302,7 @@ export const PatientRegistration: React.FC = () => {
               validationSchema={validationSchema}
               setValidationSchema={setValidationSchema}
             />
+            <DeathInfoSection values={props.values} />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               Register Patient
             </button>

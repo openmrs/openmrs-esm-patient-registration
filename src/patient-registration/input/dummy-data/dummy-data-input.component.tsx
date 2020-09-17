@@ -21,6 +21,15 @@ export const dummyFormValues: FormValues = {
   monthsEstimated: 2,
   birthdateEstimated: true,
   telephoneNumber: '0800001066',
+  address1: 'Bom Jesus Street',
+  address2: '',
+  cityVillage: 'Recife',
+  stateProvince: 'Pernambuco',
+  country: 'Brazil',
+  postalCode: '50030-310',
+  isDead: false,
+  deathDate: '',
+  deathCause: '',
 };
 
 export const DummyDataInput: React.FC<DummyDataInputProps> = ({ setValues }) => {

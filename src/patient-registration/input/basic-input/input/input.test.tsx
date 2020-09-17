@@ -151,4 +151,19 @@ describe('checkbox input', () => {
 
     expect(input.checked).toEqual(expected);
   });
+
+  it('can update data', async () => {
+    const input = await setupInput();
+    const expected = false;
+
+    fireEvent.click(input);
+    fireEvent.blur(input);
+
+    fireEvent.click(input);
+    fireEvent.blur(input);
+
+    await wait();
+
+    expect(input.checked).toEqual(expected);
+  });
 });

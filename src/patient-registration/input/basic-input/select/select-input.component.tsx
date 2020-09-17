@@ -5,7 +5,7 @@ import styles from './../../input.css';
 interface SelectInputProps {
   name: string;
   options: Array<string>;
-  label?: string;
+  label: string;
   showRequiredAsterisk?: boolean;
 }
 
@@ -13,7 +13,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, 
   const [field, meta] = useField(name);
   const selectOptions = [
     <option key="" value="" disabled>
-      Select {name}
+      Select {label}
     </option>,
     options.map(currentOption => (
       <option key={currentOption} value={currentOption}>
