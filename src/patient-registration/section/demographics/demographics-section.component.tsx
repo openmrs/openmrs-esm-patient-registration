@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormValues } from '../../patient-registration.component';
 import { NameInput } from '../../input/custom-input/name/name-input.component';
 import { UnidentifiedPatientInput } from '../../input/custom-input/unidentified-patient/unidentified-patient-input.component';
@@ -13,9 +14,11 @@ interface DemographicsSectionProps {
 }
 
 export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFieldValue, values }) => {
+  const { t } = useTranslation();
+
   return (
     <section className={styles.formSection} aria-label="Demographics Section">
-      <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Demographics</h5>
+      <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>{t('demographics', 'Demographics')}</h5>
       <section className={styles.fieldGroup}>
         <NameInput givenName="givenName" middleName="middleName" familyName="familyName" showRequiredAsterisk={true} />
         <UnidentifiedPatientInput name="unidentifiedPatient" setName={setFieldValue} />

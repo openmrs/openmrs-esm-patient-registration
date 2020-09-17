@@ -60,23 +60,13 @@ npm test
 *Note: Run `npm i` before running tests for the first time.*
 
 ## Deployment
-Currently, there are no releases for this module and it can only be locally deployed by following the installation instructions.
+The `master` branch of this repo is deployed in a [demo environment](https://openmrs-spa.org/openmrs/spa/patient-registration).
 
 ## Configuration
 This module is designed to be driven by configuration files. These files define the look and functionality required to drive the Patient Registration module.
 
-*Note: Currently, the module cannot be configured as it is in the early stages of development.*
-
 ## Resources
 - [JIRA Epic](https://issues.openmrs.org/browse/MF-248)
-
-## Acknowledgements
-* [Nick Hill](https://github.com/nickjhill14) - maintainance, design, analysis, onboarding, and development.
-* [Florian Rappl](https://github.com/FlorianRappl) - module scaffolding, onboarding, guidance, and review.
-* [Romain Buisson](https://github.com/rbuisson) - design, inception, and guidance.
-* [Dimitri Renault](https://github.com/mks-d) - design, inception, and guidance.
-* [Helena Lyhme](https://github.com/illyz) - inception, onboarding, and analysis.
-* [Lucas Kummer](https://github.com/trepolus) - design, analysis, and development.
 
 ## License
 The project is licensed under the MIT License - see the [LICENSE.md](./LICENSE.md) file for details.
