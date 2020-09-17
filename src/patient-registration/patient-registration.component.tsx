@@ -132,6 +132,9 @@ export const PatientRegistration: React.FC = () => {
             initialFormValues.givenName = name.given[0];
             initialFormValues.middleName = name.given[1];
             initialFormValues.familyName = name.family;
+            if (name.given[0] === 'UNKNOWN' && name.family === 'UNKNOWN') {
+              initialFormValues.unidentifiedPatient = true;
+            }
           }
           if (index === 1) {
             patientUuidMap['additionalNameUuid'] = name.id;
@@ -141,15 +144,13 @@ export const PatientRegistration: React.FC = () => {
             initialFormValues.additionalFamilyName = name.family;
           }
         });
-      } else {
-        initialFormValues.unidentifiedPatient = true;
       }
       initialFormValues.gender = capitalize(existingPatient.gender);
       initialFormValues.birthdate = existingPatient.birthDate;
       initialFormValues.telephoneNumber = existingPatient.telecom ? existingPatient.telecom[0].value : '';
 
       existingPatient.identifier.forEach(id => {
-        const key = id.system ? camelCase(id.system) : camelCase(id.type.text);
+        const key = camelCase(id.system || id.type.text);
         patientUuidMap[key] = {
           uuid: id.id,
           value: id.value,
@@ -365,7 +366,7 @@ export const PatientRegistration: React.FC = () => {
       .then(response => {
         if (response.ok) {
           const url = new URLSearchParams(search).get('afterUrl') || `/patient/${response.data.uuid}/chart`;
-          // history.push(url);
+          history.push(url);
         }
       })
       .catch(response => {
@@ -393,7 +394,7 @@ export const PatientRegistration: React.FC = () => {
         {props => (
           <Form className={styles.form}>
             <div className={styles.formTitle}>
-              <h1 className={`omrs-type-title-1 ${styles.title}`}>{!!existingPatient ? 'Edit' : 'New'} Patient</h1>
+              <h1 className={`omrs-type-title-1 ${styles.title}`}>{existingPatient ? 'Edit' : 'New'} Patient</h1>
               {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
                 <DummyDataInput setValues={props.setValues} />
               )}
@@ -405,10 +406,11 @@ export const PatientRegistration: React.FC = () => {
               validationSchema={validationSchema}
               setValidationSchema={setValidationSchema}
               inEditMode={!!existingPatient}
+              values={props.values}
             />
             <DeathInfoSection values={props.values} />
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
-              {!!existingPatient ? 'Save Patient' : 'Register Patient'}
+              {existingPatient ? 'Save Patient' : 'Register Patient'}
             </button>
           </Form>
         )}
