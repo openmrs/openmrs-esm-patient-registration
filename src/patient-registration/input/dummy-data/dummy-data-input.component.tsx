@@ -28,7 +28,7 @@ export const dummyFormValues: FormValues = {
   country: 'Brazil',
   postalCode: '50030-310',
   isDead: false,
-  deathDate: null,
+  deathDate: '',
   deathCause: '',
 };
 

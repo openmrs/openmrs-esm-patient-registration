@@ -62,8 +62,22 @@ describe('form submit', () => {
     await wait();
   };
 
+  beforeAll(() => {
+    const predefinedAddressTemplate = {
+      data: {
+        results: [
+          {
+            value:
+              '<org.openmrs.layout.address.AddressTemplate>\r\n     <nameMappings class="properties">\r\n       <property name="postalCode" value="Location.postalCode"/>\r\n       <property name="address2" value="Location.address2"/>\r\n       <property name="address1" value="Location.address1"/>\r\n       <property name="country" value="Location.country"/>\r\n       <property name="stateProvince" value="Location.stateProvince"/>\r\n       <property name="cityVillage" value="Location.cityVillage"/>\r\n     </nameMappings>\r\n     <sizeMappings class="properties">\r\n       <property name="postalCode" value="4"/>\r\n       <property name="address1" value="40"/>\r\n       <property name="address2" value="40"/>\r\n       <property name="country" value="10"/>\r\n       <property name="stateProvince" value="10"/>\r\n       <property name="cityVillage" value="10"/>\r\n       <asset name="cityVillage" value="10"/>\r\n     </sizeMappings>\r\n     <lineByLineFormat>\r\n       <string>address1 address2</string>\r\n       <string>cityVillage stateProvince postalCode</string>\r\n       <string>country</string>\r\n     </lineByLineFormat>\r\n     <elementDefaults class="properties">\r\n            <property name="country" value=""/>\r\n     </elementDefaults>\r\n     <elementRegex class="properties">\r\n            <property name="address1" value="[a-zA-Z]+$"/>\r\n     </elementRegex>\r\n     <elementRegexFormats class="properties">\r\n            <property name="address1" value="Countries can only be letters"/>\r\n     </elementRegexFormats>\r\n   </org.openmrs.layout.address.AddressTemplate>',
+          },
+        ],
+      },
+    };
+    spyOn(backendController, 'getAddressTemplate').and.returnValue(Promise.resolve(predefinedAddressTemplate));
+  });
+
   it('saves the patient', async () => {
-    spyOn(backendController, 'savePatient').and.callThrough();
+    spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
     const { getByText, getByLabelText } = render(<PatientRegistration />);
     await wait();
@@ -75,6 +89,7 @@ describe('form submit', () => {
 
     expect(backendController.savePatient).toHaveBeenCalledWith(expect.anything(), {
       identifiers: [], //TODO when the identifer story is finished: { identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }
+      // identifiers: [{ identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }],
       person: {
         addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
         attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
@@ -88,7 +103,7 @@ describe('form submit', () => {
   });
 
   it('saves the patient with their additional name', async () => {
-    spyOn(backendController, 'savePatient').and.callThrough();
+    spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
     const { getByText, getByLabelText } = render(<PatientRegistration />);
     await wait();
@@ -134,7 +149,7 @@ describe('form submit', () => {
   });
 
   it('saves the patient with death info', async () => {
-    spyOn(backendController, 'savePatient').and.callThrough();
+    spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
     const { getByText, getByLabelText } = render(<PatientRegistration />);
     await wait();
@@ -172,7 +187,7 @@ describe('form submit', () => {
   });
 
   it('should not save the patient if validation fails', async () => {
-    spyOn(backendController, 'savePatient');
+    spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
     const { getByText, getByLabelText } = render(<PatientRegistration />);
     await wait();
 
