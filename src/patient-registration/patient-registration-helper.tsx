@@ -1,4 +1,5 @@
 interface NameValue {
+  uuid: string;
   preferred: boolean;
   givenName: string;
   middleName: string;
@@ -28,11 +29,13 @@ export interface PatientIdentifier {
 }
 
 export type Patient = {
+  uuid: string;
   identifiers: Array<PatientIdentifier>;
   person: {
+    uuid: string;
     names: Array<NameValue>;
     gender: string;
-    birthdate: Date;
+    birthdate: string;
     birthdateEstimated: boolean;
     attributes: Array<AttributeValue>;
     addresses: Array<Record<string, string>>;

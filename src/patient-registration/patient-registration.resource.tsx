@@ -3,8 +3,9 @@ import { Patient } from './patient-registration-helper';
 import { camelCase } from 'lodash';
 import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
 
-export function savePatient(abortController: AbortController, patient: Patient) {
-  return openmrsFetch('/ws/rest/v1/patient', {
+export function savePatient(abortController: AbortController, patient: Patient, patientUuid: string) {
+  const url = patientUuid ? '/ws/rest/v1/patient/' + patientUuid : '/ws/rest/v1/patient/';
+  return openmrsFetch(url, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -105,5 +106,13 @@ export function generateIdentifier(source: string, abortController: AbortControl
     body: {},
   });
 }
+
+export function deletePersonName(nameUuid: string, personUuid: string, abortController: AbortController) {
+  return openmrsFetch('/ws/rest/v1/person/' + personUuid + '/name/' + nameUuid, {
+    method: 'DELETE',
+    signal: abortController.signal,
+  });
+}
+
 export const uuidIdentifier = '05a29f94-c0ed-11e2-94be-8c13b969e334';
 export const uuidTelephoneNumber = '14d4f066-15f5-102d-96e4-000c29c2a5d7';

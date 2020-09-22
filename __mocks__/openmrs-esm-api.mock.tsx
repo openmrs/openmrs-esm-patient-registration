@@ -1,5 +1,4 @@
 import { never, of } from 'rxjs';
-import { mockPatient } from './patient.mock';
 
 export function openmrsFetch() {
   return new Promise(() => {});
@@ -18,7 +17,7 @@ export function getCurrentPatient() {
 }
 
 export function useCurrentPatient() {
-  return [false, mockPatient, mockPatient.id, null];
+  return [undefined, null, null, null];
 }
 
 export function getAddressTemplateMock() {

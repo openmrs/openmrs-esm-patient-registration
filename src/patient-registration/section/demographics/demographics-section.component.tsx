@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormValues } from '../../patient-registration.component';
 import { NameInput } from '../../input/custom-input/name/name-input.component';
@@ -7,6 +7,7 @@ import { SelectInput } from '../../input/basic-input/select/select-input.compone
 import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estimated-age-input.component';
 import { Input } from '../../input/basic-input/input/input.component';
 import styles from './../section.css';
+import { useField } from 'formik';
 
 interface DemographicsSectionProps {
   setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
@@ -15,7 +16,15 @@ interface DemographicsSectionProps {
 
 export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFieldValue, values }) => {
   const { t } = useTranslation();
+  const [field, meta] = useField('addNameInLocalLanguage');
 
+  useEffect(() => {
+    if (!field.value && meta.touched) {
+      setFieldValue('additionalGivenName', '');
+      setFieldValue('additionalMiddleName', '');
+      setFieldValue('additionalFamilyName', '');
+    }
+  }, [field.value, meta.touched]);
   return (
     <section className={styles.formSection} aria-label="Demographics Section">
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>{t('demographics', 'Demographics')}</h5>

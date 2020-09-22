@@ -11,11 +11,11 @@ export const UnidentifiedPatientInput: React.FC<UnidentifiedPatientInputProps> =
   const [field] = useField({ name });
 
   useEffect(() => {
-    let newName = field.value ? 'UNKNOWN' : '';
-
-    setName('givenName', newName);
-    setName('middleName', newName);
-    setName('familyName', newName);
+    if (field.value) {
+      setName('givenName', 'UNKNOWN');
+      setName('middleName', 'UNKNOWN');
+      setName('familyName', 'UNKNOWN');
+    }
   }, [field.value, setName]);
 
   return <Input type="checkbox" label="Unidentified Patient" name={name} />;

@@ -51,7 +51,7 @@ export const mockPatient = {
   telecom: [
     {
       system: 'Mobile',
-      value: '+25467388299499',
+      value: '25467388299499',
     },
   ],
 };
