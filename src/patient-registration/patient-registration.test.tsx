@@ -7,6 +7,7 @@ import { PatientRegistration, getDeathInfo, initialFormValues } from './patient-
 import { getAddressTemplateMock } from '../../__mocks__/openmrs-esm-api.mock';
 import * as mockOpenmrsApi from '../../__mocks__/openmrs-esm-api.mock';
 import { mockPatient } from '../../__mocks__/patient.mock';
+import * as mockOpenmrsModuleConfig from '../../__mocks__/openmrs-esm-module-config.mock';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -14,6 +15,23 @@ jest.mock('react-router-dom', () => ({
     pathname: 'openmrs/spa/patient-registration',
   }),
 }));
+
+let mockOpenmrsConfig = {
+  personAttributeSections: [
+    {
+      name: 'additionalPersonAttributesSectionHeader',
+      personAttributes: [
+        {
+          name: 'telephoneNumber',
+          label: 'phoneNumber',
+          uuid: '14d4f066-15f5-102d-96e4-000c29c2a5d7',
+          placeholder: 'phoneNumberPlaceHolder',
+          validation: { matches: '^[0-9]*$' },
+        },
+      ],
+    },
+  ],
+};
 
 describe('patient registration', () => {
   it('renders without crashing', () => {
@@ -74,9 +92,10 @@ describe('form submit', () => {
 
   beforeAll(() => {
     spyOn(backendController, 'getAddressTemplate').and.returnValue(getAddressTemplateMock());
+    spyOn(mockOpenmrsModuleConfig, 'useConfig').and.returnValue(mockOpenmrsConfig);
   });
 
-  it('saves the patient', async () => {
+  it('saves the patient without extra info', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
     const { getByText, getByLabelText } = render(<PatientRegistration />);
