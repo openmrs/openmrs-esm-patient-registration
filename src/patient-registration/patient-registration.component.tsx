@@ -188,6 +188,12 @@ export const PatientRegistration: React.FC = () => {
           }
         });
       }
+      if (existingPatient.deceasedBoolean || existingPatient.deceasedDateTime) {
+        initialFormValues.isDead = true;
+        initialFormValues.deathDate = existingPatient.deceasedDateTime
+          ? existingPatient.deceasedDateTime.split('T')[0]
+          : '';
+      }
     }
   }, [existingPatient]);
 
@@ -317,7 +323,7 @@ export const PatientRegistration: React.FC = () => {
           identifier: idValue,
           identifierType: type.uuid,
           location: location,
-          preferred: idValue.isPrimary,
+          preferred: type.isPrimary,
         });
       } else if (type.autoGenerationSource) {
         const response = await generateIdentifier(type.autoGenerationSource.uuid, abortController);
@@ -356,7 +362,7 @@ export const PatientRegistration: React.FC = () => {
       identifiers: identifiers,
       person: { ...person },
     };
-    
+
     // handle deleted names
     deletedNames.forEach(async name => {
       await deletePersonName(name.nameUuid, name.personUuid, abortController);
@@ -405,7 +411,7 @@ export const PatientRegistration: React.FC = () => {
               identifierTypes={identifierTypes}
               validationSchema={validationSchema}
               setValidationSchema={setValidationSchema}
-              inEditMode={!!existingPatient}
+              inEditMode={Boolean(existingPatient)}
               values={props.values}
             />
             <DeathInfoSection values={props.values} />
