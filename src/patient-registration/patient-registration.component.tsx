@@ -28,6 +28,7 @@ import * as Yup from 'yup';
 import { useCurrentPatient } from '@openmrs/esm-api';
 import { camelCase, capitalize, find } from 'lodash';
 import { useConfig } from '@openmrs/esm-module-config';
+import { useTranslation } from 'react-i18next';
 
 export const initialAddressFieldValues = {};
 const patientUuidMap = {};
@@ -113,6 +114,7 @@ export const PatientRegistration: React.FC = () => {
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
   const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -312,9 +314,9 @@ export const PatientRegistration: React.FC = () => {
         allPersonAttributes.reduce((final, current) => {
           const { name, label, validation } = current;
           const { required, matches } = validation;
-          let validationObj = Yup.string().matches(matches, `Invalid ${label}`);
+          let validationObj = Yup.string().matches(matches, `Invalid ${t(label)}`);
           if (required) {
-            validationObj = validationObj.required(`${label} is required`);
+            validationObj = validationObj.required(`${t(label)} is required`);
           }
           final[name] = validationObj;
           return final;
@@ -361,12 +363,12 @@ export const PatientRegistration: React.FC = () => {
       }
     }
 
-    let addressFieldValues: Record<string, string> = {};
+    const addressFieldValues: Record<string, string> = {};
     Object.keys(initialAddressFieldValues).forEach(fieldName => {
       addressFieldValues[fieldName] = values[fieldName];
     });
 
-    let attributes: Array<AttributeValue> = [];
+    const attributes: Array<AttributeValue> = [];
     if (config && config.personAttributeSections) {
       let { personAttributeSections } = config;
       personAttributeSections.forEach(({ personAttributes }) => {
