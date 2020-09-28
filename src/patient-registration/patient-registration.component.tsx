@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
-import { Patient, PatientIdentifierType } from './patient-registration-helper';
-
+import { Patient, PatientIdentifierType, AttributeValue } from './patient-registration-helper';
 import {
   getCurrentUserLocation,
   savePatient,
-  uuidTelephoneNumber,
   getPrimaryIdentifierType,
   getSecondaryIdentifierTypes,
   getAddressTemplate,
@@ -22,11 +20,15 @@ import { DemographicsSection } from './section/demographics/demographics-section
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
 import { DeathInfoSection } from './section/death-info/death-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
+import { PersonAttributesSection } from './section/person-attributes/person-attributes-section.component';
+
 import styles from './patient-registration.css';
 import { IdentifierSection } from './section/identifier/identifiers-section.component';
 import * as Yup from 'yup';
 import { useCurrentPatient } from '@openmrs/esm-api';
 import { camelCase, capitalize, find } from 'lodash';
+import { useConfig } from '@openmrs/esm-module-config';
+import { useTranslation } from 'react-i18next';
 
 export const initialAddressFieldValues = {};
 const patientUuidMap = {};
@@ -106,11 +108,13 @@ interface AddressValidationSchemaType {
 export const PatientRegistration: React.FC = () => {
   const { search } = useLocation();
   const history = useHistory();
+  const config = useConfig();
   const [location, setLocation] = useState('');
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
   const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -299,6 +303,29 @@ export const PatientRegistration: React.FC = () => {
     }
   }, [addressTemplate]);
 
+  useEffect(() => {
+    if (config && config.personAttributeSections) {
+      let { personAttributeSections } = config;
+      let allPersonAttributes = [];
+      personAttributeSections.forEach(({ personAttributes }) => {
+        allPersonAttributes = allPersonAttributes.concat(personAttributes);
+      });
+      let personAttributesValidationSchema = Yup.object(
+        allPersonAttributes.reduce((final, current) => {
+          const { name, label, validation } = current;
+          const { required, matches } = validation;
+          let validationObj = Yup.string().matches(matches, `Invalid ${t(label)}`);
+          if (required) {
+            validationObj = validationObj.required(`${t(label)} is required`);
+          }
+          final[name] = validationObj;
+          return final;
+        }, {}),
+      );
+      setValidationSchema(oldSchema => oldSchema.concat(personAttributesValidationSchema));
+    }
+  }, [config]);
+
   const getValueIfItExists = (field: string, selector: string, doc: XMLDocument) => {
     let element = doc.querySelector(selector);
     if (element) {
@@ -336,10 +363,23 @@ export const PatientRegistration: React.FC = () => {
       }
     }
 
-    let addressFieldValues: Record<string, string> = {};
+    const addressFieldValues: Record<string, string> = {};
     Object.keys(initialAddressFieldValues).forEach(fieldName => {
       addressFieldValues[fieldName] = values[fieldName];
     });
+
+    const attributes: Array<AttributeValue> = [];
+    if (config && config.personAttributeSections) {
+      let { personAttributeSections } = config;
+      personAttributeSections.forEach(({ personAttributes }) => {
+        personAttributes.forEach(attr => {
+          attributes.push({
+            attributeType: attr.uuid,
+            value: values[attr.name],
+          });
+        });
+      });
+    }
 
     const person = {
       uuid: patientUuidMap['patientUuid'],
@@ -347,12 +387,7 @@ export const PatientRegistration: React.FC = () => {
       gender: values.gender.charAt(0),
       birthdate: values.birthdate,
       birthdateEstimated: values.birthdateEstimated,
-      attributes: [
-        {
-          attributeType: uuidTelephoneNumber,
-          value: values.telephoneNumber,
-        },
-      ],
+      attributes: attributes,
       addresses: [addressFieldValues],
       ...getDeathInfo(values),
     };
@@ -415,6 +450,9 @@ export const PatientRegistration: React.FC = () => {
               values={props.values}
             />
             <DeathInfoSection values={props.values} />
+            {config && config.personAttributeSections && (
+              <PersonAttributesSection attributeSections={config.personAttributeSections} />
+            )}
             <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
               {existingPatient ? 'Save Patient' : 'Register Patient'}
             </button>

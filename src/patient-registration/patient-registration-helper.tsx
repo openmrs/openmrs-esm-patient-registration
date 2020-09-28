@@ -6,7 +6,7 @@ interface NameValue {
   familyName: string;
 }
 
-interface AttributeValue {
+export interface AttributeValue {
   attributeType: string;
   value: string;
 }
