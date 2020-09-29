@@ -90,12 +90,19 @@
 
 .searchResults {
   height: auto;
-  min-height: 3rem;
   margin-top: .25rem;
-  padding: .875rem;
   border: 1px solid #ababab;
   border-radius: .25rem;
   background-color: white;
   position: absolute;
   width: 660px;
+}
+
+.searchResults > li {
+  padding: 1rem .875rem;
+}
+
+.searchResults > li:hover,
+.searchResults > li:focus {
+  background-color: #efefef;
 }

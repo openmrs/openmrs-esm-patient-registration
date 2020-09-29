@@ -26,6 +26,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeho
       )}
       <div>
         <input
+          autoComplete="off"
           className={`omrs-input-outlined ${styles.searchInput} ${styles.input}`}
           type="search"
           name={name}
