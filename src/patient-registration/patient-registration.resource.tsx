@@ -90,6 +90,15 @@ export function getIdentifierSources(identifierType: string, abortController: Ab
   });
 }
 
+export function getAddressHierarchy(searchString: string, abortController: AbortController) {
+  return openmrsFetch(
+    `/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form?addressField=cityVillage&limit=20&searchString=${searchString}`,
+    {
+      signal: abortController.signal,
+    },
+  );
+}
+
 export function getAutoGenerationOptions(identifierType: string, abortController: AbortController) {
   // return openmrsFetch('/ws/rest/v1/idgen/autogenerationoption?v=full&identifierType=' + identifierType, {
   //   signal: abortController.signal,

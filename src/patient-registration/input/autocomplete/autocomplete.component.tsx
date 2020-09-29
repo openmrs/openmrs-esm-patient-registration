@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAddressHierarchy } from '../../patient-registration.resource';
 import styles from './../input.css';
 
 interface AutocompleteProps {
@@ -9,7 +10,12 @@ interface AutocompleteProps {
 
 export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeholder }) => {
   const [search, setSearch] = useState('');
-  const [results, setSResults] = useState([]);
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    getAddressHierarchy(search, abortController).then(({ data }) => setResults(data));
+  }, [search]);
 
   return (
     <main className={styles.fieldRow}>
@@ -28,10 +34,10 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeho
           value={search}
           onChange={event => setSearch(event.target.value)}
         />
-        {search && (
-          <ul className={styles.searchResults}>
+        {search && results && (
+          <ul className={styles.searchResults} data-testid="search-results">
             {results.length > 0 ? (
-              results.map(result => <li>{result}</li>)
+              results.map(result => <li key={result.uuid}>{result.name}</li>)
             ) : (
               <li>no address found, please enter manually</li>
             )}
