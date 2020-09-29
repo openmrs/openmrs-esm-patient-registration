@@ -82,3 +82,20 @@
 .identifierInput {
     height: 80px !important;
 }
+
+.searchInput {
+  width: 660px !important;
+  height: 40px !important;
+}
+
+.searchResults {
+  height: auto;
+  min-height: 3rem;
+  margin-top: .25rem;
+  padding: .875rem;
+  border: 1px solid #ababab;
+  border-radius: .25rem;
+  background-color: white;
+  position: absolute;
+  width: 660px;
+}
