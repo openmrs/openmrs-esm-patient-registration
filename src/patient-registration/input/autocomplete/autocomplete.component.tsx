@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { getAddressHierarchy } from '../../patient-registration.resource';
 import styles from './../input.css';
 
 interface AutocompleteProps {
   name: string;
   label: string;
   placeholder: string;
+  getSearchResults: (searchString: string, abortController: AbortController) => Promise<any>;
 }
 
-export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeholder }) => {
+export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeholder, getSearchResults }) => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
 
   useEffect(() => {
     const abortController = new AbortController();
-    getAddressHierarchy(search, abortController).then(({ data }) => setResults(data));
+    const fetchSearchResults = async () => {
+      const searchResults = await getSearchResults(search, abortController);
+      setResults(searchResults.data);
+    };
+
+    fetchSearchResults();
   }, [search]);
 
   return (

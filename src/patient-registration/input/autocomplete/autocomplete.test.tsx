@@ -1,9 +1,8 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Formik, Form } from 'formik';
 import { Autocomplete } from './autocomplete.component';
-import * as backendController from './../../patient-registration.resource';
 import { getAddressHierarchyMock } from '../../../../__mocks__/openmrs-esm-api.mock';
 
 const SEARCH_RESULTS = {
@@ -52,42 +51,58 @@ const SEARCH_RESULTS = {
 };
 
 describe('autocomplete', () => {
-  const setupSection = async () => {
-    const { container, getByLabelText, findByTestId } = render(
+  const noSearchResults = async () => {
+    return Promise.resolve({ data: [] });
+  };
+
+  const setupSection = async (getSearchResults = noSearchResults) => {
+    const { container, findByLabelText, queryByTestId, findByTestId } = render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
-          <Autocomplete name="someName" label="someLabel" placeholder="some nice placeholder text" />
+          <Autocomplete
+            name="someName"
+            label="someLabel"
+            placeholder="some nice placeholder text"
+            getSearchResults={getSearchResults}
+          />
         </Form>
       </Formik>,
     );
 
-    return { container, getByLabelText, findByTestId };
+    return { container, findByLabelText, queryByTestId, findByTestId };
   };
 
   it('has one search input field', async () => {
     const autocomplete = await setupSection();
-    expect(autocomplete.container.querySelectorAll('.searchInput').length).toBe(1);
+    const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
+    expect(searchInput).toBeTruthy();
   });
 
   it('search results are hidden on empty input', async () => {
     const autocomplete = await setupSection();
-    expect(autocomplete.container.querySelectorAll('.searchResults').length).toBe(0);
+    await wait();
+    const searchResults = autocomplete.queryByTestId('search-results');
+    expect(searchResults).toBeNull();
   });
 
-  it('message is displayed if there are no search results', async () => {
+  it('message is displayed on input if there are no search results', async () => {
     const autocomplete = await setupSection();
-    const searchInput = autocomplete.getByLabelText('someLabel') as HTMLInputElement;
-    spyOn(backendController, 'getAddressHierarchy').and.returnValue(Promise.resolve([]));
+    const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
     userEvent.type(searchInput, 'Be');
-    const results = await autocomplete.findByTestId('search-results');
-    expect(results.textContent).toContain('no address found');
+
+    const searchResults = await autocomplete.findByTestId('search-results');
+    expect(searchResults.textContent).toContain('no address found');
   });
 
-  it('search results are displayed if there are any', async () => {
-    const autocomplete = await setupSection();
-    const searchInput = autocomplete.getByLabelText('someLabel') as HTMLInputElement;
-    spyOn(backendController, 'getAddressHierarchy').and.returnValue(getAddressHierarchyMock(SEARCH_RESULTS));
+  it('search results are displayed on input if there are any', async () => {
+    const getSearchResults = async () => {
+      return getAddressHierarchyMock(SEARCH_RESULTS);
+    };
+
+    const autocomplete = await setupSection(getSearchResults);
+    const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
     userEvent.type(searchInput, 'Bo');
+
     const results = await autocomplete.findByTestId('search-results');
     expect(results.textContent).toContain(SEARCH_RESULTS.data[0].name);
     expect(results.textContent).toContain(SEARCH_RESULTS.data[1].name);

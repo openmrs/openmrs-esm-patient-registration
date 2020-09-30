@@ -35,6 +35,6 @@ export function getAddressTemplateMock() {
   return Promise.resolve(predefinedAddressTemplate);
 }
 
-export function getAddressHierarchyMock(searchResults: any) {
+export function getAddressHierarchyMock(searchResults: any): Promise<any> {
   return Promise.resolve(searchResults);
 }
