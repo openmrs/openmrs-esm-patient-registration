@@ -21,7 +21,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeho
     };
 
     fetchSearchResults();
-  }, [search]);
+  }, [search, getSearchResults]);
 
   const toggleSearchFocused = () => setIsSearchFocused(!isSearchFocused);
 
