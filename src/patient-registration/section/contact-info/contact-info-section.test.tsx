@@ -20,7 +20,7 @@ describe('contact info section', () => {
 
   it('has the correct number of inputs', async () => {
     const inputNames = await setupSection();
-    expect(inputNames.length).toBe(6);
+    expect(inputNames.length).toBe(7);
   });
 
   it('has address input', async () => {
@@ -31,5 +31,6 @@ describe('contact info section', () => {
     expect(inputNames).toContain('stateProvince');
     expect(inputNames).toContain('country');
     expect(inputNames).toContain('postalCode');
+    expect(inputNames).toContain('addressHierarchySearch');
   });
 });
