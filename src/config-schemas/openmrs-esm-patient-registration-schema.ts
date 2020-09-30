@@ -35,10 +35,10 @@ export const esmPatientRegistrationSchema = {
       },
     ],
   },
-  registrationSubmission: {
-    afterCreateUrl: {
+  links: {
+    submitButton: {
       default: '${openmrsSpaBase}/patient/${patientUuid}/chart',
-      validators: [validators.isString],
+      validators: [validators.isUrlWithTemplateParameters(['patientUuid'])],
     },
   },
 };

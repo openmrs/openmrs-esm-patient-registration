@@ -403,16 +403,10 @@ export const PatientRegistration: React.FC = () => {
     });
 
     const getAfterUrl = patientUuid => {
-      if (existingPatient) {
-        const afterEditUrl = new URLSearchParams(search).get('afterUrl');
-        if (afterEditUrl) {
-          return afterEditUrl;
-        }
-      }
-      const urlTemplate = config.registrationSubmission.afterCreateUrl;
-      return urlTemplate.includes('${patientUuid}')
-        ? interpolateString(urlTemplate, { patientUuid: patientUuid })
-        : urlTemplate;
+      return (
+        new URLSearchParams(search).get('afterUrl') ||
+        interpolateString(config.links.submitButton, { patientUuid: patientUuid })
+      );
     };
 
     // handle save patient
