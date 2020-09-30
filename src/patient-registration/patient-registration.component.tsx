@@ -410,7 +410,7 @@ export const PatientRegistration: React.FC = () => {
           return afterEditUrl;
         }
       }
-      const urlTemplate = config.registrationSubimission.afterCreateUrl;
+      const urlTemplate = config.registrationSubmission.afterCreateUrl;
       return urlTemplate.includes('${patientUuid}')
         ? interpolateString(urlTemplate, { patientUuid: patientUuid })
         : urlTemplate;
