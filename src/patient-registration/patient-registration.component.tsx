@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
 import { Patient, PatientIdentifierType, AttributeValue } from './patient-registration-helper';
@@ -107,7 +107,6 @@ interface AddressValidationSchemaType {
 
 export const PatientRegistration: React.FC = () => {
   const { search } = useLocation();
-  const history = useHistory();
   const config = useConfig();
   const [location, setLocation] = useState('');
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
