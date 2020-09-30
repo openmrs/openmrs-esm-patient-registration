@@ -27,7 +27,7 @@ import { IdentifierSection } from './section/identifier/identifiers-section.comp
 import * as Yup from 'yup';
 import { useCurrentPatient } from '@openmrs/esm-api';
 import { camelCase, capitalize, find } from 'lodash';
-import { useConfig } from '@openmrs/esm-module-config';
+import { useConfig, interpolateString, navigate } from '@openmrs/esm-module-config';
 import { useTranslation } from 'react-i18next';
 
 export const initialAddressFieldValues = {};
@@ -402,12 +402,25 @@ export const PatientRegistration: React.FC = () => {
     deletedNames.forEach(async name => {
       await deletePersonName(name.nameUuid, name.personUuid, abortController);
     });
+
+    const getAfterUrl = patientUuid => {
+      if (existingPatient) {
+        const afterEditUrl = new URLSearchParams(search).get('afterUrl');
+        if (afterEditUrl) {
+          return afterEditUrl;
+        }
+      }
+      const urlTemplate = config.registrationSubimission.afterCreateUrl;
+      return urlTemplate.includes('${patientUuid}')
+        ? interpolateString(urlTemplate, { patientUuid: patientUuid })
+        : urlTemplate;
+    };
+
     // handle save patient
     savePatient(abortController, patient, patientUuidMap['patientUuid'])
       .then(response => {
         if (response.ok) {
-          const url = new URLSearchParams(search).get('afterUrl') || `/patient/${response.data.uuid}/chart`;
-          history.push(url);
+          navigate({ to: getAfterUrl(response.data.uuid) });
         }
       })
       .catch(response => {
