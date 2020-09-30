@@ -92,7 +92,7 @@ export function getIdentifierSources(identifierType: string, abortController: Ab
 
 export function getAddressHierarchy(searchString: string, abortController: AbortController) {
   return openmrsFetch(
-    `/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form?addressField=cityVillage&limit=20&searchString=${searchString}`,
+    `/module/addresshierarchy/ajax/getPossibleFullAddresses.form?separator=%7C&searchString=${searchString}`,
     {
       signal: abortController.signal,
     },

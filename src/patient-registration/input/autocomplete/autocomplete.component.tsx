@@ -48,7 +48,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeho
         {isSearchFocused && search && results && (
           <ul className={styles.searchResults} data-testid="search-results">
             {results.length > 0 ? (
-              results.map(result => <li key={result.uuid}>{result.name}</li>)
+              results.map((result, index) => <li key={result.address + index}>{result.address}</li>)
             ) : (
               <li>no address found, please enter manually</li>
             )}
