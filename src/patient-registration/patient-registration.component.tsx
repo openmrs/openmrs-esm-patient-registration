@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
 import { Patient, PatientIdentifierType, AttributeValue } from './patient-registration-helper';
@@ -27,7 +27,7 @@ import { IdentifierSection } from './section/identifier/identifiers-section.comp
 import * as Yup from 'yup';
 import { useCurrentPatient } from '@openmrs/esm-api';
 import { camelCase, capitalize, find } from 'lodash';
-import { useConfig } from '@openmrs/esm-module-config';
+import { useConfig, interpolateString, navigate } from '@openmrs/esm-module-config';
 import { useTranslation } from 'react-i18next';
 
 export const initialAddressFieldValues = {};
@@ -107,7 +107,6 @@ interface AddressValidationSchemaType {
 
 export const PatientRegistration: React.FC = () => {
   const { search } = useLocation();
-  const history = useHistory();
   const config = useConfig();
   const [location, setLocation] = useState('');
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
@@ -402,12 +401,19 @@ export const PatientRegistration: React.FC = () => {
     deletedNames.forEach(async name => {
       await deletePersonName(name.nameUuid, name.personUuid, abortController);
     });
+
+    const getAfterUrl = patientUuid => {
+      return (
+        new URLSearchParams(search).get('afterUrl') ||
+        interpolateString(config.links.submitButton, { patientUuid: patientUuid })
+      );
+    };
+
     // handle save patient
     savePatient(abortController, patient, patientUuidMap['patientUuid'])
       .then(response => {
         if (response.ok) {
-          const url = new URLSearchParams(search).get('afterUrl') || `/patient/${response.data.uuid}/chart`;
-          history.push(url);
+          navigate({ to: getAfterUrl(response.data.uuid) });
         }
       })
       .catch(response => {
