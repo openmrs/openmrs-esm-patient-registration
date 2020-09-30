@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, wait } from '@testing-library/react';
+import { fireEvent, render, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Formik, Form } from 'formik';
 import { Autocomplete } from './autocomplete.component';
@@ -106,5 +106,21 @@ describe('autocomplete', () => {
     const results = await autocomplete.findByTestId('search-results');
     expect(results.textContent).toContain(SEARCH_RESULTS.data[0].name);
     expect(results.textContent).toContain(SEARCH_RESULTS.data[1].name);
+  });
+
+  it('closes search results dropdown when focus on input is lost', async () => {
+    const autocomplete = await setupSection();
+    const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
+    userEvent.type(searchInput, 'Be');
+
+    await wait();
+    let searchResults = autocomplete.queryByTestId('search-results');
+    expect(searchResults.textContent).toContain('no address found');
+
+    fireEvent.blur(searchInput);
+
+    await wait();
+    searchResults = autocomplete.queryByTestId('search-results');
+    expect(searchResults).toBeNull();
   });
 });

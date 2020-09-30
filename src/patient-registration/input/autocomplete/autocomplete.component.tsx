@@ -11,6 +11,7 @@ interface AutocompleteProps {
 export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeholder, getSearchResults }) => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -21,6 +22,8 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeho
 
     fetchSearchResults();
   }, [search]);
+
+  const toggleSearchFocused = () => setIsSearchFocused(!isSearchFocused);
 
   return (
     <main className={styles.fieldRow}>
@@ -39,8 +42,10 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeho
           placeholder={placeholder}
           value={search}
           onChange={event => setSearch(event.target.value)}
+          onFocus={toggleSearchFocused}
+          onBlur={toggleSearchFocused}
         />
-        {search && results && (
+        {isSearchFocused && search && results && (
           <ul className={styles.searchResults} data-testid="search-results">
             {results.length > 0 ? (
               results.map(result => <li key={result.uuid}>{result.name}</li>)
