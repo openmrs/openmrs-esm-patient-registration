@@ -5,11 +5,13 @@ import { Formik, Form } from 'formik';
 import { Autocomplete } from './autocomplete.component';
 import { getAddressHierarchyMock } from '../../../../__mocks__/openmrs-esm-api.mock';
 
+const CITIES = ['Bossier City', 'Boulder', 'Boston'];
+
 const SEARCH_RESULTS = {
   data: [
-    { address: 'United States|Louisiana|Bossier Parish|Bossier City' },
-    { address: 'United States|Colorado|Boulder County|Boulder' },
-    { address: 'United States|Massachusetts|Suffolk County|Boston' },
+    { address: `United States|Louisiana|Bossier Parish|${CITIES[0]}` },
+    { address: `United States|Colorado|Boulder County|${CITIES[2]}` },
+    { address: `United States|Massachusetts|Suffolk County|${CITIES[3]}` },
   ],
 };
 
@@ -68,8 +70,8 @@ describe('autocomplete', () => {
     userEvent.type(searchInput, 'Bo');
 
     const results = await autocomplete.findByTestId('search-results');
-    expect(results.textContent).toContain(SEARCH_RESULTS.data[0].address);
-    expect(results.textContent).toContain(SEARCH_RESULTS.data[1].address);
+    expect(results.textContent).toContain(CITIES[0]);
+    expect(results.textContent).toContain(CITIES[1]);
   });
 
   it('closes search results dropdown when focus on input is lost', async () => {

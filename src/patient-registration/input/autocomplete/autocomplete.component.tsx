@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './../input.css';
-import { SearchResults } from './search-results.component';
+import { SearchResults } from './address-search-results.component';
 
 interface AutocompleteProps {
   name: string;
