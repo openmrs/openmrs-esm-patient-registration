@@ -1,10 +1,11 @@
-import React from "react";
+import React from 'react';
 
 export const defineConfigSchema = jest.fn();
 
 export const validators = {
   isBoolean: jest.fn(),
-  isString: jest.fn()
+  isString: jest.fn(),
+  isUrlWithTemplateParameters: jest.fn(),
 };
 
 export const useConfig = jest.fn().mockReturnValue({
@@ -12,21 +13,21 @@ export const useConfig = jest.fn().mockReturnValue({
     enabled: true,
     list: [
       {
-        label: "SPA Page",
+        label: 'SPA Page',
         link: {
           spa: true,
-          url: "/some/route"
-        }
+          url: '/some/route',
+        },
       },
       {
-        label: "RefApp Page",
+        label: 'RefApp Page',
         link: {
           spa: false,
-          url: "/openmrs/some/route"
-        }
-      }
-    ]
-  }
+          url: '/openmrs/some/route',
+        },
+      },
+    ],
+  },
 });
 
-export const ModuleNameContext = React.createContext("fake-module-config");
+export const ModuleNameContext = React.createContext('fake-module-config');
