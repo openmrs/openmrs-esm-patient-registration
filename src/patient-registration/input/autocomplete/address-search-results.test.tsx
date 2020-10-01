@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { SearchResults } from './address-search-results.component';
+import { AddressSearchResults } from './address-search-results.component';
 
 const SEARCH_RESULTS = [
   { address: 'United States|Louisiana|Bossier Parish|Bossier City' },
@@ -8,10 +8,10 @@ const SEARCH_RESULTS = [
   { address: 'United States|Massachusetts|Suffolk County|Boston' },
 ];
 
-describe('search results', () => {
+describe('address search results', () => {
   const setupSearchResults = async (results = [], noResultsMessage = null) => {
     const { container, findByLabelText, getByRole, findByTestId } = render(
-      <SearchResults results={results} noResultsMessage={noResultsMessage} />,
+      <AddressSearchResults results={results} noResultsMessage={noResultsMessage} />,
     );
 
     return { container, findByLabelText, getByRole, findByTestId };

@@ -5,7 +5,7 @@ type FullAdressString = {
   address: string;
 };
 
-interface SearchResultsProps {
+interface AddressSearchResultsProps {
   results: FullAdressString[];
   noResultsMessage?: string;
 }
@@ -14,7 +14,7 @@ const splitAndReverse = (string: string, delimiter: string = '|') => {
   return string.split(delimiter).reverse();
 };
 
-export const SearchResults: React.FC<SearchResultsProps> = ({ results, noResultsMessage }) => {
+export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({ results, noResultsMessage }) => {
   const hasSearchResults = results.length > 0;
 
   return (

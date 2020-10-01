@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './../input.css';
-import { SearchResults } from './address-search-results.component';
+import { AddressSearchResults } from './address-search-results.component';
 
 interface AutocompleteProps {
   name: string;
@@ -55,7 +55,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
         />
         {isSearchFocused && search && results && (
           <span data-testid="search-results">
-            <SearchResults results={results} noResultsMessage={noResultsMessage} />
+            <AddressSearchResults results={results} noResultsMessage={noResultsMessage} />
           </span>
         )}
       </div>

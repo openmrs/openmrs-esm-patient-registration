@@ -20,7 +20,7 @@ describe('autocomplete', () => {
     return Promise.resolve({ data: [] });
   };
 
-  const setupSection = async (getSearchResults = noSearchResults) => {
+  const setupAutocomplete = async (getSearchResults = noSearchResults) => {
     const { container, findByLabelText, queryByTestId, findByTestId } = render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
@@ -39,20 +39,20 @@ describe('autocomplete', () => {
   };
 
   it('has one search input field', async () => {
-    const autocomplete = await setupSection();
+    const autocomplete = await setupAutocomplete();
     const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
     expect(searchInput).toBeTruthy();
   });
 
   it('search results are hidden on empty input', async () => {
-    const autocomplete = await setupSection();
+    const autocomplete = await setupAutocomplete();
     await wait();
     const searchResults = autocomplete.queryByTestId('search-results');
     expect(searchResults).toBeNull();
   });
 
   it('provided custom message is displayed on input if there are no search results', async () => {
-    const autocomplete = await setupSection();
+    const autocomplete = await setupAutocomplete();
     const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
     userEvent.type(searchInput, 'Be');
 
@@ -65,7 +65,7 @@ describe('autocomplete', () => {
       return getAddressHierarchyMock(SEARCH_RESULTS);
     };
 
-    const autocomplete = await setupSection(getSearchResults);
+    const autocomplete = await setupAutocomplete(getSearchResults);
     const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
     userEvent.type(searchInput, 'Bo');
 
@@ -75,7 +75,7 @@ describe('autocomplete', () => {
   });
 
   it('closes search results dropdown when focus on input is lost', async () => {
-    const autocomplete = await setupSection();
+    const autocomplete = await setupAutocomplete();
     const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
     userEvent.type(searchInput, 'Be');
 
