@@ -17,6 +17,7 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ addressT
         name="addressHierarchySearch"
         label="Fill address"
         placeholder="Type a city, postal code, state or country to search for an address"
+        noResultsMessage="no address found, please enter the address manually"
         getSearchResults={getAddressHierarchy}
       />
       <section className={styles.fieldGroup}>

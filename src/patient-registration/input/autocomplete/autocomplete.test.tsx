@@ -26,6 +26,7 @@ describe('autocomplete', () => {
             name="someName"
             label="someLabel"
             placeholder="some nice placeholder text"
+            noResultsMessage="some custom message for no results"
             getSearchResults={getSearchResults}
           />
         </Form>
@@ -48,13 +49,13 @@ describe('autocomplete', () => {
     expect(searchResults).toBeNull();
   });
 
-  it('message is displayed on input if there are no search results', async () => {
+  it('provided custom message is displayed on input if there are no search results', async () => {
     const autocomplete = await setupSection();
     const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
     userEvent.type(searchInput, 'Be');
 
     const searchResults = await autocomplete.findByTestId('search-results');
-    expect(searchResults.textContent).toContain('no address found');
+    expect(searchResults.textContent).toContain('some custom message');
   });
 
   it('search results are displayed on input if there are any', async () => {
@@ -78,7 +79,7 @@ describe('autocomplete', () => {
 
     await wait();
     let searchResults = autocomplete.queryByTestId('search-results');
-    expect(searchResults.textContent).toContain('no address found');
+    expect(searchResults.textContent).toBeTruthy();
 
     fireEvent.blur(searchInput);
 

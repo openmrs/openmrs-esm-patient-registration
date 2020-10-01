@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styles from './../input.css';
+import { SearchResults } from './search-results.component';
 
 interface AutocompleteProps {
   name: string;
   label: string;
   placeholder: string;
   getSearchResults: (searchString: string, abortController: AbortController) => Promise<any>;
+  noResultsMessage?: string;
 }
 
-export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeholder, getSearchResults }) => {
+export const Autocomplete: React.FC<AutocompleteProps> = ({
+  name,
+  label,
+  placeholder,
+  getSearchResults,
+  noResultsMessage,
+}) => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -46,13 +54,9 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeho
           onBlur={toggleSearchFocused}
         />
         {isSearchFocused && search && results && (
-          <ul className={styles.searchResults} data-testid="search-results">
-            {results.length > 0 ? (
-              results.map((result, index) => <li key={result.address + index}>{result.address}</li>)
-            ) : (
-              <li>no address found, please enter manually</li>
-            )}
-          </ul>
+          <span data-testid="search-results">
+            <SearchResults results={results} noResultsMessage={noResultsMessage} />
+          </span>
         )}
       </div>
     </main>
