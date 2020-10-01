@@ -26,7 +26,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ name, label, placeho
   const toggleSearchFocused = () => setIsSearchFocused(!isSearchFocused);
 
   return (
-    <main className={styles.fieldRow}>
+    <main className={`${styles.fieldRow} ${styles.subFieldRow}`}>
       {label && (
         <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={name}>
           <span>{label}</span>
