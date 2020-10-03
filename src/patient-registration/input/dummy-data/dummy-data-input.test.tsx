@@ -1,18 +1,26 @@
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
-import { DummyDataInput, dummyFormValues } from './dummy-data-input.component';
-import { FormValues, initialFormValues } from '../../patient-registration.component';
+import { DummyDataInput } from './dummy-data-input.component';
+
+const { Form, Formik } = jest.requireActual('formik');
+const mockSetValues = jest.fn();
+
+jest.mock('formik', () => {
+  return {
+    useFormikContext: () => ({
+      setValues: mockSetValues,
+    }),
+  };
+});
 
 describe('dummy data input', () => {
-  let formValues: FormValues = initialFormValues;
-
   const setupInput = async () => {
     const { getByLabelText } = render(
-      <DummyDataInput
-        setValues={values => {
-          formValues = values;
-        }}
-      />,
+      <Formik initialValues={{}} onSubmit={null}>
+        <Form>
+          <DummyDataInput />
+        </Form>
+      </Formik>,
     );
     return getByLabelText('Dummy Data Input') as HTMLButtonElement;
   };
@@ -27,7 +35,6 @@ describe('dummy data input', () => {
 
     fireEvent.click(input);
     await wait();
-
-    expect(formValues).toEqual(dummyFormValues);
+    expect(mockSetValues).toHaveBeenCalled();
   });
 });

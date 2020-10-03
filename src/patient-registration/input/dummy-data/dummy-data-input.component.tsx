@@ -1,9 +1,10 @@
+import { useFormikContext } from 'formik';
 import React from 'react';
 import { FormValues } from './../../patient-registration.component';
 import styles from './../input.css';
 
 interface DummyDataInputProps {
-  setValues(values: FormValues, shouldValidate?: boolean): void;
+  setValues?: { (values: FormValues, shouldValidate?: boolean): void };
 }
 
 export const dummyFormValues: FormValues = {
@@ -32,7 +33,8 @@ export const dummyFormValues: FormValues = {
   deathCause: '',
 };
 
-export const DummyDataInput: React.FC<DummyDataInputProps> = ({ setValues }) => {
+export const DummyDataInput: React.FC<DummyDataInputProps> = () => {
+  const { setValues } = useFormikContext<FormValues>();
   return (
     <main>
       <button

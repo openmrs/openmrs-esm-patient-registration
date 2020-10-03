@@ -3,12 +3,13 @@ import { IdentifierInput } from '../../input/custom-input/identifier/identifier-
 import { PatientIdentifierType, IdentifierSource } from '../../patient-registration-helper';
 import styles from './../section.css';
 import { FormValues } from '../../patient-registration.component';
+import { useFormikContext } from 'formik';
 
 interface IdentifierSectionProps {
   identifierTypes: PatientIdentifierType[];
   validationSchema: any;
   inEditMode: boolean;
-  values: FormValues;
+  values?: FormValues;
   setValidationSchema(value: any): void;
 }
 
@@ -25,9 +26,10 @@ export const IdentifierSection: React.FC<IdentifierSectionProps> = ({
   identifierTypes,
   validationSchema,
   inEditMode,
-  values,
   setValidationSchema,
 }) => {
+  const { values } = useFormikContext<FormValues>();
+
   const identifierInputs = identifierTypes
     .map(identifierType => {
       const sources = identifierType.identifierSources;

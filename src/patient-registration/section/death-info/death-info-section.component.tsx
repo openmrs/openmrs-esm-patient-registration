@@ -3,12 +3,14 @@ import { Input } from '../../input/basic-input/input/input.component';
 import { SelectInput } from '../../input/basic-input/select/select-input.component';
 import styles from './../section.css';
 import { FormValues } from '../../patient-registration.component';
+import { useFormikContext } from 'formik';
 
 interface DeathInfoSectionProps {
-  values: FormValues;
+  values?: FormValues;
 }
 
-export const DeathInfoSection: React.FC<DeathInfoSectionProps> = ({ values }) => {
+export const DeathInfoSection: React.FC<DeathInfoSectionProps> = () => {
+  const { values } = useFormikContext<FormValues>();
   return (
     <section className={styles.formSection} aria-label="Death Info Section">
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Death Info</h5>

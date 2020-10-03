@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Formik, Form } from 'formik';
+import { Formik, Form, useFormikContext } from 'formik';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
 import { Patient, PatientIdentifierType, AttributeValue } from './patient-registration-helper';
 import {
@@ -438,32 +438,27 @@ export const PatientRegistration: React.FC = () => {
           onFormSubmit(values);
           setSubmitting(false);
         }}>
-        {props => (
-          <Form className={styles.form}>
-            <div className={styles.formTitle}>
-              <h1 className={`omrs-type-title-1 ${styles.title}`}>{existingPatient ? 'Edit' : 'New'} Patient</h1>
-              {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
-                <DummyDataInput setValues={props.setValues} />
-              )}
-            </div>
-            <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
-            <ContactInfoSection addressTemplate={addressTemplate} />
-            <IdentifierSection
-              identifierTypes={identifierTypes}
-              validationSchema={validationSchema}
-              setValidationSchema={setValidationSchema}
-              inEditMode={Boolean(existingPatient)}
-              values={props.values}
-            />
-            <DeathInfoSection values={props.values} />
-            {config && config.personAttributeSections && (
-              <PersonAttributesSection attributeSections={config.personAttributeSections} />
-            )}
-            <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
-              {existingPatient ? 'Save Patient' : 'Register Patient'}
-            </button>
-          </Form>
-        )}
+        <Form className={styles.form}>
+          <div className={styles.formTitle}>
+            <h1 className={`omrs-type-title-1 ${styles.title}`}>{existingPatient ? 'Edit' : 'New'} Patient</h1>
+            {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient ? <DummyDataInput /> : ''}
+          </div>
+          <DemographicsSection />
+          <ContactInfoSection addressTemplate={addressTemplate} />
+          <IdentifierSection
+            identifierTypes={identifierTypes}
+            validationSchema={validationSchema}
+            setValidationSchema={setValidationSchema}
+            inEditMode={Boolean(existingPatient)}
+          />
+          <DeathInfoSection />
+          {config && config.personAttributeSections && (
+            <PersonAttributesSection attributeSections={config.personAttributeSections} />
+          )}
+          <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
+            {existingPatient ? 'Save Patient' : 'Register Patient'}
+          </button>
+        </Form>
       </Formik>
     </main>
   );
