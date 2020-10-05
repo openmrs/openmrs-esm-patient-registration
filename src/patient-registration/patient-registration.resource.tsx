@@ -15,13 +15,13 @@ export function savePatient(abortController: AbortController, patient: Patient, 
   });
 }
 
-export function saveRelationships(abortController: AbortController, relationships: tempRelationship) {
+export function saveRelationship(abortController: AbortController, relationship: tempRelationship) {
   return openmrsFetch('/ws/rest/v1/relationship', {
     headers: {
       'Content-Type': 'application/json',
     },
     method: 'POST',
-    body: relationships,
+    body: relationship,
     signal: abortController.signal,
   });
 }
@@ -133,7 +133,7 @@ export function getAllRelationshipTypes(abortController: AbortController) {
   });
 }
 
-export function getPerson(abortController: AbortController, searchString: string) {
+export function searchPerson(abortController: AbortController, searchString: string) {
   return openmrsFetch('/ws/rest/v1/person?q=' + searchString, {
     signal: abortController.signal,
   });

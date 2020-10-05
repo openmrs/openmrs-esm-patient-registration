@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './section.css';
-import { RelationshipInput } from '../input/custom-input/relationship-input.component ';
+import { RelationshipInput } from '../input/custom-input/relationship-input.component';
 
 interface RelationshipProps {
   setFieldValue(field: string, value: any, shouldValidate?: boolean): void;

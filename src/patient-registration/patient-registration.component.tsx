@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
-import { Patient, PatientIdentifierType, AttributeValue, Relationships } from './patient-registration-helper';
+import { Patient, PatientIdentifierType, AttributeValue, Relationship } from './patient-registration-helper';
 import {
   getCurrentUserLocation,
   savePatient,
@@ -15,7 +15,7 @@ import {
   deletePersonName,
   uuidIdentifier,
   uuidTelephoneNumber,
-  saveRelationships,
+  saveRelationship,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
@@ -348,7 +348,7 @@ export const PatientRegistration: React.FC = () => {
   useEffect(() => {
     if (tempRelationship.personA !== '') {
       const abortController = new AbortController();
-      saveRelationships(abortController, tempRelationship).then(response => {}, createErrorHandler());
+      saveRelationship(abortController, tempRelationship).then(response => {}, createErrorHandler());
     }
   }, [tempRelationship]);
 

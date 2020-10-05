@@ -5,44 +5,66 @@ import { mockUniquePatientIdentifiers } from '../../__mocks__/uniquePatientIdent
 import { mockCurrentUserLocation } from '../../__mocks__/currentUserLocation.mock';
 import { mockPersons } from '../../__mocks__/persons.mock';
 import { mockRelationshipTypes } from '../../__mocks__/relationshipTypes.mock';
+import { mockAddressTemplate } from '../../__mocks__/addressTemplate.mock';
+
 import {
   getAllRelationshipTypes,
   getCurrentUserLocation,
   getUniquePatientIdentifier,
-  getPerson,
+  searchPerson,
+  getAddressTemplate,
+  getPrimaryIdentifierType,
+  getSecondaryIdentifierTypes,
 } from './patient-registration.resource';
+import { useLocation } from 'react-router-dom';
 
 let wrapper: any;
+
 const mockgetAllRelationshipTypes = getAllRelationshipTypes as jest.Mock;
 const mockgetCurrentUserLocation = getCurrentUserLocation as jest.Mock;
 const mockgetUniquePatientIdentifier = getUniquePatientIdentifier as jest.Mock;
-const mockgetPerson = getPerson as jest.Mock;
+const searchPersonMock = searchPerson as jest.Mock;
+const useLocationMock = useLocation as jest.Mock;
+const getAddressTemplateMock = getAddressTemplate as jest.Mock;
+const getPrimaryIdentifierTypeMock = getPrimaryIdentifierType as jest.Mock;
+const getSecondaryIdentifierTypesMock = getSecondaryIdentifierTypes as jest.Mock;
 
 jest.mock('./patient-registration.resource', () => ({
   getAllRelationshipTypes: jest.fn(),
   getCurrentUserLocation: jest.fn(),
   getUniquePatientIdentifier: jest.fn(),
-  getPerson: jest.fn(),
+  searchPerson: jest.fn(),
+  getAddressTemplate: jest.fn(),
+  getPrimaryIdentifierType: jest.fn(),
+  getSecondaryIdentifierTypes: jest.fn(),
 }));
 
-const mockPersonResult = mockPersons;
-const mockRelationshipTypesResult = mockRelationshipTypes;
-const mockCurrentUserLocationResult = mockCurrentUserLocation;
-const mockUniquePatientIdentifierResult = mockUniquePatientIdentifiers;
+jest.mock('react-router-dom', () => ({
+  useLocation: jest.fn(),
+}));
 
 describe('relationship section', () => {
   afterEach(cleanup);
   beforeEach(mockgetAllRelationshipTypes.mockReset);
   beforeEach(mockgetCurrentUserLocation.mockReset);
   beforeEach(mockgetUniquePatientIdentifier.mockReset);
-  beforeEach(mockgetPerson.mockReset);
+  beforeEach(searchPersonMock.mockReset);
+  beforeEach(useLocationMock.mockReset);
+  beforeEach(getAddressTemplateMock.mockReset);
+  beforeEach(getPrimaryIdentifierTypeMock.mockReset);
+  beforeEach(getSecondaryIdentifierTypesMock.mockReset);
 
   function initMocks() {
-    mockgetAllRelationshipTypes.mockReturnValue(Promise.resolve(mockRelationshipTypesResult));
-    mockgetCurrentUserLocation.mockReturnValue(Promise.resolve(mockCurrentUserLocationResult));
-    mockgetUniquePatientIdentifier.mockReturnValue(Promise.resolve(mockUniquePatientIdentifierResult));
-    mockgetPerson.mockReturnValue(Promise.resolve(mockPersonResult));
+    mockgetAllRelationshipTypes.mockReturnValue(Promise.resolve(mockRelationshipTypes));
+    mockgetCurrentUserLocation.mockReturnValue(Promise.resolve(mockCurrentUserLocation));
+    mockgetUniquePatientIdentifier.mockReturnValue(Promise.resolve(mockUniquePatientIdentifiers));
+    searchPersonMock.mockReturnValue(Promise.resolve(mockPersons));
+    useLocationMock.mockReturnValue({ search: 'q=search-string' });
+    getAddressTemplateMock.mockReturnValue(Promise.resolve(mockAddressTemplate));
+    getPrimaryIdentifierTypeMock.mockReturnValue(Promise.resolve());
+    getSecondaryIdentifierTypesMock.mockReturnValue(Promise.resolve([]));
   }
+
   it('updates to correct relationship name', async () => {
     initMocks();
     wrapper = render(<PatientRegistration />);

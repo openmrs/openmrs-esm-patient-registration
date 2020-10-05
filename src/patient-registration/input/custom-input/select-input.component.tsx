@@ -1,10 +1,11 @@
 import React from 'react';
 import { useField } from 'formik';
 import styles from './../input.css';
+import { RelationshipTypeOption } from './relationship-input.component';
 
 interface SelectInputProps {
   name: string;
-  options: any;
+  options: RelationshipTypeOption[];
 }
 
 export const SelectInput: React.FC<SelectInputProps> = ({ name, options }) => {
