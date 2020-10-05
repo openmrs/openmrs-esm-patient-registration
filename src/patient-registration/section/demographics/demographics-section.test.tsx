@@ -1,101 +1,122 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render, wait } from '@testing-library/react';
 import { Formik, Form } from 'formik';
-import { FormValues, initialFormValues } from '../../patient-registration.component';
+import { initialFormValues } from '../../patient-registration.component';
 import { DemographicsSection } from './demographics-section.component';
 
-describe('demographics section', () => {
-  const formValues: FormValues = initialFormValues;
+const getInputElementsCount = section => {
+  const textInputs = section.getAllByRole('textbox');
+  const birthdateInput = section.getAllByLabelText('birthdate');
+  const yearsEstimatedInput = section.queryAllByLabelText('yearsEstimated');
+  const monthsEstimatedInput = section.queryAllByLabelText('monthsEstimated');
+  const checkboxes = section.getAllByRole('checkbox');
+  const selects = section.getAllByRole('combobox');
+  return (
+    textInputs.length +
+    selects.length +
+    checkboxes.length +
+    birthdateInput.length +
+    yearsEstimatedInput.length +
+    monthsEstimatedInput.length
+  );
+};
 
-  const setupSection = async (birthdateEstimated?: boolean, addNameInLocalLanguage?: boolean) => {
-    const { container } = render(
-      <Formik initialValues={{ ...initialFormValues, birthdateEstimated, addNameInLocalLanguage }} onSubmit={null}>
+describe('demographics section', () => {
+  const setupSection = async () => {
+    const { getByLabelText, queryByLabelText, getAllByRole, getAllByLabelText, queryAllByLabelText } = render(
+      <Formik initialValues={{ ...initialFormValues }} onSubmit={null}>
         <Form>
-          <DemographicsSection
-            setFieldValue={() => {}}
-            values={{ ...initialFormValues, birthdateEstimated, addNameInLocalLanguage }}
-          />
+          <DemographicsSection />
         </Form>
       </Formik>,
     );
-    const allInputs = container.querySelectorAll('input');
-    const allSelects = container.querySelectorAll('select');
-    let inputAndSelectNames = [];
-    allInputs.forEach(input => inputAndSelectNames.push(input.name));
-    allSelects.forEach(select => inputAndSelectNames.push(select.name));
-    return inputAndSelectNames;
+    return { getByLabelText, queryByLabelText, getAllByRole, getAllByLabelText, queryAllByLabelText };
   };
 
   it('has the correct number of inputs if birthdate is not estimated', async () => {
-    const inputNames = await setupSection(false);
-    expect(inputNames.length).toBe(8);
+    const section = await setupSection();
+    expect(getInputElementsCount(section)).toBe(8);
   });
 
   it('has the correct number of inputs if birthdate is estimated', async () => {
-    const inputNames = await setupSection(true);
-    expect(inputNames.length).toBe(10);
+    const section = await setupSection();
+    const birthdateEstimatedCheckbox = section.getByLabelText('birthdateEstimated');
+    fireEvent.click(birthdateEstimatedCheckbox);
+    await wait();
+    expect(getInputElementsCount(section)).toBe(10);
   });
 
   it('has the correct number of inputs if birthdate is estimated and additional name is provided', async () => {
-    const inputNames = await setupSection(true, true);
-    expect(inputNames.length).toBe(13);
+    const section = await setupSection();
+    const birthdateEstimatedCheckbox = section.getByLabelText('birthdateEstimated');
+    const addNameInLocalLanguageCheckbox = section.getByLabelText('addNameInLocalLanguage');
+    fireEvent.click(birthdateEstimatedCheckbox);
+    fireEvent.click(addNameInLocalLanguageCheckbox);
+    await wait();
+    expect(getInputElementsCount(section)).toBe(13);
   });
 
   it('has name input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('givenName');
-    expect(inputNames).toContain('middleName');
-    expect(inputNames).toContain('familyName');
+    const section = await setupSection();
+    expect(section.getByLabelText('givenName')).toBeTruthy();
+    expect(section.getByLabelText('middleName')).toBeTruthy();
+    expect(section.getByLabelText('familyName')).toBeTruthy();
   });
 
   it('has name in local language checkbox', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('addNameInLocalLanguage');
+    const section = await setupSection();
+    expect(section.getByLabelText('addNameInLocalLanguage')).toBeTruthy();
   });
 
   it('has name in local language input fields when checkbox is clicked', async () => {
-    const inputNames = await setupSection(false, true);
-    expect(inputNames).toContain('additionalGivenName');
-    expect(inputNames).toContain('additionalMiddleName');
-    expect(inputNames).toContain('additionalFamilyName');
+    const section = await setupSection();
+    const addNameInLocalLanguageCheckbox = section.getByLabelText('addNameInLocalLanguage');
+    fireEvent.click(addNameInLocalLanguageCheckbox);
+    await wait();
+    expect(section.getByLabelText('additionalGivenName')).toBeTruthy();
+    expect(section.getByLabelText('additionalMiddleName')).toBeTruthy();
+    expect(section.getByLabelText('additionalFamilyName')).toBeTruthy();
   });
 
-  it('does not have name in local language input fields when checkbox is unclicked', async () => {
-    const inputNames = await setupSection(false, false);
-    expect(inputNames).not.toContain('additionalGivenName');
-    expect(inputNames).not.toContain('additionalMiddleName');
-    expect(inputNames).not.toContain('additionalFamilyName');
+  it('does not have name in local language input fields when checkbox is not clicked', async () => {
+    const section = await setupSection();
+    expect(section.queryByLabelText('additionalGivenName')).toBeFalsy();
+    expect(section.queryByLabelText('additionalMiddleName')).toBeFalsy();
+    expect(section.queryByLabelText('additionalFamilyName')).toBeFalsy();
   });
 
   it('has unidentified patient input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('unidentifiedPatient');
+    const section = await setupSection();
+    expect(section.getByLabelText('unidentifiedPatient')).toBeTruthy();
   });
 
   it('has gender select input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('gender');
+    const section = await setupSection();
+    expect(section.getByLabelText('gender')).toBeTruthy();
   });
 
   it('has date input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('birthdate');
+    const section = await setupSection();
+    expect(section.getByLabelText('birthdate')).toBeTruthy();
   });
 
-  it('has estimated age input', async () => {
-    const inputNames = await setupSection(true);
-    expect(inputNames).toContain('yearsEstimated');
-    expect(inputNames).toContain('monthsEstimated');
+  it('has estimated age inputs when checkbox is clicked', async () => {
+    const section = await setupSection();
+    const birthdateEstimatedCheckbox = section.getByLabelText('birthdateEstimated');
+    fireEvent.click(birthdateEstimatedCheckbox);
+    await wait();
+    expect(section.getByLabelText('yearsEstimated')).toBeTruthy();
+    expect(section.getByLabelText('monthsEstimated')).toBeTruthy();
   });
 
-  it('has no estimated age input if birthdate is not estimated', async () => {
-    const inputNames = await setupSection(false);
-    expect(inputNames).not.toContain('yearsEstimated');
-    expect(inputNames).not.toContain('monthsEstimated');
+  it('has no estimated age inputs when checkbox is not clicked', async () => {
+    const section = await setupSection();
+    expect(section.queryByLabelText('yearsEstimated')).toBeFalsy();
+    expect(section.queryByLabelText('monthsEstimated')).toBeFalsy();
   });
 
-  it('has birthdate checkbox input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('birthdateEstimated');
+  it('has checkbox input for estimated birthdate', async () => {
+    const section = await setupSection();
+    expect(section.getByLabelText('birthdateEstimated')).toBeTruthy();
   });
 });
