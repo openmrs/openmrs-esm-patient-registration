@@ -328,7 +328,7 @@ describe('estimated age input', () => {
         onSubmit={null}
         validationSchema={validationSchema}>
         <Form>
-          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={() => {}} />
+          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" />
         </Form>
       </Formik>,
     );

@@ -1,29 +1,32 @@
 import React, { useEffect } from 'react';
-import { useField } from 'formik';
+import { useField, useFormikContext } from 'formik';
 import dayjs from 'dayjs';
 import { Input } from '../../basic-input/input/input.component';
 import styles from './../../input.css';
+import { FormValues } from '../../../patient-registration.component';
 
 interface EstimatedAgeInputProps {
   yearsName: string;
   monthsName: string;
-  setBirthdate(field: string, value: any, shouldValidate?: boolean): void;
 }
 
-export const EstimatedAgeInput: React.FC<EstimatedAgeInputProps> = ({ yearsName, monthsName, setBirthdate }) => {
+export const EstimatedAgeInput: React.FC<EstimatedAgeInputProps> = ({ yearsName, monthsName }) => {
+  const { setFieldValue } = useFormikContext<FormValues>();
   const [yearsField] = useField(yearsName);
   const [monthsField] = useField(monthsName);
 
   useEffect(() => {
-    setBirthdate(
-      'birthdate',
-      dayjs()
-        .subtract(yearsField.value, 'year')
-        .subtract(monthsField.value, 'month')
-        .toISOString()
-        .split('T')[0],
-    );
-  }, [yearsField.value, monthsField.value, setBirthdate]);
+    if (yearsField.value > 0 || monthsField.value > 0) {
+      setFieldValue(
+        'birthdate',
+        dayjs()
+          .subtract(yearsField.value, 'year')
+          .subtract(monthsField.value, 'month')
+          .toISOString()
+          .split('T')[0],
+      );
+    }
+  }, [yearsField.value, monthsField.value, setFieldValue]);
 
   return (
     <main className={styles.fieldRow}>

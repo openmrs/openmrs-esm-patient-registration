@@ -1,36 +1,64 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import { Formik, Form } from 'formik';
+import { render, wait } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { EstimatedAgeInput } from './estimated-age-input.component';
+import { Formik, Form } from 'formik';
+
+const mockSetFieldValue = jest.fn();
+jest.mock('formik', () => {
+  return {
+    ...jest.requireActual('formik'),
+    useFormikContext: () => ({
+      setFieldValue: mockSetFieldValue,
+      values: { birthdate: '', years: 0, months: 0 },
+    }),
+  };
+});
 
 describe('estimated age input', () => {
-  const mockSetBirthdate = jest.fn();
-
   const setupInput = async () => {
-    const { getByLabelText } = render(
-      <Formik initialValues={{ years: 0, months: 0 }} onSubmit={null}>
+    const { container, getByTestId, getByLabelText } = render(
+      <Formik initialValues={{ birthdate: '', yearsEstimated: 0, monthsEstimated: 0 }} onSubmit={null}>
         <Form>
-          <EstimatedAgeInput yearsName="years" monthsName="months" setBirthdate={mockSetBirthdate} />
+          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" />
         </Form>
       </Formik>,
     );
-    const years = getByLabelText('years') as HTMLInputElement;
-    const months = getByLabelText('months') as HTMLInputElement;
 
-    return {
-      years,
-      months,
-    };
+    return { container, getByTestId, getByLabelText };
   };
 
   it('exists', async () => {
-    const inputs = await setupInput();
-    expect(inputs.years.type).toEqual('number');
-    expect(inputs.months.type).toEqual('number');
+    const estimatedAgeInput = await setupInput();
+    const yearsInput = estimatedAgeInput.getByLabelText('yearsEstimated') as HTMLInputElement;
+    const monthsInput = estimatedAgeInput.getByLabelText('monthsEstimated') as HTMLInputElement;
+    expect(yearsInput.type).toEqual('number');
+    expect(monthsInput.type).toEqual('number');
   });
-  it('calls setBirthdate', async () => {
-    mockSetBirthdate.mockReset();
+
+  it('does not set birthdate form value when component is mounting', async () => {
     await setupInput();
-    expect(mockSetBirthdate.mock.calls.length).toBe(1);
+    expect(mockSetFieldValue).toHaveBeenCalledTimes(0);
+  });
+
+  it('sets birthdate form value to calculated date', async () => {
+    const estimatedAgeInput = await setupInput();
+    const yearsInput = estimatedAgeInput.getByLabelText('yearsEstimated') as HTMLInputElement;
+    const monthsInput = estimatedAgeInput.getByLabelText('monthsEstimated') as HTMLInputElement;
+
+    const estimatedYears = 30;
+    const esttimatedMonths = 6;
+
+    //mock dayjs to not rely on date calculation?
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - estimatedYears);
+    date.setMonth(date.getMonth() - esttimatedMonths);
+    const estimatedBirthdate = date.toISOString().split('T')[0];
+
+    userEvent.type(yearsInput, estimatedYears.toString());
+    userEvent.type(monthsInput, esttimatedMonths.toString());
+
+    await wait();
+    expect(mockSetFieldValue).toHaveBeenCalledWith('birthdate', estimatedBirthdate);
   });
 });

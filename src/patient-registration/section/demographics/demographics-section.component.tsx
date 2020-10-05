@@ -61,7 +61,7 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = () => {
       </section>
       {values.birthdateEstimated && (
         <section className={styles.fieldGroup}>
-          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={setFieldValue} />
+          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" />
         </section>
       )}
     </section>
