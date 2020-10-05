@@ -15,7 +15,7 @@ export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ addressT
       <br />
       <Autocomplete
         name="addressHierarchySearch"
-        label="Fill address"
+        label="Search Address"
         placeholder="Type a city, postal code, state or country to search for an address"
         noResultsMessage="no address found, please enter the address manually"
         getSearchResults={getAddressHierarchy}
