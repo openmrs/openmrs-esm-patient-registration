@@ -1,5 +1,5 @@
 import { openmrsFetch } from '@openmrs/esm-api';
-import { Patient, tempRelationship } from './patient-registration-helper';
+import { Patient, Relationship } from './patient-registration-helper';
 import { camelCase } from 'lodash';
 import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
 
@@ -11,17 +11,6 @@ export function savePatient(abortController: AbortController, patient: Patient, 
     },
     method: 'POST',
     body: patient,
-    signal: abortController.signal,
-  });
-}
-
-export function saveRelationships(abortController: AbortController, relationships: tempRelationship) {
-  return openmrsFetch('/ws/rest/v1/relationship', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    body: relationships,
     signal: abortController.signal,
   });
 }
@@ -133,8 +122,19 @@ export function getAllRelationshipTypes(abortController: AbortController) {
   });
 }
 
-export function getPerson(abortController: AbortController, searchString: string) {
+export function searchPerson(abortController: AbortController, searchString: string) {
   return openmrsFetch('/ws/rest/v1/person?q=' + searchString, {
+    signal: abortController.signal,
+  });
+}
+
+export function saveRelationship(abortController: AbortController, relationship: Relationship) {
+  return openmrsFetch('/ws/rest/v1/relationship', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: relationship,
     signal: abortController.signal,
   });
 }
