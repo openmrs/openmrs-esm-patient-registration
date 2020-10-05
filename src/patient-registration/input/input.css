@@ -104,5 +104,13 @@
 
 .searchResults > li:hover,
 .searchResults > li:focus {
+  cursor: pointer;
   background-color: #efefef;
+}
+
+.searchResults > li > button {
+  color: black;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
 }

@@ -1,6 +1,18 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import { AddressSearchResults } from './address-search-results.component';
+import { Form, Formik } from 'formik';
+import userEvent from '@testing-library/user-event';
+
+const mockSetValues = jest.fn();
+jest.mock('formik', () => {
+  return {
+    ...jest.requireActual('formik'),
+    useFormikContext: () => ({
+      setFieldValue: mockSetValues,
+    }),
+  };
+});
 
 const SEARCH_RESULTS = [
   { address: 'United States|Louisiana|Bossier Parish|Bossier City' },
@@ -8,7 +20,7 @@ const SEARCH_RESULTS = [
   { address: 'United States|Massachusetts|Suffolk County|Boston' },
 ];
 
-describe('address search results', () => {
+describe('address search results unit tests', () => {
   const setupSearchResults = async (results = [], noResultsMessage = null) => {
     const { container, findByLabelText, getByRole, findByTestId } = render(
       <AddressSearchResults results={results} noResultsMessage={noResultsMessage} />,
@@ -43,10 +55,33 @@ describe('address search results', () => {
 
   it('search results are ordered correctly', async () => {
     const searchResults = await setupSearchResults(SEARCH_RESULTS);
-    const firstSearchResult = searchResults.getByRole('list').firstChild.childNodes;
+    const firstSearchResult = searchResults.getByRole('list').getElementsByTagName('button')[0].childNodes;
     const firstPart = firstSearchResult[0];
     const lastPart = firstSearchResult[firstSearchResult.length - 1];
     expect(firstPart.textContent).toBe('Bossier City');
     expect(lastPart.textContent).toContain('United States');
+  });
+});
+
+describe('address search results formik integration tests', () => {
+  const setupSearchResults = async (results = [], noResultsMessage = null) => {
+    const { container, findByLabelText, getByRole, findByTestId } = render(
+      <Formik initialValues={{ cityVillage: '', stateProvince: '', country: '' }} onSubmit={null}>
+        <Form>
+          <AddressSearchResults results={results} noResultsMessage={noResultsMessage} />,
+        </Form>
+      </Formik>,
+    );
+
+    return { container, findByLabelText, getByRole, findByTestId };
+  };
+  it('updates address related form values with search result values on click', async () => {
+    const searchResults = await setupSearchResults(SEARCH_RESULTS);
+    const firstSearchResult = searchResults.getByRole('list').getElementsByTagName('button')[0];
+    userEvent.click(firstSearchResult);
+    await wait();
+    expect(mockSetValues).toHaveBeenCalledWith('cityVillage', 'Bossier City');
+    expect(mockSetValues).toHaveBeenCalledWith('stateProvince', 'Louisiana');
+    expect(mockSetValues).toHaveBeenCalledWith('country', 'United States');
   });
 });
