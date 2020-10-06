@@ -2,6 +2,7 @@ import { useFormikContext } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import { FormValues } from '../../patient-registration.component';
 import styles from './../input.css';
+import { AddressSearchResultsItem } from './address-search-results-item.component';
 
 type FullAdressString = {
   address: string;
@@ -24,10 +25,11 @@ export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({
 }) => {
   const node = useRef<HTMLUListElement>();
   const { setFieldValue } = useFormikContext<FormValues>();
+  const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(showSearchResults);
-  const hasSearchResults = results.length > 0;
 
   const setFormValues = (orderedAddressLevels): void => {
+    // this currently matches the default address template only
     const cityVillage = orderedAddressLevels[0];
     const stateProvince = orderedAddressLevels[orderedAddressLevels.length - 2];
     const country = orderedAddressLevels[orderedAddressLevels.length - 1];
@@ -52,23 +54,24 @@ export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({
   }, []);
 
   useEffect(() => {
+    const orderedAddressLevels = results.map(result => splitAndReverse(result.address));
+    setSearchResults(orderedAddressLevels);
+  }, [results]);
+
+  useEffect(() => {
     if (showSearchResults) setShowResults(true);
   }, [showSearchResults]);
 
   return showResults ? (
     <ul className={styles.searchResults} ref={node}>
-      {hasSearchResults ? (
-        results.map((result, index) => {
-          const orderedAddressLevels = splitAndReverse(result.address);
-          const addressKey = `${result.address}${index}`;
+      {searchResults.length > 0 ? (
+        searchResults.map((address, index) => {
           return (
-            <li key={addressKey}>
-              <button type="button" onClick={() => setFormValues(orderedAddressLevels)}>
-                {orderedAddressLevels.map((level, index) => {
-                  const cityVillage = index === 0;
-                  const key = `${level}${index}`;
-                  return cityVillage ? <strong key={key}>{level}</strong> : <span key={key}>, {level}</span>;
-                })}
+            <li key={address + index}>
+              <button type="button" onClick={() => setFormValues(address)}>
+                {address.map((addressLevel, index) => (
+                  <AddressSearchResultsItem key={addressLevel + index} addressLevel={addressLevel} index={index} />
+                ))}
               </button>
             </li>
           );
