@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, wait } from '@testing-library/react';
+import { render, wait, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Formik, Form } from 'formik';
 import { Autocomplete } from './autocomplete.component';
@@ -15,13 +15,23 @@ const SEARCH_RESULTS = {
   ],
 };
 
+const mockSetValues = jest.fn();
+jest.mock('formik', () => {
+  return {
+    ...jest.requireActual('formik'),
+    useFormikContext: () => ({
+      setFieldValue: mockSetValues,
+    }),
+  };
+});
+
 describe('autocomplete', () => {
   const noSearchResults = async () => {
     return Promise.resolve({ data: [] });
   };
 
   const setupAutocomplete = async (getSearchResults = noSearchResults) => {
-    const { container, findByLabelText, queryByTestId, findByTestId } = render(
+    const { container, findByLabelText, queryByTestId, findByTestId, getByRole } = render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
           <Autocomplete
@@ -35,7 +45,7 @@ describe('autocomplete', () => {
       </Formik>,
     );
 
-    return { container, findByLabelText, queryByTestId, findByTestId };
+    return { container, findByLabelText, queryByTestId, findByTestId, getByRole };
   };
 
   it('has one search input field', async () => {
@@ -80,13 +90,29 @@ describe('autocomplete', () => {
     userEvent.type(searchInput, 'Be');
 
     await wait();
-    let searchResults = autocomplete.queryByTestId('search-results');
+    let searchResults = await autocomplete.findByTestId('search-results');
     expect(searchResults.textContent).toBeTruthy();
 
-    fireEvent.blur(searchInput);
+    act(() => userEvent.click(autocomplete.container));
 
     await wait();
-    searchResults = autocomplete.queryByTestId('search-results');
-    expect(searchResults).toBeNull();
+    searchResults = await autocomplete.findByTestId('search-results');
+    expect(searchResults.childElementCount).toBeFalsy();
+  });
+
+  it('updates form values on click on a search results item in the dropdown', async () => {
+    const getSearchResults = async () => {
+      return getAddressHierarchyMock(SEARCH_RESULTS);
+    };
+    const autocomplete = await setupAutocomplete(getSearchResults);
+    const searchInput = (await autocomplete.findByLabelText('someLabel')) as HTMLInputElement;
+    userEvent.type(searchInput, 'Bo');
+    await wait();
+
+    const firstSearchResult = autocomplete.getByRole('list').getElementsByTagName('button')[0];
+    userEvent.click(firstSearchResult);
+    await wait();
+
+    expect(mockSetValues).toHaveBeenCalledTimes(3);
   });
 });

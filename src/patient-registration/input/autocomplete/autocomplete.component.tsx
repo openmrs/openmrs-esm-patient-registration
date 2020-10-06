@@ -53,9 +53,13 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
           onFocus={toggleSearchFocused}
           onBlur={toggleSearchFocused}
         />
-        {isSearchFocused && search && results && (
+        {search && results && (
           <span data-testid="search-results">
-            <AddressSearchResults results={results} noResultsMessage={noResultsMessage} />
+            <AddressSearchResults
+              results={results}
+              noResultsMessage={noResultsMessage}
+              showSearchResults={isSearchFocused}
+            />
           </span>
         )}
       </div>

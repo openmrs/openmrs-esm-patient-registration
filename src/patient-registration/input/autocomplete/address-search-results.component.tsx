@@ -1,5 +1,5 @@
 import { useFormikContext } from 'formik';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FormValues } from '../../patient-registration.component';
 import styles from './../input.css';
 
@@ -9,6 +9,7 @@ type FullAdressString = {
 
 interface AddressSearchResultsProps {
   results: FullAdressString[];
+  showSearchResults: boolean;
   noResultsMessage?: string;
 }
 
@@ -16,8 +17,14 @@ const splitAndReverse = (string: string, delimiter: string = '|') => {
   return string.split(delimiter).reverse();
 };
 
-export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({ results, noResultsMessage }) => {
+export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({
+  results,
+  noResultsMessage,
+  showSearchResults,
+}) => {
+  const node = useRef<HTMLUListElement>();
   const { setFieldValue } = useFormikContext<FormValues>();
+  const [showResults, setShowResults] = useState(showSearchResults);
   const hasSearchResults = results.length > 0;
 
   const setFormValues = (orderedAddressLevels): void => {
@@ -28,10 +35,28 @@ export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({ resu
     setFieldValue('cityVillage', cityVillage);
     setFieldValue('stateProvince', stateProvince);
     setFieldValue('country', country);
+    setShowResults(false);
   };
 
-  return (
-    <ul className={styles.searchResults}>
+  const handleClickOutside = event => {
+    if (node.current?.contains(event.target)) return;
+    setShowResults(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (showSearchResults) setShowResults(true);
+  }, [showSearchResults]);
+
+  return showResults ? (
+    <ul className={styles.searchResults} ref={node}>
       {hasSearchResults ? (
         results.map((result, index) => {
           const orderedAddressLevels = splitAndReverse(result.address);
@@ -49,8 +74,10 @@ export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({ resu
           );
         })
       ) : (
-        <li>{noResultsMessage ? noResultsMessage : 'no results found'}</li>
+        <li>
+          <button type="button">{noResultsMessage ? noResultsMessage : 'no results found'}</button>
+        </li>
       )}
     </ul>
-  );
+  ) : null;
 };

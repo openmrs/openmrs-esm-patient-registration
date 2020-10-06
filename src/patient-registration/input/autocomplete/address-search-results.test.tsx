@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, wait } from '@testing-library/react';
+import { act, render, wait } from '@testing-library/react';
 import { AddressSearchResults } from './address-search-results.component';
 import { Form, Formik } from 'formik';
 import userEvent from '@testing-library/user-event';
@@ -23,7 +23,7 @@ const SEARCH_RESULTS = [
 describe('address search results unit tests', () => {
   const setupSearchResults = async (results = [], noResultsMessage = null) => {
     const { container, findByLabelText, getByRole, findByTestId } = render(
-      <AddressSearchResults results={results} noResultsMessage={noResultsMessage} />,
+      <AddressSearchResults results={results} noResultsMessage={noResultsMessage} showSearchResults={true} />,
     );
 
     return { container, findByLabelText, getByRole, findByTestId };
@@ -61,6 +61,13 @@ describe('address search results unit tests', () => {
     expect(firstPart.textContent).toBe('Bossier City');
     expect(lastPart.textContent).toContain('United States');
   });
+
+  it('search results are removed on click outside the component', async () => {
+    const searchResults = await setupSearchResults();
+    expect(searchResults.container.innerHTML).toBeTruthy();
+    act(() => userEvent.click(searchResults.container));
+    expect(searchResults.container.innerHTML).toBeFalsy();
+  });
 });
 
 describe('address search results formik integration tests', () => {
@@ -68,7 +75,7 @@ describe('address search results formik integration tests', () => {
     const { container, findByLabelText, getByRole, findByTestId } = render(
       <Formik initialValues={{ cityVillage: '', stateProvince: '', country: '' }} onSubmit={null}>
         <Form>
-          <AddressSearchResults results={results} noResultsMessage={noResultsMessage} />,
+          <AddressSearchResults results={results} noResultsMessage={noResultsMessage} showSearchResults={true} />,
         </Form>
       </Formik>,
     );
