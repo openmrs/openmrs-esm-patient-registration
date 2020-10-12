@@ -3,6 +3,7 @@
     "phoneNumber": "Telephone Number",
     "phoneNumberPlaceHolder": "Enter Telephone Number",
     "additionalPersonAttributesSectionHeader": "Additional Person Attributes",
+    "addressSearchPlaceHolder": "Type a City, State or Country",
     "noSearchResults": "No Results Found",
     "savePatient": "Save Patient",
     "registerPatient": "Register Patient"

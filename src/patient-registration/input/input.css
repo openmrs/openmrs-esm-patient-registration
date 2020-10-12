@@ -84,7 +84,7 @@
 }
 
 .searchInput {
-  width: 660px !important;
+  width: 250px !important;
   height: 40px !important;
 }
 
@@ -95,7 +95,8 @@
   border-radius: .25rem;
   background-color: white;
   position: absolute;
-  width: 660px;
+  width: 250px;
+  max-width: 80%;
 }
 
 .searchResults > li:hover,
