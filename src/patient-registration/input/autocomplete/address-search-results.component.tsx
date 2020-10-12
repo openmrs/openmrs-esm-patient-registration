@@ -71,9 +71,14 @@ export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({
           return (
             <li key={address + index}>
               <button type="button" onClick={() => setFormValues(address)}>
-                {address.map((addressLevel, index) => (
-                  <AddressSearchResultsItem key={addressLevel + index} addressLevel={addressLevel} index={index} />
-                ))}
+                {address.map((addressLevel, index) => {
+                  return (
+                    <span key={addressLevel + index}>
+                      {index !== 0 && ', '}
+                      <AddressSearchResultsItem addressLevel={addressLevel} isBold={index === 0} />
+                    </span>
+                  );
+                })}
               </button>
             </li>
           );

@@ -4,7 +4,9 @@ import { AddressSearchResultsItem } from './address-search-results-item.componen
 
 describe('address search results unit tests', () => {
   const setupSearchResultItem = async (index, addressLevel = 'some part of an address') => {
-    const { container, getByText } = render(<AddressSearchResultsItem addressLevel={addressLevel} index={index} />);
+    const { container, getByText } = render(
+      <AddressSearchResultsItem addressLevel={addressLevel} isBold={index === 0} />,
+    );
     return { container, getByText };
   };
 

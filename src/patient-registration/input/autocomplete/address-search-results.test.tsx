@@ -53,6 +53,13 @@ describe('address search results unit tests', () => {
     expect(firstSearchResult.textContent.includes('|')).toBe(false);
   });
 
+  it('search results are separated by comma', async () => {
+    const searchResults = await setupSearchResults(SEARCH_RESULTS);
+    const firstSearchResult = searchResults.getByRole('list').firstChild;
+    const commaCount = firstSearchResult.textContent.split(',').length - 1;
+    expect(commaCount).toBe(3);
+  });
+
   it('search results are ordered correctly', async () => {
     const searchResults = await setupSearchResults(SEARCH_RESULTS);
     const firstSearchResult = searchResults.getByRole('list').getElementsByTagName('button')[0].childNodes;
