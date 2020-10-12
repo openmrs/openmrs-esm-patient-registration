@@ -5,7 +5,6 @@ const importTranslation = require.context('../translations', false, /.json$/, 'l
 
 const extensions: Array<ExtensionDefinition> = [
   {
-    appName: '@openmrs/esm-patient-registration-app',
     name: 'registration-link',
     load: () => import('./registration-link'),
   },
