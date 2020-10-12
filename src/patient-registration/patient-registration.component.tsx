@@ -456,7 +456,7 @@ export const PatientRegistration: React.FC = () => {
             <PersonAttributesSection attributeSections={config.personAttributeSections} />
           )}
           <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
-            {existingPatient ? 'Save Patient' : 'Register Patient'}
+            {existingPatient ? t('savePatient', 'Save Patient') : t('registerPatient', 'Register Patient')}
           </button>
         </Form>
       </Formik>

@@ -32,7 +32,7 @@ describe('address search results unit tests', () => {
   it('default message is displayed on empty search results if no custom message is provided', async () => {
     const searchResults = await setupSearchResults();
     const noResultsMessage = searchResults.getByRole('list').firstChild;
-    expect(noResultsMessage.textContent).toContain('no results found');
+    expect(noResultsMessage.textContent).toContain('No Results Found');
   });
 
   it('custom message is displayed on empty search results if provided', async () => {

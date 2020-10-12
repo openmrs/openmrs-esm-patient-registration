@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FormValues } from '../../patient-registration.component';
 import styles from './../input.css';
 import { AddressSearchResultsItem } from './address-search-results-item.component';
+import { useTranslation } from 'react-i18next';
 
 type FullAdressString = {
   address: string;
@@ -27,6 +28,7 @@ export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({
   const { setFieldValue } = useFormikContext<FormValues>();
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(showSearchResults);
+  const { t } = useTranslation();
 
   const setFormValues = orderedAddressLevels => {
     // this currently matches the default address template only
@@ -78,7 +80,9 @@ export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({
         })
       ) : (
         <li>
-          <button type="button">{noResultsMessage ? noResultsMessage : 'no results found'}</button>
+          <button type="button">
+            {noResultsMessage ? noResultsMessage : t('noSearchResults', 'No Results Found')}
+          </button>
         </li>
       )}
     </ul>
