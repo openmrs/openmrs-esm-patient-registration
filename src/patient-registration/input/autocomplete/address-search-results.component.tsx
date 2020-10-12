@@ -28,7 +28,7 @@ export const AddressSearchResults: React.FC<AddressSearchResultsProps> = ({
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(showSearchResults);
 
-  const setFormValues = (orderedAddressLevels): void => {
+  const setFormValues = orderedAddressLevels => {
     // this currently matches the default address template only
     const cityVillage = orderedAddressLevels[0];
     const stateProvince = orderedAddressLevels[orderedAddressLevels.length - 2];

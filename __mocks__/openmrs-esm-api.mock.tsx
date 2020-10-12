@@ -1,5 +1,9 @@
 import { never, of } from 'rxjs';
 
+interface AddressSearchResult {
+  data: { address: string }[];
+}
+
 export function openmrsFetch() {
   return new Promise(() => {});
 }
@@ -35,6 +39,6 @@ export function getAddressTemplateMock() {
   return Promise.resolve(predefinedAddressTemplate);
 }
 
-export function getAddressHierarchyMock(searchResults: any): Promise<any> {
+export function getAddressHierarchyMock(searchResults: AddressSearchResult): Promise<AddressSearchResult> {
   return Promise.resolve(searchResults);
 }
