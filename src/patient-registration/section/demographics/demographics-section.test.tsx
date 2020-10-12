@@ -5,20 +5,14 @@ import { initialFormValues } from '../../patient-registration.component';
 import { DemographicsSection } from './demographics-section.component';
 
 const getInputElementsCount = section => {
-  const textInputs = section.getAllByRole('textbox');
-  const birthdateInput = section.getAllByLabelText('birthdate');
-  const yearsEstimatedInput = section.queryAllByLabelText('yearsEstimated');
-  const monthsEstimatedInput = section.queryAllByLabelText('monthsEstimated');
-  const checkboxes = section.getAllByRole('checkbox');
-  const selects = section.getAllByRole('combobox');
-  return (
-    textInputs.length +
-    selects.length +
-    checkboxes.length +
-    birthdateInput.length +
-    yearsEstimatedInput.length +
-    monthsEstimatedInput.length
-  );
+  return [
+    section.getAllByRole('textbox'),
+    section.getAllByLabelText('birthdate'),
+    section.queryAllByLabelText('yearsEstimated'),
+    section.queryAllByLabelText('monthsEstimated'),
+    section.getAllByRole('checkbox'),
+    section.getAllByRole('combobox'),
+  ].reduce((sum, inputType) => sum + inputType.length, 0);
 };
 
 describe('demographics section', () => {
