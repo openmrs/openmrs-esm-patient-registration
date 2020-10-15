@@ -1,11 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { NameInput } from './name-input.component';
 
 describe('name input', () => {
   const setupInput = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
           <NameInput
@@ -17,9 +17,9 @@ describe('name input', () => {
         </Form>
       </Formik>,
     );
-    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
-    const middleNameInput = getByLabelText('middleName') as HTMLInputElement;
-    const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
+    const givenNameInput = screen.getByLabelText('givenName') as HTMLInputElement;
+    const middleNameInput = screen.getByLabelText('middleName') as HTMLInputElement;
+    const familyNameInput = screen.getByLabelText('familyName') as HTMLInputElement;
 
     return {
       givenNameInput,

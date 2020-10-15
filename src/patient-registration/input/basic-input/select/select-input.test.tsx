@@ -1,18 +1,18 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, wait, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { SelectInput } from './select-input.component';
 
 describe('select input', () => {
   const setupSelect = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{ select: '' }} onSubmit={null}>
         <Form>
           <SelectInput label="Select" name="select" options={['A Option', 'B Option']} showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
-    return getByLabelText('select') as HTMLInputElement;
+    return screen.getByLabelText('select') as HTMLInputElement;
   };
 
   it('exists', async () => {

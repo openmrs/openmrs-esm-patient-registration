@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { initialFormValues } from '../../patient-registration.component';
 import { IdentifierSection } from './identifiers-section.component';
@@ -56,7 +56,7 @@ describe('identifiers section', () => {
   };
 
   const setupSection = async (identifierTypes: Array<PatientIdentifierType>) => {
-    const { container } = render(
+    render(
       <Formik initialValues={{ ...initialFormValues }} onSubmit={null}>
         <Form>
           <IdentifierSection
@@ -70,9 +70,8 @@ describe('identifiers section', () => {
       </Formik>,
     );
     return {
-      allInputs: container.querySelectorAll('input'),
-      allSelects: container.querySelectorAll('select'),
-      innerHTML: container.innerHTML,
+      allInputs: screen.queryAllByLabelText((content, element) => element.tagName.toLowerCase() === 'input'),
+      allSelects: screen.queryAllByRole('combobox'),
     };
   };
 
@@ -138,9 +137,8 @@ describe('identifiers section', () => {
   });
 
   it('should not render the identifier section without identifier inputs ', async () => {
-    // replay
-    const { innerHTML } = await setupSection([]);
-    // verify
-    expect(innerHTML).toBe('<form action="#"></form>');
+    const { allInputs, allSelects } = await setupSection([]);
+    expect(allInputs.length).toBe(0);
+    expect(allSelects.length).toBe(0);
   });
 });

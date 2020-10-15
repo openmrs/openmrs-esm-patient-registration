@@ -1,18 +1,18 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, wait, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { Input } from './input.component';
 
 describe('number input', () => {
   const setupInput = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{ number: 0 }} onSubmit={null}>
         <Form>
           <Input type="number" label="Number" name="number" />
         </Form>
       </Formik>,
     );
-    return getByLabelText('number') as HTMLInputElement;
+    return screen.getByLabelText('number') as HTMLInputElement;
   };
 
   it('exists', async () => {
@@ -35,14 +35,14 @@ describe('number input', () => {
 
 describe('text input', () => {
   const setupInput = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{ text: '' }} onSubmit={null}>
         <Form>
           <Input type="text" label="Text" name="text" placeholder="Enter text" />
         </Form>
       </Formik>,
     );
-    return getByLabelText('text') as HTMLInputElement;
+    return screen.getByLabelText('text') as HTMLInputElement;
   };
 
   it('exists', async () => {
@@ -65,14 +65,14 @@ describe('text input', () => {
 
 describe('telephone number input', () => {
   const setupInput = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null}>
         <Form>
           <Input type="tel" label="Telephone Number" name="telephoneNumber" placeholder="Enter telephone number" />
         </Form>
       </Formik>,
     );
-    return getByLabelText('telephoneNumber') as HTMLInputElement;
+    return screen.getByLabelText('telephoneNumber') as HTMLInputElement;
   };
 
   it('exists', async () => {
@@ -95,14 +95,14 @@ describe('telephone number input', () => {
 
 describe('date input', () => {
   const setupInput = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{ date: '' }} onSubmit={null}>
         <Form>
           <Input type="date" label="date" name="date" />
         </Form>
       </Formik>,
     );
-    return getByLabelText('date') as HTMLInputElement;
+    return screen.getByLabelText('date') as HTMLInputElement;
   };
 
   it('exists', async () => {
@@ -125,14 +125,14 @@ describe('date input', () => {
 
 describe('checkbox input', () => {
   const setupInput = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{ checkbox: false }} onSubmit={null}>
         <Form>
           <Input type="checkbox" label="checkbox" name="checkbox" />
         </Form>
       </Formik>,
     );
-    return getByLabelText('checkbox') as HTMLInputElement;
+    return screen.getByLabelText('checkbox') as HTMLInputElement;
   };
 
   it('exists', async () => {

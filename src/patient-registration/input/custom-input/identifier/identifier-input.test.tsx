@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, wait, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { IdentifierInput } from './identifier-input.component';
 import { initialFormValues } from '../../../patient-registration.component';
@@ -36,7 +36,7 @@ describe('identifier input', () => {
   };
   const setupIdentifierInput = async (identifierType: PatientIdentifierType) => {
     initialFormValues['source-for-' + identifierType.fieldName] = identifierType.identifierSources[0].name;
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={initialFormValues} onSubmit={null}>
         <Form>
           <IdentifierInput
@@ -47,10 +47,10 @@ describe('identifier input', () => {
         </Form>
       </Formik>,
     );
-    const identifierInput = getByLabelText(identifierType.fieldName) as HTMLInputElement;
+    const identifierInput = screen.getByLabelText(identifierType.fieldName) as HTMLInputElement;
     let identifierSourceSelectInput = undefined;
     try {
-      identifierSourceSelectInput = getByLabelText('source-for-' + identifierType.fieldName) as HTMLInputElement;
+      identifierSourceSelectInput = screen.getByLabelText('source-for-' + identifierType.fieldName) as HTMLInputElement;
     } catch (e) {}
     return {
       identifierInput,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { FormValues, initialFormValues } from '../../patient-registration.component';
 import { DeathInfoSection } from './death-info-section.component';
@@ -8,15 +8,17 @@ describe('death info section', () => {
   const formValues: FormValues = initialFormValues;
 
   const setupSection = async (isDead?: boolean) => {
-    const { container } = render(
+    render(
       <Formik initialValues={{ ...initialFormValues, isDead }} onSubmit={null}>
         <Form>
           <DeathInfoSection values={{ ...initialFormValues, isDead }} />
         </Form>
       </Formik>,
     );
-    const allInputs = container.querySelectorAll('input');
-    const allSelects = container.querySelectorAll('select');
+    const allInputs = screen.queryAllByLabelText(
+      (content, element) => element.tagName.toLowerCase() === 'input',
+    ) as Array<HTMLInputElement>;
+    const allSelects = screen.queryAllByRole('combobox') as Array<HTMLInputElement>;
     let inputAndSelectNames = [];
     allInputs.forEach(input => inputAndSelectNames.push(input.name));
     allSelects.forEach(select => inputAndSelectNames.push(select.name));

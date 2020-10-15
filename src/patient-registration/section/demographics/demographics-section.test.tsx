@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { FormValues, initialFormValues } from '../../patient-registration.component';
 import { DemographicsSection } from './demographics-section.component';
@@ -8,7 +8,7 @@ describe('demographics section', () => {
   const formValues: FormValues = initialFormValues;
 
   const setupSection = async (birthdateEstimated?: boolean, addNameInLocalLanguage?: boolean) => {
-    const { container } = render(
+    render(
       <Formik initialValues={{ ...initialFormValues, birthdateEstimated, addNameInLocalLanguage }} onSubmit={null}>
         <Form>
           <DemographicsSection
@@ -18,8 +18,10 @@ describe('demographics section', () => {
         </Form>
       </Formik>,
     );
-    const allInputs = container.querySelectorAll('input');
-    const allSelects = container.querySelectorAll('select');
+    const allInputs = screen.queryAllByLabelText(
+      (content, element) => element.tagName.toLowerCase() === 'input',
+    ) as Array<HTMLInputElement>;
+    const allSelects = screen.queryAllByRole('combobox') as Array<HTMLInputElement>;
     let inputAndSelectNames = [];
     allInputs.forEach(input => inputAndSelectNames.push(input.name));
     allSelects.forEach(select => inputAndSelectNames.push(select.name));
