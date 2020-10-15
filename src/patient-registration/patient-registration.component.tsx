@@ -27,7 +27,7 @@ import { IdentifierSection } from './section/identifier/identifiers-section.comp
 import * as Yup from 'yup';
 import { useCurrentPatient } from '@openmrs/esm-api';
 import { camelCase, capitalize, find } from 'lodash';
-import { useConfig, interpolateString, navigate } from '@openmrs/esm-module-config';
+import { useConfig, interpolateString, navigate } from '@openmrs/esm-config';
 import { useTranslation } from 'react-i18next';
 
 export const initialAddressFieldValues = {};
