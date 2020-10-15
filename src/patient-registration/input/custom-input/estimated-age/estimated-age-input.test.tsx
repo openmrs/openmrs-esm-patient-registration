@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { EstimatedAgeInput } from './estimated-age-input.component';
 
@@ -7,15 +7,15 @@ describe('estimated age input', () => {
   const mockSetBirthdate = jest.fn();
 
   const setupInput = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{ years: 0, months: 0 }} onSubmit={null}>
         <Form>
           <EstimatedAgeInput yearsName="years" monthsName="months" setBirthdate={mockSetBirthdate} />
         </Form>
       </Formik>,
     );
-    const years = getByLabelText('years') as HTMLInputElement;
-    const months = getByLabelText('months') as HTMLInputElement;
+    const years = screen.getByLabelText('years') as HTMLInputElement;
+    const months = screen.getByLabelText('months') as HTMLInputElement;
 
     return {
       years,

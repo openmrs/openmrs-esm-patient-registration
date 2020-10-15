@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { PersonAttributesSection } from './person-attributes-section.component';
 
@@ -36,14 +36,14 @@ const mockPersonAttributeSections = [
 
 describe('person attributes section', () => {
   const setupSection = async () => {
-    const { container } = render(
+    render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
           <PersonAttributesSection attributeSections={mockPersonAttributeSections} />
         </Form>
       </Formik>,
     );
-    const allInputs = container.querySelectorAll('input');
+    const allInputs = screen.queryAllByLabelText((content, element) => element.tagName.toLowerCase() === 'input');
     return Array.prototype.map.call(allInputs, input => input.name);
   };
 

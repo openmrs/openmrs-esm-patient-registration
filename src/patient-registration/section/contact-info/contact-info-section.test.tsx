@@ -1,18 +1,18 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { ContactInfoSection } from './contact-info-section.component';
 
 describe('contact info section', () => {
   const setupSection = async () => {
-    const { container } = render(
+    render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
           <ContactInfoSection />
         </Form>
       </Formik>,
     );
-    const allInputs = container.querySelectorAll('input');
+    const allInputs = screen.getAllByRole('textbox') as Array<HTMLInputElement>;
     let inputNames = [];
     allInputs.forEach(input => inputNames.push(input.name));
     return inputNames;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, wait, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
@@ -7,6 +7,7 @@ import { NameInput } from './../input/custom-input/name/name-input.component';
 import { SelectInput } from '../input/basic-input/select/select-input.component';
 import { EstimatedAgeInput } from './../input/custom-input/estimated-age/estimated-age-input.component';
 import { Input } from '../input/basic-input/input/input.component';
+import { queryByLabelText } from '@testing-library/dom';
 
 describe('name input', () => {
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
@@ -46,7 +47,7 @@ describe('name input', () => {
   };
 
   const updateNameAndReturnError = async (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
-    const { container, getByLabelText } = render(
+    render(
       <Formik
         initialValues={{
           givenName: '',
@@ -65,9 +66,9 @@ describe('name input', () => {
         </Form>
       </Formik>,
     );
-    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
-    const middleNameInput = getByLabelText('middleName') as HTMLInputElement;
-    const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
+    const givenNameInput = screen.getByLabelText('givenName') as HTMLInputElement;
+    const middleNameInput = screen.getByLabelText('middleName') as HTMLInputElement;
+    const familyNameInput = screen.getByLabelText('familyName') as HTMLInputElement;
 
     fireEvent.change(givenNameInput, { target: { value: givenNameValue } });
     fireEvent.blur(givenNameInput);
@@ -79,9 +80,9 @@ describe('name input', () => {
     await wait();
 
     return {
-      givenNameError: container.querySelector('div[aria-label="givenNameError"]'),
-      middleNameError: container.querySelector('div[aria-label="middleNameError"]'),
-      familyNameError: container.querySelector('div[aria-label="familyNameError"]'),
+      givenNameError: screen.queryByLabelText(/givenNameError/),
+      middleNameError: screen.queryByLabelText(/middleNameError/),
+      familyNameError: screen.queryByLabelText(/familyNameError/),
     };
   };
 
@@ -151,7 +152,7 @@ describe('additional name input', () => {
     familyNameValue: string,
     addNameInLocalLanguage: boolean,
   ) => {
-    const { container, getByLabelText } = render(
+    render(
       <Formik
         initialValues={{
           additionalGivenName: '',
@@ -172,9 +173,9 @@ describe('additional name input', () => {
         </Form>
       </Formik>,
     );
-    const givenNameInput = getByLabelText('additionalGivenName') as HTMLInputElement;
-    const middleNameInput = getByLabelText('additionalMiddleName') as HTMLInputElement;
-    const familyNameInput = getByLabelText('additionalFamilyName') as HTMLInputElement;
+    const givenNameInput = screen.getByLabelText('additionalGivenName') as HTMLInputElement;
+    const middleNameInput = screen.getByLabelText('additionalMiddleName') as HTMLInputElement;
+    const familyNameInput = screen.getByLabelText('additionalFamilyName') as HTMLInputElement;
 
     fireEvent.change(givenNameInput, { target: { value: givenNameValue } });
     fireEvent.blur(givenNameInput);
@@ -186,9 +187,9 @@ describe('additional name input', () => {
     await wait();
 
     return {
-      givenNameError: container.querySelector('div[aria-label="additionalGivenNameError"]'),
-      middleNameError: container.querySelector('div[aria-label="additionalMiddleNameError"]'),
-      familyNameError: container.querySelector('div[aria-label="additionalFamilyNameError"]'),
+      givenNameError: screen.queryByLabelText(/additionalGivenNameError/),
+      middleNameError: screen.queryByLabelText(/additionalMiddleNameError/),
+      familyNameError: screen.queryByLabelText(/additionalFamilyNameError/),
     };
   };
 
@@ -217,7 +218,7 @@ describe('gender input', () => {
   };
 
   const updateGenderAndReturnError = async (gender: string) => {
-    const { container, getByLabelText } = render(
+    render(
       <Formik initialValues={{ gender: '' }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
           <SelectInput
@@ -229,14 +230,14 @@ describe('gender input', () => {
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('gender') as HTMLSelectElement;
+    const input = screen.getByLabelText('gender') as HTMLSelectElement;
 
     fireEvent.change(input, { target: { value: gender } });
     fireEvent.blur(input);
 
     await wait();
 
-    return container.querySelector('div[aria-label="genderError"]');
+    return screen.queryByLabelText(/genderError/);
   };
 
   testValidGender('Male');
@@ -262,21 +263,21 @@ describe('birthdate input', () => {
   };
 
   const updateBirthdateAndReturnError = async (birthdate: string) => {
-    const { container, getByLabelText } = render(
+    render(
       <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
           <Input type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('birthdate') as HTMLInputElement;
+    const input = screen.getByLabelText('birthdate') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: birthdate } });
     fireEvent.blur(input);
 
     await wait();
 
-    return container.querySelector('div[aria-label="birthdateError"]');
+    return screen.queryByLabelText(/birthdateError/);
   };
 
   testValidBirthdate('1990-09-10');
@@ -322,7 +323,7 @@ describe('estimated age input', () => {
   };
 
   const updateEstimatedAgeAndReturnError = async (estimatedAge: { years: number; months: number }) => {
-    const { container, getByLabelText } = render(
+    render(
       <Formik
         initialValues={{ yearsEstimated: 0, monthsEstimated: 0 }}
         onSubmit={null}
@@ -332,8 +333,8 @@ describe('estimated age input', () => {
         </Form>
       </Formik>,
     );
-    const yearsEstimatedInput = getByLabelText('yearsEstimated') as HTMLInputElement;
-    const monthsEstimatedInput = getByLabelText('monthsEstimated') as HTMLInputElement;
+    const yearsEstimatedInput = screen.getByLabelText('yearsEstimated') as HTMLInputElement;
+    const monthsEstimatedInput = screen.getByLabelText('monthsEstimated') as HTMLInputElement;
 
     fireEvent.change(yearsEstimatedInput, { target: { value: estimatedAge.years } });
     fireEvent.blur(yearsEstimatedInput);
@@ -343,8 +344,8 @@ describe('estimated age input', () => {
     await wait();
 
     return {
-      yearsEstimatedError: container.querySelector('div[aria-label="yearsEstimatedError"]'),
-      monthsEstimatedError: container.querySelector('div[aria-label="monthsEstimatedError"]'),
+      yearsEstimatedError: screen.queryByLabelText(/yearsEstimatedError/),
+      monthsEstimatedError: screen.queryByLabelText(/monthsEstimatedError/),
     };
   };
 
@@ -384,21 +385,21 @@ describe('date of death input', () => {
   };
 
   const updateDeathDateAndReturnError = async (deathDate: string) => {
-    const { container, getByLabelText } = render(
+    render(
       <Formik initialValues={{ deathDate: null }} onSubmit={null} validationSchema={validationSchema}>
         <Form>
           <Input type="date" label="Date of Death" name="deathDate" />
         </Form>
       </Formik>,
     );
-    const input = getByLabelText('deathDate') as HTMLInputElement;
+    const input = screen.getByLabelText('deathDate') as HTMLInputElement;
 
     fireEvent.change(input, { target: { value: deathDate } });
     fireEvent.blur(input);
 
     await wait();
 
-    return container.querySelector('div[aria-label="deathDateError"]');
+    return screen.queryByLabelText(/deathDateError/);
   };
 
   testValidDeathDate('2020-01-01');
