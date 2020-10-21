@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
-import { DummyDataInput } from './dummy-data-input.component';
+import { render, fireEvent, wait, screen } from '@testing-library/react';
+import { DummyDataInput, dummyFormValues } from './dummy-data-input.component';
+import { FormValues, initialFormValues } from '../../patient-registration.component';
 
 const { Form, Formik } = jest.requireActual('formik');
 const mockSetValues = jest.fn();
@@ -15,14 +16,14 @@ jest.mock('formik', () => {
 
 describe('dummy data input', () => {
   const setupInput = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
           <DummyDataInput />
         </Form>
       </Formik>,
     );
-    return getByLabelText('Dummy Data Input') as HTMLButtonElement;
+    return screen.getByLabelText('Dummy Data Input') as HTMLButtonElement;
   };
 
   it('exists', async () => {

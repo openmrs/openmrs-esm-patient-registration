@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, wait } from '@testing-library/react';
+
+import { render, screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { EstimatedAgeInput } from './estimated-age-input.component';
 import { Formik, Form } from 'formik';
@@ -17,21 +18,19 @@ jest.mock('formik', () => {
 
 describe('estimated age input', () => {
   const setupInput = async () => {
-    const { container, getByTestId, getByLabelText } = render(
+    render(
       <Formik initialValues={{ birthdate: '', yearsEstimated: 0, monthsEstimated: 0 }} onSubmit={null}>
         <Form>
           <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" />
         </Form>
       </Formik>,
     );
-
-    return { container, getByTestId, getByLabelText };
   };
 
   it('exists', async () => {
-    const estimatedAgeInput = await setupInput();
-    const yearsInput = estimatedAgeInput.getByLabelText('yearsEstimated') as HTMLInputElement;
-    const monthsInput = estimatedAgeInput.getByLabelText('monthsEstimated') as HTMLInputElement;
+    await setupInput();
+    const yearsInput = screen.getByLabelText('yearsEstimated') as HTMLInputElement;
+    const monthsInput = screen.getByLabelText('monthsEstimated') as HTMLInputElement;
     expect(yearsInput.type).toEqual('number');
     expect(monthsInput.type).toEqual('number');
   });
@@ -42,9 +41,9 @@ describe('estimated age input', () => {
   });
 
   it('sets birthdate form value to calculated date', async () => {
-    const estimatedAgeInput = await setupInput();
-    const yearsInput = estimatedAgeInput.getByLabelText('yearsEstimated') as HTMLInputElement;
-    const monthsInput = estimatedAgeInput.getByLabelText('monthsEstimated') as HTMLInputElement;
+    await setupInput();
+    const yearsInput = screen.getByLabelText('yearsEstimated') as HTMLInputElement;
+    const monthsInput = screen.getByLabelText('monthsEstimated') as HTMLInputElement;
 
     const estimatedYears = 30;
     const esttimatedMonths = 6;

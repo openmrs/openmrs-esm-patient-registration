@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { render, wait } from '@testing-library/react';
+import { render, wait, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as backendController from './patient-registration.resource';
 import { PatientRegistration, getDeathInfo, initialFormValues } from './patient-registration.component';
@@ -43,9 +43,9 @@ describe('patient registration', () => {
 describe('patient registration sections', () => {
   const testSectionExists = (labelText: string) => {
     it(labelText + ' exists', async () => {
-      const { getByLabelText } = render(<PatientRegistration />);
+      render(<PatientRegistration />);
       await wait();
-      expect(getByLabelText(labelText)).not.toBeNull();
+      expect(screen.getByLabelText(labelText)).not.toBeNull();
     });
   };
 
@@ -98,12 +98,12 @@ describe('form submit', () => {
   it('saves the patient without extra info', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
-    const { getByText, getByLabelText } = render(<PatientRegistration />);
+    render(<PatientRegistration />);
     await wait();
 
-    await fillRequiredFields(getByLabelText);
+    await fillRequiredFields(screen.getByLabelText);
 
-    userEvent.click(getByText('Register Patient'));
+    userEvent.click(screen.getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(
@@ -128,25 +128,25 @@ describe('form submit', () => {
   it('saves the patient with their additional name', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
-    const { getByText, getByLabelText } = render(<PatientRegistration />);
+    render(<PatientRegistration />);
     await wait();
 
-    await fillRequiredFields(getByLabelText);
+    await fillRequiredFields(screen.getByLabelText);
 
-    const addNameInLocalLanguageCheckbox = getByLabelText('addNameInLocalLanguage') as HTMLInputElement;
+    const addNameInLocalLanguageCheckbox = screen.getByLabelText('addNameInLocalLanguage') as HTMLInputElement;
 
     userEvent.click(addNameInLocalLanguageCheckbox);
     await wait();
 
-    const additionalGivenNameInput = getByLabelText('additionalGivenName') as HTMLInputElement;
-    const additionalMiddleNameInput = getByLabelText('additionalMiddleName') as HTMLInputElement;
-    const additionalFamilyNameInput = getByLabelText('additionalFamilyName') as HTMLInputElement;
+    const additionalGivenNameInput = screen.getByLabelText('additionalGivenName') as HTMLInputElement;
+    const additionalMiddleNameInput = screen.getByLabelText('additionalMiddleName') as HTMLInputElement;
+    const additionalFamilyNameInput = screen.getByLabelText('additionalFamilyName') as HTMLInputElement;
 
     userEvent.type(additionalGivenNameInput, 'Local Given Name');
     userEvent.type(additionalMiddleNameInput, 'Local Middle Name');
     userEvent.type(additionalFamilyNameInput, 'Local Family Name');
 
-    userEvent.click(getByText('Register Patient'));
+    userEvent.click(screen.getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(
@@ -178,23 +178,23 @@ describe('form submit', () => {
   it('saves the patient with death info', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
-    const { getByText, getByLabelText } = render(<PatientRegistration />);
+    render(<PatientRegistration />);
     await wait();
 
-    await fillRequiredFields(getByLabelText);
+    await fillRequiredFields(screen.getByLabelText);
 
-    const isDeadCheckbox = getByLabelText('isDead') as HTMLInputElement;
+    const isDeadCheckbox = screen.getByLabelText('isDead') as HTMLInputElement;
 
     userEvent.click(isDeadCheckbox);
     await wait();
 
-    const deathDate = getByLabelText('deathDate') as HTMLInputElement;
-    const deathCause = getByLabelText('deathCause') as HTMLSelectElement;
+    const deathDate = screen.getByLabelText('deathDate') as HTMLInputElement;
+    const deathCause = screen.getByLabelText('deathCause') as HTMLSelectElement;
 
     userEvent.type(deathDate, '2020-01-01');
     userEvent.selectOptions(deathCause, 'Stroke');
 
-    userEvent.click(getByText('Register Patient'));
+    userEvent.click(screen.getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(
@@ -219,15 +219,15 @@ describe('form submit', () => {
 
   it('should not save the patient if validation fails', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
-    const { getByText, getByLabelText } = render(<PatientRegistration />);
+    render(<PatientRegistration />);
     await wait();
 
-    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
+    const givenNameInput = screen.getByLabelText('givenName') as HTMLInputElement;
 
     userEvent.type(givenNameInput, '');
     await wait();
 
-    userEvent.click(getByText('Register Patient'));
+    userEvent.click(screen.getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).not.toHaveBeenCalled();
@@ -271,16 +271,16 @@ describe('form submit', () => {
     );
 
     spyOn(mockOpenmrsApi, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
-    const { getByText, getByLabelText, container } = render(<PatientRegistration />);
+    render(<PatientRegistration />);
     await wait();
 
-    const givenNameInput = getByLabelText('givenName') as HTMLInputElement;
-    const familyNameInput = getByLabelText('familyName') as HTMLInputElement;
-    const middleNameInput = getByLabelText('middleName') as HTMLInputElement;
-    const dateOfBirthInput = getByLabelText('birthdate') as HTMLInputElement;
-    const genderSelect = getByLabelText('gender') as HTMLSelectElement;
-    const telephoneNumber = getByLabelText('telephoneNumber') as HTMLInputElement;
-    const address1 = getByLabelText('address1') as HTMLInputElement;
+    const givenNameInput = screen.getByLabelText('givenName') as HTMLInputElement;
+    const familyNameInput = screen.getByLabelText('familyName') as HTMLInputElement;
+    const middleNameInput = screen.getByLabelText('middleName') as HTMLInputElement;
+    const dateOfBirthInput = screen.getByLabelText('birthdate') as HTMLInputElement;
+    const genderSelect = screen.getByLabelText('gender') as HTMLSelectElement;
+    const telephoneNumber = screen.getByLabelText('telephoneNumber') as HTMLInputElement;
+    const address1 = screen.getByLabelText('address1') as HTMLInputElement;
 
     // assert initial values
     expect(givenNameInput.value).toBe('John');
@@ -298,7 +298,7 @@ describe('form submit', () => {
     userEvent.type(middleNameInput, 'Johnson');
     userEvent.type(familyNameInput, 'Smith');
     userEvent.type(address1, 'Bom Jesus Street');
-    userEvent.click(getByText('Save Patient'));
+    userEvent.click(screen.getByText('Save Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(

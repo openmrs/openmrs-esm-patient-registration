@@ -1,11 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { AddressInput } from './address-input.component';
 
 describe('address input', () => {
   const setupInput = async () => {
-    const { getByLabelText } = render(
+    render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
           <AddressInput
@@ -19,12 +19,12 @@ describe('address input', () => {
         </Form>
       </Formik>,
     );
-    const address1Input = getByLabelText('address1Name') as HTMLInputElement;
-    const address2Input = getByLabelText('address2Name') as HTMLInputElement;
-    const cityVillageInput = getByLabelText('cityVillageName') as HTMLInputElement;
-    const stateProvinceInput = getByLabelText('stateProvinceName') as HTMLInputElement;
-    const countryInput = getByLabelText('countryName') as HTMLInputElement;
-    const postalCodeInput = getByLabelText('postalCodeName') as HTMLInputElement;
+    const address1Input = screen.getByLabelText('address1Name') as HTMLInputElement;
+    const address2Input = screen.getByLabelText('address2Name') as HTMLInputElement;
+    const cityVillageInput = screen.getByLabelText('cityVillageName') as HTMLInputElement;
+    const stateProvinceInput = screen.getByLabelText('stateProvinceName') as HTMLInputElement;
+    const countryInput = screen.getByLabelText('countryName') as HTMLInputElement;
+    const postalCodeInput = screen.getByLabelText('postalCodeName') as HTMLInputElement;
 
     return {
       address1Input,

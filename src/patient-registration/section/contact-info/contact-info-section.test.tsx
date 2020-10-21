@@ -1,36 +1,39 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { ContactInfoSection } from './contact-info-section.component';
 
+const getInputElementsCount = () => {
+  return [screen.getAllByRole('textbox'), screen.getAllByLabelText('Search Address')].reduce(
+    (sum, inputType) => sum + inputType.length,
+    0,
+  );
+};
+
 describe('contact info section', () => {
   const setupSection = async () => {
-    const { container } = render(
+    render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
           <ContactInfoSection />
         </Form>
       </Formik>,
     );
-    const allInputs = container.querySelectorAll('input');
-    let inputNames = [];
-    allInputs.forEach(input => inputNames.push(input.name));
-    return inputNames;
   };
 
   it('has the correct number of inputs', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames.length).toBe(7);
+    await setupSection();
+    expect(getInputElementsCount()).toBe(7);
   });
 
   it('has address input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('address1');
-    expect(inputNames).toContain('address2');
-    expect(inputNames).toContain('cityVillage');
-    expect(inputNames).toContain('stateProvince');
-    expect(inputNames).toContain('country');
-    expect(inputNames).toContain('postalCode');
-    expect(inputNames).toContain('addressHierarchySearch');
+    await setupSection();
+    expect(screen.getByLabelText('address1')).toBeTruthy();
+    expect(screen.getByLabelText('address2')).toBeTruthy();
+    expect(screen.getByLabelText('cityVillage')).toBeTruthy();
+    expect(screen.getByLabelText('stateProvince')).toBeTruthy();
+    expect(screen.getByLabelText('country')).toBeTruthy();
+    expect(screen.getByLabelText('postalCode')).toBeTruthy();
+    expect(screen.getByLabelText('Search Address')).toBeTruthy();
   });
 });
