@@ -9,7 +9,7 @@
   "scripts": {
     "start": "openmrs debug --importmap @",
     "build": "webpack --mode production",
-    "lint": "eslint src --ext tsx",
+    "lint": "eslint src/** --ext .tsx,.ts",
     "prettier": "prettier --config prettier.config.js --write \"src/**/*.{ts,tsx}\"",
     "typescript": "tsc",
     "prepublishOnly": "npm run build",
@@ -82,7 +82,7 @@
     "concurrently": "^5.0.0",
     "css-loader": "^3.2.0",
     "dayjs": "^1.8.16",
-    "eslint": "^6.2.1",
+    "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.1.0",
     "eslint-config-ts-react-important-stuff": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.0",
