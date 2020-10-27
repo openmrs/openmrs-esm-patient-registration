@@ -118,8 +118,6 @@ export const PatientRegistration: React.FC = () => {
   const [addressTemplate, setAddressTemplate] = useState('');
   const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
   const { t } = useTranslation();
-  const [tempRelationships, setTempRelationships] = useState([]);
-  const [relationshipTypes, setRelationshipTypes] = useState([]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -346,9 +344,6 @@ export const PatientRegistration: React.FC = () => {
 
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
-    setTempRelationships(oldValue => {
-      return values.relationships;
-    });
     const relationships = values.relationships;
     let identifiers = [];
     for (const type of identifierTypes) {
