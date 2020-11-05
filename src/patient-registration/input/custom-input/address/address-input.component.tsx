@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input } from '../../basic-input/input/input.component';
-import styles from './../../input.css';
+import styles from './../../input.scss';
 
 interface AddressInputProps {
   address1Name: string;

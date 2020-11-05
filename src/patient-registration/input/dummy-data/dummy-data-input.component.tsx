@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormValues } from './../../patient-registration.component';
-import styles from './../input.css';
+import styles from './../input.scss';
 
 interface DummyDataInputProps {
   setValues(values: FormValues, shouldValidate?: boolean): void;

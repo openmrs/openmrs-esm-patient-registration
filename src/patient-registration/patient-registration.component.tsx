@@ -22,13 +22,15 @@ import { DeathInfoSection } from './section/death-info/death-info-section.compon
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import { PersonAttributesSection } from './section/person-attributes/person-attributes-section.component';
 
-import styles from './patient-registration.css';
+import styles from './patient-registration.scss';
 import { IdentifierSection } from './section/identifier/identifiers-section.component';
 import * as Yup from 'yup';
 import { useCurrentPatient } from '@openmrs/esm-api';
 import { camelCase, capitalize, find } from 'lodash';
 import { useConfig, interpolateString, navigate } from '@openmrs/esm-config';
 import { useTranslation } from 'react-i18next';
+import { XAxis16 } from '@carbon/icons-react';
+import { Button } from 'carbon-components-react';
 
 export const initialAddressFieldValues = {};
 const patientUuidMap = {};
@@ -440,28 +442,47 @@ export const PatientRegistration: React.FC = () => {
         }}>
         {props => (
           <Form className={styles.form}>
-            <div className={styles.formTitle}>
-              <h1 className={`omrs-type-title-1 ${styles.title}`}>{existingPatient ? 'Edit' : 'New'} Patient</h1>
-              {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
-                <DummyDataInput setValues={props.setValues} />
-              )}
+            <div className="bx--grid">
+              <div className="bx--row">
+                <div className="bx--col">
+                  <h4>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
+                  {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
+                    <DummyDataInput setValues={props.setValues} />
+                  )}
+                </div>
+              </div>
+
+              <div className="bx--row">
+                <div className="bx--col-lg-2 bx--col-md-2">
+                  <span>Jump to</span>
+                  <div className={styles.space05}>
+                    <XAxis16 /> Basic Info
+                  </div>
+                  <div className={styles.space05}>
+                    <XAxis16 /> Contact Details
+                  </div>
+                  <div className={styles.space05}>
+                    <XAxis16 /> Relationships
+                  </div>
+                </div>
+                <div className="bx--col-lg-10 bx--col-md-6">
+                  <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
+                  <ContactInfoSection addressTemplate={addressTemplate} />
+                  <IdentifierSection
+                    identifierTypes={identifierTypes}
+                    validationSchema={validationSchema}
+                    setValidationSchema={setValidationSchema}
+                    inEditMode={Boolean(existingPatient)}
+                    values={props.values}
+                  />
+                  <DeathInfoSection values={props.values} />
+                  {config && config.personAttributeSections && (
+                    <PersonAttributesSection attributeSections={config.personAttributeSections} />
+                  )}
+                  <Button type="submit">{existingPatient ? 'Save Patient' : 'Register Patient'}</Button>
+                </div>
+              </div>
             </div>
-            <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
-            <ContactInfoSection addressTemplate={addressTemplate} />
-            <IdentifierSection
-              identifierTypes={identifierTypes}
-              validationSchema={validationSchema}
-              setValidationSchema={setValidationSchema}
-              inEditMode={Boolean(existingPatient)}
-              values={props.values}
-            />
-            <DeathInfoSection values={props.values} />
-            {config && config.personAttributeSections && (
-              <PersonAttributesSection attributeSections={config.personAttributeSections} />
-            )}
-            <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
-              {existingPatient ? 'Save Patient' : 'Register Patient'}
-            </button>
           </Form>
         )}
       </Formik>

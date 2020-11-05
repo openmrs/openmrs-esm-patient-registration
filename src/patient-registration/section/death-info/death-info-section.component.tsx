@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from '../../input/basic-input/input/input.component';
 import { SelectInput } from '../../input/basic-input/select/select-input.component';
-import styles from './../section.css';
+import styles from './../section.scss';
 import { FormValues } from '../../patient-registration.component';
 
 interface DeathInfoSectionProps {
