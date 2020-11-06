@@ -30,7 +30,7 @@ import { camelCase, capitalize, find } from 'lodash';
 import { useConfig, interpolateString, navigate } from '@openmrs/esm-config';
 import { useTranslation } from 'react-i18next';
 import { XAxis16 } from '@carbon/icons-react';
-import { Button } from 'carbon-components-react';
+import { Button, Link } from 'carbon-components-react';
 
 export const initialAddressFieldValues = {};
 const patientUuidMap = {};
@@ -442,7 +442,7 @@ export const PatientRegistration: React.FC = () => {
         }}>
         {props => (
           <Form className={styles.form}>
-            <div className="bx--grid">
+            <div className="bx--grid bx--grid--narrow">
               <div className="bx--row">
                 <div className="bx--col">
                   <h4>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
@@ -454,15 +454,21 @@ export const PatientRegistration: React.FC = () => {
 
               <div className="bx--row">
                 <div className="bx--col-lg-2 bx--col-md-2">
-                  <span>Jump to</span>
+                  <p className={styles.label01}>Jump to</p>
                   <div className={styles.space05}>
-                    <XAxis16 /> Basic Info
+                    <Link className={styles.productiveHeading02}>
+                      <XAxis16 /> Basic Info
+                    </Link>
                   </div>
                   <div className={styles.space05}>
-                    <XAxis16 /> Contact Details
+                    <Link className={styles.productiveHeading02}>
+                      <XAxis16 /> Contact Details
+                    </Link>
                   </div>
                   <div className={styles.space05}>
-                    <XAxis16 /> Relationships
+                    <Link className={styles.productiveHeading02}>
+                      <XAxis16 /> Relationships
+                    </Link>
                   </div>
                 </div>
                 <div className="bx--col-lg-10 bx--col-md-6">
