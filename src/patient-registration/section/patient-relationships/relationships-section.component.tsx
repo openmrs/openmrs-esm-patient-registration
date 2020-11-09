@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { FieldArray } from 'formik';
 import { Select, SelectItem, Button } from 'carbon-components-react';
 import styles from './relationships.css';
-import { OpenmrsAutosuggest } from '../../input/custom-input/openmrs-autosuggest/openmrs-autosuggest.component';
+import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
 import { getAllRelationshipTypes } from '../../patient-registration.resource';
+import { openmrsFetch } from '@openmrs/esm-api';
 
 interface RelationshipType {
   display: string;
@@ -53,6 +54,14 @@ export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setF
     setFieldValue(field, selectedSuggestion);
   };
 
+  const searchPerson = async (query: string) => {
+    const abortController = new AbortController();
+    const searchResults = await openmrsFetch(`/ws/rest/v1/person?q=${query}`, {
+      signal: abortController.signal,
+    });
+    return searchResults.data.results;
+  };
+
   return (
     <section className={sectionStyles.formSection} aria-label="Relationships Section">
       <h5 className="omrs-type-title-5">{t('relationshipsSectionHeader')}</h5>
@@ -72,11 +81,13 @@ export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setF
                   {relationships.map((relationship, index) => (
                     <div key={index}>
                       <div className={styles.searchBox}>
-                        <OpenmrsAutosuggest
+                        <Autosuggest
                           name={`relationships[${index}].relatedPerson`}
                           placeholder="Find person"
                           onSuggestionSelected={handleSuggestionSelected}
-                          resource="person"
+                          getSearchResults={searchPerson}
+                          getDisplayValue={item => item.display}
+                          getFieldValue={item => item.uuid}
                         />
                       </div>
                       <span className={styles.label}>Is a</span>

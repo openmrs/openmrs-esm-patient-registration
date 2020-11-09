@@ -122,12 +122,6 @@ export function getAllRelationshipTypes(abortController: AbortController) {
   });
 }
 
-export function searchPerson(abortController: AbortController, searchString: string) {
-  return openmrsFetch('/ws/rest/v1/person?q=' + searchString, {
-    signal: abortController.signal,
-  });
-}
-
 export function saveRelationship(abortController: AbortController, relationship: Relationship) {
   return openmrsFetch('/ws/rest/v1/relationship', {
     headers: {
