@@ -1,23 +1,19 @@
-import { ExtensionDefinition, attach } from '@openmrs/esm-extensions';
 import { backendDependencies } from './openmrs-backend-dependencies';
 
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
-
-const extensions: Array<ExtensionDefinition> = [
-  {
-    name: 'registration-link',
-    load: () => import('./registration-link'),
-  },
-];
 
 function setupOpenMRS() {
   return {
     lifecycle: () => import('./openmrs-esm-patient-registration'),
     activate: 'patient-registration',
-    extensions: extensions,
+    extensions: [
+      {
+        id: 'registration-link',
+        slot: 'home-page-buttons',
+        load: () => import('./registration-link'),
+      },
+    ],
   };
 }
-
-attach('home-page-buttons', 'registration-link');
 
 export { backendDependencies, importTranslation, setupOpenMRS };
