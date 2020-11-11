@@ -37,7 +37,7 @@ export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setF
           uuid: type.uuid,
           direction: 'bIsToA',
         };
-        tmp.push(aIsToB, bIsToA);
+        aIsToB.display === bIsToA.display ? tmp.push(aIsToB) : tmp.push(aIsToB, bIsToA);
       });
       setRelationshipTypes(tmp);
     });
