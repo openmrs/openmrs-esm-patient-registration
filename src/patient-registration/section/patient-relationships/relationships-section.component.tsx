@@ -7,6 +7,7 @@ import styles from './relationships.css';
 import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
 import { getAllRelationshipTypes } from '../../patient-registration.resource';
 import { openmrsFetch } from '@openmrs/esm-api';
+import { Add16, TrashCan16 } from '@carbon/icons-react';
 
 interface RelationshipType {
   display: string;
@@ -79,7 +80,7 @@ export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setF
                 <div>
                   <br />
                   {relationships.map((relationship, index) => (
-                    <div key={index}>
+                    <div key={index} className={styles.relationship}>
                       <div className={styles.searchBox}>
                         <Autosuggest
                           name={`relationships[${index}].relatedPerson`}
@@ -104,12 +105,23 @@ export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setF
                           ))}
                         </Select>
                       </div>
-                      <button className="omrs-btn-icon-medium" onClick={() => remove(index)} type="button">
-                        -
-                      </button>
-                      <button className="omrs-btn-icon-medium" onClick={() => push({})} type="button">
-                        +
-                      </button>
+                      <div className={styles.actions}>
+                        <Button
+                          renderIcon={TrashCan16}
+                          iconDescription="Remove relationship"
+                          hasIconOnly
+                          onClick={() => remove(index)}
+                          kind="danger"
+                        />
+                      </div>
+                      <div className={styles.actions}>
+                        <Button
+                          renderIcon={Add16}
+                          iconDescription="Add relationship"
+                          hasIconOnly
+                          onClick={() => push({})}
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
