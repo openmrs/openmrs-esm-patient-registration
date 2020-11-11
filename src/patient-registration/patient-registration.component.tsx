@@ -62,7 +62,7 @@ export interface FormValues {
   isDead: boolean;
   deathDate: string;
   deathCause: string;
-  relationships: any[];
+  relationships: Array<{ relatedPerson: string; relationship: string }>;
 }
 
 export const initialFormValues: FormValues = {
@@ -89,7 +89,7 @@ export const initialFormValues: FormValues = {
   isDead: false,
   deathDate: '',
   deathCause: '',
-  relationships: [{ relationshipType: '', personA: '', personB: '' }],
+  relationships: [{ relatedPerson: '', relationship: '' }],
 };
 
 export const getDeathInfo = (values: FormValues) => {
