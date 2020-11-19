@@ -1,26 +1,44 @@
-import { validators } from '@openmrs/esm-config';
+import { Type } from '@openmrs/esm-config';
 
 export const esmPatientRegistrationSchema = {
   personAttributeSections: {
-    arrayElements: {
-      name: { default: false, validators: [validators.isString] },
+    _type: Type.Array,
+    _elements: {
       personAttributes: {
-        arrayElements: {
-          name: { default: false, validators: [validators.isString] },
-          label: { validators: [validators.isString], description: 'The label of the input' },
-          uuid: {
-            validators: [validators.isString],
-            description: 'Person attributetype uuid used to save the attribute',
+        _type: Type.Array,
+        _elements: {
+          name: {
+            _type: Type.String,
           },
-          placeholder: { validators: [validators.isString], description: 'Placeholder that will appear in the input.' },
+          label: {
+            _type: Type.String,
+            _description: 'The label of the input',
+          },
+          uuid: {
+            _type: Type.UUID,
+            _description: 'Person attributetype uuid used to save the attribute',
+          },
+          placeholder: {
+            _type: Type.String,
+            _description: 'Placeholder that will appear in the input.',
+          },
           validation: {
-            required: { default: false, validators: [validators.isBoolean] },
-            matches: { default: null, validators: [validators.isString] },
+            _type: Type.Object,
+            _elements: {
+              required: {
+                _type: Type.Boolean,
+                _default: false,
+              },
+              matches: {
+                _type: Type.String,
+                _default: null,
+              },
+            },
           },
         },
       },
     },
-    default: [
+    _default: [
       {
         name: 'additionalPersonAttributesSectionHeader',
         personAttributes: [
@@ -29,16 +47,24 @@ export const esmPatientRegistrationSchema = {
             label: 'phoneNumber',
             uuid: '14d4f066-15f5-102d-96e4-000c29c2a5d7',
             placeholder: 'phoneNumberPlaceHolder',
-            validation: { required: true, matches: '^[0-9]*$' },
+            validation: {
+              required: true,
+              matches: '^[0-9]*$',
+            },
           },
         ],
       },
     ],
   },
   links: {
-    submitButton: {
-      default: '${openmrsSpaBase}/patient/${patientUuid}/chart',
-      validators: [validators.isUrlWithTemplateParameters(['patientUuid'])],
+    _type: Type.Object,
+    _default: {
+      _elements: {
+        submitButton: {
+          _type: Type.String,
+          _default: '${openmrsSpaBase}/patient/${patientUuid}/chart',
+        },
+      },
     },
   },
 };
