@@ -6,7 +6,7 @@ import { UnidentifiedPatientInput } from '../../input/custom-input/unidentified-
 import { SelectInput } from '../../input/basic-input/select/select-input.component';
 import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estimated-age-input.component';
 import { Input } from '../../input/basic-input/input/input.component';
-import styles from './../section.css';
+import styles from './../section.scss';
 import { useField } from 'formik';
 
 interface DemographicsSectionProps {
