@@ -57,14 +57,10 @@ export const esmPatientRegistrationSchema = {
     ],
   },
   links: {
-    _type: Type.Object,
-    _default: {
-      _elements: {
-        submitButton: {
-          _type: Type.String,
-          _default: '${openmrsSpaBase}/patient/${patientUuid}/chart',
-        },
-      },
+    submitButton: {
+      _type: Type.String,
+      _default: '${openmrsSpaBase}/patient/${patientUuid}/chart'
+    },
     },
   },
 };
