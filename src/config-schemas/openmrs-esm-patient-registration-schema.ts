@@ -27,16 +27,13 @@ export const esmPatientRegistrationSchema = {
             _description: 'Placeholder that will appear in the input.',
           },
           validation: {
-            _type: Type.Object,
-            _elements: {
-              required: {
-                _type: Type.Boolean,
-                _default: false,
-              },
-              matches: {
-                _type: Type.String,
-                _default: null,
-              },
+            required: {
+              _type: Type.Boolean,
+              _default: false,
+            },
+            matches: {
+              _type: Type.String,
+              _default: null,
             },
           },
         },
