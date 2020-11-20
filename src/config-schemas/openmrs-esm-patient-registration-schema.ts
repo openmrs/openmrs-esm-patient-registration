@@ -4,6 +4,10 @@ export const esmPatientRegistrationSchema = {
   personAttributeSections: {
     _type: Type.Array,
     _elements: {
+      name: {
+        _type: Type.String,
+        _default: false,
+      },
       personAttributes: {
         _type: Type.Array,
         _elements: {
