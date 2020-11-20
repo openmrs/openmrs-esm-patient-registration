@@ -60,7 +60,8 @@ export const esmPatientRegistrationSchema = {
   links: {
     submitButton: {
       _type: Type.String,
-      _default: '${openmrsSpaBase}/patient/${patientUuid}/chart'
+      _default: '${openmrsSpaBase}/patient/${patientUuid}/chart',
+      _validators: [validators.isUrlWithTemplateParameters(['patientUuid'])],
     },
     },
   },
