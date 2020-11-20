@@ -6,8 +6,8 @@ import { UnidentifiedPatientInput } from '../../input/custom-input/unidentified-
 import { SelectInput } from '../../input/basic-input/select/select-input.component';
 import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estimated-age-input.component';
 import { Input } from '../../input/basic-input/input/input.component';
-import styles from './../section.css';
 import { useField, useFormikContext } from 'formik';
+import styles from './../section.scss';
 
 interface DemographicsSectionProps {
   setFieldValue?: { (field: string, value: any, shouldValidate?: boolean): void };

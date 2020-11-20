@@ -1,7 +1,7 @@
 import { useFormikContext } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import { FormValues } from '../../patient-registration.component';
-import styles from './../input.css';
+import styles from './../input.scss';
 import { AddressSearchResultsItem } from './address-search-results-item.component';
 import { useTranslation } from 'react-i18next';
 

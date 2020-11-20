@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useField, useFormikContext } from 'formik';
 import dayjs from 'dayjs';
 import { Input } from '../../basic-input/input/input.component';
-import styles from './../../input.css';
 import { FormValues } from '../../../patient-registration.component';
+import styles from './../../input.scss';
 
 interface EstimatedAgeInputProps {
   yearsName: string;

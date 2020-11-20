@@ -1,9 +1,9 @@
 import React from 'react';
 import { AddressInput } from '../../input/custom-input/address/address-input.component';
-import styles from './../section.css';
 import { Autocomplete } from '../../input/autocomplete/autocomplete.component';
 import { getAddressHierarchy } from '../../patient-registration.resource';
 import { useTranslation } from 'react-i18next';
+import styles from './../section.scss';
 
 interface ContactInfoSectionProps {
   addressTemplate?: string;

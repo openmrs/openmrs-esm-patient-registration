@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './../../input.css';
+import styles from './../../input.scss';
 import { useField } from 'formik';
 import { find } from 'lodash';
 import { PatientIdentifierType, IdentifierSource } from '../../../patient-registration-helper';

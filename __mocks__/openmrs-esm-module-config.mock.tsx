@@ -8,6 +8,16 @@ export const validators = {
   isUrlWithTemplateParameters: jest.fn(),
 };
 
+export enum Type {
+  Array = 'Array',
+  Boolean = 'Boolean',
+  ConceptUuid = 'ConceptUuid',
+  Number = 'Number',
+  Object = 'Object',
+  String = 'String',
+  UUID = 'UUID',
+}
+
 export const useConfig = jest.fn().mockReturnValue({
   buttons: {
     enabled: true,
