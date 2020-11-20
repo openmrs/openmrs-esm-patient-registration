@@ -512,6 +512,7 @@ export const PatientRegistration: React.FC = () => {
                   {config && config.personAttributeSections && (
                     <PersonAttributesSection attributeSections={config.personAttributeSections} />
                   )}
+                  <RelationshipsSection setFieldValue={props.setFieldValue} />
                   <Button type="submit">{existingPatient ? 'Save Patient' : 'Register Patient'}</Button>
                 </div>
               </div>

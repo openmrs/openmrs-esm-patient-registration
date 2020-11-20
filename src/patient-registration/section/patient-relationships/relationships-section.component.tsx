@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import sectionStyles from '../section.css';
+import sectionStyles from '../section.scss';
 import { useTranslation } from 'react-i18next';
 import { FieldArray } from 'formik';
 import { Select, SelectItem, Button } from 'carbon-components-react';
-import styles from './relationships.css';
+import styles from './relationships.scss';
 import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
 import { getAllRelationshipTypes } from '../../patient-registration.resource';
 import { openmrsFetch } from '@openmrs/esm-api';

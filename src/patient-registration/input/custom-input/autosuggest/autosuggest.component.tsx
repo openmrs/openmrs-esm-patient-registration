@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Search } from 'carbon-components-react';
-import styles from './autosuggest.css';
+import styles from './autosuggest.scss';
 
 interface AutosuggestProps {
   name: string;
