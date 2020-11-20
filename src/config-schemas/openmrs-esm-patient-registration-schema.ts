@@ -1,4 +1,4 @@
-import { Type } from '@openmrs/esm-config';
+import { Type, validators } from '@openmrs/esm-config';
 
 export const esmPatientRegistrationSchema = {
   personAttributeSections: {
@@ -62,7 +62,6 @@ export const esmPatientRegistrationSchema = {
       _type: Type.String,
       _default: '${openmrsSpaBase}/patient/${patientUuid}/chart',
       _validators: [validators.isUrlWithTemplateParameters(['patientUuid'])],
-    },
     },
   },
 };
