@@ -6,5 +6,6 @@
     "addressSearchPlaceHolder": "Type a City, State or Country",
     "noSearchResults": "No Results Found",
     "savePatient": "Save Patient",
-    "registerPatient": "Register Patient"
+    "registerPatient": "Register Patient",
+    "relationshipsSectionHeader": "Relationships"
 }

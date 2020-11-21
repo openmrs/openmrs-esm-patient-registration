@@ -13,6 +13,7 @@ import {
   getAutoGenerationOptions,
   generateIdentifier,
   deletePersonName,
+  saveRelationship,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
@@ -21,6 +22,7 @@ import { ContactInfoSection } from './section/contact-info/contact-info-section.
 import { DeathInfoSection } from './section/death-info/death-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import { PersonAttributesSection } from './section/person-attributes/person-attributes-section.component';
+import { RelationshipsSection } from './section/patient-relationships/relationships-section.component';
 
 import styles from './patient-registration.scss';
 import { IdentifierSection } from './section/identifier/identifiers-section.component';
@@ -60,6 +62,7 @@ export interface FormValues {
   isDead: boolean;
   deathDate: string;
   deathCause: string;
+  relationships: Array<{ relatedPerson: string; relationship: string }>;
 }
 
 export const initialFormValues: FormValues = {
@@ -86,6 +89,7 @@ export const initialFormValues: FormValues = {
   isDead: false,
   deathDate: '',
   deathCause: '',
+  relationships: [{ relatedPerson: '', relationship: '' }],
 };
 
 export const getDeathInfo = (values: FormValues) => {
@@ -342,6 +346,7 @@ export const PatientRegistration: React.FC = () => {
 
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
+    const relationships = values.relationships;
     let identifiers = [];
     for (const type of identifierTypes) {
       const idValue = values[type.fieldName];
@@ -415,6 +420,28 @@ export const PatientRegistration: React.FC = () => {
     savePatient(abortController, patient, patientUuidMap['patientUuid'])
       .then(response => {
         if (response.ok) {
+          const requests = relationships.map(tmp => {
+            const { relatedPerson, relationship } = tmp;
+            const relationshipType = relationship.split('/')[0];
+            const direction = relationship.split('/')[1];
+            const abortController = new AbortController();
+            const { data } = response;
+            if (direction === 'aIsToB') {
+              return saveRelationship(abortController, {
+                personA: relatedPerson,
+                personB: data.uuid,
+                relationshipType,
+              });
+            } else {
+              return saveRelationship(abortController, {
+                personA: data.uuid,
+                personB: relatedPerson,
+                relationshipType,
+              });
+            }
+          });
+          const results = Promise.all(requests);
+          results.then(response => {}).catch(err => {});
           navigate({ to: getAfterUrl(response.data.uuid) });
         }
       })
@@ -481,6 +508,7 @@ export const PatientRegistration: React.FC = () => {
                 {config && config.personAttributeSections && (
                   <PersonAttributesSection attributeSections={config.personAttributeSections} />
                 )}
+                <RelationshipsSection />
                 <Button type="submit">{existingPatient ? 'Save Patient' : 'Register Patient'}</Button>
               </div>
             </div>
