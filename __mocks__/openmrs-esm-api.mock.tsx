@@ -8,16 +8,8 @@ export function openmrsObservableFetch() {
   return of({ data: { entry: [] } });
 }
 
-export function UserHasAccessReact(props: any) {
-  return props.children;
-}
-
 export function getCurrentPatient() {
   return jest.fn().mockReturnValue(never());
-}
-
-export function useCurrentPatient() {
-  return [undefined, null, null, null];
 }
 
 export function getAddressTemplateMock() {

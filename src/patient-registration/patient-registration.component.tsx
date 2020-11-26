@@ -27,9 +27,9 @@ import { RelationshipsSection } from './section/patient-relationships/relationsh
 import styles from './patient-registration.scss';
 import { IdentifierSection } from './section/identifier/identifiers-section.component';
 import * as Yup from 'yup';
-import { useCurrentPatient } from '@openmrs/esm-api';
+import { useCurrentPatient, useConfig } from '@openmrs/esm-react-utils';
 import { camelCase, capitalize, find } from 'lodash';
-import { useConfig, interpolateString, navigate } from '@openmrs/esm-config';
+import { interpolateString, navigate } from '@openmrs/esm-config';
 import { useTranslation } from 'react-i18next';
 import { XAxis16 } from '@carbon/icons-react';
 import { Button, Link } from 'carbon-components-react';

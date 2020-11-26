@@ -16,7 +16,7 @@ const cssLoader = {
 module.exports = {
   entry: [path.resolve(__dirname, 'src/set-public-path.ts'), path.resolve(__dirname, 'src/index.ts')],
   output: {
-    filename: 'openmrs-esm-patient-registration.js',
+    filename: 'openmrs-esm-patient-registration-app.js',
     libraryTarget: 'system',
     path: path.resolve(__dirname, 'dist'),
     jsonpFunction: 'webpackJsonp_openmrs_esm_patient_registration',

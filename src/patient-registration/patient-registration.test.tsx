@@ -7,7 +7,7 @@ import { PatientRegistration, getDeathInfo, initialFormValues } from './patient-
 import { getAddressTemplateMock } from '../../__mocks__/openmrs-esm-api.mock';
 import * as mockOpenmrsApi from '../../__mocks__/openmrs-esm-api.mock';
 import { mockPatient } from '../../__mocks__/patient.mock';
-import * as mockOpenmrsModuleConfig from '../../__mocks__/openmrs-esm-module-config.mock';
+import * as mockOpenmrsReactUtils from '../../__mocks__/openmrs-esm-react-utils.mock';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -92,7 +92,7 @@ describe('form submit', () => {
 
   beforeAll(() => {
     spyOn(backendController, 'getAddressTemplate').and.returnValue(getAddressTemplateMock());
-    spyOn(mockOpenmrsModuleConfig, 'useConfig').and.returnValue(mockOpenmrsConfig);
+    spyOn(mockOpenmrsReactUtils, 'useConfig').and.returnValue(mockOpenmrsConfig);
   });
 
   it('saves the patient without extra info', async () => {
@@ -270,7 +270,7 @@ describe('form submit', () => {
       ]),
     );
 
-    spyOn(mockOpenmrsApi, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
+    spyOn(mockOpenmrsReactUtils, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
     render(<PatientRegistration />);
     await wait();
 
