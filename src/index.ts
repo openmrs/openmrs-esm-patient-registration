@@ -3,18 +3,20 @@ import { backendDependencies } from './openmrs-backend-dependencies';
 
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
+const options = {
+  featureName: 'Patient Registration',
+  moduleName: '@openmrs/esm-patient-registration-app',
+};
+
 function setupOpenMRS() {
   return {
-    lifecycle: getAsyncLifecycle(() => import('./root.component'), {
-      featureName: 'Patient Registration',
-      moduleName: '@openmrs/esm-patient-registration-app',
-    }),
+    lifecycle: getAsyncLifecycle(() => import('./root.component'), options),
     activate: 'patient-registration',
     extensions: [
       {
         id: 'registration-link',
         slot: 'home-page-buttons',
-        load: () => import('./registration-link'),
+        load: getAsyncLifecycle(() => import('./registration-link'), options),
       },
     ],
   };
