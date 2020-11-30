@@ -20,9 +20,14 @@ function setupOpenMRS() {
     activate: 'patient-registration',
     extensions: [
       {
-        id: 'registration-link',
+        id: 'registration-home-link',
         slot: 'home-page-buttons',
-        load: getAsyncLifecycle(() => import('./registration-link'), options),
+        load: getAsyncLifecycle(() => import('./home-link'), options),
+      },
+      {
+        id: 'registration-nav-link',
+        slot: 'nav-menu',
+        load: getAsyncLifecycle(() => import('./nav-link'), options),
       },
     ],
   };
