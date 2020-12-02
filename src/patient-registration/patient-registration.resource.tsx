@@ -1,5 +1,5 @@
 import { openmrsFetch } from '@openmrs/esm-api';
-import { Patient } from './patient-registration-helper';
+import { Patient, Relationship } from './patient-registration-helper';
 import { camelCase } from 'lodash';
 import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
 
@@ -116,3 +116,19 @@ export function deletePersonName(nameUuid: string, personUuid: string, abortCont
 
 export const uuidIdentifier = '05a29f94-c0ed-11e2-94be-8c13b969e334';
 export const uuidTelephoneNumber = '14d4f066-15f5-102d-96e4-000c29c2a5d7';
+export function getAllRelationshipTypes(abortController: AbortController) {
+  return openmrsFetch('/ws/rest/v1/relationshiptype?v=default', {
+    signal: abortController.signal,
+  });
+}
+
+export function saveRelationship(abortController: AbortController, relationship: Relationship) {
+  return openmrsFetch('/ws/rest/v1/relationship', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: relationship,
+    signal: abortController.signal,
+  });
+}

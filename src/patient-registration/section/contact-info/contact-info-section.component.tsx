@@ -1,6 +1,6 @@
 import React from 'react';
 import { AddressInput } from '../../input/custom-input/address/address-input.component';
-import styles from './../section.css';
+import styles from './../section.scss';
 
 interface ContactInfoSectionProps {
   addressTemplate?: string;

@@ -28,6 +28,12 @@ export interface PatientIdentifier {
   location: string;
 }
 
+export type Relationship = {
+  relationshipType: string;
+  personA: string;
+  personB: string;
+};
+
 export type Patient = {
   uuid: string;
   identifiers: Array<PatientIdentifier>;

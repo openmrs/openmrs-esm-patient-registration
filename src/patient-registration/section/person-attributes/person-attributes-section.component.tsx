@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input } from '../../input/basic-input/input/input.component';
-import sectionStyles from './../section.css';
+import sectionStyles from './../section.scss';
 import { useTranslation } from 'react-i18next';
 
 interface PersonAttribute {

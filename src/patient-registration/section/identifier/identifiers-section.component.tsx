@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IdentifierInput } from '../../input/custom-input/identifier/identifier-input.component';
 import { PatientIdentifierType, IdentifierSource } from '../../patient-registration-helper';
-import styles from './../section.css';
+import styles from './../section.scss';
 import { FormValues } from '../../patient-registration.component';
 
 interface IdentifierSectionProps {

@@ -1,0 +1,51 @@
+@import "../root.scss";
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: var(--omrs-color-bg-high-contrast);
+  padding: 10px;
+}
+
+.formTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.title {
+  color: var(--omrs-color-brand-teal);
+}
+
+.submit {
+  width: 250px;
+}
+
+.submit:hover {
+  cursor: pointer;
+}
+
+
+.label01 {
+  @include carbon--type-style("label-01");
+  margin-top: $spacing-05;
+  margin-bottom: $spacing-05;
+  color: $ui-04;
+}
+
+.productiveHeading02 {
+  @include carbon--type-style("productive-heading-02");
+  color: $ui-04;
+  cursor: pointer;
+}
+
+.productiveHeading02:hover{
+  text-decoration: none;
+  color: $ui-04;
+}
+
+.space05 {
+  margin: $spacing-05 0 $spacing-05 0;
+}

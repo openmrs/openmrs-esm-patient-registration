@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useField } from 'formik';
 import dayjs from 'dayjs';
 import { Input } from '../../basic-input/input/input.component';
-import styles from './../../input.css';
+import styles from './../../input.scss';
 
 interface EstimatedAgeInputProps {
   yearsName: string;

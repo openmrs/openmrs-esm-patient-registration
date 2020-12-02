@@ -13,6 +13,7 @@ import {
   getAutoGenerationOptions,
   generateIdentifier,
   deletePersonName,
+  saveRelationship,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
@@ -21,14 +22,17 @@ import { ContactInfoSection } from './section/contact-info/contact-info-section.
 import { DeathInfoSection } from './section/death-info/death-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import { PersonAttributesSection } from './section/person-attributes/person-attributes-section.component';
+import { RelationshipsSection } from './section/patient-relationships/relationships-section.component';
 
-import styles from './patient-registration.css';
+import styles from './patient-registration.scss';
 import { IdentifierSection } from './section/identifier/identifiers-section.component';
 import * as Yup from 'yup';
-import { useCurrentPatient } from '@openmrs/esm-api';
+import { useCurrentPatient, useConfig } from '@openmrs/esm-react-utils';
 import { camelCase, capitalize, find } from 'lodash';
-import { useConfig, interpolateString, navigate } from '@openmrs/esm-config';
+import { interpolateString, navigate } from '@openmrs/esm-config';
 import { useTranslation } from 'react-i18next';
+import { XAxis16 } from '@carbon/icons-react';
+import { Button, Link } from 'carbon-components-react';
 
 export const initialAddressFieldValues = {};
 const patientUuidMap = {};
@@ -58,6 +62,7 @@ export interface FormValues {
   isDead: boolean;
   deathDate: string;
   deathCause: string;
+  relationships: Array<{ relatedPerson: string; relationship: string }>;
 }
 
 export const initialFormValues: FormValues = {
@@ -84,6 +89,7 @@ export const initialFormValues: FormValues = {
   isDead: false,
   deathDate: '',
   deathCause: '',
+  relationships: [{ relatedPerson: '', relationship: '' }],
 };
 
 export const getDeathInfo = (values: FormValues) => {
@@ -340,6 +346,7 @@ export const PatientRegistration: React.FC = () => {
 
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
+    const relationships = values.relationships;
     let identifiers = [];
     for (const type of identifierTypes) {
       const idValue = values[type.fieldName];
@@ -413,6 +420,28 @@ export const PatientRegistration: React.FC = () => {
     savePatient(abortController, patient, patientUuidMap['patientUuid'])
       .then(response => {
         if (response.ok) {
+          const requests = relationships.map(tmp => {
+            const { relatedPerson, relationship } = tmp;
+            const relationshipType = relationship.split('/')[0];
+            const direction = relationship.split('/')[1];
+            const abortController = new AbortController();
+            const { data } = response;
+            if (direction === 'aIsToB') {
+              return saveRelationship(abortController, {
+                personA: relatedPerson,
+                personB: data.uuid,
+                relationshipType,
+              });
+            } else {
+              return saveRelationship(abortController, {
+                personA: data.uuid,
+                personB: relatedPerson,
+                relationshipType,
+              });
+            }
+          });
+          const results = Promise.all(requests);
+          results.then(response => {}).catch(err => {});
           navigate({ to: getAfterUrl(response.data.uuid) });
         }
       })
@@ -440,28 +469,54 @@ export const PatientRegistration: React.FC = () => {
         }}>
         {props => (
           <Form className={styles.form}>
-            <div className={styles.formTitle}>
-              <h1 className={`omrs-type-title-1 ${styles.title}`}>{existingPatient ? 'Edit' : 'New'} Patient</h1>
-              {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
-                <DummyDataInput setValues={props.setValues} />
-              )}
+            <div className="bx--grid bx--grid--narrow">
+              <div className="bx--row">
+                <div className="bx--col">
+                  <h4>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
+                  {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
+                    <DummyDataInput setValues={props.setValues} />
+                  )}
+                </div>
+              </div>
+
+              <div className="bx--row">
+                <div className="bx--col-lg-2 bx--col-md-2">
+                  <p className={styles.label01}>Jump to</p>
+                  <div className={styles.space05}>
+                    <Link className={styles.productiveHeading02}>
+                      <XAxis16 /> Basic Info
+                    </Link>
+                  </div>
+                  <div className={styles.space05}>
+                    <Link className={styles.productiveHeading02}>
+                      <XAxis16 /> Contact Details
+                    </Link>
+                  </div>
+                  <div className={styles.space05}>
+                    <Link className={styles.productiveHeading02}>
+                      <XAxis16 /> Relationships
+                    </Link>
+                  </div>
+                </div>
+                <div className="bx--col-lg-10 bx--col-md-6">
+                  <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
+                  <ContactInfoSection addressTemplate={addressTemplate} />
+                  <IdentifierSection
+                    identifierTypes={identifierTypes}
+                    validationSchema={validationSchema}
+                    setValidationSchema={setValidationSchema}
+                    inEditMode={Boolean(existingPatient)}
+                    values={props.values}
+                  />
+                  <DeathInfoSection values={props.values} />
+                  {config && config.personAttributeSections && (
+                    <PersonAttributesSection attributeSections={config.personAttributeSections} />
+                  )}
+                  <RelationshipsSection setFieldValue={props.setFieldValue} />
+                  <Button type="submit">{existingPatient ? 'Save Patient' : 'Register Patient'}</Button>
+                </div>
+              </div>
             </div>
-            <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
-            <ContactInfoSection addressTemplate={addressTemplate} />
-            <IdentifierSection
-              identifierTypes={identifierTypes}
-              validationSchema={validationSchema}
-              setValidationSchema={setValidationSchema}
-              inEditMode={Boolean(existingPatient)}
-              values={props.values}
-            />
-            <DeathInfoSection values={props.values} />
-            {config && config.personAttributeSections && (
-              <PersonAttributesSection attributeSections={config.personAttributeSections} />
-            )}
-            <button className={`omrs-btn omrs-filled-action ${styles.submit}`} type="submit">
-              {existingPatient ? 'Save Patient' : 'Register Patient'}
-            </button>
           </Form>
         )}
       </Formik>

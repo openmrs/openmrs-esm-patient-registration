@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import styles from './../../input.css';
+import styles from './../../input.scss';
 import { useField } from 'formik';
 import { find } from 'lodash';
-import { PatientIdentifierType, IdentifierSource } from '../../../patient-registration-helper';
+import { PatientIdentifierType } from '../../../patient-registration-helper';
 import * as Yup from 'yup';
 import { SelectInput } from '../../basic-input/select/select-input.component';
 import { Input } from '../../basic-input/input/input.component';

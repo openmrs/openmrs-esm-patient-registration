@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormValues } from './../../patient-registration.component';
-import styles from './../input.css';
+import styles from './../input.scss';
 
 interface DummyDataInputProps {
   setValues(values: FormValues, shouldValidate?: boolean): void;
@@ -30,6 +30,7 @@ export const dummyFormValues: FormValues = {
   isDead: false,
   deathDate: '',
   deathCause: '',
+  relationships: [{ relatedPerson: '', relationship: '' }],
 };
 
 export const DummyDataInput: React.FC<DummyDataInputProps> = ({ setValues }) => {
