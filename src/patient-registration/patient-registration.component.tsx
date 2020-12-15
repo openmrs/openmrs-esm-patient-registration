@@ -458,6 +458,14 @@ export const PatientRegistration: React.FC = () => {
       });
   };
 
+  const scrollInto = view => {
+    document.getElementById(view).scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center',
+    });
+  };
+
   return (
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
@@ -469,51 +477,63 @@ export const PatientRegistration: React.FC = () => {
         }}>
         {props => (
           <Form className={styles.form}>
-            <div className="bx--grid bx--grid--narrow">
-              <div className="bx--row">
-                <div className="bx--col">
-                  <h4>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
-                  {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
-                    <DummyDataInput setValues={props.setValues} />
-                  )}
-                </div>
-              </div>
-
-              <div className="bx--row">
-                <div className="bx--col-lg-2 bx--col-md-2">
-                  <p className={styles.label01}>Jump to</p>
-                  <div className={styles.space05}>
-                    <Link className={styles.productiveHeading02}>
+            <div className={styles.row}>
+              <div className={`${styles.column} ${styles.left}`}>
+                <div className={styles.sidebar}>
+                  <h4 className={styles.CreateNewPatient}>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
+                  <p className={styles.JumpTo}>Jump to</p>
+                  <div className={styles.TouchTarget}>
+                    <Link className={styles.LinkName} onClick={() => scrollInto('basicinfo')}>
                       <XAxis16 /> Basic Info
                     </Link>
                   </div>
-                  <div className={styles.space05}>
-                    <Link className={styles.productiveHeading02}>
+                  <div className={styles.TouchTarget}>
+                    <Link className={styles.LinkName} onClick={() => scrollInto('contactinfo')}>
                       <XAxis16 /> Contact Details
                     </Link>
                   </div>
-                  <div className={styles.space05}>
-                    <Link className={styles.productiveHeading02}>
+                  <div className={styles.TouchTarget}>
+                    <Link className={styles.LinkName} onClick={() => scrollInto('deathinfo')}>
+                      <XAxis16 /> Death Info
+                    </Link>
+                  </div>
+                  <div className={styles.TouchTarget}>
+                    <Link className={styles.LinkName} onClick={() => scrollInto('personattributes')}>
+                      <XAxis16 /> Person Attributes
+                    </Link>
+                  </div>
+                  <div className={styles.TouchTarget}>
+                    <Link className={styles.LinkName} onClick={() => scrollInto('relationships')}>
                       <XAxis16 /> Relationships
                     </Link>
                   </div>
+                  <div className={styles.Rectangle}></div>
+                  <Button type="submit" className={styles.Button}>
+                    {existingPatient ? 'Save Patient' : 'Create Patient'}
+                  </Button>
+                  <br />
+                  <Button kind="tertiary" className={styles.Button}>
+                    Cancel
+                  </Button>
                 </div>
-                <div className="bx--col-lg-10 bx--col-md-6">
+              </div>
+              <div className={`${styles.column} ${styles.right}`}>
+                <div id="basicinfo">
                   <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
+                </div>
+                <div id="contactinfo">
                   <ContactInfoSection addressTemplate={addressTemplate} />
-                  <IdentifierSection
-                    identifierTypes={identifierTypes}
-                    validationSchema={validationSchema}
-                    setValidationSchema={setValidationSchema}
-                    inEditMode={Boolean(existingPatient)}
-                    values={props.values}
-                  />
+                </div>
+                <div id="deathinfo">
                   <DeathInfoSection values={props.values} />
+                </div>
+                <div id="personattributes">
                   {config && config.personAttributeSections && (
                     <PersonAttributesSection attributeSections={config.personAttributeSections} />
                   )}
+                </div>
+                <div id="relationships">
                   <RelationshipsSection setFieldValue={props.setFieldValue} />
-                  <Button type="submit">{existingPatient ? 'Save Patient' : 'Register Patient'}</Button>
                 </div>
               </div>
             </div>
