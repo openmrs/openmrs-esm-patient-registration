@@ -31,8 +31,6 @@ import { useCurrentPatient, useConfig } from '@openmrs/esm-react-utils';
 import { camelCase, capitalize, find } from 'lodash';
 import { interpolateString, navigate } from '@openmrs/esm-config';
 import { useTranslation } from 'react-i18next';
-import { XAxis16 } from '@carbon/icons-react';
-import { Button, Link } from 'carbon-components-react';
 import { Sidebar } from './sidebar/sidebar.component';
 
 export const initialAddressFieldValues = {};
@@ -129,6 +127,10 @@ export const PatientRegistration: React.FC = () => {
     {
       title: 'Contact Details',
       sectionId: 'contactinfo',
+    },
+    {
+      title: 'Identifiers',
+      sectionId: 'identifiers'
     },
     {
       title: 'Death Info',
@@ -511,6 +513,15 @@ export const PatientRegistration: React.FC = () => {
                 </div>
                 <div id="contactinfo">
                   <ContactInfoSection addressTemplate={addressTemplate} />
+                </div>
+                <div id="identifier">
+                  <IdentifierSection
+                      identifierTypes={identifierTypes}
+                      validationSchema={validationSchema}
+                      setValidationSchema={setValidationSchema}
+                      inEditMode={Boolean(existingPatient)}
+                      values={props.values}
+                  />
                 </div>
                 <div id="deathinfo">
                   <DeathInfoSection values={props.values} />
