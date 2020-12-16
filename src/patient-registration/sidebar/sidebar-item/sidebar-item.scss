@@ -1,0 +1,31 @@
+$color-gray-70: #525252;
+$color-gray-100: #161616;
+$grey-2: #e0e0e0;
+.TouchTarget {
+    width: 10.125rem;
+    height: 3rem;
+    margin: 0.063rem 0 0;
+    padding: 0.813rem 0.875rem 0.813rem 1.375rem;
+}
+
+.LinkName {
+    width: 7.875rem;
+    height: 1.375rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.38;
+    letter-spacing: normal;
+    color: $color-gray-70;
+}
+
+.LinkName:hover {
+    text-decoration: none;
+    color: $color-gray-100;
+    cursor: pointer;
+}
+
+.TouchTarget a:active {
+    color: $color-gray-100;
+}

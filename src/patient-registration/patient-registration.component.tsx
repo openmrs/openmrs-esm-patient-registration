@@ -33,6 +33,7 @@ import { interpolateString, navigate } from '@openmrs/esm-config';
 import { useTranslation } from 'react-i18next';
 import { XAxis16 } from '@carbon/icons-react';
 import { Button, Link } from 'carbon-components-react';
+import { Sidebar } from './sidebar/sidebar.component';
 
 export const initialAddressFieldValues = {};
 const patientUuidMap = {};
@@ -120,7 +121,30 @@ export const PatientRegistration: React.FC = () => {
   const [addressTemplate, setAddressTemplate] = useState('');
   const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
   const { t } = useTranslation();
+  const items = [
+    {
+      title: 'Basic Info',
+      sectionId: 'basicinfo',
+    },
+    {
+      title: 'Contact Details',
+      sectionId: 'contactinfo',
+    },
+    {
+      title: 'Death Info',
+      sectionId: 'deathinfo',
+    },
+    {
+      title: 'Person Attributes',
+      sectionId: 'personattributes',
+    },
+    {
+      title: 'Relationships',
+      sectionId: 'relationships',
+    },
+  ];
 
+  console.log(JSON.stringify(config));
   useEffect(() => {
     const abortController = new AbortController();
     getCurrentUserLocation(abortController).then(
@@ -479,43 +503,7 @@ export const PatientRegistration: React.FC = () => {
           <Form className={styles.form}>
             <div className={styles.row}>
               <div className={`${styles.column} ${styles.left}`}>
-                <div className={styles.sidebar}>
-                  <h4 className={styles.CreateNewPatient}>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
-                  <p className={styles.JumpTo}>Jump to</p>
-                  <div className={styles.TouchTarget}>
-                    <Link className={styles.LinkName} onClick={() => scrollInto('basicinfo')}>
-                      <XAxis16 /> Basic Info
-                    </Link>
-                  </div>
-                  <div className={styles.TouchTarget}>
-                    <Link className={styles.LinkName} onClick={() => scrollInto('contactinfo')}>
-                      <XAxis16 /> Contact Details
-                    </Link>
-                  </div>
-                  <div className={styles.TouchTarget}>
-                    <Link className={styles.LinkName} onClick={() => scrollInto('deathinfo')}>
-                      <XAxis16 /> Death Info
-                    </Link>
-                  </div>
-                  <div className={styles.TouchTarget}>
-                    <Link className={styles.LinkName} onClick={() => scrollInto('personattributes')}>
-                      <XAxis16 /> Person Attributes
-                    </Link>
-                  </div>
-                  <div className={styles.TouchTarget}>
-                    <Link className={styles.LinkName} onClick={() => scrollInto('relationships')}>
-                      <XAxis16 /> Relationships
-                    </Link>
-                  </div>
-                  <div className={styles.Rectangle}></div>
-                  <Button type="submit" className={styles.Button}>
-                    {existingPatient ? 'Save Patient' : 'Create Patient'}
-                  </Button>
-                  <br />
-                  <Button kind="tertiary" className={styles.Button}>
-                    Cancel
-                  </Button>
-                </div>
+                <Sidebar items={items} existingPatient className={styles.sidebar} />
               </div>
               <div className={`${styles.column} ${styles.right}`}>
                 <div id="basicinfo">
