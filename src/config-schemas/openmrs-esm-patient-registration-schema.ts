@@ -3,7 +3,7 @@ const builtInFields = ['name', 'gender', 'dob', 'address', 'id', 'death'];
 export const esmPatientRegistrationSchema = {
   sections: {
     _type: Type.Array,
-    _default: ['demographics', 'contact', 'ids', 'death', 'personattributes'],
+    _default: ['demographics', 'contact', 'ids', 'death'],
     _description: "An array of strings which are the keys from 'sectionDefinitions'",
     _elements: {
       _type: Type.String,
@@ -31,14 +31,12 @@ export const esmPatientRegistrationSchema = {
       contact: { name: 'Contact Info', fields: ['address'] },
       ids: { name: 'Identifiers', fields: ['id'] },
       death: { name: 'Death Info', fields: ['death'] },
-      personattributes: { name: 'Additional Person Attributes', fields: ['phone'] },
     },
   },
   fieldDefinitions: {
     _type: Type.Object,
     _elements: {
-      // Right now only patientAttributes are supported. We'll have to elaborate on this in order to support concepts.
-      label: { _type: Type.String, description: 'The label of the input' },
+      label: { _type: Type.String, _description: 'The label of the input' },
       uuid: {
         _type: Type.UUID,
         _description: 'Person attributetype uuid used to save the attribute',

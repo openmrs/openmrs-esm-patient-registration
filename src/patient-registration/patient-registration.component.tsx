@@ -20,8 +20,6 @@ import { showToast } from '@openmrs/esm-styleguide';
 import { DemographicsSection } from './section/demographics/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
 import { DeathInfoSection } from './section/death-info/death-info-section.component';
-import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
-import { PersonAttributesSection } from './section/person-attributes/person-attributes-section.component';
 import { RelationshipsSection } from './section/patient-relationships/relationships-section.component';
 
 import styles from './patient-registration.scss';
@@ -114,37 +112,22 @@ export const PatientRegistration: React.FC = () => {
   const { search } = useLocation();
   const config = useConfig();
   const [location, setLocation] = useState('');
+  const [sections, setSections] = useState([]);
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
   const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
   const { t } = useTranslation();
-  const items = [
-    {
-      title: 'Basic Info',
-      sectionId: 'basicinfo',
-    },
-    {
-      title: 'Contact Details',
-      sectionId: 'contactinfo',
-    },
-    {
-      title: 'Identifiers',
-      sectionId: 'identifiers',
-    },
-    {
-      title: 'Death Info',
-      sectionId: 'deathinfo',
-    },
-    {
-      title: 'Person Attributes',
-      sectionId: 'personattributes',
-    },
-    {
-      title: 'Relationships',
-      sectionId: 'relationships',
-    },
-  ];
+
+  useEffect(() => {
+    if (config) {
+      const tmp_sections = config.sections.map(section => ({
+        id: section,
+        name: config.sectionDefinitions[section].name,
+      }));
+      setSections(tmp_sections);
+    }
+  }, [config]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -333,29 +316,6 @@ export const PatientRegistration: React.FC = () => {
     }
   }, [addressTemplate]);
 
-  useEffect(() => {
-    // if (config && config.personAttributeSections) {
-    //   let { personAttributeSections } = config;
-    //   let allPersonAttributes = [];
-    //   personAttributeSections.forEach(({ personAttributes }) => {
-    //     allPersonAttributes = allPersonAttributes.concat(personAttributes);
-    //   });
-    //   let personAttributesValidationSchema = Yup.object(
-    //     allPersonAttributes.reduce((final, current) => {
-    //       const { name, label, validation } = current;
-    //       const { required, matches } = validation;
-    //       let validationObj = Yup.string().matches(matches, `Invalid ${t(label)}`);
-    //       if (required) {
-    //         validationObj = validationObj.required(`${t(label)} is required`);
-    //       }
-    //       final[name] = validationObj;
-    //       return final;
-    //     }, {}),
-    //   );
-    //   setValidationSchema(oldSchema => oldSchema.concat(personAttributesValidationSchema));
-    // }
-  }, [config]);
-
   const getValueIfItExists = (field: string, selector: string, doc: XMLDocument) => {
     let element = doc.querySelector(selector);
     if (element) {
@@ -483,14 +443,6 @@ export const PatientRegistration: React.FC = () => {
       });
   };
 
-  const scrollInto = view => {
-    document.getElementById(view).scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-      inline: 'center',
-    });
-  };
-
   return (
     <main className={`omrs-main-content ${styles.main}`}>
       <Formik
@@ -504,16 +456,16 @@ export const PatientRegistration: React.FC = () => {
           <Form className={styles.form}>
             <div className={styles.row}>
               <div className={`${styles.column} ${styles.left}`}>
-                <Sidebar items={items} existingPatient={!!existingPatient} className={styles.sidebar} />
+                <Sidebar sections={sections} existingPatient={!!existingPatient} className={styles.sidebar} />
               </div>
               <div className={`${styles.column} ${styles.right}`}>
-                <div id="basicinfo">
+                <div id="demographics">
                   <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
                 </div>
-                <div id="contactinfo">
+                <div id="contact">
                   <ContactInfoSection addressTemplate={addressTemplate} />
                 </div>
-                <div id="identifier">
+                <div id="ids">
                   <IdentifierSection
                     identifierTypes={identifierTypes}
                     validationSchema={validationSchema}
@@ -522,13 +474,8 @@ export const PatientRegistration: React.FC = () => {
                     values={props.values}
                   />
                 </div>
-                <div id="deathinfo">
+                <div id="death">
                   <DeathInfoSection values={props.values} />
-                </div>
-                <div id="personattributes">
-                  {config && config.personAttributeSections && (
-                    <PersonAttributesSection attributeSections={config.personAttributeSections} />
-                  )}
                 </div>
                 <div id="relationships">
                   <RelationshipsSection setFieldValue={props.setFieldValue} />
