@@ -130,7 +130,7 @@ export const PatientRegistration: React.FC = () => {
     },
     {
       title: 'Identifiers',
-      sectionId: 'identifiers'
+      sectionId: 'identifiers',
     },
     {
       title: 'Death Info',
@@ -146,7 +146,6 @@ export const PatientRegistration: React.FC = () => {
     },
   ];
 
-  console.log(JSON.stringify(config));
   useEffect(() => {
     const abortController = new AbortController();
     getCurrentUserLocation(abortController).then(
@@ -335,26 +334,26 @@ export const PatientRegistration: React.FC = () => {
   }, [addressTemplate]);
 
   useEffect(() => {
-    if (config && config.personAttributeSections) {
-      let { personAttributeSections } = config;
-      let allPersonAttributes = [];
-      personAttributeSections.forEach(({ personAttributes }) => {
-        allPersonAttributes = allPersonAttributes.concat(personAttributes);
-      });
-      let personAttributesValidationSchema = Yup.object(
-        allPersonAttributes.reduce((final, current) => {
-          const { name, label, validation } = current;
-          const { required, matches } = validation;
-          let validationObj = Yup.string().matches(matches, `Invalid ${t(label)}`);
-          if (required) {
-            validationObj = validationObj.required(`${t(label)} is required`);
-          }
-          final[name] = validationObj;
-          return final;
-        }, {}),
-      );
-      setValidationSchema(oldSchema => oldSchema.concat(personAttributesValidationSchema));
-    }
+    // if (config && config.personAttributeSections) {
+    //   let { personAttributeSections } = config;
+    //   let allPersonAttributes = [];
+    //   personAttributeSections.forEach(({ personAttributes }) => {
+    //     allPersonAttributes = allPersonAttributes.concat(personAttributes);
+    //   });
+    //   let personAttributesValidationSchema = Yup.object(
+    //     allPersonAttributes.reduce((final, current) => {
+    //       const { name, label, validation } = current;
+    //       const { required, matches } = validation;
+    //       let validationObj = Yup.string().matches(matches, `Invalid ${t(label)}`);
+    //       if (required) {
+    //         validationObj = validationObj.required(`${t(label)} is required`);
+    //       }
+    //       final[name] = validationObj;
+    //       return final;
+    //     }, {}),
+    //   );
+    //   setValidationSchema(oldSchema => oldSchema.concat(personAttributesValidationSchema));
+    // }
   }, [config]);
 
   const getValueIfItExists = (field: string, selector: string, doc: XMLDocument) => {
@@ -505,7 +504,7 @@ export const PatientRegistration: React.FC = () => {
           <Form className={styles.form}>
             <div className={styles.row}>
               <div className={`${styles.column} ${styles.left}`}>
-                <Sidebar items={items} existingPatient className={styles.sidebar} />
+                <Sidebar items={items} existingPatient={!!existingPatient} className={styles.sidebar} />
               </div>
               <div className={`${styles.column} ${styles.right}`}>
                 <div id="basicinfo">
@@ -516,11 +515,11 @@ export const PatientRegistration: React.FC = () => {
                 </div>
                 <div id="identifier">
                   <IdentifierSection
-                      identifierTypes={identifierTypes}
-                      validationSchema={validationSchema}
-                      setValidationSchema={setValidationSchema}
-                      inEditMode={Boolean(existingPatient)}
-                      values={props.values}
+                    identifierTypes={identifierTypes}
+                    validationSchema={validationSchema}
+                    setValidationSchema={setValidationSchema}
+                    inEditMode={Boolean(existingPatient)}
+                    values={props.values}
                   />
                 </div>
                 <div id="deathinfo">
