@@ -47,13 +47,10 @@ describe('patient registration', () => {
 });
 
 describe('patient registration sections', () => {
-  const testSectionExists = (labelText: string) => { 
+  const testSectionExists = (labelText: string) => {
     it(labelText + ' exists', async () => {
-      spyOn(mockOpenmrsReactUtils, 'useConfig').and.returnValue(mockOpenmrsConfig);
-      
       render(<PatientRegistration />);
       await wait();
-
       expect(screen.getByLabelText(labelText)).not.toBeNull();
     });
   };

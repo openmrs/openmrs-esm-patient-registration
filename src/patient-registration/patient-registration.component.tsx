@@ -120,7 +120,7 @@ export const PatientRegistration: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (config) {
+    if (config && config.sections) {
       const tmp_sections = config.sections.map(section => ({
         id: section,
         name: config.sectionDefinitions[section].name,
