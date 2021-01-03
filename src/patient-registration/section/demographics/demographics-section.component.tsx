@@ -1,25 +1,21 @@
 import React, { SetStateAction, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CapturePhotoProps, FormValues } from '../../patient-registration.component';
-import { NameInput } from '../../input/custom-input/name/name-input.component';
-import { UnidentifiedPatientInput } from '../../input/custom-input/unidentified-patient/unidentified-patient-input.component';
-import { SelectInput } from '../../input/basic-input/select/select-input.component';
-import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estimated-age-input.component';
-import { Input } from '../../input/basic-input/input/input.component';
 import styles from './../section.scss';
 import { useField } from 'formik';
 import { ExtensionSlot } from '@openmrs/esm-react-utils';
+import { getField } from '../section-helper';
 
 interface DemographicsSectionProps {
   setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
-  values: FormValues;
   setCapturePhotoProps(value: SetStateAction<CapturePhotoProps>): void;
+  fields: Array<any>;
 }
 
 export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
   setFieldValue,
-  values,
   setCapturePhotoProps,
+  fields,
 }) => {
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
@@ -43,43 +39,10 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
   }, [field.value, meta.touched]);
   return (
     <section className={styles.formSection} aria-label="Demographics Section">
-      <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>{t('demographics', 'Demographics')}</h5>
       <ExtensionSlot extensionSlotName="capture-patient-photo" state={{ onCapturePhoto }} />
-      <section className={styles.fieldGroup}>
-        <NameInput givenName="givenName" middleName="middleName" familyName="familyName" showRequiredAsterisk={true} />
-        <UnidentifiedPatientInput name="unidentifiedPatient" setName={setFieldValue} />
-      </section>
-      <section className={styles.fieldGroup}>
-        <Input type="checkbox" label="Add name" name="addNameInLocalLanguage" />
-      </section>
-      <section className={styles.fieldGroup}>
-        {values.addNameInLocalLanguage && (
-          <NameInput
-            givenName="additionalGivenName"
-            middleName="additionalMiddleName"
-            familyName="additionalFamilyName"
-            showRequiredAsterisk={true}
-            label="Additional name"
-          />
-        )}
-      </section>
-      <section className={styles.fieldGroup}>
-        <SelectInput
-          name="gender"
-          options={['Male', 'Female', 'Other', 'Unknown']}
-          label="Gender"
-          showRequiredAsterisk={true}
-        />
-      </section>
-      <section className={styles.fieldGroup}>
-        <Input type="date" label="Date of Birth" name="birthdate" showRequiredAsterisk={true} />
-        <Input type="checkbox" label="Estimated Birthdate" name="birthdateEstimated" />
-      </section>
-      {values.birthdateEstimated && (
-        <section className={styles.fieldGroup}>
-          <EstimatedAgeInput yearsName="yearsEstimated" monthsName="monthsEstimated" setBirthdate={setFieldValue} />
-        </section>
-      )}
+      {fields.map(field => (
+        <div key={field}>{getField(field)}</div>
+      ))}
     </section>
   );
 };

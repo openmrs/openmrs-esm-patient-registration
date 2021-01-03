@@ -62,10 +62,11 @@ export const Autosuggest: React.FC<AutosuggestProps> = ({
         name={name}
         id="autosuggest"
         placeHolderText={placeholder}
-        labelText=""
+        labelText="Full Name"
         onChange={handleChange}
         ref={searchBox}
         className={styles.autocompleteSearch}
+        light
       />
       {suggestions.length > 0 && (
         <ul className={styles.suggestions}>

@@ -3,6 +3,25 @@ import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { FormValues, initialFormValues } from '../../patient-registration.component';
 import { DemographicsSection } from './demographics-section.component';
+import { PatientRegistrationContext } from '../../patient-registration-context';
+
+jest.mock('../../field/name/name-field.component', () => {
+  return {
+    NameField: () => <div><input type="text" name="name"/></div>
+  }
+});
+
+jest.mock('../../field/gender/gender-field.component', () => {
+  return {
+    GenderField: () => <div><input type="text" name="name"/></div>
+  }
+});
+
+jest.mock('../../field/id/id-field.component', () => {
+  return {
+    IdField: () => <div><input type="text" name="name"/></div>
+  }
+});
 
 describe('demographics section', () => {
   const formValues: FormValues = initialFormValues;
@@ -11,94 +30,26 @@ describe('demographics section', () => {
     render(
       <Formik initialValues={{ ...initialFormValues, birthdateEstimated, addNameInLocalLanguage }} onSubmit={null}>
         <Form>
-          <DemographicsSection
-            setFieldValue={() => {}}
-            values={{ ...initialFormValues, birthdateEstimated, addNameInLocalLanguage }}
-            setCapturePhotoProps={() => {}}
-          />
+          <PatientRegistrationContext.Provider
+            value={{
+              identifierTypes: [],
+              validationSchema: {},
+              setValidationSchema: () => {},
+              fieldConfigs: [],
+              values: { ...initialFormValues, birthdateEstimated, addNameInLocalLanguage },
+              inEditMode: false,
+            }}>
+            <DemographicsSection setFieldValue={() => {}} fields={['name', 'gender', 'id']} setCapturePhotoProps={() => {}}/>
+          </PatientRegistrationContext.Provider>
         </Form>
       </Formik>,
     );
-    const allInputs = screen.queryAllByLabelText(
-      (content, element) => element.tagName.toLowerCase() === 'input',
-    ) as Array<HTMLInputElement>;
-    const allSelects = screen.queryAllByRole('combobox') as Array<HTMLInputElement>;
-    let inputAndSelectNames = [];
-    allInputs.forEach(input => inputAndSelectNames.push(input.name));
-    allSelects.forEach(select => inputAndSelectNames.push(select.name));
-    return inputAndSelectNames;
+    const allInputs = screen.getAllByRole('textbox') as Array<HTMLInputElement>;
+    return allInputs.map(input => input.name);
   };
 
-  it('has the correct number of inputs if birthdate is not estimated', async () => {
-    const inputNames = await setupSection(false);
-    expect(inputNames.length).toBe(8);
-  });
-
-  it('has the correct number of inputs if birthdate is estimated', async () => {
-    const inputNames = await setupSection(true);
-    expect(inputNames.length).toBe(10);
-  });
-
-  it('has the correct number of inputs if birthdate is estimated and additional name is provided', async () => {
-    const inputNames = await setupSection(true, true);
-    expect(inputNames.length).toBe(13);
-  });
-
-  it('has name input', async () => {
+  it('inputs corresponding to number of fields', async () => {
     const inputNames = await setupSection();
-    expect(inputNames).toContain('givenName');
-    expect(inputNames).toContain('middleName');
-    expect(inputNames).toContain('familyName');
-  });
-
-  it('has name in local language checkbox', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('addNameInLocalLanguage');
-  });
-
-  it('has name in local language input fields when checkbox is clicked', async () => {
-    const inputNames = await setupSection(false, true);
-    expect(inputNames).toContain('additionalGivenName');
-    expect(inputNames).toContain('additionalMiddleName');
-    expect(inputNames).toContain('additionalFamilyName');
-  });
-
-  it('does not have name in local language input fields when checkbox is unclicked', async () => {
-    const inputNames = await setupSection(false, false);
-    expect(inputNames).not.toContain('additionalGivenName');
-    expect(inputNames).not.toContain('additionalMiddleName');
-    expect(inputNames).not.toContain('additionalFamilyName');
-  });
-
-  it('has unidentified patient input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('unidentifiedPatient');
-  });
-
-  it('has gender select input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('gender');
-  });
-
-  it('has date input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('birthdate');
-  });
-
-  it('has estimated age input', async () => {
-    const inputNames = await setupSection(true);
-    expect(inputNames).toContain('yearsEstimated');
-    expect(inputNames).toContain('monthsEstimated');
-  });
-
-  it('has no estimated age input if birthdate is not estimated', async () => {
-    const inputNames = await setupSection(false);
-    expect(inputNames).not.toContain('yearsEstimated');
-    expect(inputNames).not.toContain('monthsEstimated');
-  });
-
-  it('has birthdate checkbox input', async () => {
-    const inputNames = await setupSection();
-    expect(inputNames).toContain('birthdateEstimated');
+    expect(inputNames.length).toBe(3);
   });
 });

@@ -1,50 +1,26 @@
 import React from 'react';
 import { useField } from 'formik';
 import styles from './../../input.scss';
+import { Select, SelectItem } from 'carbon-components-react';
 
 interface SelectInputProps {
   name: string;
   options: Array<string>;
   label: string;
-  showRequiredAsterisk?: boolean;
 }
 
-export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label, showRequiredAsterisk }) => {
+export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label }) => {
   const [field, meta] = useField(name);
   const selectOptions = [
-    <option key="" value="" disabled>
-      Select {label}
-    </option>,
-    options.map(currentOption => (
-      <option key={currentOption} value={currentOption}>
-        {currentOption}
-      </option>
-    )),
+    <SelectItem disabled hidden text={`Select ${label}`} key="" value="" />,
+    ...options.map(currentOption => <SelectItem text={currentOption} value={currentOption} key="" />),
   ];
 
   return (
-    <main className={styles.fieldRow}>
-      {label && (
-        <label className={`omrs-type-body-regular ${styles.label}`} htmlFor={field.name}>
-          <span>{label}</span>
-          {showRequiredAsterisk && <span className={styles.requiredField}> *</span>}
-        </label>
-      )}
-      <div>
-        <select
-          className={`omrs-dropdown omrs-type-body-regular ${meta.touched && meta.error && styles.errorInput} ${
-            styles.input
-          } ${styles.selectInput}`}
-          aria-label={name}
-          {...field}>
-          {selectOptions}
-        </select>
-        {meta.touched && meta.error && (
-          <div className={`omrs-type-body-small ${styles.errorMessage}`} aria-label={`${field.name}Error`}>
-            {meta.error}
-          </div>
-        )}
-      </div>
-    </main>
+    <div>
+      <Select id="identifier" {...field} labelText={label} light>
+        {selectOptions}
+      </Select>
+    </div>
   );
 };

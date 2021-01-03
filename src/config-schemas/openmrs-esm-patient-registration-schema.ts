@@ -3,7 +3,7 @@ const builtInFields = ['name', 'gender', 'dob', 'address', 'id', 'death'];
 export const esmPatientRegistrationSchema = {
   sections: {
     _type: Type.Array,
-    _default: ['demographics', 'contact', 'ids', 'death'],
+    _default: ['demographics', 'contact', 'relationships'],
     _description: "An array of strings which are the keys from 'sectionDefinitions'",
     _elements: {
       _type: Type.String,
@@ -27,10 +27,10 @@ export const esmPatientRegistrationSchema = {
       },
     },
     _default: {
-      demographics: { name: 'Demographics', fields: ['name', 'gender', 'dob'] },
-      contact: { name: 'Contact Info', fields: ['address'] },
-      ids: { name: 'Identifiers', fields: ['id'] },
-      death: { name: 'Death Info', fields: ['death'] },
+      demographics: { name: 'basicInfoSectionName', fields: ['name', 'gender', 'id'] },
+      contact: { name: 'contactDetailsSectionName', fields: ['address', 'phone', 'email'] },
+      death: { name: 'deathInfoSectionName', fields: ['death'] },
+      relationships: { name: 'relationshipsSectionName' },
     },
   },
   fieldDefinitions: {
@@ -64,6 +64,15 @@ export const esmPatientRegistrationSchema = {
     },
     _description:
       'Definitions for custom fields that can be used in sectionDefinitions. Can also be used to override built-in fields.',
+  },
+  fieldConfigurations: {
+    _type: Type.Object,
+    _default: {
+      name: {
+        displayMiddleName: true,
+        unidentifiedPatient: true,
+      },
+    },
   },
   links: {
     submitButton: {
