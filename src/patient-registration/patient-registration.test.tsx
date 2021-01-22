@@ -8,6 +8,7 @@ import { getAddressTemplateMock } from '../../__mocks__/openmrs-esm-api.mock';
 import * as mockOpenmrsApi from '../../__mocks__/openmrs-esm-api.mock';
 import { mockPatient } from '../../__mocks__/patient.mock';
 import * as mockOpenmrsReactUtils from '../../__mocks__/openmrs-esm-react-utils.mock';
+import { useConfig } from '@openmrs/esm-react-utils';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -17,20 +18,25 @@ jest.mock('react-router-dom', () => ({
 }));
 
 let mockOpenmrsConfig = {
-  personAttributeSections: [
-    {
-      name: 'additionalPersonAttributesSectionHeader',
-      personAttributes: [
-        {
-          name: 'telephoneNumber',
-          label: 'phoneNumber',
-          uuid: '14d4f066-15f5-102d-96e4-000c29c2a5d7',
-          placeholder: 'phoneNumberPlaceHolder',
-          validation: { matches: '^[0-9]*$' },
-        },
-      ],
+  sections: ['demographics', 'contact', 'ids', 'death'],
+  sectionDefinitions: {
+    demographics: {
+      name: 'Demographics',
+      fields: ['name', 'gender', 'dob'],
     },
-  ],
+    contact: {
+      name: 'Contact Info',
+      fields: ['address'],
+    },
+    ids: {
+      name: 'Identifiers',
+      fields: ['id'],
+    },
+    death: {
+      name: 'Death Info',
+      fields: ['death'],
+    },
+  },
 };
 
 describe('patient registration', () => {
@@ -103,7 +109,7 @@ describe('form submit', () => {
 
     await fillRequiredFields(screen.getByLabelText);
 
-    userEvent.click(screen.getByText('Register Patient'));
+    userEvent.click(screen.getByText('Create Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(
@@ -113,7 +119,7 @@ describe('form submit', () => {
         // identifiers: [{ identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }],
         person: {
           addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
-          attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
+          attributes: [],
           birthdate: '1993-08-02',
           birthdateEstimated: false,
           gender: 'M',
@@ -146,7 +152,7 @@ describe('form submit', () => {
     userEvent.type(additionalMiddleNameInput, 'Local Middle Name');
     userEvent.type(additionalFamilyNameInput, 'Local Family Name');
 
-    userEvent.click(screen.getByText('Register Patient'));
+    userEvent.click(screen.getByText('Create Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(
@@ -155,7 +161,7 @@ describe('form submit', () => {
         identifiers: [],
         person: {
           addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
-          attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
+          attributes: [],
           birthdate: '1993-08-02',
           birthdateEstimated: false,
           gender: 'M',
@@ -194,7 +200,7 @@ describe('form submit', () => {
     userEvent.type(deathDate, '2020-01-01');
     userEvent.selectOptions(deathCause, 'Stroke');
 
-    userEvent.click(screen.getByText('Register Patient'));
+    userEvent.click(screen.getByText('Create Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(
@@ -203,7 +209,7 @@ describe('form submit', () => {
         identifiers: [], //TODO when the identifer story is finished: { identifier: '', identifierType: '05a29f94-c0ed-11e2-94be-8c13b969e334', location: '' }
         person: {
           addresses: [{ address1: '', address2: '', cityVillage: '', country: '', postalCode: '', stateProvince: '' }],
-          attributes: [{ attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7', value: '' }],
+          attributes: [],
           birthdate: '1993-08-02',
           birthdateEstimated: false,
           gender: 'M',
@@ -227,7 +233,7 @@ describe('form submit', () => {
     userEvent.type(givenNameInput, '');
     await wait();
 
-    userEvent.click(screen.getByText('Register Patient'));
+    userEvent.click(screen.getByText('Create Patient'));
     await wait();
 
     expect(backendController.savePatient).not.toHaveBeenCalled();
@@ -279,7 +285,6 @@ describe('form submit', () => {
     const middleNameInput = screen.getByLabelText('middleName') as HTMLInputElement;
     const dateOfBirthInput = screen.getByLabelText('birthdate') as HTMLInputElement;
     const genderSelect = screen.getByLabelText('gender') as HTMLSelectElement;
-    const telephoneNumber = screen.getByLabelText('telephoneNumber') as HTMLInputElement;
     const address1 = screen.getByLabelText('address1') as HTMLInputElement;
 
     // assert initial values
@@ -288,7 +293,6 @@ describe('form submit', () => {
     expect(middleNameInput.value).toBeFalsy();
     expect(dateOfBirthInput.value).toBe('1972-04-04');
     expect(genderSelect.value).toBe('Male');
-    expect(telephoneNumber.value).toBe('25467388299499');
 
     // do some edits
     userEvent.clear(givenNameInput);
@@ -332,12 +336,7 @@ describe('form submit', () => {
               stateProvince: 'State0351tested',
             },
           ],
-          attributes: [
-            {
-              attributeType: '14d4f066-15f5-102d-96e4-000c29c2a5d7',
-              value: '25467388299499',
-            },
-          ],
+          attributes: [],
           birthdate: '1972-04-04',
           birthdateEstimated: false,
           gender: 'M',

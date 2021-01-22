@@ -20,8 +20,6 @@ import { showToast } from '@openmrs/esm-styleguide';
 import { DemographicsSection } from './section/demographics/demographics-section.component';
 import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
 import { DeathInfoSection } from './section/death-info/death-info-section.component';
-import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
-import { PersonAttributesSection } from './section/person-attributes/person-attributes-section.component';
 import { RelationshipsSection } from './section/patient-relationships/relationships-section.component';
 
 import styles from './patient-registration.scss';
@@ -31,8 +29,7 @@ import { useCurrentPatient, useConfig } from '@openmrs/esm-react-utils';
 import { camelCase, capitalize, find } from 'lodash';
 import { interpolateString, navigate } from '@openmrs/esm-config';
 import { useTranslation } from 'react-i18next';
-import { XAxis16 } from '@carbon/icons-react';
-import { Button, Link } from 'carbon-components-react';
+import { Sidebar } from './sidebar/sidebar.component';
 
 export const initialAddressFieldValues = {};
 const patientUuidMap = {};
@@ -115,11 +112,22 @@ export const PatientRegistration: React.FC = () => {
   const { search } = useLocation();
   const config = useConfig();
   const [location, setLocation] = useState('');
+  const [sections, setSections] = useState([]);
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
   const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (config && config.sections) {
+      const tmp_sections = config.sections.map(section => ({
+        id: section,
+        name: config.sectionDefinitions[section].name,
+      }));
+      setSections(tmp_sections);
+    }
+  }, [config]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -308,29 +316,6 @@ export const PatientRegistration: React.FC = () => {
     }
   }, [addressTemplate]);
 
-  useEffect(() => {
-    if (config && config.personAttributeSections) {
-      let { personAttributeSections } = config;
-      let allPersonAttributes = [];
-      personAttributeSections.forEach(({ personAttributes }) => {
-        allPersonAttributes = allPersonAttributes.concat(personAttributes);
-      });
-      let personAttributesValidationSchema = Yup.object(
-        allPersonAttributes.reduce((final, current) => {
-          const { name, label, validation } = current;
-          const { required, matches } = validation;
-          let validationObj = Yup.string().matches(matches, `Invalid ${t(label)}`);
-          if (required) {
-            validationObj = validationObj.required(`${t(label)} is required`);
-          }
-          final[name] = validationObj;
-          return final;
-        }, {}),
-      );
-      setValidationSchema(oldSchema => oldSchema.concat(personAttributesValidationSchema));
-    }
-  }, [config]);
-
   const getValueIfItExists = (field: string, selector: string, doc: XMLDocument) => {
     let element = doc.querySelector(selector);
     if (element) {
@@ -469,38 +454,18 @@ export const PatientRegistration: React.FC = () => {
         }}>
         {props => (
           <Form className={styles.form}>
-            <div className="bx--grid bx--grid--narrow">
-              <div className="bx--row">
-                <div className="bx--col">
-                  <h4>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
-                  {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
-                    <DummyDataInput setValues={props.setValues} />
-                  )}
-                </div>
+            <div className={styles.row}>
+              <div className={`${styles.column} ${styles.left}`}>
+                <Sidebar sections={sections} existingPatient={!!existingPatient} className={styles.sidebar} />
               </div>
-
-              <div className="bx--row">
-                <div className="bx--col-lg-2 bx--col-md-2">
-                  <p className={styles.label01}>Jump to</p>
-                  <div className={styles.space05}>
-                    <Link className={styles.productiveHeading02}>
-                      <XAxis16 /> Basic Info
-                    </Link>
-                  </div>
-                  <div className={styles.space05}>
-                    <Link className={styles.productiveHeading02}>
-                      <XAxis16 /> Contact Details
-                    </Link>
-                  </div>
-                  <div className={styles.space05}>
-                    <Link className={styles.productiveHeading02}>
-                      <XAxis16 /> Relationships
-                    </Link>
-                  </div>
-                </div>
-                <div className="bx--col-lg-10 bx--col-md-6">
+              <div className={`${styles.column} ${styles.right}`}>
+                <div id="demographics">
                   <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
+                </div>
+                <div id="contact">
                   <ContactInfoSection addressTemplate={addressTemplate} />
+                </div>
+                <div id="ids">
                   <IdentifierSection
                     identifierTypes={identifierTypes}
                     validationSchema={validationSchema}
@@ -508,12 +473,12 @@ export const PatientRegistration: React.FC = () => {
                     inEditMode={Boolean(existingPatient)}
                     values={props.values}
                   />
+                </div>
+                <div id="death">
                   <DeathInfoSection values={props.values} />
-                  {config && config.personAttributeSections && (
-                    <PersonAttributesSection attributeSections={config.personAttributeSections} />
-                  )}
+                </div>
+                <div id="relationships">
                   <RelationshipsSection setFieldValue={props.setFieldValue} />
-                  <Button type="submit">{existingPatient ? 'Save Patient' : 'Register Patient'}</Button>
                 </div>
               </div>
             </div>
