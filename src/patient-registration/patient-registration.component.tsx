@@ -109,10 +109,9 @@ interface AddressValidationSchemaType {
   regexFormat: string;
 }
 
-interface CapturePhotoProps {
+export interface CapturePhotoProps {
   base64EncodedImage: string;
   imageFile: File;
-  saveAttachment: Function;
   obsDate: string;
   concept: string;
 }

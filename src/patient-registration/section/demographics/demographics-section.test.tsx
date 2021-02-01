@@ -14,6 +14,7 @@ describe('demographics section', () => {
           <DemographicsSection
             setFieldValue={() => {}}
             values={{ ...initialFormValues, birthdateEstimated, addNameInLocalLanguage }}
+            setCapturePhotoProps={() => {}}
           />
         </Form>
       </Formik>,

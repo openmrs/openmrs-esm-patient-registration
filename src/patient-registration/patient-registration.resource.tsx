@@ -144,19 +144,19 @@ export async function savePatientPhoto(
   concept: string,
 ) {
   const formData = new FormData();
-  const json = {};
-  json['person'] = patientUuid;
-  json['concept'] = concept;
-  json['groupMembers'] = [];
-  json['obsDatetime'] = obsDatetime;
   formData.append('fileCaption', fileCaption);
   formData.append('patient', patientUuid);
-
   if (base64Content) {
     formData.append('file', dataURItoFile(base64Content));
   } else {
     formData.append('file', file);
   }
+  const json = {
+    person: patientUuid,
+    concept: concept,
+    groupMembers: [],
+    obsDatetime: obsDatetime,
+  };
   formData.append('json', JSON.stringify(json));
 
   return openmrsFetch(url, {
@@ -166,7 +166,7 @@ export async function savePatientPhoto(
   });
 }
 
-function dataURItoFile(dataURI) {
+function dataURItoFile(dataURI: string) {
   const byteString = atob(dataURI.split(',')[1]);
   const mimeString = dataURI
     .split(',')[0]
@@ -174,7 +174,7 @@ function dataURItoFile(dataURI) {
     .split(';')[0];
   // write the bytes of the string to a typed array
   const buffer = new Uint8Array(byteString.length);
-  for (var i = 0; i < byteString.length; i++) {
+  for (let i = 0; i < byteString.length; i++) {
     buffer[i] = byteString.charCodeAt(i);
   }
   const blob = new Blob([buffer], { type: mimeString });

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { SetStateAction, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormValues } from '../../patient-registration.component';
+import { CapturePhotoProps, FormValues } from '../../patient-registration.component';
 import { NameInput } from '../../input/custom-input/name/name-input.component';
 import { UnidentifiedPatientInput } from '../../input/custom-input/unidentified-patient/unidentified-patient-input.component';
 import { SelectInput } from '../../input/basic-input/select/select-input.component';
@@ -13,7 +13,7 @@ import { ExtensionSlot } from '@openmrs/esm-react-utils';
 interface DemographicsSectionProps {
   setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
   values: FormValues;
-  setCapturePhotoProps?: Function;
+  setCapturePhotoProps(value: SetStateAction<CapturePhotoProps>): void;
 }
 
 export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
@@ -24,12 +24,11 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
 
-  const onCapturePhoto = (dataUri, selectedFile, saveImage, obsDate, concept) => {
+  const onCapturePhoto = (dataUri, selectedFile, obsDate, concept) => {
     if (setCapturePhotoProps) {
       setCapturePhotoProps({
         base64EncodedImage: dataUri,
         imageFile: selectedFile,
-        saveAttachment: saveImage,
         obsDate: obsDate,
         concept: concept,
       });
