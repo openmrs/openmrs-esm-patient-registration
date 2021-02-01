@@ -485,7 +485,11 @@ export const PatientRegistration: React.FC = () => {
               </div>
               <div className={`${styles.column} ${styles.right}`}>
                 <div id="demographics">
-                  <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} setCapturePhotoProps={setCapturePhotoProps} />
+                  <DemographicsSection
+                    setFieldValue={props.setFieldValue}
+                    values={props.values}
+                    setCapturePhotoProps={setCapturePhotoProps}
+                  />
                 </div>
                 <div id="contact">
                   <ContactInfoSection addressTemplate={addressTemplate} />
