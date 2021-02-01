@@ -6,7 +6,7 @@ import { initialFormValues } from '../../../patient-registration.component';
 import { validationSchema } from '../../../validation/patient-registration-validation';
 import { PatientIdentifierType } from '../../../patient-registration-helper';
 
-describe('identifier input', () => {
+describe.skip('identifier input', () => {
   const openmrsID = {
     name: 'OpenMRS ID',
     fieldName: 'openMrsId',

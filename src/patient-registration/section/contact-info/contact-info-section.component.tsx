@@ -3,14 +3,13 @@ import { getField } from '../section-helper';
 
 interface ContactInfoSectionProps {
   fields: Array<string>;
-  fieldConfigs: Array<any>;
 }
 
-export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ fields, fieldConfigs }) => {
+export const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ fields }) => {
   return (
     <section aria-label="Contact Info Section">
       {fields.map(fieldName => (
-        <div key={fieldName}>{getField(fieldName, fieldConfigs)}</div>
+        <div key={fieldName}>{getField(fieldName)}</div>
       ))}
     </section>
   );

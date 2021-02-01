@@ -19,23 +19,17 @@ import {
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
-import { DemographicsSection } from './section/demographics/demographics-section.component';
-import { ContactInfoSection } from './section/contact-info/contact-info-section.component';
-import { DeathInfoSection } from './section/death-info/death-info-section.component';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
-import { RelationshipsSection } from './section/patient-relationships/relationships-section.component';
 
 import styles from './patient-registration.scss';
-import { IdentifierSection } from './section/identifier/identifiers-section.component';
 import * as Yup from 'yup';
 import { useCurrentPatient, useConfig } from '@openmrs/esm-react-utils';
 import { camelCase, capitalize, find } from 'lodash';
 import { interpolateString, navigate } from '@openmrs/esm-config';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { XAxis16 } from '@carbon/icons-react';
 import { Button, Link, Grid, Row, Column } from 'carbon-components-react';
-import { SectionWrapper } from './section/section-wrapper.component';
-import { Sidebar } from './sidebar/sidebar.component';
+import { getSection } from './section/section-helper';
 
 export const initialAddressFieldValues = {};
 const patientUuidMap = {};
@@ -132,6 +126,7 @@ export const PatientRegistration: React.FC = () => {
   const { t } = useTranslation();
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (config && config.sections) {
@@ -487,10 +482,10 @@ export const PatientRegistration: React.FC = () => {
   };
 
   return (
-    <main className={`omrs-main-content`}>
+    <main className={`omrs-main-content`} style={{ backgroundColor: 'white' }}>
       <Formik
         initialValues={initialFormValues}
-        validationSchema={validationSchema}
+        // validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);
@@ -507,21 +502,17 @@ export const PatientRegistration: React.FC = () => {
                     )}
                     <p className={styles.label01}>Jump to</p>
                     {sections.map(section => (
-                      <div className={`${styles.space05} ${styles.TouchTarget}`}>
+                      <div className={`${styles.space05} ${styles.TouchTarget}`} key={section.name}>
                         <Link className={styles.LinkName} onClick={() => scrollIntoView(section.id)}>
-                          <XAxis16 /> <Trans i18nKey={section.name}></Trans>
+                          <XAxis16 /> {t(`${section.name}`)}
                         </Link>
                       </div>
                     ))}
                     <Button style={{ marginBottom: '1rem', width: '11.688rem', display: 'block' }} type="submit">
-                      {existingPatient ? (
-                        <Trans i18nKey="updatePatient"></Trans>
-                      ) : (
-                        <Trans i18nKey="registerPatient"></Trans>
-                      )}
+                      {existingPatient ? <span>{t('updatePatient')}</span> : <span>{t('registerPatient')}</span>}
                     </Button>
                     <Button style={{ width: '11.688rem' }} kind="tertiary" onClick={cancelRegistration}>
-                      <Trans i18nKey="cancel"></Trans>
+                      {t('cancel')}
                     </Button>
                   </div>
                 </Column>
@@ -535,51 +526,11 @@ export const PatientRegistration: React.FC = () => {
                         fieldConfigs,
                         values: props.values,
                         inEditMode: !!existingPatient,
+                        setFieldValue: props.setFieldValue,
                       }}>
-                      {sections.map((section, index) => {
-                        switch (section.id) {
-                          case 'demographics':
-                            return (
-                              <Row>
-                                <Column lg={8} md={8} sm={3}>
-                                  <SectionWrapper {...section} index={index}>
-                                    <DemographicsSection {...section} />
-                                  </SectionWrapper>
-                                </Column>
-                              </Row>
-                            );
-                          case 'contact':
-                            return (
-                              <Row>
-                                <Column lg={8} md={8} sm={3}>
-                                  <SectionWrapper {...section} index={index}>
-                                    <ContactInfoSection {...section} />
-                                  </SectionWrapper>
-                                </Column>
-                              </Row>
-                            );
-                          case 'death':
-                            return (
-                              <Row>
-                                <Column lg={8} md={8} sm={3}>
-                                  <SectionWrapper {...section} index={index}>
-                                    <DeathInfoSection values={props.values} />
-                                  </SectionWrapper>
-                                </Column>
-                              </Row>
-                            );
-                          case 'relationships':
-                            return (
-                              <Row>
-                                <Column lg={8} md={8} sm={3}>
-                                  <SectionWrapper {...section} index={index}>
-                                    <RelationshipsSection setFieldValue={props.setFieldValue} />
-                                  </SectionWrapper>
-                                </Column>
-                              </Row>
-                            );
-                        }
-                      })}
+                      {sections.map((section, index) => (
+                        <div key={index}>{getSection(section, index)}</div>
+                      ))}
                     </PatientRegistrationContext.Provider>
                   </Grid>
                 </Column>

@@ -5,20 +5,17 @@ import styles from './../section.scss';
 import { useField } from 'formik';
 import { ExtensionSlot } from '@openmrs/esm-react-utils';
 import { getField } from '../section-helper';
+import { PatientRegistrationContext } from '../../patient-registration-context';
 
 interface DemographicsSectionProps {
-  setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
   setCapturePhotoProps(value: SetStateAction<CapturePhotoProps>): void;
   fields: Array<any>;
 }
 
-export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
-  setFieldValue,
-  setCapturePhotoProps,
-  fields,
-}) => {
+export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setCapturePhotoProps, fields }) => {
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
+  const { setFieldValue } = React.useContext(PatientRegistrationContext);
 
   const onCapturePhoto = (dataUri: string, selectedFile: File, photoDateTime: string) => {
     if (setCapturePhotoProps) {

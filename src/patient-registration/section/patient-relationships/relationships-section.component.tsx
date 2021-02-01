@@ -7,6 +7,7 @@ import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.co
 import { getAllRelationshipTypes } from '../../patient-registration.resource';
 import { openmrsFetch } from '@openmrs/esm-api';
 import { Trans } from 'react-i18next';
+import { PatientRegistrationContext } from '../../patient-registration-context';
 
 interface RelationshipType {
   display: string;
@@ -14,12 +15,9 @@ interface RelationshipType {
   direction: string;
 }
 
-interface RelationshipsSectionProps {
-  setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
-}
-
-export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setFieldValue }) => {
+export const RelationshipsSection: React.FC = () => {
   const [relationshipTypes, setRelationshipTypes] = useState<RelationshipType[]>([]);
+  const { setFieldValue } = React.useContext(PatientRegistrationContext);
 
   useEffect(() => {
     const abortController = new AbortController();

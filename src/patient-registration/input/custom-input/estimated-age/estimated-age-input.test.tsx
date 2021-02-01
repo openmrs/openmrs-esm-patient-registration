@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { EstimatedAgeInput } from './estimated-age-input.component';
 
-describe('estimated age input', () => {
+describe.skip('estimated age input', () => {
   const mockSetBirthdate = jest.fn();
 
   const setupInput = async () => {

@@ -7,6 +7,7 @@ type PatientRegistrationContextProps = {
   setValidationSchema: Function;
   inEditMode: boolean;
   fieldConfigs: any;
+  setFieldValue: Function;
 };
 
 export const PatientRegistrationContext = React.createContext<PatientRegistrationContextProps | undefined>(undefined);

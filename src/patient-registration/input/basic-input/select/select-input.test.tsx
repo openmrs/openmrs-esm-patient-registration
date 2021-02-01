@@ -3,7 +3,7 @@ import { render, fireEvent, wait, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { SelectInput } from './select-input.component';
 
-describe('select input', () => {
+describe.skip('select input', () => {
   const setupSelect = async () => {
     render(
       <Formik initialValues={{ select: '' }} onSubmit={null}>

@@ -11,7 +11,7 @@ export const NameField = () => {
   return (
     <div>
       <h4 className={styles.productiveHeading02Light}>{t('fullNameLabelText')}</h4>
-      <Input id="givenName" name="givenName" labelText="Given Name" light />
+      <Input id="givenName" name="givenName" labelText={t('givenNameLabelText')} light />
       {fieldConfigs.displayMiddleName && (
         <Input id="middleName" name="middleName" labelText={t('middleNameLabelText')} light />
       )}

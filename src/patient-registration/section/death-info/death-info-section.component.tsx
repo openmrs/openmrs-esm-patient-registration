@@ -1,22 +1,20 @@
 import React from 'react';
 import { Input } from '../../input/basic-input/input/input.component';
 import { SelectInput } from '../../input/basic-input/select/select-input.component';
+import { PatientRegistrationContext } from '../../patient-registration-context';
 import styles from './../section.scss';
-import { FormValues } from '../../patient-registration.component';
 
-interface DeathInfoSectionProps {
-  values: FormValues;
-}
+export const DeathInfoSection: React.FC = () => {
+  const { values } = React.useContext(PatientRegistrationContext);
 
-export const DeathInfoSection: React.FC<DeathInfoSectionProps> = ({ values }) => {
   return (
     <section className={styles.formSection} aria-label="Death Info Section">
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Death Info</h5>
       <section className={styles.fieldGroup}>
-        <Input type="checkbox" label="Is Dead" name="isDead" />
+        <Input labelText="Is Dead" name="isDead" id="isDead" light />
         {values.isDead && (
           <>
-            <Input type="date" label="Date of Death" name="deathDate" />
+            <Input labelText="Date of Death" name="deathDate" id="deathDate" light />
             <SelectInput options={['Unknown', 'Stroke']} label="Cause of Death" name="deathCause" />
           </>
         )}
