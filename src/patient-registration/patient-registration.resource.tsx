@@ -132,3 +132,51 @@ export function saveRelationship(abortController: AbortController, relationship:
     signal: abortController.signal,
   });
 }
+
+export async function savePatientPhoto(
+  patientUuid: string,
+  file: File,
+  fileCaption: string,
+  abortController: AbortController,
+  base64Content: string,
+  url: string,
+  obsDatetime: string,
+  concept: string,
+) {
+  const formData = new FormData();
+  const json = {};
+  json['person'] = patientUuid;
+  json['concept'] = concept;
+  json['groupMembers'] = [];
+  json['obsDatetime'] = obsDatetime;
+  formData.append('fileCaption', fileCaption);
+  formData.append('patient', patientUuid);
+
+  if (base64Content) {
+    formData.append('file', dataURItoFile(base64Content));
+  } else {
+    formData.append('file', file);
+  }
+  formData.append('json', JSON.stringify(json));
+
+  return openmrsFetch(url, {
+    method: 'POST',
+    signal: abortController.signal,
+    body: formData,
+  });
+}
+
+function dataURItoFile(dataURI) {
+  const byteString = atob(dataURI.split(',')[1]);
+  const mimeString = dataURI
+    .split(',')[0]
+    .split(':')[1]
+    .split(';')[0];
+  // write the bytes of the string to a typed array
+  const buffer = new Uint8Array(byteString.length);
+  for (var i = 0; i < byteString.length; i++) {
+    buffer[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([buffer], { type: mimeString });
+  return new File([blob], 'patient-photo.png');
+}

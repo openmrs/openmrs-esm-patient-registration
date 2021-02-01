@@ -8,15 +8,33 @@ import { EstimatedAgeInput } from '../../input/custom-input/estimated-age/estima
 import { Input } from '../../input/basic-input/input/input.component';
 import styles from './../section.scss';
 import { useField } from 'formik';
+import { ExtensionSlot } from '@openmrs/esm-react-utils';
 
 interface DemographicsSectionProps {
   setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
   values: FormValues;
+  setCapturePhotoProps?: Function;
 }
 
-export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFieldValue, values }) => {
+export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
+  setFieldValue,
+  values,
+  setCapturePhotoProps,
+}) => {
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
+
+  const onCapturePhoto = (dataUri, selectedFile, saveImage, obsDate, concept) => {
+    if (setCapturePhotoProps) {
+      setCapturePhotoProps({
+        base64EncodedImage: dataUri,
+        imageFile: selectedFile,
+        saveAttachment: saveImage,
+        obsDate: obsDate,
+        concept: concept,
+      });
+    }
+  };
 
   useEffect(() => {
     if (!field.value && meta.touched) {
@@ -28,6 +46,7 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setFie
   return (
     <section className={styles.formSection} aria-label="Demographics Section">
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>{t('demographics', 'Demographics')}</h5>
+      <ExtensionSlot extensionSlotName="capture-patient-photo" state={{ onCapturePhoto }} />
       <section className={styles.fieldGroup}>
         <NameInput givenName="givenName" middleName="middleName" familyName="familyName" showRequiredAsterisk={true} />
         <UnidentifiedPatientInput name="unidentifiedPatient" setName={setFieldValue} />
