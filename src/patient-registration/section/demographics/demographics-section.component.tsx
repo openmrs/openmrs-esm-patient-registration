@@ -24,13 +24,12 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
 
-  const onCapturePhoto = (dataUri: string, selectedFile: File, obsDate: string, concept: string) => {
+  const onCapturePhoto = (dataUri: string, selectedFile: File, photoDateTime: string) => {
     if (setCapturePhotoProps) {
       setCapturePhotoProps({
         base64EncodedImage: dataUri,
         imageFile: selectedFile,
-        obsDate: obsDate,
-        concept: concept,
+        photoDateTime: photoDateTime,
       });
     }
   };
