@@ -14,6 +14,7 @@ import {
   generateIdentifier,
   deletePersonName,
   saveRelationship,
+  savePatientPhoto,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
@@ -108,6 +109,13 @@ interface AddressValidationSchemaType {
   regexFormat: string;
 }
 
+export interface CapturePhotoProps {
+  base64EncodedImage: string;
+  imageFile: File;
+  obsDate: string;
+  concept: string;
+}
+
 export const PatientRegistration: React.FC = () => {
   const { search } = useLocation();
   const config = useConfig();
@@ -118,6 +126,7 @@ export const PatientRegistration: React.FC = () => {
   const [addressTemplate, setAddressTemplate] = useState('');
   const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
   const { t } = useTranslation();
+  const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
 
   useEffect(() => {
     if (config && config.sections) {
@@ -425,8 +434,23 @@ export const PatientRegistration: React.FC = () => {
               });
             }
           });
+          if (capturePhotoProps && (capturePhotoProps.base64EncodedImage || capturePhotoProps.imageFile)) {
+            requests.push(
+              savePatientPhoto(
+                response.data.uuid,
+                capturePhotoProps.imageFile,
+                null,
+                abortController,
+                capturePhotoProps.base64EncodedImage,
+                '/ws/rest/v1/obs',
+                capturePhotoProps.obsDate,
+                capturePhotoProps.concept,
+              ),
+            );
+          }
           const results = Promise.all(requests);
           results.then(response => {}).catch(err => {});
+
           navigate({ to: getAfterUrl(response.data.uuid) });
         }
       })
@@ -460,7 +484,11 @@ export const PatientRegistration: React.FC = () => {
               </div>
               <div className={`${styles.column} ${styles.right}`}>
                 <div id="demographics">
-                  <DemographicsSection setFieldValue={props.setFieldValue} values={props.values} />
+                  <DemographicsSection
+                    setFieldValue={props.setFieldValue}
+                    values={props.values}
+                    setCapturePhotoProps={setCapturePhotoProps}
+                  />
                 </div>
                 <div id="contact">
                   <ContactInfoSection addressTemplate={addressTemplate} />

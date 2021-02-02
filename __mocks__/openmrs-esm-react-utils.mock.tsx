@@ -31,3 +31,5 @@ export function useCurrentPatient() {
 }
 
 export const ModuleNameContext = React.createContext('fake-module-config');
+
+export const ExtensionSlot = ({ children }) => <>{children}</>;
