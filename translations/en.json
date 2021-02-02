@@ -22,5 +22,8 @@
     "enterIdentifierPlaceholderText": "Enter Identifier",
     "addRelationshipButtonText": "Add Relationship",
     "genderLabelText": "Sex",
-    "dobLabelText": "Birth"
+    "dobLabelText": "Birth",
+    "addressHeader": "Address",
+    "fullName": "Full Name",
+    "phoneNumberInputLabelText": "Phone number(optional)"
 }

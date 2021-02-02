@@ -13,7 +13,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({ name, options, label }
   const [field, meta] = useField(name);
   const selectOptions = [
     <SelectItem disabled hidden text={`Select ${label}`} key="" value="" />,
-    ...options.map(currentOption => <SelectItem text={currentOption} value={currentOption} key="" />),
+    ...options.map((currentOption, index) => <SelectItem text={currentOption} value={currentOption} key={index} />),
   ];
 
   return (

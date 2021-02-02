@@ -2,10 +2,24 @@ import React, { useEffect, useState } from 'react';
 import styles from '../field.scss';
 import { Input } from '../../input/basic-input/input/input.component';
 import { getAddressTemplate } from '../../patient-registration.resource';
+import { useTranslation } from 'react-i18next';
+
+const parseString = (xmlDockAsString: string) => new DOMParser().parseFromString(xmlDockAsString, 'text/xml');
+
+const getTagAsDocument = (tagName: string, template: XMLDocument) => {
+  const tmp = template.getElementsByTagName(tagName)[0];
+  return tmp ? parseString(tmp.outerHTML) : parseString('');
+};
+
+const getFieldValue = (field: string, doc: XMLDocument) => {
+  const fieldElement = doc.getElementsByTagName(field)[0];
+  return fieldElement ? fieldElement.getAttribute('value') : null;
+};
 
 export const AddressField: React.FC = () => {
   const [addressFields, setAddressFields] = useState([]);
   const [addressTemplate, setAddressTemplate] = useState('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -33,20 +47,9 @@ export const AddressField: React.FC = () => {
     setAddressFields(propertiesObj);
   }, [addressTemplate]);
 
-  const parseString = (xmlDockAsString: string) => new DOMParser().parseFromString(xmlDockAsString, 'text/xml');
-
-  const getTagAsDocument = (tagName: string, template: XMLDocument) => {
-    const tmp = template.getElementsByTagName(tagName)[0];
-    return tmp ? parseString(tmp.outerHTML) : parseString('');
-  };
-
-  const getFieldValue = (field: string, doc: XMLDocument) => {
-    const fieldElement = doc.getElementsByTagName(field)[0];
-    return fieldElement ? fieldElement.getAttribute('value') : null;
-  };
   return (
     <div>
-      <h4 className={styles.productiveHeading02Light}>Address 1</h4>
+      <h4 className={styles.productiveHeading02Light}>{t('addressHeader')}</h4>
       {addressFields.map(attributes => (
         <Input key={attributes.name} {...attributes} light />
       ))}

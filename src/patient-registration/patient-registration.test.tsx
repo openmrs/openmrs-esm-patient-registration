@@ -86,7 +86,6 @@ describe.skip('getDeathInfo', () => {
   });
 });
 
-// TODO: Fix bug with form submission
 describe.skip('form submit', () => {
   const fillRequiredFields = async getByLabelText => {
     const givenNameInput = getByLabelText('givenNameLabelText') as HTMLInputElement;

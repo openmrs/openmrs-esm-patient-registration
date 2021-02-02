@@ -4,7 +4,7 @@ type PatientRegistrationContextProps = {
   identifierTypes: Array<any>;
   values: any;
   validationSchema: any;
-  setValidationSchema: Function;
+  setValidationSchema: (value: any) => void;
   inEditMode: boolean;
   fieldConfigs: any;
   setFieldValue: Function;

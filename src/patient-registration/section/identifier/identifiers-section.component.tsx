@@ -1,16 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { IdentifierInput } from '../../input/custom-input/identifier/identifier-input.component';
 import { PatientIdentifierType, IdentifierSource } from '../../patient-registration-helper';
 import styles from './../section.scss';
-import { FormValues } from '../../patient-registration.component';
-
-interface IdentifierSectionProps {
-  identifierTypes: PatientIdentifierType[];
-  validationSchema: any;
-  inEditMode: boolean;
-  values: FormValues;
-  setValidationSchema(value: any): void;
-}
+import { PatientRegistrationContext } from '../../patient-registration-context';
 
 function containsSourceWithAnOption(sources: Array<IdentifierSource>): boolean {
   for (const source of sources) {
@@ -21,13 +13,10 @@ function containsSourceWithAnOption(sources: Array<IdentifierSource>): boolean {
   return false;
 }
 
-export const IdentifierSection: React.FC<IdentifierSectionProps> = ({
-  identifierTypes,
-  validationSchema,
-  inEditMode,
-  values,
-  setValidationSchema,
-}) => {
+export const IdentifierSection: React.FC = () => {
+  const { identifierTypes, values, inEditMode, validationSchema, setValidationSchema } = React.useContext(
+    PatientRegistrationContext,
+  );
   const identifierInputs = identifierTypes
     .map(identifierType => {
       const sources = identifierType.identifierSources;
@@ -47,14 +36,7 @@ export const IdentifierSection: React.FC<IdentifierSectionProps> = ({
         identifierType.autoGenerationSource = identifierType.identifierSources[0];
         return null;
       } else {
-        return (
-          <IdentifierInput
-            key={identifierType.fieldName}
-            identifierType={identifierType}
-            validationSchema={validationSchema}
-            setValidationSchema={setValidationSchema}
-          />
-        );
+        return <IdentifierInput key={identifierType.fieldName} identifierType={identifierType} />;
       }
     })
     .filter(Boolean);

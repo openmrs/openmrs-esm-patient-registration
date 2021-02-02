@@ -7,18 +7,13 @@ import { SelectInput } from '../../basic-input/select/select-input.component';
 import { Input } from '../../basic-input/input/input.component';
 import { Row, Column } from 'carbon-components-react';
 import { useTranslation } from 'react-i18next';
+import { PatientRegistrationContext } from '../../../patient-registration-context';
 
 interface IdentifierInputProps {
   identifierType: PatientIdentifierType;
-  validationSchema: Yup.ObjectSchema;
-  setValidationSchema: Function;
 }
 
-export const IdentifierInput: React.FC<IdentifierInputProps> = ({
-  identifierType,
-  setValidationSchema,
-  validationSchema,
-}) => {
+export const IdentifierInput: React.FC<IdentifierInputProps> = ({ identifierType }) => {
   const sources = identifierType.identifierSources;
   const name = identifierType.fieldName;
   const { t } = useTranslation();
@@ -28,6 +23,7 @@ export const IdentifierInput: React.FC<IdentifierInputProps> = ({
   });
   const [selectSourceField] = useField('source-for-' + name);
   const [identifierValidationSchema, setIdentifierValidationSchema] = useState(Yup.object({}));
+  const { validationSchema, setValidationSchema } = React.useContext(PatientRegistrationContext);
 
   useEffect(() => {
     if (sources.length == 1) {

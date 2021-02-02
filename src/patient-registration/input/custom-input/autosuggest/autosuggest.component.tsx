@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Search } from 'carbon-components-react';
 import styles from './autosuggest.scss';
+import { useTranslation } from 'react-i18next';
 
 interface AutosuggestProps {
   name: string;
@@ -22,6 +23,7 @@ export const Autosuggest: React.FC<AutosuggestProps> = ({
   const [suggestions, setSuggestions] = useState([]);
   const searchBox = useRef(null);
   const wrapper = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutsideComponent);
@@ -62,7 +64,7 @@ export const Autosuggest: React.FC<AutosuggestProps> = ({
         name={name}
         id="autosuggest"
         placeHolderText={placeholder}
-        labelText="Full Name"
+        labelText={t('fullName')}
         onChange={handleChange}
         ref={searchBox}
         className={styles.autocompleteSearch}
