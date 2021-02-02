@@ -112,8 +112,7 @@ interface AddressValidationSchemaType {
 export interface CapturePhotoProps {
   base64EncodedImage: string;
   imageFile: File;
-  obsDate: string;
-  concept: string;
+  photoDateTime: string;
 }
 
 export const PatientRegistration: React.FC = () => {
@@ -443,8 +442,8 @@ export const PatientRegistration: React.FC = () => {
                 abortController,
                 capturePhotoProps.base64EncodedImage,
                 '/ws/rest/v1/obs',
-                capturePhotoProps.obsDate,
-                capturePhotoProps.concept,
+                capturePhotoProps.photoDateTime,
+                config.concepts.patientPhotoUuid,
               ),
             );
           }
