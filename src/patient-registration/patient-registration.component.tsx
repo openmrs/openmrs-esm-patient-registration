@@ -126,7 +126,6 @@ export const PatientRegistration: React.FC = () => {
   const { t } = useTranslation();
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
-  const { t } = useTranslation();
 
   useEffect(() => {
     if (config && config.sections) {
@@ -523,6 +522,7 @@ export const PatientRegistration: React.FC = () => {
                         identifierTypes,
                         validationSchema,
                         setValidationSchema,
+                        setCapturePhotoProps,
                         fieldConfigs,
                         values: props.values,
                         inEditMode: !!existingPatient,

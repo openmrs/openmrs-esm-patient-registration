@@ -8,14 +8,13 @@ import { getField } from '../section-helper';
 import { PatientRegistrationContext } from '../../patient-registration-context';
 
 interface DemographicsSectionProps {
-  setCapturePhotoProps(value: SetStateAction<CapturePhotoProps>): void;
   fields: Array<any>;
 }
 
-export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ setCapturePhotoProps, fields }) => {
+export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ fields }) => {
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
-  const { setFieldValue } = React.useContext(PatientRegistrationContext);
+  const { setFieldValue, setCapturePhotoProps } = React.useContext(PatientRegistrationContext);
 
   const onCapturePhoto = (dataUri: string, selectedFile: File, photoDateTime: string) => {
     if (setCapturePhotoProps) {
