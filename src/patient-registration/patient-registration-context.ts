@@ -1,13 +1,14 @@
 import React from 'react';
+import { FormValues } from './patient-registration.component';
 
 type PatientRegistrationContextProps = {
   identifierTypes: Array<any>;
-  values: any;
+  values: FormValues;
   validationSchema: any;
   setValidationSchema: (value: any) => void;
   inEditMode: boolean;
-  fieldConfigs: any;
-  setFieldValue: Function;
+  fieldConfigs: Record<string, any>;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 };
 
 export const PatientRegistrationContext = React.createContext<PatientRegistrationContextProps | undefined>(undefined);

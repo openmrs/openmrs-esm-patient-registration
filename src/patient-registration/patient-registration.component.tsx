@@ -349,7 +349,7 @@ export const PatientRegistration: React.FC = () => {
   };
 
   const cancelRegistration = () => {
-    navigate({ to: '/openmrs/spa/home' });
+    navigate({ to: window.spaBase });
   };
 
   const onFormSubmit = async (values: FormValues) => {
@@ -485,7 +485,7 @@ export const PatientRegistration: React.FC = () => {
     <main className={`omrs-main-content`} style={{ backgroundColor: 'white' }}>
       <Formik
         initialValues={initialFormValues}
-        // validationSchema={validationSchema}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           onFormSubmit(values);
           setSubmitting(false);

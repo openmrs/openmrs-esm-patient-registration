@@ -6,7 +6,7 @@ import styles from './relationships.scss';
 import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
 import { getAllRelationshipTypes } from '../../patient-registration.resource';
 import { openmrsFetch } from '@openmrs/esm-api';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { PatientRegistrationContext } from '../../patient-registration-context';
 
 interface RelationshipType {
@@ -18,6 +18,7 @@ interface RelationshipType {
 export const RelationshipsSection: React.FC = () => {
   const [relationshipTypes, setRelationshipTypes] = useState<RelationshipType[]>([]);
   const { setFieldValue } = React.useContext(PatientRegistrationContext);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -91,10 +92,10 @@ export const RelationshipsSection: React.FC = () => {
                           light={true}
                           id="select"
                           defaultValue="placeholder-item"
-                          labelText="Relationship"
+                          labelText={t('Relationship')}
                           onChange={handleRelationshipTypeChange}
                           name={`relationships[${index}].relationship`}>
-                          <SelectItem disabled hidden value="placeholder-item" text="Relationship to patient" />
+                          <SelectItem disabled hidden value="placeholder-item" text={t('relationshipToPatient')} />
                           {relationshipTypes.map(type => (
                             <SelectItem text={type.display} value={`${type.uuid}/${type.direction}`} />
                           ))}
@@ -103,7 +104,7 @@ export const RelationshipsSection: React.FC = () => {
                       <div className={styles.actions}>
                         {relationships.length - 1 === index && (
                           <Button kind="ghost" onClick={() => push({})}>
-                            <Trans i18nKey="addRelationshipButtonText"></Trans>
+                            {t('addRelationshipButtonText')}
                           </Button>
                         )}
                       </div>

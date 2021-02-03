@@ -9,8 +9,7 @@ export const GenderField: React.FC = () => {
   const { setFieldValue } = React.useContext(PatientRegistrationContext);
 
   const setGender = (value: string) => {
-    console.log('Gender selected ', value);
-    setFieldValue(value);
+    setFieldValue('gender', value);
   };
 
   return (
@@ -19,9 +18,9 @@ export const GenderField: React.FC = () => {
       <div style={{ marginBottom: '1rem' }}>
         <p className="bx--label">{t('sexLabelText')}</p>
         <RadioButtonGroup name="gender" orientation="vertical" onChange={setGender}>
-          <RadioButton id="male" labelText="Male" value="Male" />
-          <RadioButton id="female" labelText="Female" value="Female" />
-          <RadioButton id="other" labelText="Other" value="Other" />
+          <RadioButton id="male" labelText={t('Male')} value="Male" />
+          <RadioButton id="female" labelText={t('Female')} value="Female" />
+          <RadioButton id="other" labelText={t('Other')} value="Other" />
         </RadioButtonGroup>
       </div>
     </div>
