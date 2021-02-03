@@ -27,5 +27,7 @@
     "fullName": "Full Name",
     "phoneNumberInputLabelText": "Phone number(optional)",
     "isDeadInputLabel": "Is Dead",
-    "relationshipToPatient": "Relationship to patient"
+    "relationshipToPatient": "Relationship to patient",
+    "deathDateInputLabel": "Date of Death",
+    "causeOfDeathInputLabel": "Cause of Death"
 }

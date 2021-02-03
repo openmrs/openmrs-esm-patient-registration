@@ -16,8 +16,8 @@ export const DeathInfoSection: React.FC = () => {
         <Input labelText={t('isDeadInputLabel')} name="isDead" id="isDead" light />
         {values.isDead && (
           <>
-            <Input labelText="Date of Death" name="deathDate" id="deathDate" light />
-            <SelectInput options={['Unknown', 'Stroke']} label="Cause of Death" name="deathCause" />
+            <Input labelText={t('deathDateInputLabel')} name="deathDate" id="deathDate" light />
+            <SelectInput options={[t('Unknown'), t('Stroke')]} label={t('causeOfDeathInputLabel')} name="deathCause" />
           </>
         )}
       </section>
