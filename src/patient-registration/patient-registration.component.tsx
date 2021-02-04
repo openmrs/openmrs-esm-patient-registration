@@ -348,7 +348,7 @@ export const PatientRegistration: React.FC = () => {
   };
 
   const cancelRegistration = () => {
-    navigate({ to: window.spaBase });
+    navigate({ to: `${window.spaBase}/home` });
   };
 
   const onFormSubmit = async (values: FormValues) => {
