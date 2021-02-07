@@ -8,7 +8,7 @@ describe.skip('select input', () => {
     render(
       <Formik initialValues={{ select: '' }} onSubmit={null}>
         <Form>
-          <SelectInput label="Select" name="select" options={['A Option', 'B Option']} showRequiredAsterisk={true} />
+          <SelectInput label="Select" name="select" options={['A Option', 'B Option']} />
         </Form>
       </Formik>,
     );

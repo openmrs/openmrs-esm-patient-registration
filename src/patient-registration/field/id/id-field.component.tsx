@@ -40,12 +40,7 @@ export const IdField: React.FC = () => {
       } else {
         return (
           <div style={{ marginBottom: '1rem' }}>
-            <IdentifierInput
-              key={identifierType.fieldName}
-              identifierType={identifierType}
-              validationSchema={validationSchema}
-              setValidationSchema={setValidationSchema}
-            />
+            <IdentifierInput key={identifierType.fieldName} identifierType={identifierType} />
           </div>
         );
       }

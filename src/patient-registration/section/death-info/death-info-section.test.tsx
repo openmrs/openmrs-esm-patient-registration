@@ -12,7 +12,7 @@ describe.skip('death info section', () => {
     render(
       <Formik initialValues={{ ...initialFormValues, isDead }} onSubmit={null}>
         <Form>
-          <DeathInfoSection values={{ ...initialFormValues, isDead }} />
+          <DeathInfoSection />
         </Form>
       </Formik>,
     );

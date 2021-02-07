@@ -3,14 +3,9 @@ import { render, fireEvent, wait, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
-import { SelectInput } from '../input/basic-input/select/select-input.component';
-import { EstimatedAgeInput } from './../input/custom-input/estimated-age/estimated-age-input.component';
-import { Input } from '../input/basic-input/input/input.component';
-import { queryByLabelText } from '@testing-library/dom';
 import { NameField } from '../field/name/name-field.component';
 import { PatientRegistrationContext } from '../patient-registration-context';
-import { GenderField } from '../field/gender/gender-field.component';
-import { DobField } from '../field/dob/dob.component';
+import { FormValues, initialFormValues } from '../patient-registration.component';
 
 const mockFieldConfigs = {
   name: {
@@ -18,6 +13,8 @@ const mockFieldConfigs = {
   },
 };
 describe('name input', () => {
+  const formValues: FormValues = initialFormValues;
+  
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
     it(
       'does not display error message when givenNameValue: ' +
@@ -71,7 +68,7 @@ describe('name input', () => {
               validationSchema,
               setValidationSchema: () => {},
               fieldConfigs: mockFieldConfigs,
-              values: {},
+              values: formValues,
               inEditMode: false,
               setFieldValue: () => null,
             }}>
@@ -107,53 +104,3 @@ describe('name input', () => {
   testInvalidName('', 'No', 'Given Name', 'Given name is required', 'givenNameError');
   testInvalidName('No', 'Family Name', '', 'Family name is required', 'familyNameError');
 });
-
-describe.skip('birthdate input', () => {
-  const testValidBirthdate = (validBirthdate: string) => {
-    it('does not display error message when ' + validBirthdate + ' is inputted', async () => {
-      const error = await updateBirthdateAndReturnError(validBirthdate);
-      expect(error).toBeNull();
-    });
-  };
-
-  const testInvalidBirthdate = (invalidBirthdate: string, expectedError: string) => {
-    it('displays error message when ' + invalidBirthdate + ' is inputted', async () => {
-      const error = await updateBirthdateAndReturnError(invalidBirthdate);
-      expect(error.textContent).toEqual(expectedError);
-    });
-  };
-
-  const updateBirthdateAndReturnError = async (birthdate: string) => {
-    render(
-      <Formik initialValues={{ birthdate: null }} onSubmit={null} validationSchema={validationSchema}>
-        <Form>
-          <DobField />
-        </Form>
-      </Formik>,
-    );
-    const input = screen.getByLabelText('dateOfBirthLabelText') as HTMLInputElement;
-
-    fireEvent.change(input, { target: { value: birthdate } });
-    fireEvent.blur(input);
-
-    await wait();
-
-    return screen.getByText('Birthdate is required');
-  };
-
-  testValidBirthdate('09/10/1990');
-  testValidBirthdate(
-    dayjs()
-      .subtract(1, 'day')
-      .format('YYYY-MM-DD'),
-  );
-  testValidBirthdate(dayjs().format('YYYY-MM-DD'));
-  testInvalidBirthdate(
-    dayjs()
-      .add(1, 'day')
-      .format('YYYY-MM-DD'),
-    'Birthdate cannot be in the future',
-  );
-  testInvalidBirthdate(null, 'Birthdate is required');
-});
-

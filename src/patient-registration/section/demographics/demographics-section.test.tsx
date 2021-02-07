@@ -38,8 +38,9 @@ describe('demographics section', () => {
               fieldConfigs: [],
               values: { ...initialFormValues, birthdateEstimated, addNameInLocalLanguage },
               inEditMode: false,
+              setFieldValue: () => {},
             }}>
-            <DemographicsSection setFieldValue={() => {}} fields={['name', 'gender', 'id']} setCapturePhotoProps={() => {}}/>
+            <DemographicsSection fields={['name', 'gender', 'id']} setCapturePhotoProps={() => {}}/>
           </PatientRegistrationContext.Provider>
         </Form>
       </Formik>,

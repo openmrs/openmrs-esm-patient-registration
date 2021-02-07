@@ -20,7 +20,7 @@ describe('contact info section', () => {
     render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
-          <ContactInfoSection fields={fields} fieldConfigs={[]} />
+          <ContactInfoSection fields={fields} />
         </Form>
       </Formik>,
     );

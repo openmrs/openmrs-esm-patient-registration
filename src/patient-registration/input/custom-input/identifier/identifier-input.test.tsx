@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { IdentifierInput } from './identifier-input.component';
 import { initialFormValues } from '../../../patient-registration.component';
-import { validationSchema } from '../../../validation/patient-registration-validation';
 import { PatientIdentifierType } from '../../../patient-registration-helper';
 
 describe.skip('identifier input', () => {
@@ -41,8 +40,6 @@ describe.skip('identifier input', () => {
         <Form>
           <IdentifierInput
             identifierType={identifierType}
-            validationSchema={validationSchema}
-            setValidationSchema={() => {}}
           />
         </Form>
       </Formik>,
