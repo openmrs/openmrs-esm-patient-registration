@@ -9,12 +9,13 @@ import { PatientRegistrationContext } from '../../patient-registration-context';
 
 interface DemographicsSectionProps {
   fields: Array<any>;
+  setCapturePhotoProps: (value: SetStateAction<CapturePhotoProps>) => void;
 }
 
-export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ fields }) => {
+export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ fields, setCapturePhotoProps }) => {
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
-  const { setFieldValue, setCapturePhotoProps } = React.useContext(PatientRegistrationContext);
+  const { setFieldValue } = React.useContext(PatientRegistrationContext);
 
   const onCapturePhoto = (dataUri: string, selectedFile: File, photoDateTime: string) => {
     if (setCapturePhotoProps) {

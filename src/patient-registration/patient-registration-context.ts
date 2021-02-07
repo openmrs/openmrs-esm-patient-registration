@@ -9,7 +9,6 @@ type PatientRegistrationContextProps = {
   inEditMode: boolean;
   fieldConfigs: Record<string, any>;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  setCapturePhotoProps: (value: SetStateAction<CapturePhotoProps>) => void;
 };
 
 export const PatientRegistrationContext = React.createContext<PatientRegistrationContextProps | undefined>(undefined);

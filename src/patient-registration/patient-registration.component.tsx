@@ -508,7 +508,7 @@ export const PatientRegistration: React.FC = () => {
                       </div>
                     ))}
                     <Button style={{ marginBottom: '1rem', width: '11.688rem', display: 'block' }} type="submit">
-                      {existingPatient ? <span>{t('updatePatient')}</span> : <span>{t('registerPatient')}</span>}
+                      {existingPatient ? t('updatePatient') : t('registerPatient')}
                     </Button>
                     <Button style={{ width: '11.688rem' }} kind="tertiary" onClick={cancelRegistration}>
                       {t('cancel')}
@@ -522,14 +522,13 @@ export const PatientRegistration: React.FC = () => {
                         identifierTypes,
                         validationSchema,
                         setValidationSchema,
-                        setCapturePhotoProps,
                         fieldConfigs,
                         values: props.values,
                         inEditMode: !!existingPatient,
                         setFieldValue: props.setFieldValue,
                       }}>
                       {sections.map((section, index) => (
-                        <div key={index}>{getSection(section, index)}</div>
+                        <div key={index}>{getSection(section, index, { setCapturePhotoProps })}</div>
                       ))}
                     </PatientRegistrationContext.Provider>
                   </Grid>

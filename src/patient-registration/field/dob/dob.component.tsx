@@ -15,7 +15,6 @@ export const DobField: React.FC = () => {
         dateFormat="d/m/Y"
         datePickerType="single"
         light
-        {...field}
         onChange={([value]) =>
           field.onChange({
             target: { type: 'input', value, id: 'birthdate', name: 'birthdate' },
@@ -28,6 +27,7 @@ export const DobField: React.FC = () => {
           labelText={t('dateOfBirthLabelText')}
           invalid={!!(meta.touched && meta.error)}
           invalidText={meta.error}
+          {...field}
         />
       </DatePicker>
     </div>
