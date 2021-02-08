@@ -29,5 +29,6 @@
     "isDeadInputLabel": "Is Dead",
     "relationshipToPatient": "Relationship to patient",
     "deathDateInputLabel": "Date of Death",
-    "causeOfDeathInputLabel": "Cause of Death"
+    "causeOfDeathInputLabel": "Cause of Death",
+    "unidentifiedPatient": "Unidentified Patient"
 }

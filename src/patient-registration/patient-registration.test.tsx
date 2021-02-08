@@ -8,8 +8,6 @@ import { getAddressTemplateMock } from '../../__mocks__/openmrs-esm-api.mock';
 import * as mockOpenmrsApi from '../../__mocks__/openmrs-esm-api.mock';
 import { mockPatient } from '../../__mocks__/patient.mock';
 import * as mockOpenmrsReactUtils from '../../__mocks__/openmrs-esm-react-utils.mock';
-import { useConfig } from '@openmrs/esm-react-utils';
-import { date } from 'yup';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -70,12 +68,12 @@ describe('form submit', () => {
     const givenNameInput = getByLabelText('givenNameLabelText') as HTMLInputElement;
     const familyNameInput = getByLabelText('familyNameLabelText') as HTMLInputElement;
     const dateOfBirthInput = getByLabelText('dateOfBirthLabelText') as HTMLInputElement;
-    const genderSelect = getByLabelText('Male') as HTMLSelectElement;
+    const genderInput = getByLabelText('Male') as HTMLSelectElement;
 
     userEvent.type(givenNameInput, 'Paul');
     userEvent.type(familyNameInput, 'Gaihre');
     userEvent.type(dateOfBirthInput, '1993-08-02');
-    fireEvent.click(genderSelect);
+    fireEvent.click(genderInput);
 
     await wait();
   };

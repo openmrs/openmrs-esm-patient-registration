@@ -97,7 +97,7 @@ export const RelationshipsSection: React.FC = () => {
                           name={`relationships[${index}].relationship`}>
                           <SelectItem disabled hidden value="placeholder-item" text={t('relationshipToPatient')} />
                           {relationshipTypes.map(type => (
-                            <SelectItem text={type.display} value={`${type.uuid}/${type.direction}`} />
+                            <SelectItem text={type.display} value={`${type.uuid}/${type.direction}`} key={index} />
                           ))}
                         </Select>
                       </div>
