@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useField } from 'formik';
 import { Input } from '../../basic-input/input/input.component';
+import { useTranslation } from 'react-i18next';
 
 interface UnidentifiedPatientInputProps {
   name: string;
@@ -9,6 +10,7 @@ interface UnidentifiedPatientInputProps {
 
 export const UnidentifiedPatientInput: React.FC<UnidentifiedPatientInputProps> = ({ setName, name }) => {
   const [field] = useField({ name });
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (field.value) {
@@ -18,5 +20,5 @@ export const UnidentifiedPatientInput: React.FC<UnidentifiedPatientInputProps> =
     }
   }, [field.value, setName]);
 
-  return <Input type="checkbox" label="Unidentified Patient" name={name} />;
+  return <Input id="checkbox" labelText={t('unidentifiedPatient')} name={name} light />;
 };

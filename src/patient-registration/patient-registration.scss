@@ -1,25 +1,10 @@
 @import "../root.scss";
-$color-gray-70: #525252;
-$color-gray-100: #161616;
-$grey-2: #e0e0e0;
-.form {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    background-color: var(--omrs-color-bg-high-contrast);
-    padding: 10px;
-}
-
-.formTitle {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
 .title {
     color: var(--omrs-color-brand-teal);
+}
+
+.submit {
+    width: 250px;
 }
 
 .submit:hover {
@@ -39,23 +24,39 @@ $grey-2: #e0e0e0;
     cursor: pointer;
 }
 
-.productiveHeading02:hover {
-    text-decoration: none;
-    color: $ui-04;
-}
-
 .space05 {
     margin: $spacing-05 0 $spacing-05 0;
 }
 
-.sidebar {
+.fixedPosition {
     position: fixed;
 }
 
-.row {
-    display: flex;
+$color-gray-70: #525252;
+$color-gray-100: #161616;
+$grey-2: #e0e0e0;
+.TouchTarget a:active {
+    color: $color-gray-100;
 }
 
-.left {
-    width: 42rem;
+.LinkName {
+    color: $color-gray-70;
+    line-height: 1.38;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+a.LinkName:active {
+    text-decoration: none;
+    color: $color-gray-100;
+}
+
+a.LinkName:hover {
+    text-decoration: none;
+    color: $color-gray-100;
+    cursor: pointer;
+}
+
+.main {
+    background-color: white;
 }

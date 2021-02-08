@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import sectionStyles from '../section.scss';
-import { useTranslation } from 'react-i18next';
 import { FieldArray } from 'formik';
 import { Select, SelectItem, Button } from 'carbon-components-react';
 import styles from './relationships.scss';
 import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
 import { getAllRelationshipTypes } from '../../patient-registration.resource';
 import { openmrsFetch } from '@openmrs/esm-api';
-import { Add16, TrashCan16 } from '@carbon/icons-react';
+import { useTranslation } from 'react-i18next';
+import { PatientRegistrationContext } from '../../patient-registration-context';
 
 interface RelationshipType {
   display: string;
@@ -15,13 +15,10 @@ interface RelationshipType {
   direction: string;
 }
 
-interface RelationshipsSectionProps {
-  setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
-}
-
-export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setFieldValue }) => {
-  const { t } = useTranslation();
+export const RelationshipsSection: React.FC = () => {
   const [relationshipTypes, setRelationshipTypes] = useState<RelationshipType[]>([]);
+  const { setFieldValue } = React.useContext(PatientRegistrationContext);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -65,7 +62,6 @@ export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setF
 
   return (
     <section className={sectionStyles.formSection} aria-label="Relationships Section">
-      <h5 className="omrs-type-title-5">{t('relationshipsSectionHeader')}</h5>
       <section className={sectionStyles.fieldGroup}>
         <FieldArray name="relationships">
           {({
@@ -79,9 +75,9 @@ export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setF
               {relationships && relationships.length > 0 ? (
                 <div>
                   <br />
-                  {relationships.map((relationship, index) => (
+                  {relationships.map((_relationship: any, index: React.Key) => (
                     <div key={index} className={styles.relationship}>
-                      <div className={styles.searchBox}>
+                      <div className={styles.searchBox} style={{ marginBottom: '1rem' }}>
                         <Autosuggest
                           name={`relationships[${index}].relatedPerson`}
                           placeholder="Find person"
@@ -91,46 +87,31 @@ export const RelationshipsSection: React.FC<RelationshipsSectionProps> = ({ setF
                           getFieldValue={item => item.uuid}
                         />
                       </div>
-                      <span className={styles.label}>Is a</span>
-                      <div className={styles.selectRelationshipType}>
+                      <div className={`${styles.selectRelationshipType}`} style={{ marginBottom: '1rem' }}>
                         <Select
+                          light={true}
                           id="select"
                           defaultValue="placeholder-item"
-                          noLabel={true}
+                          labelText={t('Relationship')}
                           onChange={handleRelationshipTypeChange}
                           name={`relationships[${index}].relationship`}>
-                          <SelectItem disabled hidden value="placeholder-item" text="Select Relationship Type" />
+                          <SelectItem disabled hidden value="placeholder-item" text={t('relationshipToPatient')} />
                           {relationshipTypes.map(type => (
-                            <SelectItem text={type.display} value={`${type.uuid}/${type.direction}`} />
+                            <SelectItem text={type.display} value={`${type.uuid}/${type.direction}`} key={index} />
                           ))}
                         </Select>
                       </div>
                       <div className={styles.actions}>
-                        <Button
-                          renderIcon={TrashCan16}
-                          iconDescription="Remove relationship"
-                          hasIconOnly
-                          onClick={() => remove(index)}
-                          kind="danger"
-                        />
-                      </div>
-                      <div className={styles.actions}>
-                        <Button
-                          renderIcon={Add16}
-                          iconDescription="Add relationship"
-                          hasIconOnly
-                          onClick={() => push({})}
-                        />
+                        {relationships.length - 1 === index && (
+                          <Button kind="ghost" onClick={() => push({})}>
+                            {t('addRelationshipButtonText')}
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))}
                 </div>
-              ) : (
-                <div>
-                  <br />
-                  <Button onClick={() => push({})}>Add Relationship</Button>
-                </div>
-              )}
+              ) : null}
             </div>
           )}
         </FieldArray>

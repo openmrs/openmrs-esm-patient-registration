@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { IdentifierInput } from '../../input/custom-input/identifier/identifier-input.component';
-import { PatientIdentifierType, IdentifierSource } from '../../patient-registration-helper';
-import styles from './../section.scss';
-import { FormValues } from '../../patient-registration.component';
-
-interface IdentifierSectionProps {
-  identifierTypes: PatientIdentifierType[];
-  validationSchema: any;
-  inEditMode: boolean;
-  values: FormValues;
-  setValidationSchema(value: any): void;
-}
+import { IdentifierSource } from '../../patient-registration-helper';
+import styles from '../field.scss';
+import { useTranslation } from 'react-i18next';
+import { PatientRegistrationContext } from '../../patient-registration-context';
 
 function containsSourceWithAnOption(sources: Array<IdentifierSource>): boolean {
   for (const source of sources) {
@@ -21,13 +14,11 @@ function containsSourceWithAnOption(sources: Array<IdentifierSource>): boolean {
   return false;
 }
 
-export const IdentifierSection: React.FC<IdentifierSectionProps> = ({
-  identifierTypes,
-  validationSchema,
-  inEditMode,
-  values,
-  setValidationSchema,
-}) => {
+export const IdField: React.FC = () => {
+  const { identifierTypes, inEditMode, values, validationSchema, setValidationSchema } = React.useContext(
+    PatientRegistrationContext,
+  );
+  const { t } = useTranslation();
   const identifierInputs = identifierTypes
     .map(identifierType => {
       const sources = identifierType.identifierSources;
@@ -48,12 +39,9 @@ export const IdentifierSection: React.FC<IdentifierSectionProps> = ({
         return null;
       } else {
         return (
-          <IdentifierInput
-            key={identifierType.fieldName}
-            identifierType={identifierType}
-            validationSchema={validationSchema}
-            setValidationSchema={setValidationSchema}
-          />
+          <div style={{ marginBottom: '1rem' }}>
+            <IdentifierInput key={identifierType.fieldName} identifierType={identifierType} />
+          </div>
         );
       }
     })
@@ -61,10 +49,10 @@ export const IdentifierSection: React.FC<IdentifierSectionProps> = ({
 
   if (identifierInputs.length > 0) {
     return (
-      <section className={styles.formSection}>
-        <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Identifiers</h5>
+      <div>
+        <h4 className={styles.productiveHeading02Light}>{t('idFieldLabelText')}</h4>
         {identifierInputs}
-      </section>
+      </div>
     );
   } else {
     return null;

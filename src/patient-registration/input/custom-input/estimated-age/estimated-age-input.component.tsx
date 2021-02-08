@@ -3,6 +3,7 @@ import { useField } from 'formik';
 import dayjs from 'dayjs';
 import { Input } from '../../basic-input/input/input.component';
 import styles from './../../input.scss';
+import { useTranslation } from 'react-i18next';
 
 interface EstimatedAgeInputProps {
   yearsName: string;
@@ -13,6 +14,7 @@ interface EstimatedAgeInputProps {
 export const EstimatedAgeInput: React.FC<EstimatedAgeInputProps> = ({ yearsName, monthsName, setBirthdate }) => {
   const [yearsField] = useField(yearsName);
   const [monthsField] = useField(monthsName);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setBirthdate(
@@ -27,8 +29,8 @@ export const EstimatedAgeInput: React.FC<EstimatedAgeInputProps> = ({ yearsName,
 
   return (
     <main className={styles.fieldRow}>
-      <Input type="number" label="Years" name={yearsName} />
-      <Input type="number" label="Months" name={monthsName} />
+      <Input id="number" labelText={t('Years')} name={yearsName} light />
+      <Input id="number" labelText={t('Months')} name={monthsName} light />
     </main>
   );
 };
