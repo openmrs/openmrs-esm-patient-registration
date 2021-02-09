@@ -166,6 +166,22 @@ export async function savePatientPhoto(
   });
 }
 
+export async function fetchPatientPhotoUrl(
+  patientUuid: string,
+  concept: string,
+  abortController: AbortController,
+): Promise<string> {
+  const { data } = await openmrsFetch(`/ws/rest/v1/obs?patient=${patientUuid}&concept=${concept}&v=full`, {
+    method: 'GET',
+    signal: abortController.signal,
+  });
+  if (data.results.length) {
+    return data.results[0].value.links.uri;
+  } else {
+    return null;
+  }
+}
+
 function dataURItoFile(dataURI: string) {
   const byteString = atob(dataURI.split(',')[1]);
   const mimeString = dataURI
