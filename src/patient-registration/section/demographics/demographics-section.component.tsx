@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CapturePhotoProps, FormValues } from '../../patient-registration.component';
 import styles from './../section.scss';
@@ -10,12 +10,18 @@ import { PatientRegistrationContext } from '../../patient-registration-context';
 interface DemographicsSectionProps {
   fields: Array<any>;
   setCapturePhotoProps: (value: SetStateAction<CapturePhotoProps>) => void;
+  currentPatientPhoto?: string;
 }
 
-export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ fields, setCapturePhotoProps }) => {
+export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
+  fields,
+  setCapturePhotoProps,
+  currentPatientPhoto,
+}) => {
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
   const { setFieldValue } = React.useContext(PatientRegistrationContext);
+  const [counter, setCounter] = useState(0);
 
   const onCapturePhoto = (dataUri: string, selectedFile: File, photoDateTime: string) => {
     if (setCapturePhotoProps) {
@@ -34,9 +40,20 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ fields
       setFieldValue('additionalFamilyName', '');
     }
   }, [field.value, meta.touched]);
+
+  useEffect(() => {
+    if (currentPatientPhoto) {
+      setCounter(counter + 1);
+    }
+  }, [currentPatientPhoto]);
+
   return (
     <section className={styles.formSection} aria-label="Demographics Section">
-      <ExtensionSlot extensionSlotName="capture-patient-photo" state={{ onCapturePhoto }} />
+      <ExtensionSlot
+        key={counter}
+        extensionSlotName="capture-patient-photo"
+        state={{ onCapturePhoto, initialState: currentPatientPhoto }}
+      />
       {fields.map(field => (
         <div key={field}>{getField(field)}</div>
       ))}

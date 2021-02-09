@@ -16,6 +16,7 @@ import {
   deletePersonName,
   saveRelationship,
   savePatientPhoto,
+  fetchPatientPhotoUrl,
 } from './patient-registration.resource';
 import { createErrorHandler } from '@openmrs/esm-error-handling';
 import { showToast } from '@openmrs/esm-styleguide';
@@ -127,6 +128,7 @@ export const PatientRegistration: React.FC = () => {
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
 
+  const [currentPhoto, setCurrentPhoto] = useState(null);
   useEffect(() => {
     if (config && config.sections) {
       const tmp_sections = config.sections.map(section => ({
@@ -229,6 +231,11 @@ export const PatientRegistration: React.FC = () => {
           ? existingPatient.deceasedDateTime.split('T')[0]
           : '';
       }
+      (async () => {
+        const abortController = new AbortController();
+        const value = await fetchPatientPhotoUrl(existingPatient.id, config.concepts.patientPhotoUuid, abortController);
+        setCurrentPhoto(value);
+      })();
     }
   }, [existingPatient]);
 
@@ -528,7 +535,7 @@ export const PatientRegistration: React.FC = () => {
                         setFieldValue: props.setFieldValue,
                       }}>
                       {sections.map((section, index) => (
-                        <div key={index}>{getSection(section, index, { setCapturePhotoProps })}</div>
+                        <div key={index}>{getSection(section, index, { setCapturePhotoProps, currentPhoto })}</div>
                       ))}
                     </PatientRegistrationContext.Provider>
                   </Grid>
