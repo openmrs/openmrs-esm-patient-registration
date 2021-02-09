@@ -57,7 +57,13 @@ export const getSection = (sectionProps, index, { setCapturePhotoProps, currentP
   let section = null;
   switch (sectionProps.id) {
     case Section.Demographics:
-      section = <DemographicsSection {...sectionProps} setCapturePhotoProps={setCapturePhotoProps} currentPatientPhoto={currentPhoto} />;
+      section = (
+        <DemographicsSection
+          {...sectionProps}
+          setCapturePhotoProps={setCapturePhotoProps}
+          currentPatientPhoto={currentPhoto}
+        />
+      );
       break;
     case Section.Contact:
       section = <ContactInfoSection {...sectionProps} />;

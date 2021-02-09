@@ -13,12 +13,16 @@ interface DemographicsSectionProps {
   currentPatientPhoto?: string;
 }
 
-export const DemographicsSection: React.FC<DemographicsSectionProps> = ({ fields, setCapturePhotoProps, currentPatientPhoto }) => {
+export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
+  fields,
+  setCapturePhotoProps,
+  currentPatientPhoto,
+}) => {
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
   const { setFieldValue } = React.useContext(PatientRegistrationContext);
   const [counter, setCounter] = useState(0);
-  
+
   const onCapturePhoto = (dataUri: string, selectedFile: File, photoDateTime: string) => {
     if (setCapturePhotoProps) {
       setCapturePhotoProps({
