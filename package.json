@@ -40,7 +40,7 @@
     "url": "https://github.com/openmrs/openmrs-esm-patient-registration/issues"
   },
   "dependencies": {
-    "carbon-components-react": "^7.23.2",
+    "carbon-components-react": "^7.25.0",
     "formik": "^2.1.5",
     "yup": "^0.29.1"
   },
@@ -51,6 +51,7 @@
     "@openmrs/esm-extensions": "3.x",
     "@openmrs/esm-react-utils": "3.x",
     "@openmrs/esm-styleguide": "3.x",
+    "dayjs": "^1.8.16",
     "i18next": "^19.7.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -91,7 +92,6 @@
     "clean-webpack-plugin": "^3.0.0",
     "concurrently": "^5.0.0",
     "css-loader": "^3.2.0",
-    "dayjs": "^1.8.16",
     "eslint": "^6.2.1",
     "eslint-config-prettier": "^6.1.0",
     "eslint-config-ts-react-important-stuff": "^1.0.0",
@@ -102,7 +102,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
-    "kremling": "^2.0.1",
     "lodash": "^4.17.19",
     "node-sass": "^4.14.1",
     "openmrs": "^3.1.8",

@@ -30,6 +30,8 @@ export function useCurrentPatient() {
   return [undefined, null, null, null];
 }
 
-export const ModuleNameContext = React.createContext('fake-module-config');
+export const ComponentContext = React.createContext({
+  moduleName: 'fake-module-config',
+});
 
 export const ExtensionSlot = ({ children }) => <>{children}</>;
