@@ -14,7 +14,7 @@ const mockFieldConfigs = {
 };
 describe('name input', () => {
   const formValues: FormValues = initialFormValues;
-  
+
   const testValidName = (givenNameValue: string, middleNameValue: string, familyNameValue: string) => {
     it(
       'does not display error message when givenNameValue: ' +

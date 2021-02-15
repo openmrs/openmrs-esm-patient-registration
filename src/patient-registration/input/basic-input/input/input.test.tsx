@@ -8,7 +8,7 @@ describe.skip('number input', () => {
     render(
       <Formik initialValues={{ number: 0 }} onSubmit={null}>
         <Form>
-          <Input id="number" labelText="Number" name="number" light/>
+          <Input id="number" labelText="Number" name="number" light />
         </Form>
       </Formik>,
     );
@@ -68,7 +68,13 @@ describe.skip('telephone number input', () => {
     render(
       <Formik initialValues={{ telephoneNumber: '' }} onSubmit={null}>
         <Form>
-          <Input id="tel" labelText="Telephone Number" name="telephoneNumber" placeholder="Enter telephone number" light/>
+          <Input
+            id="tel"
+            labelText="Telephone Number"
+            name="telephoneNumber"
+            placeholder="Enter telephone number"
+            light
+          />
         </Form>
       </Formik>,
     );
@@ -128,7 +134,7 @@ describe.skip('checkbox input', () => {
     render(
       <Formik initialValues={{ checkbox: false }} onSubmit={null}>
         <Form>
-          <Input id="checkbox" labelText="checkbox" name="checkbox" light/>
+          <Input id="checkbox" labelText="checkbox" name="checkbox" light />
         </Form>
       </Formik>,
     );

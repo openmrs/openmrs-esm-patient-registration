@@ -7,20 +7,32 @@ import { PatientRegistrationContext } from '../../patient-registration-context';
 
 jest.mock('../../field/name/name-field.component', () => {
   return {
-    NameField: () => <div><input type="text" name="name"/></div>
-  }
+    NameField: () => (
+      <div>
+        <input type="text" name="name" />
+      </div>
+    ),
+  };
 });
 
 jest.mock('../../field/gender/gender-field.component', () => {
   return {
-    GenderField: () => <div><input type="text" name="name"/></div>
-  }
+    GenderField: () => (
+      <div>
+        <input type="text" name="name" />
+      </div>
+    ),
+  };
 });
 
 jest.mock('../../field/id/id-field.component', () => {
   return {
-    IdField: () => <div><input type="text" name="name"/></div>
-  }
+    IdField: () => (
+      <div>
+        <input type="text" name="name" />
+      </div>
+    ),
+  };
 });
 
 describe('demographics section', () => {
@@ -40,7 +52,7 @@ describe('demographics section', () => {
               inEditMode: false,
               setFieldValue: () => {},
             }}>
-            <DemographicsSection fields={['name', 'gender', 'id']} setCapturePhotoProps={() => {}}/>
+            <DemographicsSection fields={['name', 'gender', 'id']} setCapturePhotoProps={() => {}} />
           </PatientRegistrationContext.Provider>
         </Form>
       </Formik>,
