@@ -1,6 +1,6 @@
 {
   "name": "@openmrs/esm-patient-registration-app",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Patient registration microfrontend for the OpenMRS SPA",
   "main": "dist/openmrs-esm-patient-registration-app.js",
   "types": "src/index.ts",
