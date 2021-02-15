@@ -1,9 +1,9 @@
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CapturePhotoProps, FormValues } from '../../patient-registration.component';
+import { CapturePhotoProps } from '../../patient-registration.component';
 import styles from './../section.scss';
 import { useField } from 'formik';
-import { ExtensionSlot } from '@openmrs/esm-react-utils';
+import { ExtensionSlot } from '@openmrs/esm-framework';
 import { getField } from '../section-helper';
 import { PatientRegistrationContext } from '../../patient-registration-context';
 

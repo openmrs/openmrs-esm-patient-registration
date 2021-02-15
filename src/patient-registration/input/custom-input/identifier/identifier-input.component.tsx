@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useField } from 'formik';
-import { find } from 'lodash';
-import { PatientIdentifierType } from '../../../patient-registration-helper';
 import * as Yup from 'yup';
+import React, { useState, useEffect } from 'react';
+import find from 'lodash-es/find';
+import { useField } from 'formik';
+import { PatientIdentifierType } from '../../../patient-registration-helper';
 import { SelectInput } from '../../basic-input/select/select-input.component';
 import { Input } from '../../basic-input/input/input.component';
 import { Row, Column } from 'carbon-components-react';

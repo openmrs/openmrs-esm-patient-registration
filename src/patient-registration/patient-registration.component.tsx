@@ -18,15 +18,20 @@ import {
   savePatientPhoto,
   fetchPatientPhotoUrl,
 } from './patient-registration.resource';
-import { createErrorHandler } from '@openmrs/esm-error-handling';
-import { showToast } from '@openmrs/esm-styleguide';
+import {
+  createErrorHandler,
+  showToast,
+  useCurrentPatient,
+  useConfig,
+  interpolateString,
+  navigate,
+} from '@openmrs/esm-framework';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
-
 import styles from './patient-registration.scss';
 import * as Yup from 'yup';
-import { useCurrentPatient, useConfig } from '@openmrs/esm-react-utils';
-import { camelCase, capitalize, find } from 'lodash';
-import { interpolateString, navigate } from '@openmrs/esm-config';
+import camelCase from 'lodash-es/camelCase';
+import capitalize from 'lodash-es/capitalize';
+import find from 'lodash-es/find';
 import { useTranslation } from 'react-i18next';
 import { XAxis16 } from '@carbon/icons-react';
 import { Button, Link, Grid, Row, Column } from 'carbon-components-react';
