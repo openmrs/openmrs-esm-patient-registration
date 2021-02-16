@@ -1,4 +1,7 @@
+import React from 'react';
 import { never, of } from 'rxjs';
+
+export const showToast = jest.fn();
 
 export function openmrsFetch() {
   return new Promise(() => {});
@@ -26,3 +29,61 @@ export function getAddressTemplateMock() {
 
   return Promise.resolve(predefinedAddressTemplate);
 }
+
+export function createErrorHandler() {
+  return jest.fn().mockReturnValue(never());
+}
+
+export const defineConfigSchema = jest.fn();
+
+export const validators = {
+  isBoolean: jest.fn(),
+  isString: jest.fn(),
+  isUrlWithTemplateParameters: jest.fn(),
+};
+
+export enum Type {
+  Array = 'Array',
+  Boolean = 'Boolean',
+  ConceptUuid = 'ConceptUuid',
+  Number = 'Number',
+  Object = 'Object',
+  String = 'String',
+  UUID = 'UUID',
+}
+
+export function UserHasAccess(props: any) {
+  return props.children;
+}
+
+export const useConfig = jest.fn().mockReturnValue({
+  buttons: {
+    enabled: true,
+    list: [
+      {
+        label: 'SPA Page',
+        link: {
+          spa: true,
+          url: '/some/route',
+        },
+      },
+      {
+        label: 'RefApp Page',
+        link: {
+          spa: false,
+          url: '/openmrs/some/route',
+        },
+      },
+    ],
+  },
+});
+
+export function useCurrentPatient() {
+  return [undefined, null, null, null];
+}
+
+export const ComponentContext = React.createContext({
+  moduleName: 'fake-module-config',
+});
+
+export const ExtensionSlot = ({ children }) => <>{children}</>;
