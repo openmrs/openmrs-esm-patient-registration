@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Search } from 'carbon-components-react';
+import Search from 'carbon-components-react/es/components/Search';
 import styles from './autosuggest.scss';
 import { useTranslation } from 'react-i18next';
 

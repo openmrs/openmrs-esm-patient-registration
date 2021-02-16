@@ -1,16 +1,16 @@
 import React from 'react';
+import { Row, Column } from 'carbon-components-react/es/components/Grid';
+import { DemographicsSection } from './demographics/demographics-section.component';
+import { ContactInfoSection } from './contact-info/contact-info-section.component';
+import { RelationshipsSection } from './patient-relationships/relationships-section.component';
+import { DeathInfoSection } from './death-info/death-info-section.component';
+import { SectionWrapper } from './section-wrapper.component';
 import { AddressField } from '../field/address/address-field.component';
 import { EmailField } from '../field/email/email-field.component';
 import { PhoneField } from '../field/phone/phone-field.component';
 import { NameField } from '../field/name/name-field.component';
 import { GenderField } from '../field/gender/gender-field.component';
 import { IdField } from '../field/id/id-field.component';
-import { DemographicsSection } from './demographics/demographics-section.component';
-import { ContactInfoSection } from './contact-info/contact-info-section.component';
-import { RelationshipsSection } from './patient-relationships/relationships-section.component';
-import { DeathInfoSection } from './death-info/death-info-section.component';
-import { Row, Column } from 'carbon-components-react';
-import { SectionWrapper } from './section-wrapper.component';
 import { DobField } from '../field/dob/dob.component';
 
 enum Field {

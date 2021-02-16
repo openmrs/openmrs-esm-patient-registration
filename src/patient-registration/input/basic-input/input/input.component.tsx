@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import TextInput from 'carbon-components-react/es/components/TextInput';
 import { useField } from 'formik';
-import { TextInput } from 'carbon-components-react';
 
 interface InputProps {
   id: string;

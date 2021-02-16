@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import sectionStyles from '../section.scss';
 import styles from './relationships.scss';
+import Button from 'carbon-components-react/es/components/Button';
+import Select from 'carbon-components-react/es/components/Select';
+import SelectItem from 'carbon-components-react/es/components/SelectItem';
 import { FieldArray } from 'formik';
-import { Select, SelectItem, Button } from 'carbon-components-react';
-import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
-import { getAllRelationshipTypes } from '../../patient-registration.resource';
 import { openmrsFetch } from '@openmrs/esm-framework';
 import { useTranslation } from 'react-i18next';
+import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
+import { getAllRelationshipTypes } from '../../patient-registration.resource';
 import { PatientRegistrationContext } from '../../patient-registration-context';
 
 interface RelationshipType {

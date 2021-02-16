@@ -1,7 +1,7 @@
 import React from 'react';
+import Select from 'carbon-components-react/es/components/Select';
+import SelectItem from 'carbon-components-react/es/components/SelectItem';
 import { useField } from 'formik';
-import styles from './../../input.scss';
-import { Select, SelectItem } from 'carbon-components-react';
 
 interface SelectInputProps {
   name: string;

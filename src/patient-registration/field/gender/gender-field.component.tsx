@@ -1,5 +1,6 @@
 import React from 'react';
-import { RadioButton, RadioButtonGroup } from 'carbon-components-react';
+import RadioButton from 'carbon-components-react/es/components/RadioButton';
+import RadioButtonGroup from 'carbon-components-react/es/components/RadioButtonGroup';
 import styles from '../field.scss';
 import { useTranslation } from 'react-i18next';
 import { PatientRegistrationContext } from '../../patient-registration-context';

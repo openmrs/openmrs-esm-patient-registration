@@ -3,6 +3,10 @@ import { never, of } from 'rxjs';
 
 export const showToast = jest.fn();
 
+export const interpolateString = jest.requireActual('@openmrs/esm-framework').interpolateString;
+
+export const navigate = jest.requireActual('@openmrs/esm-framework').navigate;
+
 export function openmrsFetch() {
   return new Promise(() => {});
 }
