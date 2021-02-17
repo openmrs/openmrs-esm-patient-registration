@@ -4,21 +4,27 @@ import { useTranslation } from 'react-i18next';
 import { DatePicker, DatePickerInput } from 'carbon-components-react';
 import { useField } from 'formik';
 import { PatientRegistrationContext } from '../../patient-registration-context';
+import { generateFormatting } from '../../date-util';
 
 export const DobField: React.FC = () => {
   const { t } = useTranslation();
   const [field, meta] = useField('birthdate');
   const { setFieldValue } = React.useContext(PatientRegistrationContext);
-
-  const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { parse, format, placeHolder, dateFormat } = generateFormatting(['d', 'm', 'Y'], '/');
+  const onDateStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setFieldValue('birthdate', value);
+    const date = parse(value);
+    setFieldValue('birthdate', date);
+  };
+
+  const onDateChange = ([birthdate]) => {
+    setFieldValue('birthdate', birthdate);
   };
 
   return (
     <div style={{ marginBottom: '1rem' }}>
       <h4 className={styles.productiveHeading02Light}>{t('dobLabelText')}</h4>
-      <DatePicker dateFormat="d/m/Y" datePickerType="single" light>
+      <DatePicker dateFormat="d/m/Y" datePickerType="single" light onChange={onDateChange}>
         <DatePickerInput
           id="birthdate"
           placeholder="dd/mm/yyyy"
@@ -26,8 +32,8 @@ export const DobField: React.FC = () => {
           invalid={!!(meta.touched && meta.error)}
           invalidText={meta.error}
           {...field}
-          value={field.value ?? ''}
-          onChange={onDateChange}
+          value={format(field.value)}
+          onChange={onDateStringChange}
         />
       </DatePicker>
     </div>
