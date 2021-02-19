@@ -40,7 +40,7 @@ function setupOpenMRS() {
       {
         id: 'patient-photo-widget',
         slot: 'patient-photo',
-        load: getAsyncExtensionLifecycle(() => import('./widgets/display-photo.component'), options),
+        load: getAsyncLifecycle(() => import('./widgets/display-photo.component'), options),
       },
     ],
   };
