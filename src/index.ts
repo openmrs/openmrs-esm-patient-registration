@@ -39,6 +39,11 @@ function setupOpenMRS() {
         slot: 'nav-menu',
         load: getAsyncExtensionLifecycle(() => import('./nav-link'), options),
       },
+      {
+        id: 'patient-photo-widget',
+        slot: 'patient-photo',
+        load: getAsyncExtensionLifecycle(() => import('./widgets/display-photo.component'), options),
+      },
     ],
   };
 }
