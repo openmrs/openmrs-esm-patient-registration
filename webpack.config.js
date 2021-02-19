@@ -43,6 +43,14 @@ module.exports = {
         test: /\.s[ac]ss$/i,
         use: ['style-loader', cssLoader, { loader: 'sass-loader' }],
       },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
     ],
   },
   devtool: 'sourcemap',

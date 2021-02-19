@@ -39,6 +39,16 @@ function setupOpenMRS() {
         slot: 'nav-menu',
         load: getAsyncExtensionLifecycle(() => import('./nav-link'), options),
       },
+      {
+        id: 'patient-avatar-chart',
+        slot: 'patient-avatar-chart',
+        load: getAsyncExtensionLifecycle(() => import('./widgets/display-photo.component'), options),
+      },
+      {
+        id: 'patient-avatar-search',
+        slot: 'patient-avatar-search',
+        load: getAsyncExtensionLifecycle(() => import('./widgets/display-photo.component'), options),
+      },
     ],
   };
 }
