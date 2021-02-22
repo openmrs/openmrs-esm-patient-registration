@@ -3,7 +3,6 @@ export const generateFormatting = (order: string[], separator: string) => {
     const parts = value.split(separator);
     const date = new Date(null);
 
-    if (parts.length < 3) return null;
     order.forEach((key, index) => {
       switch (key) {
         case 'd':
@@ -21,6 +20,9 @@ export const generateFormatting = (order: string[], separator: string) => {
   };
 
   const format = (date: Date) => {
+    if (!(date instanceof Date)) {
+      return date;
+    }
     if (date === null) return '';
     const parts = [];
 

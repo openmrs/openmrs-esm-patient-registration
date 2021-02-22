@@ -183,7 +183,7 @@ describe('form submit', () => {
     expect(givenNameInput.value).toBe('John');
     expect(familyNameInput.value).toBe('Wilson');
     expect(middleNameInput.value).toBeFalsy();
-    expect(dateOfBirthInput.value).toBe('04/04/1972');
+    expect(dateOfBirthInput.value).toBe('4/4/1972');
 
     // do some edits
     userEvent.clear(givenNameInput);
@@ -228,7 +228,7 @@ describe('form submit', () => {
             },
           ],
           attributes: [],
-          birthdate: '04/04/1972',
+          birthdate: new Date('1972-04-04'),
           birthdateEstimated: false,
           gender: 'M',
           names: [

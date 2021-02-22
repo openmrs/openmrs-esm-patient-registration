@@ -10,12 +10,7 @@ export const DobField: React.FC = () => {
   const { t } = useTranslation();
   const [field, meta] = useField('birthdate');
   const { setFieldValue } = React.useContext(PatientRegistrationContext);
-  const { parse, format, placeHolder, dateFormat } = generateFormatting(['d', 'm', 'Y'], '/');
-  const onDateStringChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const date = parse(value);
-    setFieldValue('birthdate', date);
-  };
+  const { format, placeHolder, dateFormat } = generateFormatting(['d', 'm', 'Y'], '/');
 
   const onDateChange = ([birthdate]) => {
     setFieldValue('birthdate', birthdate);
@@ -24,16 +19,15 @@ export const DobField: React.FC = () => {
   return (
     <div style={{ marginBottom: '1rem' }}>
       <h4 className={styles.productiveHeading02Light}>{t('dobLabelText')}</h4>
-      <DatePicker dateFormat="d/m/Y" datePickerType="single" light onChange={onDateChange}>
+      <DatePicker dateFormat={dateFormat} datePickerType="single" light onChange={onDateChange}>
         <DatePickerInput
           id="birthdate"
-          placeholder="dd/mm/yyyy"
+          placeholder={placeHolder}
           labelText={t('dateOfBirthLabelText')}
           invalid={!!(meta.touched && meta.error)}
           invalidText={meta.error}
           {...field}
           value={format(field.value)}
-          onChange={onDateStringChange}
         />
       </DatePicker>
     </div>
