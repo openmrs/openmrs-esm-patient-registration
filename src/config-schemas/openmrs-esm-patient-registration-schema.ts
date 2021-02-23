@@ -1,4 +1,4 @@
-import { Type, validators } from '@openmrs/esm-config';
+import { Type, validators } from '@openmrs/esm-framework';
 const builtInFields = ['name', 'gender', 'dob', 'address', 'id', 'death'];
 export const esmPatientRegistrationSchema = {
   sections: {

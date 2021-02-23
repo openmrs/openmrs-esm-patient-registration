@@ -1,6 +1,6 @@
-import { openmrsFetch } from '@openmrs/esm-api';
+import { openmrsFetch } from '@openmrs/esm-framework';
 import { Patient, Relationship } from './patient-registration-helper';
-import { camelCase } from 'lodash';
+import camelCase from 'lodash-es/camelCase';
 import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
 
 export function savePatient(abortController: AbortController, patient: Patient, patientUuid: string) {

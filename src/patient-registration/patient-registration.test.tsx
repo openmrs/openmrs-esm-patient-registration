@@ -3,11 +3,10 @@ import ReactDOM from 'react-dom';
 import { render, wait, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as backendController from './patient-registration.resource';
-import { PatientRegistration, getDeathInfo, initialFormValues } from './patient-registration.component';
-import { getAddressTemplateMock } from '../../__mocks__/openmrs-esm-api.mock';
-import * as mockOpenmrsApi from '../../__mocks__/openmrs-esm-api.mock';
+import * as mockOpenmrsFramework from '../../__mocks__/openmrs-esm-framework.mock';
+import { PatientRegistration } from './patient-registration.component';
+import { getAddressTemplateMock } from '../../__mocks__/openmrs-esm-framework.mock';
 import { mockPatient } from '../../__mocks__/patient.mock';
-import * as mockOpenmrsReactUtils from '../../__mocks__/openmrs-esm-react-utils.mock';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -59,7 +58,7 @@ describe('patient registration sections', () => {
   };
 
   beforeAll(() => {
-    spyOn(mockOpenmrsReactUtils, 'useConfig').and.returnValue(mockOpenmrsConfig);
+    spyOn(mockOpenmrsFramework, 'useConfig').and.returnValue(mockOpenmrsConfig);
   });
 
   testSectionExists('Demographics Section');
@@ -83,7 +82,7 @@ describe('form submit', () => {
 
   beforeAll(() => {
     spyOn(backendController, 'getAddressTemplate').and.returnValue(getAddressTemplateMock());
-    spyOn(mockOpenmrsReactUtils, 'useConfig').and.returnValue(mockOpenmrsConfig);
+    spyOn(mockOpenmrsFramework, 'useConfig').and.returnValue(mockOpenmrsConfig);
   });
 
   it('saves the patient without extra info', async () => {
@@ -169,7 +168,7 @@ describe('form submit', () => {
       ]),
     );
 
-    spyOn(mockOpenmrsReactUtils, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
+    spyOn(mockOpenmrsFramework, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
     render(<PatientRegistration />);
     await wait();
 

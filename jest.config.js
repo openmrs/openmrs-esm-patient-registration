@@ -5,11 +5,9 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css)$': 'identity-obj-proxy',
     '\\.(scss)$': 'identity-obj-proxy',
-    '@openmrs/esm-api': '<rootDir>/__mocks__/openmrs-esm-api.mock.tsx',
-    '@openmrs/esm-config': '<rootDir>/__mocks__/openmrs-esm-module-config.mock.tsx',
-    '@openmrs/esm-error-handling': '<rootDir>/__mocks__/openmrs-esm-error-handling.mock.tsx',
-    '@openmrs/esm-react-utils': '<rootDir>/__mocks__/openmrs-esm-react-utils.mock.tsx',
-    '@openmrs/esm-styleguide': '<rootDir>/__mocks__/openmrs-esm-styleguide.mock.tsx',
-    'lodash-es': 'lodash',
+    '^@carbon/icons-react/es/(.*)$': '@carbon/icons-react/lib/$1',
+    '^carbon-components-react/es/(.*)$': 'carbon-components-react/lib/$1',
+    '@openmrs/esm-framework': '<rootDir>/__mocks__/openmrs-esm-framework.mock.tsx',
+    '^lodash-es/(.*)$': 'lodash/$1',
   },
 };

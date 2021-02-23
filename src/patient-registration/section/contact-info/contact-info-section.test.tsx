@@ -16,7 +16,7 @@ jest.mock('../../field/address/address-field.component', () => {
 });
 
 describe('contact info section', () => {
-  const setupSection = async (fields) => {
+  const setupSection = async fields => {
     render(
       <Formik initialValues={{}} onSubmit={null}>
         <Form>
@@ -34,7 +34,7 @@ describe('contact info section', () => {
   });
 
   it('has only two fields', async () => {
-    const inputNames = await setupSection(['phone', 'email']);;
+    const inputNames = await setupSection(['phone', 'email']);
     expect(inputNames.length).toBe(2);
   });
 });

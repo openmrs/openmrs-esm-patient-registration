@@ -38,9 +38,7 @@ describe.skip('identifier input', () => {
     render(
       <Formik initialValues={initialFormValues} onSubmit={null}>
         <Form>
-          <IdentifierInput
-            identifierType={identifierType}
-          />
+          <IdentifierInput identifierType={identifierType} />
         </Form>
       </Formik>,
     );

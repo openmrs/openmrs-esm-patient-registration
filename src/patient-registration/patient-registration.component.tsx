@@ -1,6 +1,15 @@
+import * as Yup from 'yup';
 import React, { useState, useEffect } from 'react';
+import XAxis16 from '@carbon/icons-react/es/x-axis/16';
+import styles from './patient-registration.scss';
+import camelCase from 'lodash-es/camelCase';
+import capitalize from 'lodash-es/capitalize';
+import find from 'lodash-es/find';
+import Button from 'carbon-components-react/es/components/Button';
+import Link from 'carbon-components-react/es/components/Link';
 import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
+import { Grid, Row, Column } from 'carbon-components-react/es/components/Grid';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
 import { Patient, PatientIdentifierType, AttributeValue } from './patient-registration-helper';
 import { PatientRegistrationContext } from './patient-registration-context';
@@ -18,21 +27,20 @@ import {
   savePatientPhoto,
   fetchPatientPhotoUrl,
 } from './patient-registration.resource';
-import { createErrorHandler } from '@openmrs/esm-error-handling';
-import { showToast } from '@openmrs/esm-styleguide';
+import {
+  createErrorHandler,
+  showToast,
+  useCurrentPatient,
+  useConfig,
+  interpolateString,
+  navigate,
+} from '@openmrs/esm-framework';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
-
-import styles from './patient-registration.scss';
-import * as Yup from 'yup';
-import { useCurrentPatient, useConfig } from '@openmrs/esm-react-utils';
-import { camelCase, capitalize, find } from 'lodash';
-import { interpolateString, navigate } from '@openmrs/esm-config';
 import { useTranslation } from 'react-i18next';
-import { XAxis16 } from '@carbon/icons-react';
-import { Button, Link, Grid, Row, Column } from 'carbon-components-react';
 import { getSection } from './section/section-helper';
 
 export const initialAddressFieldValues = {};
+
 const patientUuidMap = {};
 const deletedNames = [];
 
@@ -361,9 +369,11 @@ export const PatientRegistration: React.FC = () => {
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
     const relationships = values.relationships;
-    let identifiers = [];
+    const identifiers = [];
+
     for (const type of identifierTypes) {
       const idValue = values[type.fieldName];
+
       if (idValue) {
         identifiers.push({
           uuid: patientUuidMap[type.fieldName] ? patientUuidMap[type.fieldName].uuid : undefined,
@@ -374,6 +384,7 @@ export const PatientRegistration: React.FC = () => {
         });
       } else if (type.autoGenerationSource) {
         const response = await generateIdentifier(type.autoGenerationSource.uuid, abortController);
+
         identifiers.push({
           identifier: response.data.identifier,
           identifierType: type.uuid,
@@ -384,13 +395,16 @@ export const PatientRegistration: React.FC = () => {
     }
 
     const addressFieldValues: Record<string, string> = {};
+
     Object.keys(initialAddressFieldValues).forEach(fieldName => {
       addressFieldValues[fieldName] = values[fieldName];
     });
 
     const attributes: Array<AttributeValue> = [];
+
     if (config && config.personAttributeSections) {
-      let { personAttributeSections } = config;
+      const { personAttributeSections } = config;
+
       personAttributeSections.forEach(({ personAttributes }) => {
         personAttributes.forEach(attr => {
           attributes.push({

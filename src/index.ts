@@ -1,6 +1,4 @@
-import { registerBreadcrumbs } from '@openmrs/esm-api';
-import { defineConfigSchema } from '@openmrs/esm-config';
-import { getAsyncExtensionLifecycle, getAsyncLifecycle } from '@openmrs/esm-react-utils';
+import { registerBreadcrumbs, defineConfigSchema, getAsyncLifecycle } from '@openmrs/esm-framework';
 import { backendDependencies } from './openmrs-backend-dependencies';
 import { esmPatientRegistrationSchema } from './config-schemas/openmrs-esm-patient-registration-schema';
 
@@ -32,17 +30,17 @@ function setupOpenMRS() {
       {
         id: 'registration-home-link',
         slot: 'home-page-buttons',
-        load: getAsyncExtensionLifecycle(() => import('./home-link'), options),
+        load: getAsyncLifecycle(() => import('./home-link'), options),
       },
       {
         id: 'registration-nav-link',
         slot: 'nav-menu',
-        load: getAsyncExtensionLifecycle(() => import('./nav-link'), options),
+        load: getAsyncLifecycle(() => import('./nav-link'), options),
       },
       {
         id: 'patient-photo-widget',
         slot: 'patient-photo',
-        load: getAsyncExtensionLifecycle(() => import('./widgets/display-photo.component'), options),
+        load: getAsyncLifecycle(() => import('./widgets/display-photo.component'), options),
       },
     ],
   };
