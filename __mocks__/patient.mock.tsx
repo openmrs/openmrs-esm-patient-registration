@@ -35,7 +35,7 @@ export const mockPatient = {
     },
   ],
   gender: 'male',
-  birthDate: '1972-04-04',
+  birthDate: new Date('1972-04-04'),
   deceasedBoolean: false,
   address: [
     {
