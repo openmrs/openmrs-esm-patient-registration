@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import React, { useState, useEffect } from 'react';
+import XAxis16 from '@carbon/icons-react/es/x-axis/16';
 import styles from './patient-registration.scss';
 import camelCase from 'lodash-es/camelCase';
 import capitalize from 'lodash-es/capitalize';
@@ -36,7 +37,6 @@ import {
 } from '@openmrs/esm-framework';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import { useTranslation } from 'react-i18next';
-import { XAxis16 } from '@carbon/icons-react';
 import { getSection } from './section/section-helper';
 
 export const initialAddressFieldValues = {};
