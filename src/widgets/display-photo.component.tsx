@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useConfig } from '@openmrs/esm-react-utils';
 import placeholder from '../assets/placeholder.png';
+import { useConfig } from '@openmrs/esm-framework';
 import { fetchPatientPhotoUrl } from '../patient-registration/patient-registration.resource';
 
 export default function DisplayPatientPhoto(props: { patientUuid: string }) {
