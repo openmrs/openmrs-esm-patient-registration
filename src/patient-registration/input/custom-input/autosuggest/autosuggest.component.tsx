@@ -63,7 +63,7 @@ export const Autosuggest: React.FC<AutosuggestProps> = ({
       <Search
         name={name}
         id="autosuggest"
-        placeHolderText={placeholder}
+        placeholder={placeholder}
         labelText={t('fullName')}
         onChange={handleChange}
         ref={searchBox}
