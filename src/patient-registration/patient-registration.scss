@@ -60,3 +60,23 @@ a.LinkName:hover {
 .main {
     background-color: white;
 }
+:global(.bx--btn--primary){
+    background-color: $interactive-01;
+}
+:global(.bx--btn--primary:hover){
+    background-color: $interactive-01;
+}
+:global(.bx--btn--tertiary){
+    border-color: $interactive-01;
+    color: $interactive-01;
+}
+:global(.bx--btn--tertiary:hover){
+    background-color: $interactive-01;
+    color: white;
+}
+:global(.bx--btn--ghost){
+    color: $interactive-01;
+}
+:global(.bx--btn--ghost:hover){
+    color: $interactive-01;
+}

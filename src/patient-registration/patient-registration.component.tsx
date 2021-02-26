@@ -529,7 +529,7 @@ export const PatientRegistration: React.FC = () => {
                       </div>
                     ))}
                     <Button style={{ marginBottom: '1rem', width: '11.688rem', display: 'block' }} type="submit">
-                      {existingPatient ? t('updatePatient') : t('registerPatient')}
+                      {existingPatient ? t('updatePatient') : t('Create Patient')}
                     </Button>
                     <Button style={{ width: '11.688rem' }} kind="tertiary" onClick={cancelRegistration}>
                       {t('cancel')}
