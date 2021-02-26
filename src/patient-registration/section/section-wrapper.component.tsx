@@ -8,7 +8,7 @@ export const SectionWrapper = ({ id, children, name, index }) => {
   return (
     <div id={id} style={{ marginTop: '2rem' }}>
       <h3 className={styles.productiveHeading02} style={{ color: '#161616' }}>
-        {index + 1}. {t(name)}
+        {index + 1}. {name}
       </h3>
       <span className={styles.label01}>{t('All fields are required unless marked optional')}</span>
       <div style={{ margin: '1rem 0 1rem' }}>
