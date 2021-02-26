@@ -93,7 +93,7 @@ describe('form submit', () => {
 
     await fillRequiredFields(screen.getByLabelText);
 
-    userEvent.click(screen.getByText('Create Patient'));
+    userEvent.click(screen.getByText('registerPatient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(
@@ -125,7 +125,7 @@ describe('form submit', () => {
     userEvent.type(givenNameInput, '');
     await wait();
 
-    userEvent.click(screen.getByText('Create Patient'));
+    userEvent.click(screen.getByText('registerPatient'));
     await wait();
 
     expect(backendController.savePatient).not.toHaveBeenCalled();
