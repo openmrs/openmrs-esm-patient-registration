@@ -141,7 +141,7 @@ export const PatientRegistration: React.FC = () => {
     if (config && config.sections) {
       const tmp_sections = config.sections.map(section => ({
         id: section,
-        name: config.sectionDefinitions[section].name,
+        name: t(config.sectionDefinitions[section].name),
         fields: config.sectionDefinitions[section].fields,
       }));
       setSections(tmp_sections);
