@@ -4,7 +4,7 @@
     "phoneNumberPlaceHolder": "Enter Telephone Number",
     "additionalPersonAttributesSectionHeader": "Additional Person Attributes",
     "relationshipsSectionName": "Relationships",
-    "registerPatient": "Register Patient",
+    "registerPatient": "Create Patient",
     "updatePatient": "Update Patient",
     "cancel": "Cancel",
     "basicInfoSectionName": "Basic Info",
