@@ -1,8 +1,19 @@
 import * as Yup from 'yup';
 
 export const validationSchema = Yup.object({
-  givenName: Yup.string().required('Given name is required'),
-  familyName: Yup.string().required('Family name is required'),
+  givenName: Yup.string()
+    .required('Given name is required')
+    .test('alphabets', 'Only letters (A-Z,a-z) are allowed', value => {
+      return /^[A-Za-z]+$/.test(value);
+    }),
+  middleName: Yup.string().test('alphabets', 'Only letters (A-Z,a-z) are allowed', value => {
+    return /^[A-Za-z]+$/.test(value);
+  }),
+  familyName: Yup.string()
+    .required('Family name is required')
+    .test('alphabets', 'Only letters (A-Z,a-z) are allowed', value => {
+      return /^[A-Za-z]+$/.test(value);
+    }),
   additionalGivenName: Yup.string().when('addNameInLocalLanguage', {
     is: true,
     then: Yup.string().required('Given name is required'),
