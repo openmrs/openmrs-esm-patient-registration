@@ -45,7 +45,7 @@ function setupOpenMRS() {
       {
         id: 'add-patient-primary-nav',
         slot : 'add-patient-slot',
-        load : getAsyncLifecycle(() => ('./add-patient-link'),options),
+        load : getAsyncLifecycle(() => import('./add-patient-link'),options),
       },
     ],
   };
