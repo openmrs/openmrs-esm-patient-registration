@@ -7,7 +7,7 @@ export default function Root() {
   return (
     <HeaderGlobalAction aria-label="Add" aria-labelledby="Add Patient" name="AddPatientIcon">
       <ConfigurableLink to="${openmrsSpaBase}/patient-registration">
-        <Add20 classname="add-patient-color" />
+        <Add20 className="add-patient-color" />
       </ConfigurableLink>
     </HeaderGlobalAction>
   );
