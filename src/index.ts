@@ -43,8 +43,8 @@ function setupOpenMRS() {
         load: getAsyncLifecycle(() => import('./widgets/display-photo.component'), options),
       },
       {
-        id: 'add-patient-primary-nav',
-        slot : 'add-patient-slot',
+        id: 'add-patient-action',
+        slot : 'top-nav-actions-slot',
         load : getAsyncLifecycle(() => import('./add-patient-link'),options),
       },
     ],
