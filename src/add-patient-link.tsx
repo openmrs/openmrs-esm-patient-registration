@@ -5,12 +5,10 @@ import { HeaderGlobalAction } from 'carbon-components-react/es/components/UIShel
 
 export default function Root() {
   return (
-    <HeaderGlobalAction
-    aria-label="Add" aria-labelledby="Add Patient" name="AddPatientIcon">
+    <HeaderGlobalAction aria-label="Add" aria-labelledby="Add Patient" name="AddPatientIcon">
       <ConfigurableLink to="${openmrsSpaBase}/patient-registration">
         <Add20 />
       </ConfigurableLink>
     </HeaderGlobalAction>
-
   );
 }
