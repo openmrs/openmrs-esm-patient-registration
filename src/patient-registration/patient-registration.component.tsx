@@ -313,6 +313,12 @@ export const PatientRegistration: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (capturePhotoProps?.base64EncodedImage || capturePhotoProps?.imageFile) {
+      setCurrentPhoto(capturePhotoProps.base64EncodedImage || URL.createObjectURL(capturePhotoProps.imageFile));
+    }
+  }, [capturePhotoProps]);
+
+  useEffect(() => {
     if (addressTemplate) {
       const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
       let nameMappings = templateXmlDoc.querySelector('nameMappings').querySelectorAll('property');
