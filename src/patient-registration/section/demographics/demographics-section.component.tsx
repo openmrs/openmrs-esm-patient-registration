@@ -21,7 +21,6 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
   const { t } = useTranslation();
   const [field, meta] = useField('addNameInLocalLanguage');
   const { setFieldValue } = React.useContext(PatientRegistrationContext);
-  const [counter, setCounter] = useState(0);
 
   const onCapturePhoto = (dataUri: string, selectedFile: File, photoDateTime: string) => {
     if (setCapturePhotoProps) {
@@ -41,16 +40,9 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
     }
   }, [field.value, meta.touched]);
 
-  useEffect(() => {
-    if (currentPatientPhoto) {
-      setCounter(counter + 1);
-    }
-  }, [currentPatientPhoto]);
-
   return (
     <section className={styles.formSection} aria-label="Demographics Section">
       <ExtensionSlot
-        key={counter}
         extensionSlotName="capture-patient-photo"
         state={{ onCapturePhoto, initialState: currentPatientPhoto }}
       />

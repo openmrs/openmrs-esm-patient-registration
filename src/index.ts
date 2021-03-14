@@ -42,6 +42,11 @@ function setupOpenMRS() {
         slot: 'patient-photo',
         load: getAsyncLifecycle(() => import('./widgets/display-photo.component'), options),
       },
+      {
+        id: 'add-patient-action',
+        slot : 'top-nav-actions-slot',
+        load : getAsyncLifecycle(() => import('./add-patient-link'),options),
+      },
     ],
   };
 }
