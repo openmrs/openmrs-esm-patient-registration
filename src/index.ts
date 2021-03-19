@@ -34,7 +34,7 @@ function setupOpenMRS() {
           featureName: 'edit-patient-details-form',
           moduleName,
         }),
-        route: /^patient\/.+\/edit/,
+        route: /^patient\/([a-zA-Z0-9\-]+)\/edit/,
       },
     ],
     extensions: [
