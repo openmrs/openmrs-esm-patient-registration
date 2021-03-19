@@ -71,7 +71,7 @@ export interface FormValues {
   relationships: Array<{ relatedPerson: string; relationship: string }>;
 }
 
-export const initialFormValues: FormValues = {
+export var initialFormValues: FormValues = {
   givenName: '',
   middleName: '',
   familyName: '',
@@ -137,6 +137,9 @@ export const PatientRegistration: React.FC = () => {
   const [fieldConfigs, setFieldConfigs] = useState({});
 
   const [currentPhoto, setCurrentPhoto] = useState(null);
+
+  const blankFormValues = initialFormValues;
+
   useEffect(() => {
     if (config && config.sections) {
       const tmp_sections = config.sections.map(section => ({
@@ -244,6 +247,8 @@ export const PatientRegistration: React.FC = () => {
         const value = await fetchPatientPhotoUrl(existingPatient.id, config.concepts.patientPhotoUuid, abortController);
         setCurrentPhoto(value);
       })();
+    } else {
+      initialFormValues = blankFormValues;
     }
   }, [existingPatient]);
 
