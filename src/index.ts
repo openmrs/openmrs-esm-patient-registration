@@ -24,8 +24,6 @@ function setupOpenMRS() {
   ]);
 
   return {
-    lifecycle: getAsyncLifecycle(() => import('./root.component'), options),
-    activate: pageName,
     pages: [
       {
         load: getAsyncLifecycle(() => import('./root.component'), options),
