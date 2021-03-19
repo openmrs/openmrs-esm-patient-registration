@@ -5,7 +5,8 @@ import { PatientRegistration } from './patient-registration/patient-registration
 export default function Root() {
   return (
     <BrowserRouter basename={window['getOpenmrsSpaBase']()}>
-      <Route path="/patient-registration" component={PatientRegistration} />
+      <Route exact path="/patient-registration" component={PatientRegistration} />
+      <Route exact path="/patient/:patientUuid/edit" component={PatientRegistration} />
     </BrowserRouter>
   );
 }
