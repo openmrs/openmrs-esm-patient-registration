@@ -98,6 +98,8 @@ export const initialFormValues: FormValues = {
   relationships: [{ relatedPerson: '', relationship: '' }],
 };
 
+const clonedInitialFormValues: FormValues = { ...initialFormValues };
+
 export const getDeathInfo = (values: FormValues) => {
   const patientIsDead = {
     dead: true,
@@ -246,35 +248,7 @@ export const PatientRegistration: React.FC = () => {
         setCurrentPhoto(value);
       })();
     } else {
-      let blankFormValues = {
-        givenName: '',
-        middleName: '',
-        familyName: '',
-        unidentifiedPatient: false,
-        additionalGivenName: '',
-        additionalMiddleName: '',
-        additionalFamilyName: '',
-        addNameInLocalLanguage: false,
-        gender: '',
-        birthdate: null,
-        yearsEstimated: 0,
-        monthsEstimated: 0,
-        birthdateEstimated: false,
-        telephoneNumber: '',
-        address1: '',
-        address2: '',
-        cityVillage: '',
-        stateProvince: '',
-        country: '',
-        postalCode: '',
-        isDead: false,
-        deathDate: '',
-        deathCause: '',
-        relationships: [{ relatedPerson: '', relationship: '' }],
-      };
-      Object.keys(initialFormValues).forEach((key, index) => {
-        initialFormValues[key] = blankFormValues[key];
-      });
+      Object.assign(initialFormValues, clonedInitialFormValues);
     }
   }, [existingPatient]);
 
