@@ -71,7 +71,7 @@ export interface FormValues {
   relationships: Array<{ relatedPerson: string; relationship: string }>;
 }
 
-export var initialFormValues: FormValues = {
+export const initialFormValues: FormValues = {
   givenName: '',
   middleName: '',
   familyName: '',
@@ -137,8 +137,6 @@ export const PatientRegistration: React.FC = () => {
   const [fieldConfigs, setFieldConfigs] = useState({});
 
   const [currentPhoto, setCurrentPhoto] = useState(null);
-
-  const blankFormValues = initialFormValues;
 
   useEffect(() => {
     if (config && config.sections) {
@@ -248,7 +246,35 @@ export const PatientRegistration: React.FC = () => {
         setCurrentPhoto(value);
       })();
     } else {
-      initialFormValues = blankFormValues;
+      let blankFormValues = {
+        givenName: '',
+        middleName: '',
+        familyName: '',
+        unidentifiedPatient: false,
+        additionalGivenName: '',
+        additionalMiddleName: '',
+        additionalFamilyName: '',
+        addNameInLocalLanguage: false,
+        gender: '',
+        birthdate: null,
+        yearsEstimated: 0,
+        monthsEstimated: 0,
+        birthdateEstimated: false,
+        telephoneNumber: '',
+        address1: '',
+        address2: '',
+        cityVillage: '',
+        stateProvince: '',
+        country: '',
+        postalCode: '',
+        isDead: false,
+        deathDate: '',
+        deathCause: '',
+        relationships: [{ relatedPerson: '', relationship: '' }],
+      };
+      Object.keys(initialFormValues).forEach((key, index) => {
+        initialFormValues[key] = blankFormValues[key];
+      });
     }
   }, [existingPatient]);
 
