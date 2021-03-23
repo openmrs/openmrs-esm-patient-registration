@@ -463,6 +463,7 @@ export const PatientRegistration: React.FC = () => {
     // handle save patient
     savePatient(abortController, patient, patientUuidMap['patientUuid'])
       .then(response => {
+        // TODO this entire block of code should be migrated somewhere...
         if (response.ok) {
           const requests = relationships.map(tmp => {
             const { relatedPerson, relationship } = tmp;

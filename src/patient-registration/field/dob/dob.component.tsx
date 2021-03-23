@@ -17,6 +17,7 @@ export const DobField: React.FC = () => {
     setFieldValue('birthdate', birthdate);
   };
 
+  // TODO: remove custom styling soon.
   return (
     <div style={{ marginBottom: '1rem' }}>
       <h4 className={styles.productiveHeading02Light}>{t('dobLabelText')}</h4>
