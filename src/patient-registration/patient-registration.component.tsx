@@ -71,7 +71,7 @@ export interface FormValues {
   relationships: Array<{ relatedPerson: string; relationship: string }>;
 }
 
-export const initialFormValues: FormValues = {
+const blankFormValues: FormValues = {
   givenName: '',
   middleName: '',
   familyName: '',
@@ -98,7 +98,16 @@ export const initialFormValues: FormValues = {
   relationships: [{ relatedPerson: '', relationship: '' }],
 };
 
-export const getDeathInfo = (values: FormValues) => {
+// If a patient is fetched, this will be updated with their information
+const initialFormValues: FormValues = { ...blankFormValues };
+
+/**
+ * @internal
+ * Just exported for testing
+ */
+export { initialFormValues };
+
+const getDeathInfo = (values: FormValues) => {
   const patientIsDead = {
     dead: true,
     deathDate: values.deathDate,
@@ -137,6 +146,7 @@ export const PatientRegistration: React.FC = () => {
   const [fieldConfigs, setFieldConfigs] = useState({});
 
   const [currentPhoto, setCurrentPhoto] = useState(null);
+
   useEffect(() => {
     if (config && config.sections) {
       const tmp_sections = config.sections.map(section => ({
@@ -170,25 +180,23 @@ export const PatientRegistration: React.FC = () => {
     if (existingPatient) {
       patientUuidMap['patientUuid'] = existingPatient.id;
       // set names
-      if (existingPatient.name) {
-        existingPatient.name.forEach((name, index) => {
-          if (index === 0) {
-            patientUuidMap['preferredNameUuid'] = name.id;
-            initialFormValues.givenName = name.given[0];
-            initialFormValues.middleName = name.given[1];
-            initialFormValues.familyName = name.family;
-            if (name.given[0] === 'UNKNOWN' && name.family === 'UNKNOWN') {
-              initialFormValues.unidentifiedPatient = true;
-            }
-          }
-          if (index === 1) {
-            patientUuidMap['additionalNameUuid'] = name.id;
-            initialFormValues.addNameInLocalLanguage = true;
-            initialFormValues.additionalGivenName = name.given[0];
-            initialFormValues.additionalMiddleName = name.given[1];
-            initialFormValues.additionalFamilyName = name.family;
-          }
-        });
+      if (existingPatient.name.length) {
+        let name = existingPatient.name[0];
+        patientUuidMap['preferredNameUuid'] = name.id;
+        initialFormValues.givenName = name.given[0];
+        initialFormValues.middleName = name.given[1];
+        initialFormValues.familyName = name.family;
+        if (name.given[0] === 'UNKNOWN' && name.family === 'UNKNOWN') {
+          initialFormValues.unidentifiedPatient = true;
+        }
+        if (existingPatient.name.length > 1) {
+          name = existingPatient.name[1];
+          patientUuidMap['additionalNameUuid'] = name.id;
+          initialFormValues.addNameInLocalLanguage = true;
+          initialFormValues.additionalGivenName = name.given[0];
+          initialFormValues.additionalMiddleName = name.given[1];
+          initialFormValues.additionalFamilyName = name.family;
+        }
       }
       initialFormValues.gender = capitalize(existingPatient.gender);
       initialFormValues.birthdate = existingPatient.birthDate;
@@ -244,6 +252,8 @@ export const PatientRegistration: React.FC = () => {
         const value = await fetchPatientPhotoUrl(existingPatient.id, config.concepts.patientPhotoUuid, abortController);
         setCurrentPhoto(value);
       })();
+    } else {
+      Object.assign(initialFormValues, blankFormValues);
     }
   }, [existingPatient]);
 

@@ -24,8 +24,19 @@ function setupOpenMRS() {
   ]);
 
   return {
-    lifecycle: getAsyncLifecycle(() => import('./root.component'), options),
-    activate: pageName,
+    pages: [
+      {
+        load: getAsyncLifecycle(() => import('./root.component'), options),
+        route: /^patient-registration/,
+      },
+      {
+        load: getAsyncLifecycle(() => import('./root.component'), {
+          featureName: 'edit-patient-details-form',
+          moduleName,
+        }),
+        route: /^patient\/([a-zA-Z0-9\-]+)\/edit/,
+      },
+    ],
     extensions: [
       {
         id: 'registration-home-link',
@@ -44,8 +55,8 @@ function setupOpenMRS() {
       },
       {
         id: 'add-patient-action',
-        slot : 'top-nav-actions-slot',
-        load : getAsyncLifecycle(() => import('./add-patient-link'),options),
+        slot: 'top-nav-actions-slot',
+        load: getAsyncLifecycle(() => import('./add-patient-link'), options),
       },
     ],
   };
