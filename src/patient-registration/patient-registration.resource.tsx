@@ -16,7 +16,7 @@ export function savePatient(abortController: AbortController, patient: Patient, 
 }
 
 export function getCurrentUserLocation(abortController: AbortController) {
-  return openmrsFetch('/ws/rest/v1/appui/session', {
+  return openmrsFetch('/ws/rest/v1/session', {
     signal: abortController.signal,
   });
 }
