@@ -25,6 +25,7 @@
     "dobLabelText": "Birth",
     "addressHeader": "Address",
     "fullName": "Full Name",
+    "postalCode": "Postal Code",
     "phoneNumberInputLabelText": "Phone number(optional)",
     "isDeadInputLabel": "Is Dead",
     "relationshipToPatient": "Relationship to patient",
