@@ -1,8 +1,11 @@
 .slotStyles {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .iconStyle {
-    color: #fff;
-    padding: 10px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
