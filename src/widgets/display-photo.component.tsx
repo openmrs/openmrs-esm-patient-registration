@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import placeholder from '../assets/placeholder.png';
+import placeholder from '../assets/placeholder.svg';
 import { useConfig } from '@openmrs/esm-framework';
 import { fetchPatientPhotoUrl } from '../patient-registration/patient-registration.resource';
 
@@ -19,11 +19,11 @@ export default function DisplayPatientPhoto(props: { patientUuid: string }) {
         });
     }
     return () => ac.abort();
-  }, [props.patientUuid]);
+  }, [props.patientUuid, config.concepts.patientPhotoUuid]);
 
   return (
     <div>
-      <img src={photo} alt="Patient avatar" style={{ width: '100%' }} />
+      <img src={photo} alt="Patient avatar" style={{ width: '5rem', height: '5rem' }} />
     </div>
   );
 }
