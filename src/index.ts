@@ -40,12 +40,12 @@ function setupOpenMRS() {
     extensions: [
       {
         id: 'registration-home-link',
-        slot: 'home-page-buttons',
+        slot: 'homepage-dashboard-slot',
         load: getAsyncLifecycle(() => import('./home-link'), options),
       },
       {
         id: 'registration-nav-link',
-        slot: 'nav-menu',
+        slot: 'nav-menu-slot',
         load: getAsyncLifecycle(() => import('./nav-link'), options),
       },
       {
