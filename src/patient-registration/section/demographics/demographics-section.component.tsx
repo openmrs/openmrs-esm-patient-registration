@@ -43,7 +43,7 @@ export const DemographicsSection: React.FC<DemographicsSectionProps> = ({
   return (
     <section className={styles.formSection} aria-label="Demographics Section">
       <ExtensionSlot
-        extensionSlotName="capture-patient-photo"
+        extensionSlotName="capture-patient-photo-slot"
         state={{ onCapturePhoto, initialState: currentPatientPhoto }}
       />
       {fields.map(field => (

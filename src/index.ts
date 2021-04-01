@@ -40,17 +40,12 @@ function setupOpenMRS() {
     extensions: [
       {
         id: 'registration-home-link',
-        slot: 'home-page-buttons',
+        slot: 'homepage-dashboard-slot',
         load: getAsyncLifecycle(() => import('./home-link'), options),
       },
       {
-        id: 'registration-nav-link',
-        slot: 'nav-menu',
-        load: getAsyncLifecycle(() => import('./nav-link'), options),
-      },
-      {
         id: 'patient-photo-widget',
-        slot: 'patient-photo',
+        slot: 'patient-photo-slot',
         load: getAsyncLifecycle(() => import('./widgets/display-photo.component'), options),
       },
       {
