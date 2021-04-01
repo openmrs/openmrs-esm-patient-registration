@@ -1,8 +1,12 @@
 import * as Yup from 'yup';
 
 export const validationSchema = Yup.object({
-  givenName: Yup.string().required('Given name is required'),
-  familyName: Yup.string().required('Family name is required'),
+  givenName: Yup.string()
+    .matches(/^([^0-9]*)$/, 'This field should not contain a number')
+    .required('Given name is required'),
+  familyName: Yup.string()
+    .matches(/^([^0-9]*)$/, 'This field should not contain a number')
+    .required('Family name is required'),
   additionalGivenName: Yup.string().when('addNameInLocalLanguage', {
     is: true,
     then: Yup.string().required('Given name is required'),
