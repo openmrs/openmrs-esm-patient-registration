@@ -46,7 +46,10 @@ export default class FormManager {
     return Promise.all(identifiers);
   }
 
-  static populateAddressValues(values: FormValues, initialAddressFieldValues: Object): Record<string, string> {
+  static populateAddressValues(
+    values: FormValues,
+    initialAddressFieldValues: Record<string, any>,
+  ): Record<string, string> {
     return Object.keys(initialAddressFieldValues).reduce(
       (memo, fieldName) => ({ ...memo, [fieldName]: values[fieldName] }),
       {},
@@ -68,7 +71,7 @@ export default class FormManager {
   static getNames(values: FormValues, patientUuidMap: PatientUuidMapType) {
     const names = [
       {
-        uuid: patientUuidMap['preferredNameUuid'],
+        uuid: patientUuidMap.preferredNameUuid,
         preferred: true,
         givenName: values.givenName,
         middleName: values.middleName,
@@ -77,7 +80,7 @@ export default class FormManager {
     ];
     if (values.addNameInLocalLanguage) {
       names.push({
-        uuid: patientUuidMap['additionalNameUuid'],
+        uuid: patientUuidMap.additionalNameUuid,
         preferred: false,
         givenName: values.additionalGivenName,
         middleName: values.additionalMiddleName,
@@ -96,37 +99,35 @@ export default class FormManager {
   }
 
   static getDeathInfo(values: FormValues) {
-    const patientIsDead = {
-      dead: true,
-      deathDate: values.deathDate,
-      causeOfDeath: values.deathCause,
+    const { isDead, deathDate, deathCause } = values;
+    const result = {
+      dead: isDead,
+      deathDate: isDead ? deathDate : undefined,
+      causeOfDeath: isDead ? deathCause : undefined,
     };
 
-    const patientIsNotDead = { dead: false };
-
-    return values.isDead ? patientIsDead : patientIsNotDead;
+    return result;
   }
 
   static createPatient(
     values: FormValues,
     config: ConfigObject,
     patientUuidMap: PatientUuidMapType,
-    initialAddressFieldValues: object,
+    initialAddressFieldValues: Record<string, any>,
     identifiers: Array<PatientIdentifier>,
   ): Patient {
     const attributes: Array<AttributeValue> = [];
     const addressFieldValues = FormManager.populateAddressValues(values, initialAddressFieldValues);
     if (config && config.personAttributeSections) {
       const { personAttributeSections } = config;
-
-      personAttributeSections.forEach(({ personAttributes }) => {
-        personAttributes.forEach(attr => {
+      for (const sections of personAttributeSections) {
+        for (const attr of personAttributeSections.personAttributes) {
           attributes.push({
             attributeType: attr.uuid,
             value: values[attr.name],
           });
-        });
-      });
+        }
+      }
     }
 
     const person = {
