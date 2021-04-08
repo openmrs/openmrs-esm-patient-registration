@@ -2,6 +2,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { resolve } = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { StatsWriterPlugin } = require('webpack-stats-plugin');
 
 const { peerDependencies } = require('./package.json');
 
@@ -14,62 +15,73 @@ const cssLoader = {
   },
 };
 
-module.exports = env => ({
-  entry: [resolve(__dirname, 'src/set-public-path.ts'), resolve(__dirname, 'src/index.ts')],
-  output: {
-    filename: 'openmrs-esm-patient-registration-app.js',
-    libraryTarget: 'system',
-    path: resolve(__dirname, 'dist'),
-    jsonpFunction: 'webpackJsonp_openmrs_esm_patient_registration',
-  },
-  module: {
-    rules: [
-      {
-        parser: {
-          system: false,
-        },
-      },
-      {
-        test: /\.m?(js|ts|tsx)$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-        },
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', cssLoader],
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: ['style-loader', cssLoader, { loader: 'sass-loader' }],
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-          },
-        ],
-      },
-    ],
-  },
-  devtool: 'sourcemap',
-  devServer: {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
+module.exports = env => {
+  const filename = 'openmrs-esm-patient-registration-app.js';
+
+  return {
+    entry: [resolve(__dirname, 'src/set-public-path.ts'), resolve(__dirname, 'src/index.ts')],
+    output: {
+      filename,
+      libraryTarget: 'system',
+      path: resolve(__dirname, 'dist'),
+      jsonpFunction: 'webpackJsonp_openmrs_esm_patient_registration',
     },
-    disableHostCheck: true,
-  },
-  externals: Object.keys(peerDependencies),
-  plugins: [
-    new ForkTsCheckerWebpackPlugin(),
-    new CleanWebpackPlugin(),
-    new BundleAnalyzerPlugin({
-      analyzerMode: env && env.analyze ? 'server' : 'disabled',
-    }),
-  ],
-  resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js', '.scss'],
-  },
-});
+    module: {
+      rules: [
+        {
+          parser: {
+            system: false,
+          },
+        },
+        {
+          test: /\.m?(js|ts|tsx)$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: 'babel-loader',
+          },
+        },
+        {
+          test: /\.css$/,
+          use: ['style-loader', cssLoader],
+        },
+        {
+          test: /\.s[ac]ss$/i,
+          use: ['style-loader', cssLoader, { loader: 'sass-loader' }],
+        },
+        {
+          test: /\.(png|jpe?g|gif|svg)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
+      ],
+    },
+    devtool: 'sourcemap',
+    devServer: {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+      disableHostCheck: true,
+    },
+    externals: Object.keys(peerDependencies),
+    plugins: [
+      new ForkTsCheckerWebpackPlugin(),
+      new CleanWebpackPlugin(),
+      new BundleAnalyzerPlugin({
+        analyzerMode: env && env.analyze ? 'server' : 'disabled',
+      }),
+      new StatsWriterPlugin({
+        filename: `${filename}.buildmanifest.json`,
+        stats: {
+          all: false,
+          chunks: true,
+        },
+      }),
+    ],
+    resolve: {
+      extensions: ['.tsx', '.ts', '.jsx', '.js', '.scss'],
+    },
+  };
+};
