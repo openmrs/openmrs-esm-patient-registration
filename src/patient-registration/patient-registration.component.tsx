@@ -507,12 +507,12 @@ export const PatientRegistration: React.FC = () => {
             ? showToast({
                 description: t("The patient's information has been successfully updated"),
                 title: t('Patient Details Updated'),
-                kind: t('success'),
+                kind: 'success',
               })
             : showToast({
                 description: t('The patient can now be found by searching for them using their name or ID number'),
                 title: t('New Patient Created'),
-                kind: t('success'),
+                kind: 'success',
               });
         }
       })
