@@ -6,6 +6,7 @@ import camelCase from 'lodash-es/camelCase';
 import capitalize from 'lodash-es/capitalize';
 import find from 'lodash-es/find';
 import Button from 'carbon-components-react/es/components/Button';
+
 import Link from 'carbon-components-react/es/components/Link';
 import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
@@ -503,6 +504,11 @@ export const PatientRegistration: React.FC = () => {
           results.then(response => {}).catch(err => {});
 
           navigate({ to: getAfterUrl(response.data.uuid) });
+          showToast({
+            description: 'The patient can now be found by searching for them using their name or ID number',
+            title: 'New Patient Created',
+            kind: 'success',
+          });
         }
       })
       .catch(response => {
@@ -545,6 +551,7 @@ export const PatientRegistration: React.FC = () => {
                         </Link>
                       </div>
                     ))}
+
                     <Button style={{ marginBottom: '1rem', width: '11.688rem', display: 'block' }} type="submit">
                       {existingPatient ? t('updatePatient') : t('registerPatient')}
                     </Button>
