@@ -504,11 +504,17 @@ export const PatientRegistration: React.FC = () => {
           results.then(response => {}).catch(err => {});
 
           navigate({ to: getAfterUrl(response.data.uuid) });
-          showToast({
-            description: 'The patient can now be found by searching for them using their name or ID number',
-            title: 'New Patient Created',
-            kind: 'success',
-          });
+          existingPatient
+            ? showToast({
+                description: "The patient's information has been successfully updated",
+                title: 'Patient Details Updated',
+                kind: 'success',
+              })
+            : showToast({
+                description: 'The patient can now be found by searching for them using their name or ID number',
+                title: 'New Patient Created',
+                kind: 'success',
+              });
         }
       })
       .catch(response => {
