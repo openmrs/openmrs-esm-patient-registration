@@ -533,7 +533,7 @@ export const PatientRegistration: React.FC = () => {
               <Row>
                 <Column lg={2} md={2} sm={1}>
                   <div className={styles.fixedPosition}>
-                    <h4>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
+                    <h4 style={{ marginTop: '10px' }}>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
                     {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
                       <DummyDataInput setValues={props.setValues} />
                     )}
