@@ -505,13 +505,13 @@ export const PatientRegistration: React.FC = () => {
           navigate({ to: getAfterUrl(response.data.uuid) });
           existingPatient
             ? showToast({
-                description: t("The patient's information has been successfully updated"),
-                title: t('Patient Details Updated'),
+                description: t('updationSuccessToastDescription'),
+                title: t('updationSuccessToastTitle'),
                 kind: 'success',
               })
             : showToast({
-                description: t('The patient can now be found by searching for them using their name or ID number'),
-                title: t('New Patient Created'),
+                description: t('registrationSuccessToastDescription'),
+                title: t('registrationSuccessToastTitle'),
                 kind: 'success',
               });
         }
