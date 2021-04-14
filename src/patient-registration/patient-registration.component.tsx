@@ -400,6 +400,7 @@ export const PatientRegistration: React.FC = () => {
           results.then(response => {}).catch(err => {});
 
           navigate({ to: FormManager.getAfterUrl(response.data.uuid, search, config) });
+
           existingPatient
             ? showToast({
                 description: t('updationSuccessToastDescription'),
