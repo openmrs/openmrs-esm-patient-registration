@@ -5,7 +5,8 @@ import dayjs from 'dayjs';
 import { validationSchema } from './patient-registration-validation';
 import { NameField } from '../field/name/name-field.component';
 import { PatientRegistrationContext } from '../patient-registration-context';
-import { FormValues, initialFormValues } from '../patient-registration.component';
+import { initialFormValues } from '../patient-registration.component';
+import { FormValues } from '../patient-registration-helper';
 
 const mockFieldConfigs = {
   name: {
