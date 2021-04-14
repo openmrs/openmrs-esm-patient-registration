@@ -31,5 +31,9 @@
     "relationshipToPatient": "Relationship to patient",
     "deathDateInputLabel": "Date of Death",
     "causeOfDeathInputLabel": "Cause of Death",
-    "unidentifiedPatient": "Unidentified Patient"
+    "unidentifiedPatient": "Unidentified Patient",
+    "registrationSuccessToastTitle":"New Patient Created",
+    "registrationSuccessToastDescription":"The patient can now be found by searching for them using their name or ID number",
+    "updationSuccessToastTitle":"Patient Details Updated",
+    "updationSuccessToastDescription":"The patient's information has been successfully updated"
 }
