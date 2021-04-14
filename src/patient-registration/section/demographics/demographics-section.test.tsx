@@ -1,9 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
-import { FormValues, initialFormValues } from '../../patient-registration.component';
+import { initialFormValues } from '../../patient-registration.component';
 import { DemographicsSection } from './demographics-section.component';
 import { PatientRegistrationContext } from '../../patient-registration-context';
+import { FormValues } from '../../patient-registration-helper';
 
 jest.mock('../../field/name/name-field.component', () => {
   return {

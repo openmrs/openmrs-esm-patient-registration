@@ -23,9 +23,11 @@ export interface PatientIdentifierType {
 }
 
 export interface PatientIdentifier {
+  uuid: string;
   identifier: string;
   identifierType: string;
   location: string;
+  preferred: boolean;
 }
 
 export type Relationship = {
@@ -58,4 +60,37 @@ export interface IdentifierSource {
     manualEntryEnabled: boolean;
     automaticGenerationEnabled: boolean;
   };
+}
+
+export interface FormValues {
+  givenName: string;
+  middleName: string;
+  familyName: string;
+  unidentifiedPatient: boolean;
+  additionalGivenName: string;
+  additionalMiddleName: string;
+  additionalFamilyName: string;
+  addNameInLocalLanguage: boolean;
+  gender: string;
+  birthdate: string;
+  yearsEstimated: number;
+  monthsEstimated: number;
+  birthdateEstimated: boolean;
+  telephoneNumber: string;
+  address1: string;
+  address2: string;
+  cityVillage: string;
+  stateProvince: string;
+  country: string;
+  postalCode: string;
+  isDead: boolean;
+  deathDate: string;
+  deathCause: string;
+  relationships: Array<{ relatedPerson: string; relationship: string }>;
+}
+
+export interface PatientUuidMapType {
+  additionalNameUuid: string | undefined;
+  patientUuid: string | undefined;
+  preferredNameUuid: string | undefined;
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, fireEvent, wait, screen } from '@testing-library/react';
 import { DummyDataInput, dummyFormValues } from './dummy-data-input.component';
-import { FormValues, initialFormValues } from '../../patient-registration.component';
+import { initialFormValues } from '../../patient-registration.component';
+import { FormValues } from '../../patient-registration-helper';
 
 describe('dummy data input', () => {
   let formValues: FormValues = initialFormValues;
