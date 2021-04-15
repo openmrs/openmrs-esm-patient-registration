@@ -13,6 +13,7 @@ import { Grid, Row, Column } from 'carbon-components-react/es/components/Grid';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
 import { Patient, PatientIdentifierType, AttributeValue } from './patient-registration-helper';
 import { PatientRegistrationContext } from './patient-registration-context';
+import BeforeSavePrompt from './before-save-prompt';
 import {
   getCurrentUserLocation,
   savePatient,
@@ -529,6 +530,7 @@ export const PatientRegistration: React.FC = () => {
         }}>
         {props => (
           <Form className={styles.form}>
+            <BeforeSavePrompt when={props.dirty} />
             <Grid>
               <Row>
                 <Column lg={2} md={2} sm={1}>
