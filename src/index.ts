@@ -53,6 +53,11 @@ function setupOpenMRS() {
         slot: 'top-nav-actions-slot',
         load: getAsyncLifecycle(() => import('./add-patient-link'), options),
       },
+      {
+        id: 'edit-patient-details-button',
+        slot: 'patient-actions-slot',
+        load: getAsyncLifecycle(() => import('./widgets/edit-patient-details-button.component'), options),
+      },
     ],
   };
 }
