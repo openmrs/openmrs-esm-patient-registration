@@ -1,5 +1,5 @@
 import { openmrsFetch } from '@openmrs/esm-framework';
-import { Patient, Relationship } from './patient-registration-helper';
+import { FetchedPatientIdentifierType, Patient, Relationship } from './patient-registration-helper';
 import camelCase from 'lodash-es/camelCase';
 import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
 
@@ -25,7 +25,7 @@ export function getUniquePatientIdentifier(abortController: AbortController) {
   return openmrsFetch('/module/idgen/generateIdentifier.form?source=1');
 }
 
-export function getPrimaryIdentifierType(abortController: AbortController) {
+export function getPrimaryIdentifierType(abortController: AbortController): Promise<FetchedPatientIdentifierType> {
   return openmrsFetch('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType', {
     signal: abortController.signal,
   }).then(response => {
@@ -42,13 +42,16 @@ export function getPrimaryIdentifierType(abortController: AbortController) {
   });
 }
 
-export async function getSecondaryIdentifierTypes(abortController: AbortController) {
+export async function getSecondaryIdentifierTypes(
+  abortController: AbortController,
+): Promise<Array<FetchedPatientIdentifierType>> {
   const response = await openmrsFetch(
     '/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.extraPatientIdentifierTypes',
     {
       signal: abortController.signal,
     },
   );
+
   if (response.data.results) {
     const extraIdentifierTypesSetUuid = response.data.results[0].metadataUuid;
     const secIdSet = await openmrsFetch(
@@ -57,12 +60,14 @@ export async function getSecondaryIdentifierTypes(abortController: AbortControll
         signal: abortController.signal,
       },
     );
+
     if (secIdSet.data.results) {
-      const ret = await Promise.all(
+      return await Promise.all(
         secIdSet.data.results.map(async setMember => {
           const type = await openmrsFetch('/ws/rest/v1/patientidentifiertype/' + setMember.metadataUuid, {
             signal: abortController.signal,
           });
+
           return {
             name: type.data.name,
             fieldName: camelCase(type.data.name),
@@ -73,9 +78,10 @@ export async function getSecondaryIdentifierTypes(abortController: AbortControll
           };
         }),
       );
-      return ret;
     }
   }
+
+  return undefined;
 }
 
 export function getAddressTemplate(abortController: AbortController) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { Row, Column } from 'carbon-components-react/es/components/Grid';
 import { DemographicsSection } from './demographics/demographics-section.component';
 import { ContactInfoSection } from './contact-info/contact-info-section.component';
@@ -12,6 +12,7 @@ import { NameField } from '../field/name/name-field.component';
 import { GenderField } from '../field/gender/gender-field.component';
 import { IdField } from '../field/id/id-field.component';
 import { DobField } from '../field/dob/dob.component';
+import { CapturePhotoProps } from '../patient-registration.component';
 
 enum Field {
   Address = 'address',
@@ -53,7 +54,12 @@ export const getField = (fieldName: string) => {
   }
 };
 
-export const getSection = (sectionProps, index, { setCapturePhotoProps, currentPhoto }) => {
+export const getSection = (
+  sectionProps: any,
+  index: number,
+  setCapturePhotoProps: (value: SetStateAction<CapturePhotoProps>) => void,
+  currentPhoto: string,
+) => {
   let section = null;
   switch (sectionProps.id) {
     case Section.Demographics:
@@ -75,9 +81,11 @@ export const getSection = (sectionProps, index, { setCapturePhotoProps, currentP
       section = <RelationshipsSection {...sectionProps} />;
       break;
     case Section.Default:
+    default:
       section = <div>Unknown Section {sectionProps.id}</div>;
       break;
   }
+
   return (
     <Row>
       <Column lg={8} md={8} sm={3}>

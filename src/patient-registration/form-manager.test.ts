@@ -45,28 +45,30 @@ describe('FormManager', () => {
       const result = await FormManager.createIdentifiers(
         { ...formValues, givenName: 'foo' },
         { givenName: { uuid: 'aUuid' } },
-        [{
-          name: 'foo',
-          required: false,
-          isPrimary: true, 
-          fieldName: 'givenName', 
-          uuid: 'identifierType',
-          format: 'n/a',
-          autoGenerationSource: identifierSource,
-          identifierSources: [],
-        }],
+        [
+          {
+            name: 'foo',
+            required: false,
+            isPrimary: true,
+            fieldName: 'givenName',
+            uuid: 'identifierType',
+            format: 'n/a',
+            autoGenerationSource: identifierSource,
+            identifierSources: [],
+          },
+        ],
         new AbortController(),
-        'Nyc'
+        'Nyc',
       );
-      expect(result).toEqual(
-        [{
+      expect(result).toEqual([
+        {
           uuid: 'aUuid',
           identifier: 'foo',
           identifierType: 'identifierType',
           location: 'Nyc',
           preferred: true,
-        }]
-      );
+        },
+      ]);
     });
   });
 });

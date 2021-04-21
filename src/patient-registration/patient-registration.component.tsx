@@ -115,41 +115,56 @@ export interface CapturePhotoProps {
   photoDateTime: string;
 }
 
+function scrollIntoView(viewId: string) {
+  document.getElementById(viewId).scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+    inline: 'center',
+  });
+}
+
+function findElementValueInXmlDoc(fieldName: string, elementSelector: string, doc: XMLDocument) {
+  return (
+    doc
+      .querySelector(elementSelector)
+      ?.querySelector(`[name=${fieldName}]`)
+      ?.getAttribute('value') ?? null
+  );
+}
+
+function cancelRegistration() {
+  navigate({ to: `${window.spaBase}/home` });
+}
+
 export const PatientRegistration: React.FC = () => {
   const { search } = useLocation();
+  const { t } = useTranslation();
   const config = useConfig();
   const [location, setLocation] = useState('');
   const [sections, setSections] = useState([]);
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
-  const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
-  const { t } = useTranslation();
+  const [, existingPatient] = useCurrentPatient(); // TODO: Edit mode.
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
-
   const [currentPhoto, setCurrentPhoto] = useState(null);
 
+  // Updates the displayed sections whenever the config entry changes.
   useEffect(() => {
-    if (config && config.sections) {
-      const tmp_sections = config.sections.map(section => ({
+    if (config?.sections) {
+      const configuredSections = config.sections.map(section => ({
         id: section,
         name: t(config.sectionDefinitions[section].name),
         fields: config.sectionDefinitions[section].fields,
       }));
-      setSections(tmp_sections);
+
+      setSections(configuredSections);
       setFieldConfigs(config.fieldConfigurations);
     }
-  }, [config]);
+  }, [t, config]);
 
-  const scrollIntoView = viewId => {
-    document.getElementById(viewId).scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-      inline: 'center',
-    });
-  };
-
+  // On Load: Fetches the current location from the /session endpoint.
   useEffect(() => {
     const abortController = new AbortController();
     getCurrentUserLocation(abortController).then(
@@ -159,9 +174,14 @@ export const PatientRegistration: React.FC = () => {
     return () => abortController.abort();
   }, []);
 
+  // If in Add Mode: Populates the form with blank values.
+  // If in Edit Mode: Populates the form with the existingPatient's data.
   useEffect(() => {
-    if (existingPatient) {
+    if (!existingPatient) {
+      Object.assign(initialFormValues, blankFormValues);
+    } else {
       patientUuidMap['patientUuid'] = existingPatient.id;
+
       // set names
       if (existingPatient.name.length) {
         let name = existingPatient.name[0];
@@ -181,6 +201,7 @@ export const PatientRegistration: React.FC = () => {
           initialFormValues.additionalFamilyName = name.family;
         }
       }
+
       initialFormValues.gender = capitalize(existingPatient.gender);
       initialFormValues.birthdate = existingPatient.birthDate;
       initialFormValues.telephoneNumber = existingPatient.telecom ? existingPatient.telecom[0].value : '';
@@ -224,66 +245,84 @@ export const PatientRegistration: React.FC = () => {
           }
         });
       }
+
       if (existingPatient.deceasedBoolean || existingPatient.deceasedDateTime) {
         initialFormValues.isDead = true;
         initialFormValues.deathDate = existingPatient.deceasedDateTime
           ? existingPatient.deceasedDateTime.split('T')[0]
           : '';
       }
-      (async () => {
-        const abortController = new AbortController();
-        const value = await fetchPatientPhotoUrl(existingPatient.id, config.concepts.patientPhotoUuid, abortController);
-        setCurrentPhoto(value);
-      })();
-    } else {
-      Object.assign(initialFormValues, blankFormValues);
+
+      const abortController = new AbortController();
+      fetchPatientPhotoUrl(existingPatient.id, config.concepts.patientPhotoUuid, abortController).then(value =>
+        setCurrentPhoto(value),
+      ); // TODO: Edit mode
+
+      return () => abortController.abort();
     }
   }, [existingPatient]);
 
+  // On Load: Fetches primary and secondary patient identifiers.
+  //          Then aggregates them with additional data: identifier sources and autogeneration options.
   useEffect(() => {
     const abortController = new AbortController();
+
     (async () => {
       const [primaryIdentifierType, secondaryIdentifierTypes] = await Promise.all([
+        // TODO: Add mode. Edit mode.
         getPrimaryIdentifierType(abortController),
         getSecondaryIdentifierTypes(abortController),
       ]);
-      let types = [];
-      types = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean);
+
+      // @ts-ignore Reason: The required props of the type are generated below.
+      const types: Array<PatientIdentifierType> = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean);
+
       for (const type of types) {
         const [sources, options] = await Promise.all([
+          // TODO: Add mode. Edit mode.
           getIdentifierSources(type.uuid, abortController),
           getAutoGenerationOptions(type.uuid, abortController),
         ]);
+
         type.identifierSources = sources.data.results.map(source => {
           const option = find(options.results, { source: { uuid: source.uuid } });
           source.autoGenerationOption = option;
           return source;
         });
+
         // update form initial values
         if (!initialFormValues[type.fieldName]) {
           initialFormValues[type.fieldName] = '';
         }
+
         initialFormValues['source-for-' + type.fieldName] =
           type.identifierSources.length > 0 ? type.identifierSources[0].name : '';
       }
+
       setIdentifierTypes(types);
     })();
+
     return () => abortController.abort();
   }, []);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    getAddressTemplate(abortController).then(({ data }) => {
-      setAddressTemplate(data.results[0].value);
-    });
-  }, []);
-
+  // Sets the current photo whenever it changes.
   useEffect(() => {
     if (capturePhotoProps?.base64EncodedImage || capturePhotoProps?.imageFile) {
       setCurrentPhoto(capturePhotoProps.base64EncodedImage || URL.createObjectURL(capturePhotoProps.imageFile));
     }
+    // TODO: Investigate whether capturePhotoProps requires network in some way.
   }, [capturePhotoProps]);
 
+  // On Load: Fetches the address template.
+  useEffect(() => {
+    const abortController = new AbortController();
+    // TODO: Add mode. Edit mode.
+    getAddressTemplate(abortController).then(({ data }) => setAddressTemplate(data.results[0].value));
+    return () => abortController.abort();
+  }, []);
+
+  // Whenever the address template (which is fetched in the hook above) changes,
+  // parses that address template and updates the form with the data (i.e. updates validation schema etc.).
   useEffect(() => {
     if (addressTemplate) {
       const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
@@ -291,8 +330,8 @@ export const PatientRegistration: React.FC = () => {
       let validationSchemaObjs: AddressValidationSchemaType[] = Array.prototype.map.call(nameMappings, nameMapping => {
         let field = nameMapping.getAttribute('name');
         let label = nameMapping.getAttribute('value');
-        let regex = getValueIfItExists(field, 'elementRegex', templateXmlDoc);
-        let regexFormat = getValueIfItExists(field, 'elementRegexFormats', templateXmlDoc);
+        let regex = findElementValueInXmlDoc(field, 'elementRegex', templateXmlDoc);
+        let regexFormat = findElementValueInXmlDoc(field, 'elementRegexFormats', templateXmlDoc);
 
         return {
           name: field,
@@ -311,7 +350,7 @@ export const PatientRegistration: React.FC = () => {
       Array.prototype.forEach.call(nameMappings, nameMapping => {
         let name = nameMapping.getAttribute('name');
         if (!initialAddressFieldValues[name]) {
-          let defaultValue = getValueIfItExists(name, 'elementDefaults', templateXmlDoc);
+          let defaultValue = findElementValueInXmlDoc(name, 'elementDefaults', templateXmlDoc);
           initialAddressFieldValues[name] = defaultValue ?? '';
         }
       });
@@ -321,27 +360,11 @@ export const PatientRegistration: React.FC = () => {
     }
   }, [addressTemplate]);
 
-  const getValueIfItExists = (field: string, selector: string, doc: XMLDocument) => {
-    let element = doc.querySelector(selector);
-    if (element) {
-      let property = element.querySelector(`[name=${field}]`);
-      if (property) {
-        return property.getAttribute('value');
-      } else {
-        return null;
-      }
-    }
-    return null;
-  };
-
-  const cancelRegistration = () => {
-    navigate({ to: `${window.spaBase}/home` });
-  };
-
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
     const relationships = values.relationships;
 
+    // TODO: Add mode. Edit mode. FormManager.createIdentifier makes network request (`generateIdentifiers`).
     const identifiers: Array<PatientIdentifier> = await FormManager.createIdentifiers(
       values,
       patientUuidMap,
@@ -350,14 +373,17 @@ export const PatientRegistration: React.FC = () => {
       location,
     );
 
+    // TODO: Add mode. Edit mode. Makes NW request.
     const patient = FormManager.createPatient(values, config, patientUuidMap, initialAddressFieldValues, identifiers);
 
     // handle deleted names
     FormManager.getDeletedNames(patientUuidMap).forEach(async name => {
+      // TODO: Add mode. Edit mode. Makes NW request.
       await deletePersonName(name.nameUuid, name.personUuid, abortController);
     });
 
     // handle save patient
+    // TODO: Add mode. Edit mode.
     savePatient(abortController, patient, patientUuidMap['patientUuid'])
       .then(response => {
         // TODO this entire block of code should be migrated somewhere...
@@ -382,6 +408,7 @@ export const PatientRegistration: React.FC = () => {
               });
             }
           });
+
           if (capturePhotoProps && (capturePhotoProps.base64EncodedImage || capturePhotoProps.imageFile)) {
             requests.push(
               savePatientPhoto(
@@ -396,6 +423,7 @@ export const PatientRegistration: React.FC = () => {
               ),
             );
           }
+
           const results = Promise.all(requests);
           results.then(response => {}).catch(err => {});
 
@@ -475,7 +503,7 @@ export const PatientRegistration: React.FC = () => {
                         setFieldValue: props.setFieldValue,
                       }}>
                       {sections.map((section, index) => (
-                        <div key={index}>{getSection(section, index, { setCapturePhotoProps, currentPhoto })}</div>
+                        <div key={index}>{getSection(section, index, setCapturePhotoProps, currentPhoto)}</div>
                       ))}
                     </PatientRegistrationContext.Provider>
                   </Grid>
