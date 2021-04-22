@@ -30,5 +30,8 @@
     "relationshipToPatient": "Relationship to patient",
     "deathDateInputLabel": "Date of Death",
     "causeOfDeathInputLabel": "Cause of Death",
-    "unidentifiedPatient": "Unidentified Patient"
+    "unidentifiedPatient": "Unidentified Patient",
+    "discardModalHeader": "Confirm Discard Changes?",
+    "discardModalBody": "The changes you made to this patient's details have not been saved. Discard changes?",
+    "discard": "Discard"
 }
