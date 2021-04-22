@@ -68,6 +68,10 @@ function setupOpenMRS() {
   };
 }
 
+/**
+ * Called during startup. Notifies the service worker of routes that this MF requires in cache
+ * for offline mode. Post notification, fetches static data so that it is in the cache.
+ */
 function TODO_TMP_MOVE_ME_LATER_registerDynamicRoutes() {
   const wb = new Workbox(`${window.getOpenmrsSpaBase()}service-worker.js`);
   wb.register();
@@ -76,28 +80,23 @@ function TODO_TMP_MOVE_ME_LATER_registerDynamicRoutes() {
   // Currently gives the page some time to setup the SW and then registers the URLs which this MF wants cached.
   // This must 100% be invoked by the app shell.
   setTimeout(async () => {
-    console.warn('PRECACHING START');
-
     await Promise.all([
-      cacheUrl('/ws/rest/v1/metadatamapping/termmapping\\?v=full&code=emr.primaryIdentifierType'),
+      cacheUrl('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType'),
       cachePattern('/ws/rest/v1/patientidentifiertype/.+'),
-
-      cacheUrl('/ws/rest/v1/metadatamapping/termmapping\\?v=full&code=emr.extraPatientIdentifierTypes'),
+      cacheUrl('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.extraPatientIdentifierTypes'),
       cachePattern('/ws/rest/v1/metadatamapping/metadataset/.+/members'),
       cachePattern('/ws/rest/v1/patientidentifiertype/.+'),
       cachePattern('/ws/rest/v1/idgen/identifiersource\\?v=full&identifierType=.+'),
-
       cacheUrl('/ws/rest/v1/systemsetting?q=layout.address.format&v=custom:(value)'),
       cacheUrl('/ws/rest/v1/relationshiptype?v=default'),
     ]);
 
     const ac = new AbortController();
-
     await Promise.all([
-      fetchAllRelationshipTypes(ac),
-      fetchAddressTemplate(ac),
       fetchCurrentUserLocation(ac),
       fetchPatientIdentifierTypesWithSources(ac),
+      fetchAddressTemplate(ac),
+      fetchAllRelationshipTypes(ac),
     ]);
   });
 
