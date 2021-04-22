@@ -5,45 +5,118 @@ import {
   AttributeValue,
   PatientUuidMapType,
   Patient,
+  CapturePhotoProps,
 } from './patient-registration-types';
-import { generateIdentifier } from './patient-registration.resource';
-import { ConfigObject, interpolateString } from '@openmrs/esm-framework';
+import {
+  deletePersonName,
+  generateIdentifier,
+  savePatient,
+  savePatientPhoto,
+  saveRelationship,
+} from './patient-registration.resource';
+import { ConfigObject } from '@openmrs/esm-framework';
 
 export default class FormManager {
-  static createIdentifiers(
+  static async savePatientForm(
+    values: FormValues,
+    config: ConfigObject,
+    patientUuidMap: PatientUuidMapType,
+    initialAddressFieldValues: Record<string, any>,
+    identifierTypes: Array<PatientIdentifierType>,
+    currentLocation: string,
+    capturePhotoProps: CapturePhotoProps,
+    abortController: AbortController,
+  ) {
+    const patientIdentifiers = await FormManager.getPatientIdentifiersToCreate(
+      values,
+      patientUuidMap,
+      identifierTypes,
+      abortController,
+      currentLocation,
+    );
+
+    const createdPatient = FormManager.getPatientToCreate(
+      values,
+      config,
+      patientUuidMap,
+      initialAddressFieldValues,
+      patientIdentifiers,
+    );
+
+    FormManager.getDeletedNames(patientUuidMap).forEach(async name => {
+      await deletePersonName(name.nameUuid, name.personUuid, abortController);
+    });
+
+    const savePatientResponse = await savePatient(abortController, createdPatient, patientUuidMap.patientUuid);
+    if (savePatientResponse.ok) {
+      values.relationships.map(({ relatedPerson: relatedPersonUuid, relationship }) => {
+        const relationshipType = relationship.split('/')[0];
+        const direction = relationship.split('/')[1];
+        const thisPatientUuid = savePatientResponse.data.uuid;
+        const isAToB = direction === 'aIsToB';
+        const relationshipToSave = {
+          personA: isAToB ? relatedPersonUuid : thisPatientUuid,
+          personB: isAToB ? thisPatientUuid : relatedPersonUuid,
+          relationshipType,
+        };
+
+        saveRelationship(abortController, relationshipToSave);
+      });
+
+      if (capturePhotoProps && (capturePhotoProps.base64EncodedImage || capturePhotoProps.imageFile)) {
+        savePatientPhoto(
+          savePatientResponse.data.uuid,
+          capturePhotoProps.imageFile,
+          null,
+          abortController,
+          capturePhotoProps.base64EncodedImage,
+          '/ws/rest/v1/obs',
+          capturePhotoProps.photoDateTime,
+          config.concepts.patientPhotoUuid,
+        );
+      }
+    }
+
+    return savePatientResponse.data.uuid;
+  }
+
+  static getPatientIdentifiersToCreate(
     values: FormValues,
     patientUuidMap: object,
     identifierTypes: Array<PatientIdentifierType>,
     abortController: AbortController,
     location: string,
   ) {
-    const identifiers: Array<Promise<PatientIdentifier>> = identifierTypes.map(type => {
+    const identifierTypeRequests: Array<Promise<PatientIdentifier>> = identifierTypes.map(async type => {
       const idValue = values[type.fieldName];
       if (idValue) {
-        return Promise.resolve({
+        return {
           uuid: patientUuidMap[type.fieldName] ? patientUuidMap[type.fieldName].uuid : undefined,
           identifier: idValue,
           identifierType: type.uuid,
           location: location,
           preferred: type.isPrimary,
-        });
+        };
       } else if (type.autoGenerationSource) {
-        return new Promise((resolve, _) => {
-          generateIdentifier(type.autoGenerationSource.uuid, abortController).then(response => {
-            resolve({
-              // is this undefined?
-              uuid: undefined,
-              identifier: response.data.identifier,
-              identifierType: type.uuid,
-              location: location,
-              preferred: type.isPrimary,
-            });
-          });
-        });
+        const generateIdentifierResponse = await generateIdentifier(type.autoGenerationSource.uuid, abortController);
+        return {
+          // is this undefined?
+          uuid: undefined,
+          identifier: generateIdentifierResponse.data.identifier,
+          identifierType: type.uuid,
+          location: location,
+          preferred: type.isPrimary,
+        };
+      } else {
+        // This is a case that should not occur.
+        // If it did, the subsequent network request (when creating the patient) would fail with
+        // BadRequest since the (returned) identifier type is undefined.
+        // Better stop early.
+        throw new Error('No approach for generating a patient identifier could be found.');
       }
     });
 
-    return Promise.all(identifiers);
+    return Promise.all(identifierTypeRequests);
   }
 
   static populateAddressValues(
@@ -91,13 +164,6 @@ export default class FormManager {
     return names;
   }
 
-  static getAfterUrl(patientUuid: string, search: string, config: ConfigObject) {
-    return (
-      new URLSearchParams(search).get('afterUrl') ||
-      interpolateString(config.links.submitButton, { patientUuid: patientUuid })
-    );
-  }
-
   static getDeathInfo(values: FormValues) {
     const { isDead, deathDate, deathCause } = values;
     const result = {
@@ -109,7 +175,7 @@ export default class FormManager {
     return result;
   }
 
-  static createPatient(
+  static getPatientToCreate(
     values: FormValues,
     config: ConfigObject,
     patientUuidMap: PatientUuidMapType,

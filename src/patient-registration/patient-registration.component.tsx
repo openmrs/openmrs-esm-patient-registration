@@ -10,7 +10,13 @@ import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { Grid, Row, Column } from 'carbon-components-react/es/components/Grid';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
-import { PatientIdentifier, PatientIdentifierType, FormValues, CapturePhotoProps } from './patient-registration-types';
+import {
+  PatientIdentifier,
+  PatientIdentifierType,
+  FormValues,
+  CapturePhotoProps,
+  PatientUuidMapType,
+} from './patient-registration-types';
 import { PatientRegistrationContext } from './patient-registration-context';
 import FormManager from './form-manager';
 import {
@@ -23,7 +29,14 @@ import {
   fetchPatientPhotoUrl,
   fetchPatientIdentifierTypesWithSources,
 } from './patient-registration.resource';
-import { createErrorHandler, showToast, useCurrentPatient, useConfig, navigate } from '@openmrs/esm-framework';
+import {
+  createErrorHandler,
+  showToast,
+  useCurrentPatient,
+  useConfig,
+  navigate,
+  interpolateString,
+} from '@openmrs/esm-framework';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import { useTranslation } from 'react-i18next';
 import { getSection } from './section/section-helper';
@@ -31,7 +44,7 @@ import { cancelRegistration, parseAddressTemplateXml, scrollIntoView } from './p
 
 const initialAddressFieldValues = {};
 
-const patientUuidMap = {
+const patientUuidMap: PatientUuidMapType = {
   additionalNameUuid: undefined,
   patientUuid: undefined,
   preferredNameUuid: undefined,
@@ -247,97 +260,39 @@ export const PatientRegistration: React.FC = () => {
 
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
-    const relationships = values.relationships;
 
-    // TODO: Add mode. Edit mode. FormManager.createIdentifier makes network request (`generateIdentifiers`).
-    const identifiers: Array<PatientIdentifier> = await FormManager.createIdentifiers(
-      values,
-      patientUuidMap,
-      identifierTypes,
-      abortController,
-      location,
-    );
+    try {
+      const patientUuid = await FormManager.savePatientForm(
+        values,
+        config,
+        patientUuidMap,
+        initialAddressFieldValues,
+        identifierTypes,
+        location,
+        capturePhotoProps,
+        abortController,
+      );
 
-    // TODO: Add mode. Edit mode. Makes NW request.
-    const patient = FormManager.createPatient(values, config, patientUuidMap, initialAddressFieldValues, identifiers);
+      const redirectUrl =
+        new URLSearchParams(search).get('afterUrl') || interpolateString(config.links.submitButton, { patientUuid });
 
-    // handle deleted names
-    FormManager.getDeletedNames(patientUuidMap).forEach(async name => {
-      // TODO: Add mode. Edit mode. Makes NW request.
-      await deletePersonName(name.nameUuid, name.personUuid, abortController);
-    });
-
-    // handle save patient
-    // TODO: Add mode. Edit mode.
-    savePatient(abortController, patient, patientUuidMap['patientUuid'])
-      .then(response => {
-        // TODO this entire block of code should be migrated somewhere...
-        if (response.ok) {
-          const requests = relationships.map(tmp => {
-            const { relatedPerson, relationship } = tmp;
-            const relationshipType = relationship.split('/')[0];
-            const direction = relationship.split('/')[1];
-            const abortController = new AbortController();
-            const { data } = response;
-            if (direction === 'aIsToB') {
-              return saveRelationship(abortController, {
-                personA: relatedPerson,
-                personB: data.uuid,
-                relationshipType,
-              });
-            } else {
-              return saveRelationship(abortController, {
-                personA: data.uuid,
-                personB: relatedPerson,
-                relationshipType,
-              });
-            }
-          });
-
-          if (capturePhotoProps && (capturePhotoProps.base64EncodedImage || capturePhotoProps.imageFile)) {
-            requests.push(
-              savePatientPhoto(
-                response.data.uuid,
-                capturePhotoProps.imageFile,
-                null,
-                abortController,
-                capturePhotoProps.base64EncodedImage,
-                '/ws/rest/v1/obs',
-                capturePhotoProps.photoDateTime,
-                config.concepts.patientPhotoUuid,
-              ),
-            );
-          }
-
-          const results = Promise.all(requests);
-          results.then(response => {}).catch(err => {});
-
-          navigate({ to: FormManager.getAfterUrl(response.data.uuid, search, config) });
-
-          inEditMode
-            ? showToast({
-                description: t('updationSuccessToastDescription'),
-                title: t('updationSuccessToastTitle'),
-                kind: 'success',
-              })
-            : showToast({
-                description: t('registrationSuccessToastDescription'),
-                title: t('registrationSuccessToastTitle'),
-                kind: 'success',
-              });
-        }
-      })
-      .catch(response => {
-        if (response.responseBody && response.responseBody.error.globalErrors) {
-          response.responseBody.error.globalErrors.forEach(error => {
-            showToast({ description: error.message });
-          });
-        } else if (response.responseBody && response.responseBody.error.message) {
-          showToast({ description: response.responseBody.error.message });
-        } else {
-          createErrorHandler()(response);
-        }
+      navigate({ to: redirectUrl });
+      showToast({
+        description: inEditMode ? t('updationSuccessToastDescription') : t('registrationSuccessToastDescription'),
+        title: inEditMode ? t('updationSuccessToastTitle') : t('registrationSuccessToastTitle'),
+        kind: 'success',
       });
+    } catch (error) {
+      if (error.responseBody && error.responseBody.error.globalErrors) {
+        error.responseBody.error.globalErrors.forEach(error => {
+          showToast({ description: error.message });
+        });
+      } else if (error.responseBody && error.responseBody.error.message) {
+        showToast({ description: error.responseBody.error.message });
+      } else {
+        createErrorHandler()(error);
+      }
+    }
   };
 
   return (

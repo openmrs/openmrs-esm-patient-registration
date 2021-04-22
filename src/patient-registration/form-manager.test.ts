@@ -1,5 +1,4 @@
 import FormManager from './form-manager';
-import { generateIdentifier } from './patient-registration.resource';
 
 jest.mock('./patient-registration.resource');
 
@@ -42,7 +41,7 @@ const identifierSource = {
 describe('FormManager', () => {
   describe('createIdentifiers', () => {
     it('uses the uuid of a field name if it exists', async () => {
-      const result = await FormManager.createIdentifiers(
+      const result = await FormManager.getPatientIdentifiersToCreate(
         { ...formValues, givenName: 'foo' },
         { givenName: { uuid: 'aUuid' } },
         [
