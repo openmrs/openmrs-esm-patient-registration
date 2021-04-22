@@ -7,7 +7,7 @@ import SelectItem from 'carbon-components-react/es/components/SelectItem';
 import { FieldArray } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
-import { getAllRelationshipTypes, getPerson } from '../../patient-registration.resource';
+import { fetchAllRelationshipTypes, fetchPerson } from '../../patient-registration.resource';
 import { PatientRegistrationContext } from '../../patient-registration-context';
 
 interface RelationshipType {
@@ -23,7 +23,7 @@ export const RelationshipsSection: React.FC = () => {
 
   useEffect(() => {
     const abortController = new AbortController();
-    getAllRelationshipTypes(abortController).then(({ data: { results } }) => {
+    fetchAllRelationshipTypes(abortController).then(({ data: { results } }) => {
       const tmp: RelationshipType[] = [];
       results.forEach(type => {
         const aIsToB = {
@@ -55,7 +55,7 @@ export const RelationshipsSection: React.FC = () => {
 
   const searchPerson = async (query: string) => {
     const abortController = new AbortController();
-    const searchResults = await getPerson(query, abortController);
+    const searchResults = await fetchPerson(query, abortController);
     return searchResults.data.results;
   };
 

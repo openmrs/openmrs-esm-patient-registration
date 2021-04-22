@@ -3,10 +3,10 @@ import { backendDependencies } from './openmrs-backend-dependencies';
 import { esmPatientRegistrationSchema } from './config-schemas/openmrs-esm-patient-registration-schema';
 import { Workbox } from 'workbox-window';
 import {
-  getAddressTemplate,
-  getAllRelationshipTypes,
-  getCurrentUserLocation,
-  getPatientIdentifierTypesWithSources,
+  fetchAddressTemplate,
+  fetchAllRelationshipTypes,
+  fetchCurrentUserLocation,
+  fetchPatientIdentifierTypesWithSources,
 } from './patient-registration/patient-registration.resource';
 
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
@@ -94,10 +94,10 @@ function TODO_TMP_MOVE_ME_LATER_registerDynamicRoutes() {
     const ac = new AbortController();
 
     await Promise.all([
-      getAllRelationshipTypes(ac),
-      getAddressTemplate(ac),
-      getCurrentUserLocation(ac),
-      getPatientIdentifierTypesWithSources(ac),
+      fetchAllRelationshipTypes(ac),
+      fetchAddressTemplate(ac),
+      fetchCurrentUserLocation(ac),
+      fetchPatientIdentifierTypesWithSources(ac),
     ]);
   });
 

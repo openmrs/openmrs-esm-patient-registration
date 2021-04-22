@@ -9,6 +9,9 @@ import camelCase from 'lodash-es/camelCase';
 import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
 import find from 'lodash-es/find';
 
+export const uuidIdentifier = '05a29f94-c0ed-11e2-94be-8c13b969e334';
+export const uuidTelephoneNumber = '14d4f066-15f5-102d-96e4-000c29c2a5d7';
+
 export function savePatient(abortController: AbortController, patient: Patient, patientUuid: string) {
   const url = patientUuid ? '/ws/rest/v1/patient/' + patientUuid : '/ws/rest/v1/patient/';
   return openmrsFetch(url, {
@@ -21,90 +24,18 @@ export function savePatient(abortController: AbortController, patient: Patient, 
   });
 }
 
-export function getCurrentUserLocation(abortController: AbortController) {
+export function fetchCurrentUserLocation(abortController: AbortController) {
   return openmrsFetch('/ws/rest/v1/session', {
     signal: abortController.signal,
   });
 }
 
-function getPrimaryIdentifierType(abortController: AbortController): Promise<FetchedPatientIdentifierType> {
-  return openmrsFetch('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType', {
-    signal: abortController.signal,
-  }).then(response => {
-    return openmrsFetch('/ws/rest/v1/patientidentifiertype/' + response.data.results[0].metadataUuid, {
-      signal: abortController.signal,
-    }).then(response => ({
-      name: response.data.name,
-      fieldName: camelCase(response.data.name),
-      required: response.data.required,
-      uuid: response.data.uuid,
-      format: response.data.format,
-      isPrimary: true,
-    }));
-  });
-}
-
-async function getSecondaryIdentifierTypes(
-  abortController: AbortController,
-): Promise<Array<FetchedPatientIdentifierType>> {
-  const response = await openmrsFetch(
-    '/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.extraPatientIdentifierTypes',
-    {
-      signal: abortController.signal,
-    },
-  );
-
-  if (response.data.results) {
-    const extraIdentifierTypesSetUuid = response.data.results[0].metadataUuid;
-    const secIdSet = await openmrsFetch(
-      '/ws/rest/v1/metadatamapping/metadataset/' + extraIdentifierTypesSetUuid + '/members',
-      {
-        signal: abortController.signal,
-      },
-    );
-
-    if (secIdSet.data.results) {
-      return await Promise.all(
-        secIdSet.data.results.map(async setMember => {
-          const type = await openmrsFetch('/ws/rest/v1/patientidentifiertype/' + setMember.metadataUuid, {
-            signal: abortController.signal,
-          });
-
-          return {
-            name: type.data.name,
-            fieldName: camelCase(type.data.name),
-            required: type.data.required,
-            uuid: type.data.uuid,
-            format: response.data.format,
-            isPrimary: false,
-          };
-        }),
-      );
-    }
-  }
-
-  return undefined;
-}
-
-function getIdentifierSources(identifierType: string, abortController: AbortController) {
-  return openmrsFetch('/ws/rest/v1/idgen/identifiersource?v=full&identifierType=' + identifierType, {
-    signal: abortController.signal,
-  });
-}
-
-function getAutoGenerationOptions(identifierType: string, abortController: AbortController) {
-  // return openmrsFetch('/ws/rest/v1/idgen/autogenerationoption?v=full&identifierType=' + identifierType, {
-  //   signal: abortController.signal,
-  // });
-  return Promise.resolve(mockAutoGenerationOptionsResult);
-}
-
-export async function getPatientIdentifierTypesWithSources(
+export async function fetchPatientIdentifierTypesWithSources(
   abortController: AbortController,
 ): Promise<Array<PatientIdentifierType>> {
   const [primaryIdentifierType, secondaryIdentifierTypes] = await Promise.all([
-    getPrimaryIdentifierType(abortController),
-    getSecondaryIdentifierTypes(abortController),
+    fetchPrimaryIdentifierType(abortController),
+    fetchSecondaryIdentifierTypes(abortController),
   ]);
 
   // @ts-ignore Reason: The required props of the type are generated below.
@@ -114,8 +45,8 @@ export async function getPatientIdentifierTypesWithSources(
 
   for (const identifierType of identifierTypes) {
     const [identifierSources, autoGenOptions] = await Promise.all([
-      getIdentifierSources(identifierType.uuid, abortController),
-      getAutoGenerationOptions(identifierType.uuid, abortController),
+      fetchIdentifierSources(identifierType.uuid, abortController),
+      fetchAutoGenerationOptions(identifierType.uuid, abortController),
     ]);
 
     identifierType.identifierSources = identifierSources.data.results.map(source => {
@@ -128,7 +59,87 @@ export async function getPatientIdentifierTypesWithSources(
   return identifierTypes;
 }
 
-export function getAddressTemplate(abortController: AbortController) {
+async function fetchPrimaryIdentifierType(abortController: AbortController): Promise<FetchedPatientIdentifierType> {
+  const primaryIdentifierTypeResponse = await openmrsFetch(
+    '/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType',
+    {
+      signal: abortController.signal,
+    },
+  );
+
+  const { data: metadata } = await openmrsFetch(
+    '/ws/rest/v1/patientidentifiertype/' + primaryIdentifierTypeResponse.data.results[0].metadataUuid,
+    {
+      signal: abortController.signal,
+    },
+  );
+
+  return {
+    name: metadata.name,
+    fieldName: camelCase(metadata.name),
+    required: metadata.required,
+    uuid: metadata.uuid,
+    format: metadata.format,
+    isPrimary: true,
+  };
+}
+
+async function fetchSecondaryIdentifierTypes(
+  abortController: AbortController,
+): Promise<Array<FetchedPatientIdentifierType>> {
+  const secondaryIdentifierTypeResponse = await openmrsFetch(
+    '/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.extraPatientIdentifierTypes',
+    {
+      signal: abortController.signal,
+    },
+  );
+
+  if (secondaryIdentifierTypeResponse.data.results) {
+    const extraIdentifierTypesSetUuid = secondaryIdentifierTypeResponse.data.results[0].metadataUuid;
+    const metadataResponse = await openmrsFetch(
+      '/ws/rest/v1/metadatamapping/metadataset/' + extraIdentifierTypesSetUuid + '/members',
+      {
+        signal: abortController.signal,
+      },
+    );
+
+    if (metadataResponse.data.results) {
+      return await Promise.all(
+        metadataResponse.data.results.map(async setMember => {
+          const type = await openmrsFetch('/ws/rest/v1/patientidentifiertype/' + setMember.metadataUuid, {
+            signal: abortController.signal,
+          });
+
+          return {
+            name: type.data.name,
+            fieldName: camelCase(type.data.name),
+            required: type.data.required,
+            uuid: type.data.uuid,
+            format: secondaryIdentifierTypeResponse.data.format,
+            isPrimary: false,
+          };
+        }),
+      );
+    }
+  }
+
+  return [];
+}
+
+function fetchIdentifierSources(identifierType: string, abortController: AbortController) {
+  return openmrsFetch('/ws/rest/v1/idgen/identifiersource?v=full&identifierType=' + identifierType, {
+    signal: abortController.signal,
+  });
+}
+
+function fetchAutoGenerationOptions(identifierType: string, abortController: AbortController) {
+  // return openmrsFetch('/ws/rest/v1/idgen/autogenerationoption?v=full&identifierType=' + identifierType, {
+  //   signal: abortController.signal,
+  // });
+  return Promise.resolve(mockAutoGenerationOptionsResult);
+}
+
+export function fetchAddressTemplate(abortController: AbortController) {
   return openmrsFetch('/ws/rest/v1/systemsetting?q=layout.address.format&v=custom:(value)', {
     signal: abortController.signal,
   });
@@ -141,6 +152,7 @@ export function generateIdentifier(source: string, abortController: AbortControl
     },
     method: 'POST',
     body: {},
+    signal: abortController.signal,
   });
 }
 
@@ -151,9 +163,7 @@ export function deletePersonName(nameUuid: string, personUuid: string, abortCont
   });
 }
 
-export const uuidIdentifier = '05a29f94-c0ed-11e2-94be-8c13b969e334';
-export const uuidTelephoneNumber = '14d4f066-15f5-102d-96e4-000c29c2a5d7';
-export function getAllRelationshipTypes(abortController: AbortController) {
+export function fetchAllRelationshipTypes(abortController: AbortController) {
   return openmrsFetch('/ws/rest/v1/relationshiptype?v=default', {
     signal: abortController.signal,
   });
@@ -219,7 +229,7 @@ export async function fetchPatientPhotoUrl(
   }
 }
 
-export async function getPerson(query: string, abortController: AbortController) {
+export async function fetchPerson(query: string, abortController: AbortController) {
   return openmrsFetch(`/ws/rest/v1/person?q=${query}`, {
     signal: abortController.signal,
   });

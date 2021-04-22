@@ -95,7 +95,7 @@ describe('form submit', () => {
   };
 
   beforeAll(() => {
-    spyOn(backendController, 'getAddressTemplate').and.returnValue(getAddressTemplateMock());
+    spyOn(backendController, 'fetchAddressTemplate').and.returnValue(getAddressTemplateMock());
     spyOn(mockOpenmrsFramework, 'useConfig').and.returnValue(mockOpenmrsConfig);
   });
 
@@ -148,7 +148,7 @@ describe('form submit', () => {
   it('edits patient demographics', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
-    spyOn(backendController, 'getPatientIdentifierTypesWithSources').and.returnValue(
+    spyOn(backendController, 'fetchPatientIdentifierTypesWithSources').and.returnValue(
       Promise.resolve([
         {
           name: 'OpenMRS Id',

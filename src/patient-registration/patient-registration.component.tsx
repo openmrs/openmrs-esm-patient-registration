@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import React, { useState, useEffect } from 'react';
 import XAxis16 from '@carbon/icons-react/es/x-axis/16';
 import styles from './patient-registration.scss';
@@ -15,14 +14,14 @@ import { PatientIdentifier, PatientIdentifierType, FormValues, CapturePhotoProps
 import { PatientRegistrationContext } from './patient-registration-context';
 import FormManager from './form-manager';
 import {
-  getCurrentUserLocation,
+  fetchCurrentUserLocation,
   savePatient,
-  getAddressTemplate,
+  fetchAddressTemplate,
   deletePersonName,
   saveRelationship,
   savePatientPhoto,
   fetchPatientPhotoUrl,
-  getPatientIdentifierTypesWithSources,
+  fetchPatientIdentifierTypesWithSources,
 } from './patient-registration.resource';
 import { createErrorHandler, showToast, useCurrentPatient, useConfig, navigate } from '@openmrs/esm-framework';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
@@ -99,7 +98,7 @@ export const PatientRegistration: React.FC = () => {
   // On Load: Fetches the current location from the /session endpoint.
   useEffect(() => {
     const abortController = new AbortController();
-    getCurrentUserLocation(abortController).then(
+    fetchCurrentUserLocation(abortController).then(
       ({ data }) => setLocation(data.sessionLocation.uuid),
       createErrorHandler(),
     );
@@ -197,7 +196,7 @@ export const PatientRegistration: React.FC = () => {
   useEffect(() => {
     const abortController = new AbortController();
 
-    getPatientIdentifierTypesWithSources(abortController).then(identifierTypes => {
+    fetchPatientIdentifierTypesWithSources(abortController).then(identifierTypes => {
       for (const identifierType of identifierTypes) {
         // update form initial values
         if (!initialFormValues[identifierType.fieldName]) {
@@ -225,7 +224,7 @@ export const PatientRegistration: React.FC = () => {
   useEffect(() => {
     const abortController = new AbortController();
 
-    getAddressTemplate(abortController).then(({ data }) => {
+    fetchAddressTemplate(abortController).then(({ data }) => {
       const addressTemplateXml = data.results[0].value;
       if (!addressTemplateXml) {
         return;

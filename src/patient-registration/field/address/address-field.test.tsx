@@ -18,7 +18,7 @@ const mockResponse = {
 
 jest.mock('../../patient-registration.resource', () => {
   return {
-    getAddressTemplate: () => {
+    fetchAddressTemplate: () => {
       return Promise.resolve(mockResponse);
     },
   };
