@@ -57,4 +57,18 @@ function setupOpenMRS() {
   };
 }
 
-export { backendDependencies, importTranslation, setupOpenMRS };
+function setupOpenMRSOffline() {
+  const moduleName = '@openmrs/esm-patient-registration-app';
+  const options = {
+    featureName: 'Patient Registration',
+    moduleName,
+  };
+
+  return {
+    lifecycle: getAsyncLifecycle(() => import('./root.offline.component'), options),
+    activate: /^patient-registration/,
+    extensions: [],
+  };
+}
+
+export { backendDependencies, importTranslation, setupOpenMRS, setupOpenMRSOffline };

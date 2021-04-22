@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormValues } from './../../patient-registration.component';
+import { FormValues } from './../../patient-registration-helper';
 import styles from './../input.scss';
 
 interface DummyDataInputProps {

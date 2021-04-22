@@ -11,9 +11,16 @@ import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { Grid, Row, Column } from 'carbon-components-react/es/components/Grid';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
-import { Patient, PatientIdentifierType, AttributeValue } from './patient-registration-helper';
+import {
+  PatientIdentifier,
+  Patient,
+  PatientIdentifierType,
+  AttributeValue,
+  FormValues,
+} from './patient-registration-helper';
 import { PatientRegistrationContext } from './patient-registration-context';
 import BeforeSavePrompt from './before-save-prompt';
+import FormManager from './form-manager';
 import {
   getCurrentUserLocation,
   savePatient,
@@ -42,35 +49,11 @@ import { getSection } from './section/section-helper';
 
 export const initialAddressFieldValues = {};
 
-const patientUuidMap = {};
-const deletedNames = [];
-
-export interface FormValues {
-  givenName: string;
-  middleName: string;
-  familyName: string;
-  unidentifiedPatient: boolean;
-  additionalGivenName: string;
-  additionalMiddleName: string;
-  additionalFamilyName: string;
-  addNameInLocalLanguage: boolean;
-  gender: string;
-  birthdate: string;
-  yearsEstimated: number;
-  monthsEstimated: number;
-  birthdateEstimated: boolean;
-  telephoneNumber: string;
-  address1: string;
-  address2: string;
-  cityVillage: string;
-  stateProvince: string;
-  country: string;
-  postalCode: string;
-  isDead: boolean;
-  deathDate: string;
-  deathCause: string;
-  relationships: Array<{ relatedPerson: string; relationship: string }>;
-}
+const patientUuidMap = {
+  additionalNameUuid: undefined,
+  patientUuid: undefined,
+  preferredNameUuid: undefined,
+};
 
 const blankFormValues: FormValues = {
   givenName: '',
@@ -258,33 +241,6 @@ export const PatientRegistration: React.FC = () => {
     }
   }, [existingPatient]);
 
-  const getNames = (values: FormValues) => {
-    const names = [
-      {
-        uuid: patientUuidMap['preferredNameUuid'],
-        preferred: true,
-        givenName: values.givenName,
-        middleName: values.middleName,
-        familyName: values.familyName,
-      },
-    ];
-    if (values.addNameInLocalLanguage) {
-      names.push({
-        uuid: patientUuidMap['additionalNameUuid'],
-        preferred: false,
-        givenName: values.additionalGivenName,
-        middleName: values.additionalMiddleName,
-        familyName: values.additionalFamilyName,
-      });
-    } else if (patientUuidMap['additionalNameUuid']) {
-      deletedNames.push({
-        nameUuid: patientUuidMap['additionalNameUuid'],
-        personUuid: patientUuidMap['patientUuid'],
-      });
-    }
-    return names;
-  };
-
   useEffect(() => {
     const abortController = new AbortController();
     (async () => {
@@ -386,80 +342,21 @@ export const PatientRegistration: React.FC = () => {
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
     const relationships = values.relationships;
-    const identifiers = [];
 
-    for (const type of identifierTypes) {
-      const idValue = values[type.fieldName];
+    const identifiers: Array<PatientIdentifier> = await FormManager.createIdentifiers(
+      values,
+      patientUuidMap,
+      identifierTypes,
+      abortController,
+      location,
+    );
 
-      if (idValue) {
-        identifiers.push({
-          uuid: patientUuidMap[type.fieldName] ? patientUuidMap[type.fieldName].uuid : undefined,
-          identifier: idValue,
-          identifierType: type.uuid,
-          location: location,
-          preferred: type.isPrimary,
-        });
-      } else if (type.autoGenerationSource) {
-        const response = await generateIdentifier(type.autoGenerationSource.uuid, abortController);
-
-        identifiers.push({
-          identifier: response.data.identifier,
-          identifierType: type.uuid,
-          location: location,
-          preferred: type.isPrimary,
-        });
-      }
-    }
-
-    const addressFieldValues: Record<string, string> = {};
-
-    Object.keys(initialAddressFieldValues).forEach(fieldName => {
-      addressFieldValues[fieldName] = values[fieldName];
-    });
-
-    const attributes: Array<AttributeValue> = [];
-
-    if (config && config.personAttributeSections) {
-      const { personAttributeSections } = config;
-
-      personAttributeSections.forEach(({ personAttributes }) => {
-        personAttributes.forEach(attr => {
-          attributes.push({
-            attributeType: attr.uuid,
-            value: values[attr.name],
-          });
-        });
-      });
-    }
-
-    const person = {
-      uuid: patientUuidMap['patientUuid'],
-      names: getNames(values),
-      gender: values.gender.charAt(0),
-      birthdate: values.birthdate,
-      birthdateEstimated: values.birthdateEstimated,
-      attributes: attributes,
-      addresses: [addressFieldValues],
-      ...getDeathInfo(values),
-    };
-
-    const patient: Patient = {
-      uuid: patientUuidMap['patientUuid'],
-      identifiers: identifiers,
-      person: { ...person },
-    };
+    const patient = FormManager.createPatient(values, config, patientUuidMap, initialAddressFieldValues, identifiers);
 
     // handle deleted names
-    deletedNames.forEach(async name => {
+    FormManager.getDeletedNames(patientUuidMap).forEach(async name => {
       await deletePersonName(name.nameUuid, name.personUuid, abortController);
     });
-
-    const getAfterUrl = patientUuid => {
-      return (
-        new URLSearchParams(search).get('afterUrl') ||
-        interpolateString(config.links.submitButton, { patientUuid: patientUuid })
-      );
-    };
 
     // handle save patient
     savePatient(abortController, patient, patientUuidMap['patientUuid'])
@@ -503,7 +400,19 @@ export const PatientRegistration: React.FC = () => {
           const results = Promise.all(requests);
           results.then(response => {}).catch(err => {});
 
-          navigate({ to: getAfterUrl(response.data.uuid) });
+          navigate({ to: FormManager.getAfterUrl(response.data.uuid, search, config) });
+
+          existingPatient
+            ? showToast({
+                description: t('updationSuccessToastDescription'),
+                title: t('updationSuccessToastTitle'),
+                kind: 'success',
+              })
+            : showToast({
+                description: t('registrationSuccessToastDescription'),
+                title: t('registrationSuccessToastTitle'),
+                kind: 'success',
+              });
         }
       })
       .catch(response => {
@@ -520,7 +429,7 @@ export const PatientRegistration: React.FC = () => {
   };
 
   return (
-    <main className={`omrs-main-content`} style={{ backgroundColor: 'white' }}>
+    <main className="omrs-main-content" style={{ backgroundColor: 'white' }}>
       <Formik
         initialValues={initialFormValues}
         validationSchema={validationSchema}
