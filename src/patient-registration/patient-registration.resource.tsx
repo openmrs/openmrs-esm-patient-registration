@@ -1,7 +1,13 @@
 import { openmrsFetch } from '@openmrs/esm-framework';
-import { FetchedPatientIdentifierType, Patient, Relationship } from './patient-registration-types';
+import {
+  FetchedPatientIdentifierType,
+  Patient,
+  PatientIdentifierType,
+  Relationship,
+} from './patient-registration-types';
 import camelCase from 'lodash-es/camelCase';
 import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
+import find from 'lodash-es/find';
 
 export function savePatient(abortController: AbortController, patient: Patient, patientUuid: string) {
   const url = patientUuid ? '/ws/rest/v1/patient/' + patientUuid : '/ws/rest/v1/patient/';
@@ -21,11 +27,7 @@ export function getCurrentUserLocation(abortController: AbortController) {
   });
 }
 
-export function getUniquePatientIdentifier(abortController: AbortController) {
-  return openmrsFetch('/module/idgen/generateIdentifier.form?source=1');
-}
-
-export function getPrimaryIdentifierType(abortController: AbortController): Promise<FetchedPatientIdentifierType> {
+function getPrimaryIdentifierType(abortController: AbortController): Promise<FetchedPatientIdentifierType> {
   return openmrsFetch('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType', {
     signal: abortController.signal,
   }).then(response => {
@@ -42,7 +44,7 @@ export function getPrimaryIdentifierType(abortController: AbortController): Prom
   });
 }
 
-export async function getSecondaryIdentifierTypes(
+async function getSecondaryIdentifierTypes(
   abortController: AbortController,
 ): Promise<Array<FetchedPatientIdentifierType>> {
   const response = await openmrsFetch(
@@ -84,23 +86,52 @@ export async function getSecondaryIdentifierTypes(
   return undefined;
 }
 
-export function getAddressTemplate(abortController: AbortController) {
-  return openmrsFetch('/ws/rest/v1/systemsetting?q=layout.address.format&v=custom:(value)', {
-    signal: abortController.signal,
-  });
-}
-
-export function getIdentifierSources(identifierType: string, abortController: AbortController) {
+function getIdentifierSources(identifierType: string, abortController: AbortController) {
   return openmrsFetch('/ws/rest/v1/idgen/identifiersource?v=full&identifierType=' + identifierType, {
     signal: abortController.signal,
   });
 }
 
-export function getAutoGenerationOptions(identifierType: string, abortController: AbortController) {
+function getAutoGenerationOptions(identifierType: string, abortController: AbortController) {
   // return openmrsFetch('/ws/rest/v1/idgen/autogenerationoption?v=full&identifierType=' + identifierType, {
   //   signal: abortController.signal,
   // });
   return Promise.resolve(mockAutoGenerationOptionsResult);
+}
+
+export async function getPatientIdentifierTypesWithSources(
+  abortController: AbortController,
+): Promise<Array<PatientIdentifierType>> {
+  const [primaryIdentifierType, secondaryIdentifierTypes] = await Promise.all([
+    getPrimaryIdentifierType(abortController),
+    getSecondaryIdentifierTypes(abortController),
+  ]);
+
+  // @ts-ignore Reason: The required props of the type are generated below.
+  const identifierTypes: Array<PatientIdentifierType> = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(
+    Boolean,
+  );
+
+  for (const identifierType of identifierTypes) {
+    const [identifierSources, autoGenOptions] = await Promise.all([
+      getIdentifierSources(identifierType.uuid, abortController),
+      getAutoGenerationOptions(identifierType.uuid, abortController),
+    ]);
+
+    identifierType.identifierSources = identifierSources.data.results.map(source => {
+      const option = find(autoGenOptions.results, { source: { uuid: source.uuid } });
+      source.autoGenerationOption = option;
+      return source;
+    });
+  }
+
+  return identifierTypes;
+}
+
+export function getAddressTemplate(abortController: AbortController) {
+  return openmrsFetch('/ws/rest/v1/systemsetting?q=layout.address.format&v=custom:(value)', {
+    signal: abortController.signal,
+  });
 }
 
 export function generateIdentifier(source: string, abortController: AbortController) {
@@ -186,6 +217,12 @@ export async function fetchPatientPhotoUrl(
   } else {
     return null;
   }
+}
+
+export async function getPerson(query: string, abortController: AbortController) {
+  return openmrsFetch(`/ws/rest/v1/person?q=${query}`, {
+    signal: abortController.signal,
+  });
 }
 
 function dataURItoFile(dataURI: string) {

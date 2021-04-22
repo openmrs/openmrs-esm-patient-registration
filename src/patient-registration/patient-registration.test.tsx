@@ -147,37 +147,24 @@ describe('form submit', () => {
 
   it('edits patient demographics', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
-    spyOn(backendController, 'getIdentifierSources').and.returnValue(
-      Promise.resolve({
-        data: {
-          results: [],
-        },
-      }),
-    );
-    spyOn(backendController, 'getAutoGenerationOptions').and.returnValue(
-      Promise.resolve({
-        data: {
-          results: [],
-        },
-      }),
-    );
-    spyOn(backendController, 'getPrimaryIdentifierType').and.returnValue(
-      Promise.resolve({
-        name: 'OpenMRS Id',
-        fieldName: 'openMrsId',
-        required: true,
-        isPrimary: true,
-        uuid: 'e5af9a9c-ff9d-486d-900c-5fbf66a5ba3c',
-      }),
-    );
-    spyOn(backendController, 'getSecondaryIdentifierTypes').and.returnValue(
+
+    spyOn(backendController, 'getPatientIdentifierTypesWithSources').and.returnValue(
       Promise.resolve([
+        {
+          name: 'OpenMRS Id',
+          fieldName: 'openMrsId',
+          required: true,
+          isPrimary: true,
+          uuid: 'e5af9a9c-ff9d-486d-900c-5fbf66a5ba3c',
+          identifierSources: [],
+        },
         {
           name: 'Old Identification Number',
           fieldName: 'oldIdentificationNumber',
           required: false,
           isPrimary: false,
           uuid: '3ff0063c-dd45-4d98-8af4-0c094f26166c',
+          identifierSources: [],
         },
       ]),
     );

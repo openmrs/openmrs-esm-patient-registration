@@ -17,15 +17,12 @@ import FormManager from './form-manager';
 import {
   getCurrentUserLocation,
   savePatient,
-  getPrimaryIdentifierType,
-  getSecondaryIdentifierTypes,
   getAddressTemplate,
-  getIdentifierSources,
-  getAutoGenerationOptions,
   deletePersonName,
   saveRelationship,
   savePatientPhoto,
   fetchPatientPhotoUrl,
+  getPatientIdentifierTypesWithSources,
 } from './patient-registration.resource';
 import { createErrorHandler, showToast, useCurrentPatient, useConfig, navigate } from '@openmrs/esm-framework';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
@@ -197,45 +194,22 @@ export const PatientRegistration: React.FC = () => {
     }
   }, [inEditMode]);
 
-  // On Load: Fetches primary and secondary patient identifiers.
-  //          Then aggregates them with additional data: identifier sources and autogeneration options.
   useEffect(() => {
     const abortController = new AbortController();
 
-    (async () => {
-      const [primaryIdentifierType, secondaryIdentifierTypes] = await Promise.all([
-        // TODO: Add mode. Edit mode.
-        getPrimaryIdentifierType(abortController),
-        getSecondaryIdentifierTypes(abortController),
-      ]);
-
-      // @ts-ignore Reason: The required props of the type are generated below.
-      const types: Array<PatientIdentifierType> = [primaryIdentifierType, ...secondaryIdentifierTypes].filter(Boolean);
-
-      for (const type of types) {
-        const [sources, options] = await Promise.all([
-          // TODO: Add mode. Edit mode.
-          getIdentifierSources(type.uuid, abortController),
-          getAutoGenerationOptions(type.uuid, abortController),
-        ]);
-
-        type.identifierSources = sources.data.results.map(source => {
-          const option = find(options.results, { source: { uuid: source.uuid } });
-          source.autoGenerationOption = option;
-          return source;
-        });
-
+    getPatientIdentifierTypesWithSources(abortController).then(identifierTypes => {
+      for (const identifierType of identifierTypes) {
         // update form initial values
-        if (!initialFormValues[type.fieldName]) {
-          initialFormValues[type.fieldName] = '';
+        if (!initialFormValues[identifierType.fieldName]) {
+          initialFormValues[identifierType.fieldName] = '';
         }
 
-        initialFormValues['source-for-' + type.fieldName] =
-          type.identifierSources.length > 0 ? type.identifierSources[0].name : '';
+        initialFormValues['source-for-' + identifierType.fieldName] =
+          identifierType.identifierSources.length > 0 ? identifierType.identifierSources[0].name : '';
       }
 
-      setIdentifierTypes(types);
-    })();
+      setIdentifierTypes(identifierTypes);
+    });
 
     return () => abortController.abort();
   }, []);
@@ -248,10 +222,9 @@ export const PatientRegistration: React.FC = () => {
     // TODO: Investigate whether capturePhotoProps requires network in some way.
   }, [capturePhotoProps]);
 
-  // On Load: Fetches the address template.
   useEffect(() => {
     const abortController = new AbortController();
-    // TODO: Add mode. Edit mode.
+
     getAddressTemplate(abortController).then(({ data }) => {
       const addressTemplateXml = data.results[0].value;
       if (!addressTemplateXml) {
@@ -269,6 +242,7 @@ export const PatientRegistration: React.FC = () => {
       setValidationSchema(validationSchema => validationSchema.concat(addressValidationSchema));
       Object.assign(initialFormValues, initialAddressFieldValues);
     });
+
     return () => abortController.abort();
   }, []);
 
