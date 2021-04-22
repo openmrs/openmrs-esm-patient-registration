@@ -11,13 +11,7 @@ import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { Grid, Row, Column } from 'carbon-components-react/es/components/Grid';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
-import {
-  PatientIdentifier,
-  Patient,
-  PatientIdentifierType,
-  AttributeValue,
-  FormValues,
-} from './patient-registration-types';
+import { PatientIdentifier, PatientIdentifierType, FormValues, CapturePhotoProps } from './patient-registration-types';
 import { PatientRegistrationContext } from './patient-registration-context';
 import FormManager from './form-manager';
 import {
@@ -28,25 +22,18 @@ import {
   getAddressTemplate,
   getIdentifierSources,
   getAutoGenerationOptions,
-  generateIdentifier,
   deletePersonName,
   saveRelationship,
   savePatientPhoto,
   fetchPatientPhotoUrl,
 } from './patient-registration.resource';
-import {
-  createErrorHandler,
-  showToast,
-  useCurrentPatient,
-  useConfig,
-  interpolateString,
-  navigate,
-} from '@openmrs/esm-framework';
+import { createErrorHandler, showToast, useCurrentPatient, useConfig, navigate } from '@openmrs/esm-framework';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import { useTranslation } from 'react-i18next';
 import { getSection } from './section/section-helper';
+import { cancelRegistration, parseAddressTemplateXml, scrollIntoView } from './patient-registration-utils';
 
-export const initialAddressFieldValues = {};
+const initialAddressFieldValues = {};
 
 const patientUuidMap = {
   additionalNameUuid: undefined,
@@ -84,58 +71,6 @@ const blankFormValues: FormValues = {
 // If a patient is fetched, this will be updated with their information
 const initialFormValues: FormValues = { ...blankFormValues };
 
-/**
- * @internal
- * Just exported for testing
- */
-export { initialFormValues };
-
-const getDeathInfo = (values: FormValues) => {
-  const patientIsDead = {
-    dead: true,
-    deathDate: values.deathDate,
-    causeOfDeath: values.deathCause,
-  };
-
-  const patientIsNotDead = { dead: false };
-
-  return values.isDead ? patientIsDead : patientIsNotDead;
-};
-
-interface AddressValidationSchemaType {
-  name: string;
-  label: string;
-  regex: RegExp;
-  regexFormat: string;
-}
-
-export interface CapturePhotoProps {
-  base64EncodedImage: string;
-  imageFile: File;
-  photoDateTime: string;
-}
-
-function scrollIntoView(viewId: string) {
-  document.getElementById(viewId).scrollIntoView({
-    behavior: 'smooth',
-    block: 'center',
-    inline: 'center',
-  });
-}
-
-function findElementValueInXmlDoc(fieldName: string, elementSelector: string, doc: XMLDocument) {
-  return (
-    doc
-      .querySelector(elementSelector)
-      ?.querySelector(`[name=${fieldName}]`)
-      ?.getAttribute('value') ?? null
-  );
-}
-
-function cancelRegistration() {
-  navigate({ to: `${window.spaBase}/home` });
-}
-
 export const PatientRegistration: React.FC = () => {
   const { search } = useLocation();
   const { t } = useTranslation();
@@ -144,7 +79,6 @@ export const PatientRegistration: React.FC = () => {
   const [sections, setSections] = useState([]);
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
-  const [addressTemplate, setAddressTemplate] = useState('');
   const [, existingPatient] = useCurrentPatient(); // TODO: Edit mode.
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
@@ -318,48 +252,25 @@ export const PatientRegistration: React.FC = () => {
   useEffect(() => {
     const abortController = new AbortController();
     // TODO: Add mode. Edit mode.
-    getAddressTemplate(abortController).then(({ data }) => setAddressTemplate(data.results[0].value));
+    getAddressTemplate(abortController).then(({ data }) => {
+      const addressTemplateXml = data.results[0].value;
+      if (!addressTemplateXml) {
+        return;
+      }
+
+      const { addressFieldValues, addressValidationSchema } = parseAddressTemplateXml(addressTemplateXml);
+
+      for (const { name, defaultValue } of addressFieldValues) {
+        if (!initialAddressFieldValues[name]) {
+          initialAddressFieldValues[name] = defaultValue;
+        }
+      }
+
+      setValidationSchema(validationSchema => validationSchema.concat(addressValidationSchema));
+      Object.assign(initialFormValues, initialAddressFieldValues);
+    });
     return () => abortController.abort();
   }, []);
-
-  // Whenever the address template (which is fetched in the hook above) changes,
-  // parses that address template and updates the form with the data (i.e. updates validation schema etc.).
-  useEffect(() => {
-    if (addressTemplate) {
-      const templateXmlDoc = new DOMParser().parseFromString(addressTemplate, 'text/xml');
-      let nameMappings = templateXmlDoc.querySelector('nameMappings').querySelectorAll('property');
-      let validationSchemaObjs: AddressValidationSchemaType[] = Array.prototype.map.call(nameMappings, nameMapping => {
-        let field = nameMapping.getAttribute('name');
-        let label = nameMapping.getAttribute('value');
-        let regex = findElementValueInXmlDoc(field, 'elementRegex', templateXmlDoc);
-        let regexFormat = findElementValueInXmlDoc(field, 'elementRegexFormats', templateXmlDoc);
-
-        return {
-          name: field,
-          label,
-          regex: regex || '.*',
-          regexFormat: regexFormat || '',
-        };
-      });
-      let addressValidationSchemaTmp = Yup.object(
-        validationSchemaObjs.reduce((final, current) => {
-          final[current.name] = Yup.string().matches(current.regex, current.regexFormat);
-          return final;
-        }, {}),
-      );
-
-      Array.prototype.forEach.call(nameMappings, nameMapping => {
-        let name = nameMapping.getAttribute('name');
-        if (!initialAddressFieldValues[name]) {
-          let defaultValue = findElementValueInXmlDoc(name, 'elementDefaults', templateXmlDoc);
-          initialAddressFieldValues[name] = defaultValue ?? '';
-        }
-      });
-
-      Object.assign(initialFormValues, initialAddressFieldValues);
-      setValidationSchema(validationSchema => validationSchema.concat(addressValidationSchemaTmp));
-    }
-  }, [addressTemplate]);
 
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
@@ -517,3 +428,9 @@ export const PatientRegistration: React.FC = () => {
     </main>
   );
 };
+
+/**
+ * @internal
+ * Just exported for testing
+ */
+export { initialFormValues };

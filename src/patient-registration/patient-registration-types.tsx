@@ -103,3 +103,16 @@ export interface PatientUuidMapType {
   patientUuid: string | undefined;
   preferredNameUuid: string | undefined;
 }
+
+export interface CapturePhotoProps {
+  base64EncodedImage: string;
+  imageFile: File;
+  photoDateTime: string;
+}
+
+export interface AddressValidationSchemaType {
+  name: string;
+  label: string;
+  regex: RegExp;
+  regexFormat: string;
+}

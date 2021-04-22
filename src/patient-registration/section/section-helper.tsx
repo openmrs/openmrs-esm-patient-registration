@@ -12,7 +12,7 @@ import { NameField } from '../field/name/name-field.component';
 import { GenderField } from '../field/gender/gender-field.component';
 import { IdField } from '../field/id/id-field.component';
 import { DobField } from '../field/dob/dob.component';
-import { CapturePhotoProps } from '../patient-registration.component';
+import { CapturePhotoProps } from '../patient-registration-types';
 
 enum Field {
   Address = 'address',
