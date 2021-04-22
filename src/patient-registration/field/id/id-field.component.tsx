@@ -1,6 +1,6 @@
 import React from 'react';
 import { IdentifierInput } from '../../input/custom-input/identifier/identifier-input.component';
-import { IdentifierSource } from '../../patient-registration-helper';
+import { IdentifierSource } from '../../patient-registration-types';
 import styles from '../field.scss';
 import { useTranslation } from 'react-i18next';
 import { PatientRegistrationContext } from '../../patient-registration-context';

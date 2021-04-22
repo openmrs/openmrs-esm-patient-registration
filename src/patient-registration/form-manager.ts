@@ -5,7 +5,7 @@ import {
   AttributeValue,
   PatientUuidMapType,
   Patient,
-} from './patient-registration-helper';
+} from './patient-registration-types';
 import { generateIdentifier } from './patient-registration.resource';
 import { ConfigObject, interpolateString } from '@openmrs/esm-framework';
 

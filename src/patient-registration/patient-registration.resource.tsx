@@ -1,5 +1,5 @@
 import { openmrsFetch } from '@openmrs/esm-framework';
-import { FetchedPatientIdentifierType, Patient, Relationship } from './patient-registration-helper';
+import { FetchedPatientIdentifierType, Patient, Relationship } from './patient-registration-types';
 import camelCase from 'lodash-es/camelCase';
 import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
 

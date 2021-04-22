@@ -6,7 +6,7 @@ import { Row, Column } from 'carbon-components-react/es/components/Grid';
 import { useTranslation } from 'react-i18next';
 import { SelectInput } from '../../basic-input/select/select-input.component';
 import { Input } from '../../basic-input/input/input.component';
-import { PatientIdentifierType } from '../../../patient-registration-helper';
+import { PatientIdentifierType } from '../../../patient-registration-types';
 import { PatientRegistrationContext } from '../../../patient-registration-context';
 
 interface IdentifierInputProps {

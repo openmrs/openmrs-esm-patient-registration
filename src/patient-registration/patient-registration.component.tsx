@@ -17,7 +17,7 @@ import {
   PatientIdentifierType,
   AttributeValue,
   FormValues,
-} from './patient-registration-helper';
+} from './patient-registration-types';
 import { PatientRegistrationContext } from './patient-registration-context';
 import FormManager from './form-manager';
 import {
@@ -149,6 +149,7 @@ export const PatientRegistration: React.FC = () => {
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
   const [currentPhoto, setCurrentPhoto] = useState(null);
+  const inEditMode = !!existingPatient;
 
   // Updates the displayed sections whenever the config entry changes.
   useEffect(() => {
@@ -177,7 +178,7 @@ export const PatientRegistration: React.FC = () => {
   // If in Add Mode: Populates the form with blank values.
   // If in Edit Mode: Populates the form with the existingPatient's data.
   useEffect(() => {
-    if (!existingPatient) {
+    if (!inEditMode) {
       Object.assign(initialFormValues, blankFormValues);
     } else {
       patientUuidMap['patientUuid'] = existingPatient.id;
@@ -260,7 +261,7 @@ export const PatientRegistration: React.FC = () => {
 
       return () => abortController.abort();
     }
-  }, [existingPatient]);
+  }, [inEditMode]);
 
   // On Load: Fetches primary and secondary patient identifiers.
   //          Then aggregates them with additional data: identifier sources and autogeneration options.
@@ -429,7 +430,7 @@ export const PatientRegistration: React.FC = () => {
 
           navigate({ to: FormManager.getAfterUrl(response.data.uuid, search, config) });
 
-          existingPatient
+          inEditMode
             ? showToast({
                 description: t('updationSuccessToastDescription'),
                 title: t('updationSuccessToastTitle'),
@@ -470,8 +471,8 @@ export const PatientRegistration: React.FC = () => {
               <Row>
                 <Column lg={2} md={2} sm={1}>
                   <div className={styles.fixedPosition}>
-                    <h4>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
-                    {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
+                    <h4>{inEditMode ? 'Edit' : 'Create New'} Patient</h4>
+                    {localStorage.getItem('openmrs:devtools') === 'true' && !inEditMode && (
                       <DummyDataInput setValues={props.setValues} />
                     )}
                     <p className={styles.label01}>Jump to</p>
@@ -483,7 +484,7 @@ export const PatientRegistration: React.FC = () => {
                       </div>
                     ))}
                     <Button style={{ marginBottom: '1rem', width: '11.688rem', display: 'block' }} type="submit">
-                      {existingPatient ? t('updatePatient') : t('registerPatient')}
+                      {inEditMode ? t('updatePatient') : t('registerPatient')}
                     </Button>
                     <Button style={{ width: '11.688rem' }} kind="tertiary" onClick={cancelRegistration}>
                       {t('cancel')}
@@ -499,7 +500,7 @@ export const PatientRegistration: React.FC = () => {
                         setValidationSchema,
                         fieldConfigs,
                         values: props.values,
-                        inEditMode: !!existingPatient,
+                        inEditMode,
                         setFieldValue: props.setFieldValue,
                       }}>
                       {sections.map((section, index) => (

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { Formik, Form } from 'formik';
 import { IdentifierInput } from './identifier-input.component';
 import { initialFormValues } from '../../../patient-registration.component';
-import { PatientIdentifierType } from '../../../patient-registration-helper';
+import { PatientIdentifierType } from '../../../patient-registration-types';
 
 describe.skip('identifier input', () => {
   const openmrsID = {

@@ -57,34 +57,4 @@ function setupOpenMRS() {
   };
 }
 
-function setupOpenMRSOffline() {
-  const moduleName = '@openmrs/esm-patient-registration-app';
-  const pageName = 'patient-registration';
-
-  const options = {
-    featureName: 'Patient Registration',
-    moduleName,
-  };
-
-  defineConfigSchema(moduleName, esmPatientRegistrationSchema);
-
-  registerBreadcrumbs([
-    {
-      path: `${window.spaBase}/${pageName}`,
-      title: 'Patient Registration',
-      parent: `${window.spaBase}/home`,
-    },
-  ]);
-
-  return {
-    pages: [
-      {
-        load: getAsyncLifecycle(() => import('./root.offline.component'), options),
-        route: /^patient-registration/,
-      },
-    ],
-    extensions: [],
-  };
-}
-
-export { backendDependencies, importTranslation, setupOpenMRS, setupOpenMRSOffline };
+export { backendDependencies, importTranslation, setupOpenMRS };
