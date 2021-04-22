@@ -15,16 +15,49 @@ import {
   saveRelationship,
 } from './patient-registration.resource';
 import { ConfigObject } from '@openmrs/esm-framework';
+import { PatientRegistrationDb } from '../offline';
+
+export type SavePatientForm = (
+  values: FormValues,
+  patientUuidMap: PatientUuidMapType,
+  initialAddressFieldValues: Record<string, any>,
+  identifierTypes: Array<PatientIdentifierType>,
+  capturePhotoProps: CapturePhotoProps,
+  currentLocation: string,
+  config?: ConfigObject,
+  abortController?: AbortController,
+) => Promise<string | undefined>;
 
 export default class FormManager {
-  static async savePatientForm(
+  static async savePatientFormOffline(
     values: FormValues,
-    config: ConfigObject,
     patientUuidMap: PatientUuidMapType,
     initialAddressFieldValues: Record<string, any>,
     identifierTypes: Array<PatientIdentifierType>,
-    currentLocation: string,
     capturePhotoProps: CapturePhotoProps,
+    currentLocation: string,
+  ) {
+    const db = new PatientRegistrationDb();
+    await db.patientRegistrations.add({
+      formValues: values,
+      patientUuidMap,
+      initialAddressFieldValues,
+      identifierTypes,
+      capturePhotoProps,
+      currentLocation,
+    });
+
+    return undefined;
+  }
+
+  static async savePatientFormOnline(
+    values: FormValues,
+    patientUuidMap: PatientUuidMapType,
+    initialAddressFieldValues: Record<string, any>,
+    identifierTypes: Array<PatientIdentifierType>,
+    capturePhotoProps: CapturePhotoProps,
+    currentLocation: string,
+    config: ConfigObject,
     abortController: AbortController,
   ) {
     const patientIdentifiers = await FormManager.getPatientIdentifiersToCreate(

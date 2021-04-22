@@ -58,14 +58,14 @@ let mockOpenmrsConfig = {
 describe('patient registration', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<PatientRegistration />, div);
+    ReactDOM.render(<PatientRegistration savePatientForm={jest.fn()} />, div);
   });
 });
 
 describe('patient registration sections', () => {
   const testSectionExists = (labelText: string) => {
     it(labelText + ' exists', async () => {
-      render(<PatientRegistration />);
+      render(<PatientRegistration savePatientForm={jest.fn()} />);
       await wait();
       expect(screen.getByLabelText(labelText)).not.toBeNull();
     });
@@ -102,7 +102,7 @@ describe('form submit', () => {
   it.skip('saves the patient without extra info', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
-    render(<PatientRegistration />);
+    render(<PatientRegistration savePatientForm={jest.fn()} />);
     await wait();
 
     await fillRequiredFields(screen.getByLabelText);
@@ -131,7 +131,7 @@ describe('form submit', () => {
 
   it('should not save the patient if validation fails', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
-    render(<PatientRegistration />);
+    render(<PatientRegistration savePatientForm={jest.fn()} />);
     await wait();
 
     const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;
@@ -170,7 +170,7 @@ describe('form submit', () => {
     );
 
     spyOn(mockOpenmrsFramework, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
-    render(<PatientRegistration />);
+    render(<PatientRegistration savePatientForm={jest.fn()} />);
     await wait();
 
     const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;

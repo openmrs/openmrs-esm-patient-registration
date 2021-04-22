@@ -7,6 +7,6 @@ window['getOpenmrsSpaBase'] = jest.fn().mockImplementation(() => '/');
 describe('root component', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<Root />, div);
+    ReactDOM.render(<Root savePatientForm={jest.fn()} />, div);
   });
 });

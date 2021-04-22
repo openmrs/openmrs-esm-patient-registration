@@ -3,29 +3,18 @@ import XAxis16 from '@carbon/icons-react/es/x-axis/16';
 import styles from './patient-registration.scss';
 import camelCase from 'lodash-es/camelCase';
 import capitalize from 'lodash-es/capitalize';
-import find from 'lodash-es/find';
 import Button from 'carbon-components-react/es/components/Button';
 import Link from 'carbon-components-react/es/components/Link';
 import { useLocation } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { Grid, Row, Column } from 'carbon-components-react/es/components/Grid';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
-import {
-  PatientIdentifier,
-  PatientIdentifierType,
-  FormValues,
-  CapturePhotoProps,
-  PatientUuidMapType,
-} from './patient-registration-types';
+import { PatientIdentifierType, FormValues, CapturePhotoProps, PatientUuidMapType } from './patient-registration-types';
 import { PatientRegistrationContext } from './patient-registration-context';
-import FormManager from './form-manager';
+import FormManager, { SavePatientForm } from './form-manager';
 import {
   fetchCurrentUserLocation,
-  savePatient,
   fetchAddressTemplate,
-  deletePersonName,
-  saveRelationship,
-  savePatientPhoto,
   fetchPatientPhotoUrl,
   fetchPatientIdentifierTypesWithSources,
 } from './patient-registration.resource';
@@ -80,7 +69,11 @@ const blankFormValues: FormValues = {
 // If a patient is fetched, this will be updated with their information
 const initialFormValues: FormValues = { ...blankFormValues };
 
-export const PatientRegistration: React.FC = () => {
+export interface PatientRegistrationProps {
+  savePatientForm: SavePatientForm;
+}
+
+export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePatientForm }) => {
   const { search } = useLocation();
   const { t } = useTranslation();
   const config = useConfig();
@@ -88,13 +81,12 @@ export const PatientRegistration: React.FC = () => {
   const [sections, setSections] = useState([]);
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
-  const [, existingPatient] = useCurrentPatient(); // TODO: Edit mode.
+  const [, existingPatient] = useCurrentPatient();
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
   const [currentPhoto, setCurrentPhoto] = useState(null);
   const inEditMode = !!existingPatient;
 
-  // Updates the displayed sections whenever the config entry changes.
   useEffect(() => {
     if (config?.sections) {
       const configuredSections = config.sections.map(section => ({
@@ -108,7 +100,6 @@ export const PatientRegistration: React.FC = () => {
     }
   }, [t, config]);
 
-  // On Load: Fetches the current location from the /session endpoint.
   useEffect(() => {
     const abortController = new AbortController();
     fetchCurrentUserLocation(abortController).then(
@@ -118,8 +109,6 @@ export const PatientRegistration: React.FC = () => {
     return () => abortController.abort();
   }, []);
 
-  // If in Add Mode: Populates the form with blank values.
-  // If in Edit Mode: Populates the form with the existingPatient's data.
   useEffect(() => {
     if (!inEditMode) {
       Object.assign(initialFormValues, blankFormValues);
@@ -211,7 +200,6 @@ export const PatientRegistration: React.FC = () => {
 
     fetchPatientIdentifierTypesWithSources(abortController).then(identifierTypes => {
       for (const identifierType of identifierTypes) {
-        // update form initial values
         if (!initialFormValues[identifierType.fieldName]) {
           initialFormValues[identifierType.fieldName] = '';
         }
@@ -226,12 +214,10 @@ export const PatientRegistration: React.FC = () => {
     return () => abortController.abort();
   }, []);
 
-  // Sets the current photo whenever it changes.
   useEffect(() => {
     if (capturePhotoProps?.base64EncodedImage || capturePhotoProps?.imageFile) {
       setCurrentPhoto(capturePhotoProps.base64EncodedImage || URL.createObjectURL(capturePhotoProps.imageFile));
     }
-    // TODO: Investigate whether capturePhotoProps requires network in some way.
   }, [capturePhotoProps]);
 
   useEffect(() => {
@@ -262,26 +248,28 @@ export const PatientRegistration: React.FC = () => {
     const abortController = new AbortController();
 
     try {
-      const patientUuid = await FormManager.savePatientForm(
+      const patientUuid = await savePatientForm(
         values,
-        config,
         patientUuidMap,
         initialAddressFieldValues,
         identifierTypes,
-        location,
         capturePhotoProps,
+        location,
+        config,
         abortController,
       );
 
-      const redirectUrl =
-        new URLSearchParams(search).get('afterUrl') || interpolateString(config.links.submitButton, { patientUuid });
-
-      navigate({ to: redirectUrl });
       showToast({
         description: inEditMode ? t('updationSuccessToastDescription') : t('registrationSuccessToastDescription'),
         title: inEditMode ? t('updationSuccessToastTitle') : t('registrationSuccessToastTitle'),
         kind: 'success',
       });
+
+      if (patientUuid) {
+        const redirectUrl =
+          new URLSearchParams(search).get('afterUrl') || interpolateString(config.links.submitButton, { patientUuid });
+        navigate({ to: redirectUrl });
+      }
     } catch (error) {
       if (error.responseBody && error.responseBody.error.globalErrors) {
         error.responseBody.error.globalErrors.forEach(error => {

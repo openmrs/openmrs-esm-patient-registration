@@ -8,6 +8,7 @@ import {
   fetchCurrentUserLocation,
   fetchPatientIdentifierTypesWithSources,
 } from './patient-registration/patient-registration.resource';
+import FormManager from './patient-registration/form-manager';
 
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
@@ -37,8 +38,12 @@ function setupOpenMRS() {
       {
         load: getAsyncLifecycle(() => import('./root.component'), options),
         route: /^patient-registration/,
-        online: true,
-        offline: true,
+        online: {
+          savePatientForm: FormManager.savePatientFormOnline,
+        },
+        offline: {
+          savePatientForm: FormManager.savePatientFormOffline,
+        },
       },
       {
         load: getAsyncLifecycle(() => import('./root.component'), {
