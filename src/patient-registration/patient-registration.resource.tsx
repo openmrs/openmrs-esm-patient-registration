@@ -1,4 +1,4 @@
-import { openmrsFetch } from '@openmrs/esm-framework';
+import { FetchResponse, openmrsFetch, SessionUser } from '@openmrs/esm-framework';
 import {
   FetchedPatientIdentifierType,
   Patient,
@@ -24,7 +24,7 @@ export function savePatient(abortController: AbortController, patient: Patient, 
   });
 }
 
-export function fetchCurrentUserLocation(abortController: AbortController) {
+export function fetchCurrentSession(abortController: AbortController): Promise<FetchResponse<SessionUser>> {
   return openmrsFetch('/ws/rest/v1/session', {
     signal: abortController.signal,
   });

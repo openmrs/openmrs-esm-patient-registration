@@ -1,4 +1,6 @@
+import { ConfigObject, showToast } from '@openmrs/esm-framework';
 import Dexie, { Table } from 'dexie';
+import FormManager from './patient-registration/form-manager';
 import {
   CapturePhotoProps,
   FormValues,
@@ -6,9 +8,37 @@ import {
   PatientUuidMapType,
 } from './patient-registration/patient-registration-types';
 
-/**
- * Stores offline data of the primary navigation MF.
- */
+export async function syncAddedPatients(abortController: AbortController) {
+  const db = new PatientRegistrationDb();
+  const queuedPatients = await db.patientRegistrations.toArray();
+
+  if (queuedPatients.length > 0) {
+    await Promise.all(
+      queuedPatients.map(queuedPatient => syncSinglePatientRegistration(queuedPatient, abortController)),
+    );
+  }
+}
+
+async function syncSinglePatientRegistration(queuedPatient: PatientRegistration, abortController: AbortController) {
+  try {
+    const newPatientId = await FormManager.savePatientFormOnline(
+      queuedPatient.formValues,
+      queuedPatient.patientUuidMap,
+      queuedPatient.initialAddressFieldValues,
+      queuedPatient.identifierTypes,
+      queuedPatient.capturePhotoProps,
+      queuedPatient.currentLocation,
+      queuedPatient.config,
+      abortController,
+    );
+
+    await new PatientRegistrationDb().patientRegistrations.delete(queuedPatient.id);
+    console.info(`Successfully synced new patient. Its new ID is: `, newPatientId);
+  } catch (e) {
+    console.error('Failed to synchronize a patient.', e);
+  }
+}
+
 export class PatientRegistrationDb extends Dexie {
   patientRegistrations: Table<PatientRegistration, number>;
 
@@ -23,9 +53,6 @@ export class PatientRegistrationDb extends Dexie {
   }
 }
 
-/**
- * An entity storing a change of a logged in a user's properties.
- */
 export interface PatientRegistration {
   id?: number;
   formValues: FormValues;
@@ -34,4 +61,5 @@ export interface PatientRegistration {
   identifierTypes: Array<PatientIdentifierType>;
   capturePhotoProps: CapturePhotoProps;
   currentLocation: string;
+  config: ConfigObject;
 }

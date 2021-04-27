@@ -13,7 +13,7 @@ import { PatientIdentifierType, FormValues, CapturePhotoProps, PatientUuidMapTyp
 import { PatientRegistrationContext } from './patient-registration-context';
 import FormManager, { SavePatientForm } from './form-manager';
 import {
-  fetchCurrentUserLocation,
+  fetchCurrentSession,
   fetchAddressTemplate,
   fetchPatientPhotoUrl,
   fetchPatientIdentifierTypesWithSources,
@@ -102,8 +102,8 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
 
   useEffect(() => {
     const abortController = new AbortController();
-    fetchCurrentUserLocation(abortController).then(
-      ({ data }) => setLocation(data.sessionLocation.uuid),
+    fetchCurrentSession(abortController).then(
+      ({ data }) => setLocation(data.sessionLocation?.uuid),
       createErrorHandler(),
     );
     return () => abortController.abort();
@@ -248,6 +248,8 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
     const abortController = new AbortController();
 
     try {
+      console.warn("Location is: ", location);
+
       const patientUuid = await savePatientForm(
         values,
         patientUuidMap,

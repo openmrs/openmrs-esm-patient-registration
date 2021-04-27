@@ -26,7 +26,7 @@ export type SavePatientForm = (
   currentLocation: string,
   config?: ConfigObject,
   abortController?: AbortController,
-) => Promise<string | undefined>;
+) => Promise<string | null>;
 
 export default class FormManager {
   static async savePatientFormOffline(
@@ -36,7 +36,8 @@ export default class FormManager {
     identifierTypes: Array<PatientIdentifierType>,
     capturePhotoProps: CapturePhotoProps,
     currentLocation: string,
-  ) {
+    config: ConfigObject,
+  ): Promise<null> {
     const db = new PatientRegistrationDb();
     await db.patientRegistrations.add({
       formValues: values,
@@ -45,9 +46,10 @@ export default class FormManager {
       identifierTypes,
       capturePhotoProps,
       currentLocation,
+      config,
     });
 
-    return undefined;
+    return null;
   }
 
   static async savePatientFormOnline(
@@ -59,7 +61,7 @@ export default class FormManager {
     currentLocation: string,
     config: ConfigObject,
     abortController: AbortController,
-  ) {
+  ): Promise<string> {
     const patientIdentifiers = await FormManager.getPatientIdentifiersToCreate(
       values,
       patientUuidMap,

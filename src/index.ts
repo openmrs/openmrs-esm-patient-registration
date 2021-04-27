@@ -5,7 +5,7 @@ import { Workbox } from 'workbox-window';
 import {
   fetchAddressTemplate,
   fetchAllRelationshipTypes,
-  fetchCurrentUserLocation,
+  fetchCurrentSession,
   fetchPatientIdentifierTypesWithSources,
 } from './patient-registration/patient-registration.resource';
 import FormManager from './patient-registration/form-manager';
@@ -39,9 +39,11 @@ function setupOpenMRS() {
         load: getAsyncLifecycle(() => import('./root.component'), options),
         route: /^patient-registration/,
         online: {
+          syncAddedPatientsOnLoad: true,
           savePatientForm: FormManager.savePatientFormOnline,
         },
         offline: {
+          syncAddedPatientsOnLoad: false,
           savePatientForm: FormManager.savePatientFormOffline,
         },
       },
@@ -98,7 +100,7 @@ function TODO_TMP_MOVE_ME_LATER_registerDynamicRoutes() {
 
     const ac = new AbortController();
     await Promise.all([
-      fetchCurrentUserLocation(ac),
+      fetchCurrentSession(ac),
       fetchPatientIdentifierTypesWithSources(ac),
       fetchAddressTemplate(ac),
       fetchAllRelationshipTypes(ac),

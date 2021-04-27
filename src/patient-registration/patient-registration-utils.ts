@@ -29,8 +29,6 @@ export function parseAddressTemplateXml(addressTemplate: string) {
     }, {}),
   );
 
-  console.warn('Name mappings: ', nameMappings);
-
   const addressFieldValues: Array<{ name: string; defaultValue: string }> = Array.prototype.map.call(
     nameMappings,
     (nameMapping: Element) => {
