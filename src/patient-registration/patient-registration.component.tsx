@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import XAxis16 from '@carbon/icons-react/es/x-axis/16';
 import styles from './patient-registration.scss';
 import camelCase from 'lodash-es/camelCase';
@@ -7,17 +7,11 @@ import capitalize from 'lodash-es/capitalize';
 import find from 'lodash-es/find';
 import Button from 'carbon-components-react/es/components/Button';
 import Link from 'carbon-components-react/es/components/Link';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { Grid, Row, Column } from 'carbon-components-react/es/components/Grid';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
-import {
-  PatientIdentifier,
-  Patient,
-  PatientIdentifierType,
-  AttributeValue,
-  FormValues,
-} from './patient-registration-helper';
+import { PatientIdentifier, PatientIdentifierType, FormValues } from './patient-registration-helper';
 import { PatientRegistrationContext } from './patient-registration-context';
 import BeforeSavePrompt from './before-save-prompt';
 import FormManager from './form-manager';
@@ -29,20 +23,12 @@ import {
   getAddressTemplate,
   getIdentifierSources,
   getAutoGenerationOptions,
-  generateIdentifier,
   deletePersonName,
   saveRelationship,
   savePatientPhoto,
   fetchPatientPhotoUrl,
 } from './patient-registration.resource';
-import {
-  createErrorHandler,
-  showToast,
-  useCurrentPatient,
-  useConfig,
-  interpolateString,
-  navigate,
-} from '@openmrs/esm-framework';
+import { createErrorHandler, showToast, useCurrentPatient, useConfig, navigate } from '@openmrs/esm-framework';
 import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import { useTranslation } from 'react-i18next';
 import { getSection } from './section/section-helper';
@@ -91,6 +77,7 @@ const initialFormValues: FormValues = { ...blankFormValues };
  */
 export { initialFormValues };
 
+const getUrlWithoutPrefix = url => url.split(window['getOpenmrsSpaBase']())?.[1];
 const getDeathInfo = (values: FormValues) => {
   const patientIsDead = {
     dead: true,
@@ -119,6 +106,9 @@ export interface CapturePhotoProps {
 export const PatientRegistration: React.FC = () => {
   const { search } = useLocation();
   const config = useConfig();
+  const history = useHistory();
+  const [open, setModalOpen] = useState(false);
+  const [newUrl, setNewUrl] = useState(undefined);
   const [location, setLocation] = useState('');
   const [sections, setSections] = useState([]);
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
@@ -130,6 +120,25 @@ export const PatientRegistration: React.FC = () => {
   const [fieldConfigs, setFieldConfigs] = useState({});
 
   const [currentPhoto, setCurrentPhoto] = useState(null);
+  const cancelNavFn = useCallback((evt: CustomEvent) => {
+    if (!open && !evt.detail.navigationIsCanceled) {
+      evt.detail.cancelNavigation();
+      setNewUrl(evt.detail.newUrl);
+      setModalOpen(true);
+
+      // once the listener is run, we want to remove it immediately in case an infinite loop occurs due
+      // to constant redirects
+      evt.target.removeEventListener('single-spa:before-routing-event', cancelNavFn);
+    }
+  }, [open]);
+  const onRequestClose = useCallback(() => {
+    setModalOpen(false);
+    // add the route blocked when
+    window.addEventListener('single-spa:before-routing-event', cancelNavFn);
+  }, []);
+  const onRequestSubmit = useCallback(() => {
+    history.push(`/${getUrlWithoutPrefix(newUrl)}`);
+  }, [newUrl]);
 
   useEffect(() => {
     if (config && config.sections) {
@@ -400,6 +409,7 @@ export const PatientRegistration: React.FC = () => {
           const results = Promise.all(requests);
           results.then(response => {}).catch(err => {});
 
+          window.removeEventListener('single-spa:before-routing-event', cancelNavFn);
           navigate({ to: FormManager.getAfterUrl(response.data.uuid, search, config) });
 
           existingPatient
@@ -439,7 +449,16 @@ export const PatientRegistration: React.FC = () => {
         }}>
         {props => (
           <Form className={styles.form}>
-            <BeforeSavePrompt when={props.dirty} />
+            <BeforeSavePrompt
+              {...{
+                when: props.dirty,
+                open,
+                newUrl,
+                cancelNavFn,
+                onRequestClose,
+                onRequestSubmit,
+              }}
+            />
             <Grid>
               <Row>
                 <Column lg={2} md={2} sm={1}>
