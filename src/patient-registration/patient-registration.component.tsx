@@ -120,17 +120,20 @@ export const PatientRegistration: React.FC = () => {
   const [fieldConfigs, setFieldConfigs] = useState({});
 
   const [currentPhoto, setCurrentPhoto] = useState(null);
-  const cancelNavFn = useCallback((evt: CustomEvent) => {
-    if (!open && !evt.detail.navigationIsCanceled) {
-      evt.detail.cancelNavigation();
-      setNewUrl(evt.detail.newUrl);
-      setModalOpen(true);
+  const cancelNavFn = useCallback(
+    (evt: CustomEvent) => {
+      if (!open && !evt.detail.navigationIsCanceled) {
+        evt.detail.cancelNavigation();
+        setNewUrl(evt.detail.newUrl);
+        setModalOpen(true);
 
-      // once the listener is run, we want to remove it immediately in case an infinite loop occurs due
-      // to constant redirects
-      evt.target.removeEventListener('single-spa:before-routing-event', cancelNavFn);
-    }
-  }, [open]);
+        // once the listener is run, we want to remove it immediately in case an infinite loop occurs due
+        // to constant redirects
+        evt.target.removeEventListener('single-spa:before-routing-event', cancelNavFn);
+      }
+    },
+    [open],
+  );
   const onRequestClose = useCallback(() => {
     setModalOpen(false);
     // add the route blocked when
