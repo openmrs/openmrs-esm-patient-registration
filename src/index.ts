@@ -77,6 +77,13 @@ function setupOpenMRS() {
         online: true,
         offline: true,
       },
+      {
+        id: 'edit-patient-details-button',
+        slot: 'patient-actions-slot',
+        load: getAsyncLifecycle(() => import('./widgets/edit-patient-details-button.component'), options),
+        online: true,
+        offline: true,
+      },
     ],
   };
 }
