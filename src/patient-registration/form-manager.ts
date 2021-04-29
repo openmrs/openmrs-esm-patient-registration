@@ -121,7 +121,7 @@ export default class FormManager {
     identifierTypes: Array<PatientIdentifierType>,
     abortController: AbortController,
     location: string,
-  ) {
+  ): Promise<Array<PatientIdentifier>> {
     const identifierTypeRequests: Array<Promise<PatientIdentifier>> = identifierTypes.map(async type => {
       const idValue = values[type.fieldName];
       if (idValue) {
@@ -154,16 +154,6 @@ export default class FormManager {
     return Promise.all(identifierTypeRequests);
   }
 
-  static populateAddressValues(
-    values: FormValues,
-    initialAddressFieldValues: Record<string, any>,
-  ): Record<string, string> {
-    return Object.keys(initialAddressFieldValues).reduce(
-      (memo, fieldName) => ({ ...memo, [fieldName]: values[fieldName] }),
-      {},
-    );
-  }
-
   static getDeletedNames(patientUuidMap: PatientUuidMapType) {
     if (patientUuidMap?.additionalNameUuid) {
       return [
@@ -176,6 +166,29 @@ export default class FormManager {
     return [];
   }
 
+  static getPatientToCreate(
+    values: FormValues,
+    config: ConfigObject,
+    patientUuidMap: PatientUuidMapType,
+    initialAddressFieldValues: Record<string, any>,
+    identifiers: Array<PatientIdentifier>,
+  ): Patient {
+    return {
+      uuid: patientUuidMap['patientUuid'],
+      person: {
+        uuid: patientUuidMap['patientUuid'],
+        names: FormManager.getNames(values, patientUuidMap),
+        gender: values.gender.charAt(0),
+        birthdate: values.birthdate,
+        birthdateEstimated: values.birthdateEstimated,
+        attributes: FormManager.getPatientAttributes(config, values),
+        addresses: [FormManager.getPatientAddressField(values, initialAddressFieldValues)],
+        ...FormManager.getPatientDeathInfo(values),
+      },
+      identifiers,
+    };
+  }
+
   static getNames(values: FormValues, patientUuidMap: PatientUuidMapType) {
     const names = [
       {
@@ -186,6 +199,7 @@ export default class FormManager {
         familyName: values.familyName,
       },
     ];
+
     if (values.addNameInLocalLanguage) {
       names.push({
         uuid: patientUuidMap.additionalNameUuid,
@@ -199,30 +213,13 @@ export default class FormManager {
     return names;
   }
 
-  static getDeathInfo(values: FormValues) {
-    const { isDead, deathDate, deathCause } = values;
-    const result = {
-      dead: isDead,
-      deathDate: isDead ? deathDate : undefined,
-      causeOfDeath: isDead ? deathCause : undefined,
-    };
-
-    return result;
-  }
-
-  static getPatientToCreate(
-    values: FormValues,
-    config: ConfigObject,
-    patientUuidMap: PatientUuidMapType,
-    initialAddressFieldValues: Record<string, any>,
-    identifiers: Array<PatientIdentifier>,
-  ): Patient {
+  static getPatientAttributes(config: ConfigObject, values: FormValues) {
     const attributes: Array<AttributeValue> = [];
-    const addressFieldValues = FormManager.populateAddressValues(values, initialAddressFieldValues);
+
     if (config && config.personAttributeSections) {
       const { personAttributeSections } = config;
-      for (const sections of personAttributeSections) {
-        for (const attr of personAttributeSections.personAttributes) {
+      for (const section of personAttributeSections) {
+        for (const attr of section.personAttributes) {
           attributes.push({
             attributeType: attr.uuid,
             value: values[attr.name],
@@ -231,22 +228,25 @@ export default class FormManager {
       }
     }
 
-    const person = {
-      uuid: patientUuidMap['patientUuid'],
-      names: FormManager.getNames(values, patientUuidMap),
-      gender: values.gender.charAt(0),
-      birthdate: values.birthdate,
-      birthdateEstimated: values.birthdateEstimated,
-      attributes: attributes,
-      addresses: [addressFieldValues],
-      ...FormManager.getDeathInfo(values),
-    };
+    return attributes;
+  }
 
-    const patient: Patient = {
-      uuid: patientUuidMap['patientUuid'],
-      person: { ...person },
-      identifiers,
+  static getPatientAddressField(
+    values: FormValues,
+    initialAddressFieldValues: Record<string, any>,
+  ): Record<string, string> {
+    return Object.keys(initialAddressFieldValues).reduce(
+      (memo, fieldName) => ({ ...memo, [fieldName]: values[fieldName] }),
+      {},
+    );
+  }
+
+  static getPatientDeathInfo(values: FormValues) {
+    const { isDead, deathDate, deathCause } = values;
+    return {
+      dead: isDead,
+      deathDate: isDead ? deathDate : undefined,
+      causeOfDeath: isDead ? deathCause : undefined,
     };
-    return patient;
   }
 }
