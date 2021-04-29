@@ -6,6 +6,7 @@ import * as backendController from './patient-registration.resource';
 import * as mockOpenmrsFramework from '@openmrs/esm-framework/mock';
 import { PatientRegistration } from './patient-registration.component';
 import { mockPatient } from '../../__mocks__/patient.mock';
+import FormManager from './form-manager';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -170,7 +171,7 @@ describe('form submit', () => {
     );
 
     spyOn(mockOpenmrsFramework, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
-    render(<PatientRegistration savePatientForm={jest.fn()} />);
+    render(<PatientRegistration savePatientForm={FormManager.savePatientFormOnline} />);
     await wait();
 
     const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;
