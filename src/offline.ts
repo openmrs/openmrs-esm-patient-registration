@@ -1,4 +1,3 @@
-import { ConfigObject, showToast } from '@openmrs/esm-framework';
 import Dexie, { Table } from 'dexie';
 import FormManager from './patient-registration/form-manager';
 import {
@@ -27,8 +26,9 @@ async function syncSinglePatientRegistration(queuedPatient: PatientRegistration,
       queuedPatient.initialAddressFieldValues,
       queuedPatient.identifierTypes,
       queuedPatient.capturePhotoProps,
+      queuedPatient.patientPhotoConceptUuid,
       queuedPatient.currentLocation,
-      queuedPatient.config,
+      queuedPatient.personAttributeSections,
       abortController,
     );
 
@@ -60,6 +60,7 @@ export interface PatientRegistration {
   initialAddressFieldValues: Record<string, any>;
   identifierTypes: Array<PatientIdentifierType>;
   capturePhotoProps: CapturePhotoProps;
+  patientPhotoConceptUuid: string;
   currentLocation: string;
-  config: ConfigObject;
+  personAttributeSections: any;
 }

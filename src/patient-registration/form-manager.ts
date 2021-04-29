@@ -14,7 +14,6 @@ import {
   savePatientPhoto,
   saveRelationship,
 } from './patient-registration.resource';
-import { ConfigObject } from '@openmrs/esm-framework';
 import { PatientRegistrationDb } from '../offline';
 
 export type SavePatientForm = (
@@ -23,8 +22,9 @@ export type SavePatientForm = (
   initialAddressFieldValues: Record<string, any>,
   identifierTypes: Array<PatientIdentifierType>,
   capturePhotoProps: CapturePhotoProps,
+  patientPhotoConceptUuid: string,
   currentLocation: string,
-  config?: ConfigObject,
+  personAttributeSections: any,
   abortController?: AbortController,
 ) => Promise<string | null>;
 
@@ -35,8 +35,9 @@ export default class FormManager {
     initialAddressFieldValues: Record<string, any>,
     identifierTypes: Array<PatientIdentifierType>,
     capturePhotoProps: CapturePhotoProps,
+    patientPhotoConceptUuid: string,
     currentLocation: string,
-    config: ConfigObject,
+    personAttributeSections: any,
   ): Promise<null> {
     const db = new PatientRegistrationDb();
     await db.patientRegistrations.add({
@@ -45,8 +46,9 @@ export default class FormManager {
       initialAddressFieldValues,
       identifierTypes,
       capturePhotoProps,
+      patientPhotoConceptUuid,
       currentLocation,
-      config,
+      personAttributeSections,
     });
 
     return null;
@@ -58,8 +60,9 @@ export default class FormManager {
     initialAddressFieldValues: Record<string, any>,
     identifierTypes: Array<PatientIdentifierType>,
     capturePhotoProps: CapturePhotoProps,
+    patientPhotoConceptUuid: string,
     currentLocation: string,
-    config: ConfigObject,
+    personAttributeSections: any,
     abortController: AbortController,
   ): Promise<string> {
     const patientIdentifiers = await FormManager.getPatientIdentifiersToCreate(
@@ -72,7 +75,7 @@ export default class FormManager {
 
     const createdPatient = FormManager.getPatientToCreate(
       values,
-      config,
+      personAttributeSections,
       patientUuidMap,
       initialAddressFieldValues,
       patientIdentifiers,
@@ -107,7 +110,7 @@ export default class FormManager {
           capturePhotoProps.base64EncodedImage,
           '/ws/rest/v1/obs',
           capturePhotoProps.photoDateTime,
-          config.concepts.patientPhotoUuid,
+          patientPhotoConceptUuid,
         );
       }
     }
@@ -168,7 +171,7 @@ export default class FormManager {
 
   static getPatientToCreate(
     values: FormValues,
-    config: ConfigObject,
+    personAttributeSections: any,
     patientUuidMap: PatientUuidMapType,
     initialAddressFieldValues: Record<string, any>,
     identifiers: Array<PatientIdentifier>,
@@ -181,7 +184,7 @@ export default class FormManager {
         gender: values.gender.charAt(0),
         birthdate: values.birthdate,
         birthdateEstimated: values.birthdateEstimated,
-        attributes: FormManager.getPatientAttributes(config, values),
+        attributes: FormManager.getPatientAttributes(values, personAttributeSections),
         addresses: [FormManager.getPatientAddressField(values, initialAddressFieldValues)],
         ...FormManager.getPatientDeathInfo(values),
       },
@@ -213,11 +216,10 @@ export default class FormManager {
     return names;
   }
 
-  static getPatientAttributes(config: ConfigObject, values: FormValues) {
+  static getPatientAttributes(values: FormValues, personAttributeSections?: any) {
     const attributes: Array<AttributeValue> = [];
 
-    if (config && config.personAttributeSections) {
-      const { personAttributeSections } = config;
+    if (personAttributeSections) {
       for (const section of personAttributeSections) {
         for (const attr of section.personAttributes) {
           attributes.push({

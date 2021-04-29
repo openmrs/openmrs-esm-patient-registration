@@ -248,16 +248,15 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
     const abortController = new AbortController();
 
     try {
-      console.warn("Location is: ", location);
-
       const patientUuid = await savePatientForm(
         values,
         patientUuidMap,
         initialAddressFieldValues,
         identifierTypes,
         capturePhotoProps,
+        config?.concepts?.patientPhotoUuid,
         location,
-        config,
+        config?.personAttributeSections,
         abortController,
       );
 
