@@ -11,15 +11,24 @@ export interface AttributeValue {
   value: string;
 }
 
-export interface PatientIdentifierType {
+/**
+ * Patient Identifier data as it is fetched and composed from the APIs.
+ */
+export interface FetchedPatientIdentifierType {
   name: string;
   required: boolean;
   uuid: string;
   fieldName: string;
   format: string;
-  identifierSources: Array<IdentifierSource>;
-  autoGenerationSource: IdentifierSource;
   isPrimary: boolean;
+}
+
+/**
+ * Extends the `FetchedPatientIdentifierType` with aggregated data.
+ */
+export interface PatientIdentifierType extends FetchedPatientIdentifierType {
+  identifierSources: Array<IdentifierSource>;
+  autoGenerationSource?: IdentifierSource;
 }
 
 export interface PatientIdentifier {
@@ -93,4 +102,17 @@ export interface PatientUuidMapType {
   additionalNameUuid: string | undefined;
   patientUuid: string | undefined;
   preferredNameUuid: string | undefined;
+}
+
+export interface CapturePhotoProps {
+  base64EncodedImage: string;
+  imageFile: File;
+  photoDateTime: string;
+}
+
+export interface AddressValidationSchemaType {
+  name: string;
+  label: string;
+  regex: RegExp;
+  regexFormat: string;
 }

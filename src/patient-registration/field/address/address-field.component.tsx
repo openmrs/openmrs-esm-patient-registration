@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../field.scss';
 import { Input } from '../../input/basic-input/input/input.component';
-import { getAddressTemplate } from '../../patient-registration.resource';
+import { fetchAddressTemplate } from '../../patient-registration.resource';
 import { useTranslation } from 'react-i18next';
 
 const parseString = (xmlDockAsString: string) => new DOMParser().parseFromString(xmlDockAsString, 'text/xml');
@@ -23,7 +23,7 @@ export const AddressField: React.FC = () => {
 
   useEffect(() => {
     const abortController = new AbortController();
-    getAddressTemplate(abortController).then(({ data }) => {
+    fetchAddressTemplate(abortController).then(({ data }) => {
       setAddressTemplate(data.results[0].value);
     });
   }, []);

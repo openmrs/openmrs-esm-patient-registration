@@ -6,6 +6,7 @@ import * as backendController from './patient-registration.resource';
 import * as mockOpenmrsFramework from '@openmrs/esm-framework/mock';
 import { PatientRegistration } from './patient-registration.component';
 import { mockPatient } from '../../__mocks__/patient.mock';
+import FormManager from './form-manager';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -58,14 +59,14 @@ let mockOpenmrsConfig = {
 describe('patient registration', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<PatientRegistration />, div);
+    ReactDOM.render(<PatientRegistration savePatientForm={jest.fn()} />, div);
   });
 });
 
 describe('patient registration sections', () => {
   const testSectionExists = (labelText: string) => {
     it(labelText + ' exists', async () => {
-      render(<PatientRegistration />);
+      render(<PatientRegistration savePatientForm={jest.fn()} />);
       await wait();
       expect(screen.getByLabelText(labelText)).not.toBeNull();
     });
@@ -95,14 +96,14 @@ describe('form submit', () => {
   };
 
   beforeAll(() => {
-    spyOn(backendController, 'getAddressTemplate').and.returnValue(getAddressTemplateMock());
+    spyOn(backendController, 'fetchAddressTemplate').and.returnValue(getAddressTemplateMock());
     spyOn(mockOpenmrsFramework, 'useConfig').and.returnValue(mockOpenmrsConfig);
   });
 
   it.skip('saves the patient without extra info', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
-    render(<PatientRegistration />);
+    render(<PatientRegistration savePatientForm={jest.fn()} />);
     await wait();
 
     await fillRequiredFields(screen.getByLabelText);
@@ -131,7 +132,7 @@ describe('form submit', () => {
 
   it('should not save the patient if validation fails', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
-    render(<PatientRegistration />);
+    render(<PatientRegistration savePatientForm={jest.fn()} />);
     await wait();
 
     const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;
@@ -147,43 +148,30 @@ describe('form submit', () => {
 
   it('edits patient demographics', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
-    spyOn(backendController, 'getIdentifierSources').and.returnValue(
-      Promise.resolve({
-        data: {
-          results: [],
-        },
-      }),
-    );
-    spyOn(backendController, 'getAutoGenerationOptions').and.returnValue(
-      Promise.resolve({
-        data: {
-          results: [],
-        },
-      }),
-    );
-    spyOn(backendController, 'getPrimaryIdentifierType').and.returnValue(
-      Promise.resolve({
-        name: 'OpenMRS Id',
-        fieldName: 'openMrsId',
-        required: true,
-        isPrimary: true,
-        uuid: 'e5af9a9c-ff9d-486d-900c-5fbf66a5ba3c',
-      }),
-    );
-    spyOn(backendController, 'getSecondaryIdentifierTypes').and.returnValue(
+
+    spyOn(backendController, 'fetchPatientIdentifierTypesWithSources').and.returnValue(
       Promise.resolve([
+        {
+          name: 'OpenMRS Id',
+          fieldName: 'openMrsId',
+          required: true,
+          isPrimary: true,
+          uuid: 'e5af9a9c-ff9d-486d-900c-5fbf66a5ba3c',
+          identifierSources: [],
+        },
         {
           name: 'Old Identification Number',
           fieldName: 'oldIdentificationNumber',
           required: false,
           isPrimary: false,
           uuid: '3ff0063c-dd45-4d98-8af4-0c094f26166c',
+          identifierSources: [],
         },
       ]),
     );
 
     spyOn(mockOpenmrsFramework, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
-    render(<PatientRegistration />);
+    render(<PatientRegistration savePatientForm={FormManager.savePatientFormOnline} />);
     await wait();
 
     const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;
