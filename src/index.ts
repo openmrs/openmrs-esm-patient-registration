@@ -60,16 +60,22 @@ function setupOpenMRS() {
         id: 'registration-home-link',
         slot: 'homepage-dashboard-slot',
         load: getAsyncLifecycle(() => import('./home-link'), options),
-      },
-      {
-        id: 'patient-photo-widget',
-        slot: 'patient-photo-slot',
-        load: getAsyncLifecycle(() => import('./widgets/display-photo.component'), options),
+        online: true,
+        offline: true,
       },
       {
         id: 'add-patient-action',
         slot: 'top-nav-actions-slot',
         load: getAsyncLifecycle(() => import('./add-patient-link'), options),
+        online: true,
+        offline: true,
+      },
+      {
+        id: 'patient-photo-widget',
+        slot: 'patient-photo-slot',
+        load: getAsyncLifecycle(() => import('./widgets/display-photo.component'), options),
+        online: true,
+        offline: true,
       },
     ],
   };
