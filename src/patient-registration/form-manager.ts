@@ -66,8 +66,8 @@ export default class FormManager {
       values,
       patientUuidMap,
       identifierTypes,
-      abortController,
       currentLocation,
+      abortController,
     );
 
     const createdPatient = FormManager.getPatientToCreate(
@@ -119,8 +119,8 @@ export default class FormManager {
     values: FormValues,
     patientUuidMap: object,
     identifierTypes: Array<PatientIdentifierType>,
-    abortController: AbortController,
     location: string,
+    abortController: AbortController,
   ): Promise<Array<PatientIdentifier>> {
     const identifierTypeRequests: Array<Promise<PatientIdentifier>> = identifierTypes.map(async type => {
       const idValue = values[type.fieldName];
