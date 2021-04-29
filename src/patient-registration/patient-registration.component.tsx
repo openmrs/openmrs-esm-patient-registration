@@ -115,19 +115,23 @@ export interface CapturePhotoProps {
   photoDateTime: string;
 }
 
-export const PatientRegistration: React.FC = () => {
+interface PatientRegistrationParams {
+  match: any;
+}
+
+export const PatientRegistration: React.FC<PatientRegistrationParams> = ({ match }) => {
   const { search } = useLocation();
   const config = useConfig();
+  const { patientUuid } = match.params;
   const [location, setLocation] = useState('');
   const [sections, setSections] = useState([]);
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
   const [addressTemplate, setAddressTemplate] = useState('');
-  const [isLoadingPatient, existingPatient, patientUuid, patientErr] = useCurrentPatient();
+  const [loading, patient] = useCurrentPatient(patientUuid);
   const { t } = useTranslation();
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
-
   const [currentPhoto, setCurrentPhoto] = useState(null);
 
   useEffect(() => {
@@ -160,11 +164,11 @@ export const PatientRegistration: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (existingPatient) {
-      patientUuidMap['patientUuid'] = existingPatient.id;
+    if (patientUuid && patient) {
+      patientUuidMap['patientUuid'] = patient.id;
       // set names
-      if (existingPatient.name.length) {
-        let name = existingPatient.name[0];
+      if (patient.name.length) {
+        let name = patient.name[0];
         patientUuidMap['preferredNameUuid'] = name.id;
         initialFormValues.givenName = name.given[0];
         initialFormValues.middleName = name.given[1];
@@ -172,8 +176,8 @@ export const PatientRegistration: React.FC = () => {
         if (name.given[0] === 'UNKNOWN' && name.family === 'UNKNOWN') {
           initialFormValues.unidentifiedPatient = true;
         }
-        if (existingPatient.name.length > 1) {
-          name = existingPatient.name[1];
+        if (patient.name.length > 1) {
+          name = patient.name[1];
           patientUuidMap['additionalNameUuid'] = name.id;
           initialFormValues.addNameInLocalLanguage = true;
           initialFormValues.additionalGivenName = name.given[0];
@@ -181,11 +185,11 @@ export const PatientRegistration: React.FC = () => {
           initialFormValues.additionalFamilyName = name.family;
         }
       }
-      initialFormValues.gender = capitalize(existingPatient.gender);
-      initialFormValues.birthdate = existingPatient.birthDate;
-      initialFormValues.telephoneNumber = existingPatient.telecom ? existingPatient.telecom[0].value : '';
+      initialFormValues.gender = capitalize(patient.gender);
+      initialFormValues.birthdate = patient.birthDate;
+      initialFormValues.telephoneNumber = patient.telecom ? patient.telecom[0].value : '';
 
-      existingPatient.identifier.forEach(id => {
+      patient.identifier.forEach(id => {
         const key = camelCase(id.system || id.type.text);
         patientUuidMap[key] = {
           uuid: id.id,
@@ -194,8 +198,8 @@ export const PatientRegistration: React.FC = () => {
         initialFormValues[key] = id.value;
       });
 
-      if (existingPatient.address && existingPatient.address[0]) {
-        const address = existingPatient.address[0];
+      if (patient.address && patient.address[0]) {
+        const address = patient.address[0];
         Object.keys(address).forEach(prop => {
           switch (prop) {
             case 'id':
@@ -224,21 +228,19 @@ export const PatientRegistration: React.FC = () => {
           }
         });
       }
-      if (existingPatient.deceasedBoolean || existingPatient.deceasedDateTime) {
+      if (patient.deceasedBoolean || patient.deceasedDateTime) {
         initialFormValues.isDead = true;
-        initialFormValues.deathDate = existingPatient.deceasedDateTime
-          ? existingPatient.deceasedDateTime.split('T')[0]
-          : '';
+        initialFormValues.deathDate = patient.deceasedDateTime ? patient.deceasedDateTime.split('T')[0] : '';
       }
       (async () => {
         const abortController = new AbortController();
-        const value = await fetchPatientPhotoUrl(existingPatient.id, config.concepts.patientPhotoUuid, abortController);
+        const value = await fetchPatientPhotoUrl(patient.id, config.concepts.patientPhotoUuid, abortController);
         setCurrentPhoto(value);
       })();
     } else {
       Object.assign(initialFormValues, blankFormValues);
     }
-  }, [existingPatient]);
+  }, [patient]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -401,7 +403,7 @@ export const PatientRegistration: React.FC = () => {
 
           navigate({ to: FormManager.getAfterUrl(response.data.uuid, search, config) });
 
-          existingPatient
+          patientUuid && patient
             ? showToast({
                 description: t('updationSuccessToastDescription'),
                 title: t('updationSuccessToastTitle'),
@@ -442,8 +444,8 @@ export const PatientRegistration: React.FC = () => {
               <Row>
                 <Column lg={2} md={2} sm={1}>
                   <div className={styles.fixedPosition}>
-                    <h4>{existingPatient ? 'Edit' : 'Create New'} Patient</h4>
-                    {localStorage.getItem('openmrs:devtools') === 'true' && !existingPatient && (
+                    <h4>{patientUuid && patient ? 'Edit' : 'Create New'} Patient</h4>
+                    {localStorage.getItem('openmrs:devtools') === 'true' && !patientUuid && (
                       <DummyDataInput setValues={props.setValues} />
                     )}
                     <p className={styles.label01}>Jump to</p>
@@ -455,7 +457,7 @@ export const PatientRegistration: React.FC = () => {
                       </div>
                     ))}
                     <Button style={{ marginBottom: '1rem', width: '11.688rem', display: 'block' }} type="submit">
-                      {existingPatient ? t('updatePatient') : t('registerPatient')}
+                      {patientUuid && patient ? t('updatePatient') : t('registerPatient')}
                     </Button>
                     <Button style={{ width: '11.688rem' }} kind="tertiary" onClick={cancelRegistration}>
                       {t('cancel')}
@@ -471,7 +473,7 @@ export const PatientRegistration: React.FC = () => {
                         setValidationSchema,
                         fieldConfigs,
                         values: props.values,
-                        inEditMode: !!existingPatient,
+                        inEditMode: !!patient,
                         setFieldValue: props.setFieldValue,
                       }}>
                       {sections.map((section, index) => (
