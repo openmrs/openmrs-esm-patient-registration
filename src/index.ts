@@ -13,7 +13,7 @@ import FormManager from './patient-registration/form-manager';
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
 function setupOpenMRS() {
-  TODO_TMP_MOVE_ME_LATER_registerDynamicRoutes();
+  TMP_WORKAROUND_registerAndPrecacheStaticApiEndpoints();
 
   const moduleName = '@openmrs/esm-patient-registration-app';
   const pageName = 'patient-registration';
@@ -83,16 +83,18 @@ function setupOpenMRS() {
 
 /**
  * Called during startup. Notifies the service worker of routes that this MF requires in cache
- * for offline mode. Post notification, fetches static data so that it is in the cache.
+ * for offline mode.
+ * Also fetches the data once so that it is actually cached.
+ *
+ * This is a temporary workaround because the app shell is currently missing a dedicated API
+ * for registering routes to precache.
+ * This will be removed with MF-572 and MF-573.
  */
-function TODO_TMP_MOVE_ME_LATER_registerDynamicRoutes() {
+function TMP_WORKAROUND_registerAndPrecacheStaticApiEndpoints() {
   const wb = new Workbox(`${window.getOpenmrsSpaBase()}service-worker.js`);
   wb.register();
 
-  // Warning: Super super ugly.
-  // Currently gives the page some time to setup the SW and then registers the URLs which this MF wants cached.
-  // This must 100% be invoked by the app shell.
-  setTimeout(async () => {
+  (async () => {
     await Promise.all([
       cacheUrl('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType'),
       cachePattern('/ws/rest/v1/patientidentifiertype/.+'),
@@ -111,7 +113,7 @@ function TODO_TMP_MOVE_ME_LATER_registerDynamicRoutes() {
       fetchAddressTemplate(ac),
       fetchAllRelationshipTypes(ac),
     ]);
-  });
+  })();
 
   function cacheUrl(url: string) {
     const fullUrl = new URL(makeUrl(url), window.location.origin).href;
