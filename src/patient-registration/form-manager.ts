@@ -101,7 +101,11 @@ export default class FormManager {
         saveRelationship(abortController, relationshipToSave);
       });
 
-      if (capturePhotoProps && (capturePhotoProps.base64EncodedImage || capturePhotoProps.imageFile)) {
+      if (
+        capturePhotoProps &&
+        patientPhotoConceptUuid &&
+        (capturePhotoProps.base64EncodedImage || capturePhotoProps.imageFile)
+      ) {
         savePatientPhoto(
           savePatientResponse.data.uuid,
           capturePhotoProps.imageFile,
