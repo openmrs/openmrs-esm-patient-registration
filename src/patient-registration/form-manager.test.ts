@@ -1,5 +1,4 @@
 import FormManager from './form-manager';
-import { generateIdentifier } from './patient-registration.resource';
 
 jest.mock('./patient-registration.resource');
 
@@ -42,31 +41,33 @@ const identifierSource = {
 describe('FormManager', () => {
   describe('createIdentifiers', () => {
     it('uses the uuid of a field name if it exists', async () => {
-      const result = await FormManager.createIdentifiers(
+      const result = await FormManager.getPatientIdentifiersToCreate(
         { ...formValues, givenName: 'foo' },
         { givenName: { uuid: 'aUuid' } },
-        [{
-          name: 'foo',
-          required: false,
-          isPrimary: true, 
-          fieldName: 'givenName', 
-          uuid: 'identifierType',
-          format: 'n/a',
-          autoGenerationSource: identifierSource,
-          identifierSources: [],
-        }],
+        [
+          {
+            name: 'foo',
+            required: false,
+            isPrimary: true,
+            fieldName: 'givenName',
+            uuid: 'identifierType',
+            format: 'n/a',
+            autoGenerationSource: identifierSource,
+            identifierSources: [],
+          },
+        ],
+        'Nyc',
         new AbortController(),
-        'Nyc'
       );
-      expect(result).toEqual(
-        [{
+      expect(result).toEqual([
+        {
           uuid: 'aUuid',
           identifier: 'foo',
           identifierType: 'identifierType',
           location: 'Nyc',
           preferred: true,
-        }]
-      );
+        },
+      ]);
     });
   });
 });

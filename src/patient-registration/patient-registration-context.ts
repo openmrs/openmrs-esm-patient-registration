@@ -1,6 +1,5 @@
-import React, { SetStateAction } from 'react';
-import { CapturePhotoProps } from './patient-registration.component';
-import { FormValues } from './patient-registration-helper';
+import React from 'react';
+import { FormValues } from './patient-registration-types';
 
 type PatientRegistrationContextProps = {
   identifierTypes: Array<any>;

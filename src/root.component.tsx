@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { PatientRegistration } from './patient-registration/patient-registration.component';
+import { syncAddedPatients } from './offline';
+import { SavePatientForm } from './patient-registration/form-manager';
+import { PatientRegistration, PatientRegistrationProps } from './patient-registration/patient-registration.component';
 
-export default function Root() {
+export interface RootProps extends PatientRegistrationProps {
+  syncAddedPatientsOnLoad: boolean;
+  savePatientForm: SavePatientForm;
+}
+
+export default function Root({ syncAddedPatientsOnLoad, savePatientForm }: RootProps) {
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (syncAddedPatientsOnLoad) {
+      syncAddedPatients(abortController);
+    }
+    return () => abortController.abort();
+  }, [syncAddedPatientsOnLoad]);
+
   return (
     <BrowserRouter basename={window['getOpenmrsSpaBase']()}>
-      <Route exact path="/patient-registration" component={PatientRegistration} />
-      <Route exact path="/patient/:patientUuid/edit" component={PatientRegistration} />
+      <Route
+        exact
+        path="/patient-registration"
+        render={props => <PatientRegistration savePatientForm={savePatientForm} {...props} />}
+      />
+      <Route
+        exact
+        path="/patient/:patientUuid/edit"
+        render={props => <PatientRegistration savePatientForm={savePatientForm} {...props} />}
+      />
     </BrowserRouter>
   );
 }
