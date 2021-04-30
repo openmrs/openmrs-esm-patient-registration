@@ -71,21 +71,24 @@ const initialFormValues: FormValues = { ...blankFormValues };
 
 export interface PatientRegistrationProps {
   savePatientForm: SavePatientForm;
+  match: any;
 }
 
-export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePatientForm }) => {
+export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePatientForm, match }) => {
   const { search } = useLocation();
-  const { t } = useTranslation();
   const config = useConfig();
+  const { patientUuid } = match.params;
   const [location, setLocation] = useState('');
   const [sections, setSections] = useState([]);
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
-  const [, existingPatient] = useCurrentPatient();
+  const [addressTemplate, setAddressTemplate] = useState('');
+  const [loading, patient] = useCurrentPatient(patientUuid);
+  const { t } = useTranslation();
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
   const [currentPhoto, setCurrentPhoto] = useState(null);
-  const inEditMode = !!existingPatient;
+  const inEditMode = !!(patientUuid && patient);
 
   useEffect(() => {
     if (config?.sections) {
@@ -113,11 +116,11 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
     if (!inEditMode) {
       Object.assign(initialFormValues, blankFormValues);
     } else {
-      patientUuidMap['patientUuid'] = existingPatient.id;
+      patientUuidMap['patientUuid'] = patient.id;
 
       // set names
-      if (existingPatient.name.length) {
-        let name = existingPatient.name[0];
+      if (patient.name.length) {
+        let name = patient.name[0];
         patientUuidMap['preferredNameUuid'] = name.id;
         initialFormValues.givenName = name.given[0];
         initialFormValues.middleName = name.given[1];
@@ -125,8 +128,8 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
         if (name.given[0] === 'UNKNOWN' && name.family === 'UNKNOWN') {
           initialFormValues.unidentifiedPatient = true;
         }
-        if (existingPatient.name.length > 1) {
-          name = existingPatient.name[1];
+        if (patient.name.length > 1) {
+          name = patient.name[1];
           patientUuidMap['additionalNameUuid'] = name.id;
           initialFormValues.addNameInLocalLanguage = true;
           initialFormValues.additionalGivenName = name.given[0];
@@ -135,11 +138,11 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
         }
       }
 
-      initialFormValues.gender = capitalize(existingPatient.gender);
-      initialFormValues.birthdate = existingPatient.birthDate;
-      initialFormValues.telephoneNumber = existingPatient.telecom ? existingPatient.telecom[0].value : '';
+      initialFormValues.gender = capitalize(patient.gender);
+      initialFormValues.birthdate = patient.birthDate;
+      initialFormValues.telephoneNumber = patient.telecom ? patient.telecom[0].value : '';
 
-      existingPatient.identifier.forEach(id => {
+      patient.identifier.forEach(id => {
         const key = camelCase(id.system || id.type.text);
         patientUuidMap[key] = {
           uuid: id.id,
@@ -148,8 +151,8 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
         initialFormValues[key] = id.value;
       });
 
-      if (existingPatient.address && existingPatient.address[0]) {
-        const address = existingPatient.address[0];
+      if (patient.address && patient.address[0]) {
+        const address = patient.address[0];
         Object.keys(address).forEach(prop => {
           switch (prop) {
             case 'id':
@@ -179,15 +182,13 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
         });
       }
 
-      if (existingPatient.deceasedBoolean || existingPatient.deceasedDateTime) {
+      if (patient.deceasedBoolean || patient.deceasedDateTime) {
         initialFormValues.isDead = true;
-        initialFormValues.deathDate = existingPatient.deceasedDateTime
-          ? existingPatient.deceasedDateTime.split('T')[0]
-          : '';
+        initialFormValues.deathDate = patient.deceasedDateTime ? patient.deceasedDateTime.split('T')[0] : '';
       }
 
       const abortController = new AbortController();
-      fetchPatientPhotoUrl(existingPatient.id, config.concepts.patientPhotoUuid, abortController).then(value =>
+      fetchPatientPhotoUrl(patient.id, config.concepts.patientPhotoUuid, abortController).then(value =>
         setCurrentPhoto(value),
       ); // TODO: Edit mode
 

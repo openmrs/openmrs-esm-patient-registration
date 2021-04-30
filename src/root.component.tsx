@@ -23,12 +23,12 @@ export default function Root({ syncAddedPatientsOnLoad, savePatientForm }: RootP
       <Route
         exact
         path="/patient-registration"
-        render={() => <PatientRegistration savePatientForm={savePatientForm} />}
+        render={props => <PatientRegistration savePatientForm={savePatientForm} {...props} />}
       />
       <Route
         exact
         path="/patient/:patientUuid/edit"
-        render={() => <PatientRegistration savePatientForm={savePatientForm} />}
+        render={props => <PatientRegistration savePatientForm={savePatientForm} {...props} />}
       />
     </BrowserRouter>
   );

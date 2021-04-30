@@ -6,6 +6,7 @@ import * as backendController from './patient-registration.resource';
 import * as mockOpenmrsFramework from '@openmrs/esm-framework/mock';
 import { PatientRegistration } from './patient-registration.component';
 import { mockPatient } from '../../__mocks__/patient.mock';
+import { match } from 'react-router-dom';
 import FormManager from './form-manager';
 
 jest.mock('react-router-dom', () => ({
@@ -56,17 +57,26 @@ let mockOpenmrsConfig = {
   },
 };
 
+const path = `/patient/:patientUuid/edit`;
+
+const sampleMatchProp: match<{ patientUuid: string }> = {
+  isExact: false,
+  path,
+  url: path.replace(':patientUuid', '1'),
+  params: { patientUuid: '1' },
+};
+
 describe('patient registration', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<PatientRegistration savePatientForm={jest.fn()} />, div);
+    ReactDOM.render(<PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />, div);
   });
 });
 
 describe('patient registration sections', () => {
   const testSectionExists = (labelText: string) => {
     it(labelText + ' exists', async () => {
-      render(<PatientRegistration savePatientForm={jest.fn()} />);
+      render(<PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />);
       await wait();
       expect(screen.getByLabelText(labelText)).not.toBeNull();
     });
@@ -103,7 +113,7 @@ describe('form submit', () => {
   it.skip('saves the patient without extra info', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
 
-    render(<PatientRegistration savePatientForm={jest.fn()} />);
+    render(<PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />);
     await wait();
 
     await fillRequiredFields(screen.getByLabelText);
@@ -132,7 +142,7 @@ describe('form submit', () => {
 
   it('should not save the patient if validation fails', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
-    render(<PatientRegistration savePatientForm={jest.fn()} />);
+    render(<PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />);
     await wait();
 
     const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;
@@ -171,7 +181,7 @@ describe('form submit', () => {
     );
 
     spyOn(mockOpenmrsFramework, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
-    render(<PatientRegistration savePatientForm={FormManager.savePatientFormOnline} />);
+    render(<PatientRegistration match={sampleMatchProp} savePatientForm={FormManager.savePatientFormOnline} />);
     await wait();
 
     const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;
