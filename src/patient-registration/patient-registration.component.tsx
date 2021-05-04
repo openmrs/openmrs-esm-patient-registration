@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import XAxis16 from '@carbon/icons-react/es/x-axis/16';
 import styles from './patient-registration.scss';
 import camelCase from 'lodash-es/camelCase';
 import capitalize from 'lodash-es/capitalize';
 import Button from 'carbon-components-react/es/components/Button';
 import Link from 'carbon-components-react/es/components/Link';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { Grid, Row, Column } from 'carbon-components-react/es/components/Grid';
 import { validationSchema as initialSchema } from './validation/patient-registration-validation';
 import { PatientIdentifierType, FormValues, CapturePhotoProps, PatientUuidMapType } from './patient-registration-types';
 import { PatientRegistrationContext } from './patient-registration-context';
 import FormManager, { SavePatientForm } from './form-manager';
+import BeforeSavePrompt from './before-save-prompt';
 import {
   fetchCurrentSession,
   fetchAddressTemplate,
@@ -68,6 +69,7 @@ const blankFormValues: FormValues = {
 
 // If a patient is fetched, this will be updated with their information
 const initialFormValues: FormValues = { ...blankFormValues };
+const getUrlWithoutPrefix = url => url.split(window['getOpenmrsSpaBase']())?.[1];
 
 export interface PatientRegistrationProps {
   savePatientForm: SavePatientForm;
@@ -78,6 +80,9 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
   const { search } = useLocation();
   const config = useConfig();
   const { patientUuid } = match.params;
+  const history = useHistory();
+  const [open, setModalOpen] = useState(false);
+  const [newUrl, setNewUrl] = useState(undefined);
   const [location, setLocation] = useState('');
   const [sections, setSections] = useState([]);
   const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
@@ -89,6 +94,28 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
   const [fieldConfigs, setFieldConfigs] = useState({});
   const [currentPhoto, setCurrentPhoto] = useState(null);
   const inEditMode = !!(patientUuid && patient);
+  const cancelNavFn = useCallback(
+    (evt: CustomEvent) => {
+      if (!open && !evt.detail.navigationIsCanceled) {
+        evt.detail.cancelNavigation();
+        setNewUrl(evt.detail.newUrl);
+        setModalOpen(true);
+
+        // once the listener is run, we want to remove it immediately in case an infinite loop occurs due
+        // to constant redirects
+        evt.target.removeEventListener('single-spa:before-routing-event', cancelNavFn);
+      }
+    },
+    [open],
+  );
+  const onRequestClose = useCallback(() => {
+    setModalOpen(false);
+    // add the route blocked when
+    window.addEventListener('single-spa:before-routing-event', cancelNavFn);
+  }, []);
+  const onRequestSubmit = useCallback(() => {
+    history.push(`/${getUrlWithoutPrefix(newUrl)}`);
+  }, [newUrl]);
 
   useEffect(() => {
     if (config?.sections) {
@@ -270,6 +297,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
       if (patientUuid) {
         const redirectUrl =
           new URLSearchParams(search).get('afterUrl') || interpolateString(config.links.submitButton, { patientUuid });
+        window.removeEventListener('single-spa:before-routing-event', cancelNavFn);
         navigate({ to: redirectUrl });
       }
     } catch (error) {
@@ -296,6 +324,16 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
         }}>
         {props => (
           <Form className={styles.form}>
+            <BeforeSavePrompt
+              {...{
+                when: props.dirty,
+                open,
+                newUrl,
+                cancelNavFn,
+                onRequestClose,
+                onRequestSubmit,
+              }}
+            />
             <Grid>
               <Row>
                 <Column lg={2} md={2} sm={1}>
