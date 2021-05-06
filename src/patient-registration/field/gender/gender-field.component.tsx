@@ -15,13 +15,13 @@ export const GenderField: React.FC = () => {
 
   return (
     <div>
-      <h4 className={styles.productiveHeading02Light}>{t('genderLabelText')}</h4>
+      <h4 className={styles.productiveHeading02Light}>{t('genderLabelText', 'Sex')}</h4>
       <div style={{ marginBottom: '1rem' }}>
-        <p className="bx--label">{t('sexLabelText')}</p>
+        <p className="bx--label">{t('genderLabelText', 'Sex')}</p>
         <RadioButtonGroup name="gender" orientation="vertical" onChange={setGender}>
-          <RadioButton id="male" labelText={t('Male')} value="Male" />
-          <RadioButton id="female" labelText={t('Female')} value="Female" />
-          <RadioButton id="other" labelText={t('Other')} value="Other" />
+          <RadioButton id="male" labelText={t('maleLabelText', 'Male')} value="Male" />
+          <RadioButton id="female" labelText={t('femaleLabelText', 'Female')} value="Female" />
+          <RadioButton id="other" labelText={t('otherLabelText', 'Other')} value="Other" />
         </RadioButtonGroup>
       </div>
     </div>

@@ -9,7 +9,7 @@ export const EmailField: React.FC = () => {
   return (
     <div>
       <h4 className={styles.productiveHeading02Light}>Email</h4>
-      <Input id="email" name="email" labelText={t('Email')} light={true} />
+      <Input id="email" name="email" labelText={t('emailLabelText', 'Email')} light={true} />
     </div>
   );
 };

@@ -121,7 +121,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
     if (config?.sections) {
       const configuredSections = config.sections.map(section => ({
         id: section,
-        name: t(config.sectionDefinitions[section].name),
+        name: config.sectionDefinitions[section].name,
         fields: config.sectionDefinitions[section].fields,
       }));
 
@@ -289,8 +289,15 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
       );
 
       showToast({
-        description: inEditMode ? t('updationSuccessToastDescription') : t('registrationSuccessToastDescription'),
-        title: inEditMode ? t('updationSuccessToastTitle') : t('registrationSuccessToastTitle'),
+        description: inEditMode
+          ? t('updationSuccessToastDescription', "The patient's information has been successfully updated")
+          : t(
+              'registrationSuccessToastDescription',
+              'The patient can now be found by searching for them using their name or ID number',
+            ),
+        title: inEditMode
+          ? t('updationSuccessToastTitle', 'Patient Details Updated')
+          : t('registrationSuccessToastTitle', 'New Patient Created'),
         kind: 'success',
       });
 
@@ -338,23 +345,25 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
               <Row>
                 <Column lg={2} md={2} sm={1}>
                   <div className={styles.fixedPosition}>
-                    <h4>{inEditMode ? 'Edit' : 'Create New'} Patient</h4>
+                    <h4>
+                      {inEditMode ? t('edit', 'Edit') : t('createNew', 'Create New')} {t('patient', 'Patient')}
+                    </h4>
                     {localStorage.getItem('openmrs:devtools') === 'true' && !inEditMode && (
                       <DummyDataInput setValues={props.setValues} />
                     )}
-                    <p className={styles.label01}>Jump to</p>
+                    <p className={styles.label01}>{t('jumpTo', 'Jump to')}</p>
                     {sections.map(section => (
                       <div className={`${styles.space05} ${styles.TouchTarget}`} key={section.name}>
                         <Link className={styles.LinkName} onClick={() => scrollIntoView(section.id)}>
-                          <XAxis16 /> {t(`${section.name}`)}
+                          <XAxis16 /> {section.name}
                         </Link>
                       </div>
                     ))}
                     <Button style={{ marginBottom: '1rem', width: '11.688rem', display: 'block' }} type="submit">
-                      {inEditMode ? t('updatePatient') : t('registerPatient')}
+                      {inEditMode ? t('updatePatient', 'Update Patient') : t('registerPatient', 'Register Patient')}
                     </Button>
                     <Button style={{ width: '11.688rem' }} kind="tertiary" onClick={cancelRegistration}>
-                      {t('cancel')}
+                      {t('cancel', 'Cancel')}
                     </Button>
                   </div>
                 </Column>

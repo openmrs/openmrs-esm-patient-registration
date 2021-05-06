@@ -91,10 +91,15 @@ export const RelationshipsSection: React.FC = () => {
                           light={true}
                           id="select"
                           defaultValue="placeholder-item"
-                          labelText={t('Relationship')}
+                          labelText={t('relationship', 'Relationship')}
                           onChange={handleRelationshipTypeChange}
                           name={`relationships[${index}].relationship`}>
-                          <SelectItem disabled hidden value="placeholder-item" text={t('relationshipToPatient')} />
+                          <SelectItem
+                            disabled
+                            hidden
+                            value="placeholder-item"
+                            text={t('relationshipToPatient', 'Relationship to patient')}
+                          />
                           {relationshipTypes.map(type => (
                             <SelectItem text={type.display} value={`${type.uuid}/${type.direction}`} key={index} />
                           ))}
@@ -103,7 +108,7 @@ export const RelationshipsSection: React.FC = () => {
                       <div className={styles.actions}>
                         {relationships.length - 1 === index && (
                           <Button kind="ghost" onClick={() => push({})}>
-                            {t('addRelationshipButtonText')}
+                            {t('addRelationshipButtonText', 'Add Relationship')}
                           </Button>
                         )}
                       </div>

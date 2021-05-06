@@ -13,11 +13,15 @@ export const DeathInfoSection: React.FC = () => {
     <section className={styles.formSection} aria-label="Death Info Section">
       <h5 className={`omrs-type-title-5 ${styles.formSectionTitle}`}>Death Info</h5>
       <section className={styles.fieldGroup}>
-        <Input labelText={t('isDeadInputLabel')} name="isDead" id="isDead" light />
+        <Input labelText={t('isDeadInputLabel', 'Is Dead')} name="isDead" id="isDead" light />
         {values.isDead && (
           <>
-            <Input labelText={t('deathDateInputLabel')} name="deathDate" id="deathDate" light />
-            <SelectInput options={[t('Unknown'), t('Stroke')]} label={t('causeOfDeathInputLabel')} name="deathCause" />
+            <Input labelText={t('deathDateInputLabel', 'Date of Death')} name="deathDate" id="deathDate" light />
+            <SelectInput
+              options={[t('unknown', 'Unknown'), t('stroke', 'Stroke')]}
+              label={t('causeOfDeathInputLabel', 'Cause of Death')}
+              name="deathCause"
+            />
           </>
         )}
       </section>

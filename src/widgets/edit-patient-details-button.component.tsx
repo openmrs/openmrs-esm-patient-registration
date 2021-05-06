@@ -9,9 +9,9 @@ export default function EditPatientDetailsButton({ patientUuid }) {
       <ConfigurableLink
         to={`\${openmrsSpaBase}/patient/${patientUuid}/edit`}
         className="bx--overflow-menu-options__btn"
-        title={t('Edit Patient Details', 'Edit Patient Details')}>
+        title={t('editPatientDetails', 'Edit Patient Details')}>
         <span className="bx--overflow-menu-options__option-content">
-          {t('Edit Patient Details', 'Edit Patient Details')}
+          {t('editPatientDetails', 'Edit Patient Details')}
         </span>
       </ConfigurableLink>
     </li>

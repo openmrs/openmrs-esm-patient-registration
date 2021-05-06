@@ -29,7 +29,7 @@ describe('GenderField', () => {
   });
 
   it('has a label', () => {
-    expect(renderComponent().getByText('genderLabelText')).toBeTruthy();
+    expect(renderComponent().getAllByText('Sex')).toBeTruthy();
   });
 
   it('checks an option', () => {

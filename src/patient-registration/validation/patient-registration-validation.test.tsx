@@ -78,9 +78,9 @@ describe('name input', () => {
         </Form>
       </Formik>,
     );
-    const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;
-    const middleNameInput = screen.getByLabelText('middleNameLabelText') as HTMLInputElement;
-    const familyNameInput = screen.getByLabelText('familyNameLabelText') as HTMLInputElement;
+    const givenNameInput = screen.getByLabelText('Given Name') as HTMLInputElement;
+    const middleNameInput = screen.getByLabelText('Middle Name') as HTMLInputElement;
+    const familyNameInput = screen.getByLabelText('Family Name') as HTMLInputElement;
 
     fireEvent.change(givenNameInput, { target: { value: givenNameValue } });
     fireEvent.blur(givenNameInput);

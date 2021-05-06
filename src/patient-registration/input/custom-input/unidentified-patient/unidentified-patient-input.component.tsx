@@ -20,5 +20,5 @@ export const UnidentifiedPatientInput: React.FC<UnidentifiedPatientInputProps> =
     }
   }, [field.value, setName]);
 
-  return <Input id="checkbox" labelText={t('unidentifiedPatient')} name={name} light />;
+  return <Input id="checkbox" labelText={t('unidentifiedPatient', 'Unidentified Patient')} name={name} light />;
 };
