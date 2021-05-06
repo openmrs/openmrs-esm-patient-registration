@@ -118,7 +118,7 @@ describe('form submit', () => {
 
     await fillRequiredFields(screen.getByLabelText);
 
-    userEvent.click(screen.getByText('registerPatient'));
+    userEvent.click(screen.getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(
@@ -145,12 +145,12 @@ describe('form submit', () => {
     render(<PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />);
     await wait();
 
-    const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;
+    const givenNameInput = screen.getByLabelText('Given Name') as HTMLInputElement;
 
     userEvent.type(givenNameInput, '');
     await wait();
 
-    userEvent.click(screen.getByText('registerPatient'));
+    userEvent.click(screen.getByText('Register Patient'));
     await wait();
 
     expect(backendController.savePatient).not.toHaveBeenCalled();
@@ -184,10 +184,10 @@ describe('form submit', () => {
     render(<PatientRegistration match={sampleMatchProp} savePatientForm={FormManager.savePatientFormOnline} />);
     await wait();
 
-    const givenNameInput = screen.getByLabelText('givenNameLabelText') as HTMLInputElement;
-    const familyNameInput = screen.getByLabelText('familyNameLabelText') as HTMLInputElement;
-    const middleNameInput = screen.getByLabelText('middleNameLabelText') as HTMLInputElement;
-    const dateOfBirthInput = screen.getByLabelText('dateOfBirthLabelText') as HTMLInputElement;
+    const givenNameInput = screen.getByLabelText('Given Name') as HTMLInputElement;
+    const familyNameInput = screen.getByLabelText('Family Name') as HTMLInputElement;
+    const middleNameInput = screen.getByLabelText('Middle Name') as HTMLInputElement;
+    const dateOfBirthInput = screen.getByLabelText('Date of Birth') as HTMLInputElement;
     const address1 = screen.getByLabelText('Location.address1') as HTMLInputElement;
 
     // assert initial values
@@ -204,7 +204,7 @@ describe('form submit', () => {
     userEvent.type(middleNameInput, 'Johnson');
     userEvent.type(familyNameInput, 'Smith');
     userEvent.type(address1, 'Bom Jesus Street');
-    userEvent.click(screen.getByText('updatePatient'));
+    userEvent.click(screen.getByText('Update Patient'));
     await wait();
 
     expect(backendController.savePatient).toHaveBeenCalledWith(

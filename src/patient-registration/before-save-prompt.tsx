@@ -40,13 +40,13 @@ const BeforeSavePrompt: React.FC<BeforeSavePromptProps> = ({
       {...{
         open,
         danger: true,
-        modalHeading: t('discardModalHeader'),
+        modalHeading: t('discardModalHeader', 'Confirm Discard Changes'),
         primaryButtonText: t('discard'),
         secondaryButtonText: t('cancel'),
         onRequestClose,
         onRequestSubmit,
       }}>
-      {t('discardModalBody')}
+      {t('discardModalBody', "The changes you made to this patient's details have not been saved. Discard changes?")}
     </Modal>
   );
 };

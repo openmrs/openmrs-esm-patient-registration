@@ -20,12 +20,12 @@ export const DobField: React.FC = () => {
   // TODO: remove custom styling soon.
   return (
     <div style={{ marginBottom: '1rem' }}>
-      <h4 className={styles.productiveHeading02Light}>{t('dobLabelText')}</h4>
+      <h4 className={styles.productiveHeading02Light}>{t('dobLabelText', 'Birth')}</h4>
       <DatePicker dateFormat={dateFormat} datePickerType="single" light onChange={onDateChange}>
         <DatePickerInput
           id="birthdate"
           placeholder={placeHolder}
-          labelText={t('dateOfBirthLabelText')}
+          labelText={t('dateOfBirthLabelText', 'Date of Birth')}
           invalid={!!(meta.touched && meta.error)}
           invalidText={meta.error}
           {...field}

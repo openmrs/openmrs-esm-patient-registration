@@ -29,8 +29,8 @@ export const EstimatedAgeInput: React.FC<EstimatedAgeInputProps> = ({ yearsName,
 
   return (
     <main className={styles.fieldRow}>
-      <Input id="number" labelText={t('Years')} name={yearsName} light />
-      <Input id="number" labelText={t('Months')} name={monthsName} light />
+      <Input id="number" labelText={t('years', 'Years')} name={yearsName} light />
+      <Input id="number" labelText={t('months', 'Months')} name={monthsName} light />
     </main>
   );
 };

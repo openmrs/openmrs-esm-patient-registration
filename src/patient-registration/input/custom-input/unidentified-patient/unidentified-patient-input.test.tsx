@@ -14,7 +14,7 @@ describe.skip('unidentified patient input', () => {
         </Form>
       </Formik>,
     );
-    return screen.getByLabelText('unidentifiedPatient') as HTMLInputElement;
+    return screen.getByLabelText('Unidentified Patient') as HTMLInputElement;
   };
 
   it('exists', async () => {

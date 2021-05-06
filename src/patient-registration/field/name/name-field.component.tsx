@@ -10,12 +10,12 @@ export const NameField = () => {
   const fieldConfigs = useFieldConfig('name');
   return (
     <div>
-      <h4 className={styles.productiveHeading02Light}>{t('fullNameLabelText')}</h4>
-      <Input id="givenName" name="givenName" labelText={t('givenNameLabelText')} light />
+      <h4 className={styles.productiveHeading02Light}>{t('fullNameLabelText', 'Full Name')}</h4>
+      <Input id="givenName" name="givenName" labelText={t('givenNameLabelText', 'Given Name')} light />
       {fieldConfigs.displayMiddleName && (
-        <Input id="middleName" name="middleName" labelText={t('middleNameLabelText')} light />
+        <Input id="middleName" name="middleName" labelText={t('middleNameLabelText', 'Middle Name')} light />
       )}
-      <Input id="familyName" name="familyName" labelText={t('familyNameLabelText')} light />
+      <Input id="familyName" name="familyName" labelText={t('familyNameLabelText', 'Family Name')} light />
     </div>
   );
 };

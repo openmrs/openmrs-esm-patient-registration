@@ -50,7 +50,7 @@ export const IdField: React.FC = () => {
   if (identifierInputs.length > 0) {
     return (
       <div>
-        <h4 className={styles.productiveHeading02Light}>{t('idFieldLabelText')}</h4>
+        <h4 className={styles.productiveHeading02Light}>{t('idFieldLabelText', 'Id')}</h4>
         {identifierInputs}
       </div>
     );

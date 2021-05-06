@@ -10,7 +10,9 @@ export const SectionWrapper = ({ id, children, name, index }) => {
       <h3 className={styles.productiveHeading02} style={{ color: '#161616' }}>
         {index + 1}. {name}
       </h3>
-      <span className={styles.label01}>{t('All fields are required unless marked optional')}</span>
+      <span className={styles.label01}>
+        {t('allFieldsRequiredText', 'All fields are required unless marked optional')}
+      </span>
       <div style={{ margin: '1rem 0 1rem' }}>
         <Tile>{children}</Tile>
       </div>
