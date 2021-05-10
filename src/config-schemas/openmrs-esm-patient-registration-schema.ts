@@ -27,10 +27,10 @@ export const esmPatientRegistrationSchema = {
       },
     },
     _default: {
-      demographics: { name: 'basicInfoSectionName', fields: ['name', 'gender', 'dob', 'id'] },
-      contact: { name: 'contactDetailsSectionName', fields: ['address', 'phone', 'email'] },
-      death: { name: 'deathInfoSectionName', fields: ['death'] },
-      relationships: { name: 'relationshipsSectionName' },
+      demographics: { name: 'Basic Info', fields: ['name', 'gender', 'dob', 'id'] },
+      contact: { name: 'Contact Details', fields: ['address', 'phone', 'email'] },
+      death: { name: 'Death Info', fields: ['death'] },
+      relationships: { name: 'Relationships' },
     },
   },
   fieldDefinitions: {
@@ -57,7 +57,7 @@ export const esmPatientRegistrationSchema = {
     },
     _default: {
       phone: {
-        label: 'Telophone Number',
+        label: 'Telephone Number',
         uuid: '14d4f066-15f5-102d-96e4-000c29c2a5d7',
         validation: { required: true, matches: '^[0-9]*$' },
       },
