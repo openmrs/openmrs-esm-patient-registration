@@ -22,14 +22,11 @@ module.exports = env => ({
     filename,
     libraryTarget: 'system',
     path: resolve(__dirname, 'dist'),
-    jsonpFunction: 'webpackJsonp_openmrs_esm_patient_registration',
   },
   module: {
     rules: [
       {
-        parser: {
-          system: false,
-        },
+        parser: {},
       },
       {
         test: /\.m?(js|ts|tsx)$/,
@@ -56,7 +53,7 @@ module.exports = env => ({
       },
     ],
   },
-  devtool: 'sourcemap',
+  devtool: 'source-map',
   devServer: {
     headers: {
       'Access-Control-Allow-Origin': '*',
