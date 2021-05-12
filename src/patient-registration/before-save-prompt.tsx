@@ -40,6 +40,7 @@ const BeforeSavePrompt: React.FC<BeforeSavePromptProps> = ({
       {...{
         open,
         danger: true,
+        size: 'sm',
         modalHeading: t('discardModalHeader', 'Confirm Discard Changes'),
         primaryButtonText: t('discard'),
         secondaryButtonText: t('cancel'),
