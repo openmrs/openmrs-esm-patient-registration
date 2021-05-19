@@ -4,34 +4,27 @@ import { AddressField } from './address-field.component';
 import { Formik, Form } from 'formik';
 import '@testing-library/jest-dom/extend-expect';
 import '@testing-library/jest-dom';
+import { Resources, ResourcesContext } from '../../../offline.resources';
 
 const mockResponse = {
-  data: {
-    results: [
-      {
-        value:
-          '<org.openmrs.layout.address.AddressTemplate>\r\n<nameMappings class="properties">\r\n<property name="postalCode" value="Location.postalCode"/>\r\n<property name="address1" value="Location.address1"/>\r\n<property name="country" value="Location.country"/>\r\n<property name="stateProvince" value="Location.stateProvince"/>\r\n<property name="cityVillage" value="Location.cityVillage"/>\r\n</nameMappings>\r\n<elementDefaults class="properties">\r\n<property name="country" value="Uganda"/>\r\n</elementDefaults>\r\n</org.openmrs.layout.address.AddressTemplate>',
-      },
-    ],
-  },
-};
-
-jest.mock('../../patient-registration.resource', () => {
-  return {
-    fetchAddressTemplate: () => {
-      return Promise.resolve(mockResponse);
+  results: [
+    {
+      value:
+        '<org.openmrs.layout.address.AddressTemplate>\r\n<nameMappings class="properties">\r\n<property name="postalCode" value="Location.postalCode"/>\r\n<property name="address1" value="Location.address1"/>\r\n<property name="country" value="Location.country"/>\r\n<property name="stateProvince" value="Location.stateProvince"/>\r\n<property name="cityVillage" value="Location.cityVillage"/>\r\n</nameMappings>\r\n<elementDefaults class="properties">\r\n<property name="country" value="Uganda"/>\r\n</elementDefaults>\r\n</org.openmrs.layout.address.AddressTemplate>',
     },
-  };
-});
+  ],
+};
 
 describe('address field', () => {
   it('renders input fields matching addressTemplate config', async () => {
     const { findByLabelText } = render(
-      <Formik initialValues={{}} onSubmit={null}>
-        <Form>
-          <AddressField />
-        </Form>
-      </Formik>,
+      <ResourcesContext.Provider value={{ addressTemplate: mockResponse } as Resources}>
+        <Formik initialValues={{}} onSubmit={null}>
+          <Form>
+            <AddressField />
+          </Form>
+        </Formik>
+      </ResourcesContext.Provider>,
     );
 
     const postalCode = await findByLabelText('Location.postalCode');
