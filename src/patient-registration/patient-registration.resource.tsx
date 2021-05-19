@@ -1,13 +1,5 @@
-import { FetchResponse, openmrsFetch, SessionUser } from '@openmrs/esm-framework';
-import {
-  FetchedPatientIdentifierType,
-  Patient,
-  PatientIdentifierType,
-  Relationship,
-} from './patient-registration-types';
-import camelCase from 'lodash-es/camelCase';
-import { mockAutoGenerationOptionsResult } from '../../__mocks__/autogenerationoptions.mock';
-import find from 'lodash-es/find';
+import { openmrsFetch } from '@openmrs/esm-framework';
+import { Patient, Relationship } from './patient-registration-types';
 
 export const uuidIdentifier = '05a29f94-c0ed-11e2-94be-8c13b969e334';
 export const uuidTelephoneNumber = '14d4f066-15f5-102d-96e4-000c29c2a5d7';

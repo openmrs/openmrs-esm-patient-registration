@@ -1,21 +1,17 @@
-import {
-  registerBreadcrumbs,
-  defineConfigSchema,
-  getAsyncLifecycle,
-  makeUrl,
-  useSessionUser,
-} from '@openmrs/esm-framework';
+import { registerBreadcrumbs, defineConfigSchema, getAsyncLifecycle, makeUrl } from '@openmrs/esm-framework';
 import { backendDependencies } from './openmrs-backend-dependencies';
 import { esmPatientRegistrationSchema } from './config-schemas/openmrs-esm-patient-registration-schema';
-import { Workbox } from 'workbox-window';
-import { fetchCurrentSession, fetchAddressTemplate, fetchPatientIdentifierTypesWithSources, fetchAllRelationshipTypes } from './offline.resources';
+import {
+  fetchCurrentSession,
+  fetchAddressTemplate,
+  fetchPatientIdentifierTypesWithSources,
+  fetchAllRelationshipTypes,
+} from './offline.resources';
 import FormManager from './patient-registration/form-manager';
 
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
 function setupOpenMRS() {
-  TMP_WORKAROUND_registerAndPrecacheStaticApiEndpoints();
-
   const moduleName = '@openmrs/esm-patient-registration-app';
   const pageName = 'patient-registration';
 
@@ -86,56 +82,6 @@ function setupOpenMRS() {
       },
     ],
   };
-}
-
-/**
- * Called during startup. Notifies the service worker of routes that this MF requires in cache
- * for offline mode.
- * Also fetches the data once so that it is actually cached.
- *
- * This is a temporary workaround because the app shell is currently missing a dedicated API
- * for registering routes to precache.
- * This will be removed with MF-572 and MF-573.
- */
-function TMP_WORKAROUND_registerAndPrecacheStaticApiEndpoints() {
-  const wb = new Workbox(`${window.getOpenmrsSpaBase()}service-worker.js`);
-  wb.register();
-
-  (async () => {
-    await Promise.all([
-      // cacheUrl('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType'),
-      // cachePattern('/ws/rest/v1/patientidentifiertype/.+'),
-      cacheUrl('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.extraPatientIdentifierTypes'),
-      cachePattern('/ws/rest/v1/metadatamapping/metadataset/.+/members'),
-      cachePattern('/ws/rest/v1/patientidentifiertype/.+'),
-      cachePattern('/ws/rest/v1/idgen/identifiersource\\?v=full&identifierType=.+'),
-      cacheUrl('/ws/rest/v1/systemsetting?q=layout.address.format&v=custom:(value)'),
-      cacheUrl('/ws/rest/v1/relationshiptype?v=default'),
-    ]);
-
-    const ac = new AbortController();
-    await Promise.all([
-      fetchCurrentSession(ac),
-      fetchPatientIdentifierTypesWithSources(ac),
-      fetchAddressTemplate(ac),
-      fetchAllRelationshipTypes(ac),
-    ]);
-  })();
-
-  function cacheUrl(url: string) {
-    const fullUrl = new URL(makeUrl(url), window.location.origin).href;
-    return wb.messageSW({
-      type: 'registerDynamicRoute',
-      url: fullUrl,
-    });
-  }
-
-  function cachePattern(pattern: string) {
-    return wb.messageSW({
-      type: 'registerDynamicRoute',
-      pattern: `.+${pattern}`,
-    });
-  }
 }
 
 export { backendDependencies, importTranslation, setupOpenMRS };
