@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from '../field.scss';
 import { Input } from '../../input/basic-input/input/input.component';
-import { fetchAddressTemplate } from '../../patient-registration.resource';
 import { useTranslation } from 'react-i18next';
+import { ResourcesContext } from '../../../offline.resources';
 
 const parseString = (xmlDockAsString: string) => new DOMParser().parseFromString(xmlDockAsString, 'text/xml');
 
@@ -17,19 +17,13 @@ const getFieldValue = (field: string, doc: XMLDocument) => {
 };
 
 export const AddressField: React.FC = () => {
+  const { addressTemplate } = useContext(ResourcesContext);
   const [addressFields, setAddressFields] = useState([]);
-  const [addressTemplate, setAddressTemplate] = useState('');
   const { t } = useTranslation();
+  const addressTemplateXml = addressTemplate.results[0].value;
 
   useEffect(() => {
-    const abortController = new AbortController();
-    fetchAddressTemplate(abortController).then(({ data }) => {
-      setAddressTemplate(data.results[0].value);
-    });
-  }, []);
-
-  useEffect(() => {
-    const templateXmlDoc = parseString(addressTemplate);
+    const templateXmlDoc = parseString(addressTemplateXml);
     const nameMappings = getTagAsDocument('nameMappings', templateXmlDoc);
     const elementDefaults = getTagAsDocument('elementdefaults', templateXmlDoc);
     const properties = nameMappings.getElementsByTagName('property');
@@ -45,7 +39,7 @@ export const AddressField: React.FC = () => {
       };
     });
     setAddressFields(propertiesObj);
-  }, [addressTemplate]);
+  }, [addressTemplateXml]);
 
   return (
     <div>

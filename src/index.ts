@@ -1,13 +1,15 @@
-import { registerBreadcrumbs, defineConfigSchema, getAsyncLifecycle, makeUrl } from '@openmrs/esm-framework';
+import {
+  registerBreadcrumbs,
+  defineConfigSchema,
+  getAsyncLifecycle,
+  makeUrl,
+  useSessionUser,
+} from '@openmrs/esm-framework';
 import { backendDependencies } from './openmrs-backend-dependencies';
 import { esmPatientRegistrationSchema } from './config-schemas/openmrs-esm-patient-registration-schema';
 import { Workbox } from 'workbox-window';
-import {
-  fetchAddressTemplate,
-  fetchAllRelationshipTypes,
-  fetchCurrentSession,
-  fetchPatientIdentifierTypesWithSources,
-} from './patient-registration/patient-registration.resource';
+import { fetchAllRelationshipTypes } from './patient-registration/patient-registration.resource';
+import { fetchCurrentSession, fetchAddressTemplate, fetchPatientIdentifierTypesWithSources } from './offline.resources';
 import FormManager from './patient-registration/form-manager';
 
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
@@ -45,6 +47,11 @@ function setupOpenMRS() {
         offline: {
           syncAddedPatientsOnLoad: false,
           savePatientForm: FormManager.savePatientFormOffline,
+        },
+        resources: {
+          addressTemplate: fetchAddressTemplate,
+          currentSession: fetchCurrentSession,
+          patientIdentifiers: fetchPatientIdentifierTypesWithSources,
         },
       },
       {
@@ -96,8 +103,8 @@ function TMP_WORKAROUND_registerAndPrecacheStaticApiEndpoints() {
 
   (async () => {
     await Promise.all([
-      cacheUrl('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType'),
-      cachePattern('/ws/rest/v1/patientidentifiertype/.+'),
+      // cacheUrl('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType'),
+      // cachePattern('/ws/rest/v1/patientidentifiertype/.+'),
       cacheUrl('/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.extraPatientIdentifierTypes'),
       cachePattern('/ws/rest/v1/metadatamapping/metadataset/.+/members'),
       cachePattern('/ws/rest/v1/patientidentifiertype/.+'),
