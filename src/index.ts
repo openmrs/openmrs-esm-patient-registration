@@ -1,4 +1,9 @@
-import { registerBreadcrumbs, defineConfigSchema, getAsyncLifecycle, makeUrl } from '@openmrs/esm-framework';
+import {
+  registerBreadcrumbs,
+  defineConfigSchema,
+  getAsyncLifecycle,
+  registerSynchronizationCallback,
+} from '@openmrs/esm-framework';
 import { backendDependencies } from './openmrs-backend-dependencies';
 import { esmPatientRegistrationSchema } from './config-schemas/openmrs-esm-patient-registration-schema';
 import {
@@ -8,6 +13,7 @@ import {
   fetchAllRelationshipTypes,
 } from './offline.resources';
 import FormManager from './patient-registration/form-manager';
+import { syncAddedPatients } from './offline';
 
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
@@ -30,17 +36,17 @@ function setupOpenMRS() {
     },
   ]);
 
+  registerSynchronizationCallback(() => syncAddedPatients(new AbortController()));
+
   return {
     pages: [
       {
         load: getAsyncLifecycle(() => import('./root.component'), options),
         route: /^patient-registration/,
         online: {
-          syncAddedPatientsOnLoad: true,
           savePatientForm: FormManager.savePatientFormOnline,
         },
         offline: {
-          syncAddedPatientsOnLoad: false,
           savePatientForm: FormManager.savePatientFormOffline,
         },
         resources: {

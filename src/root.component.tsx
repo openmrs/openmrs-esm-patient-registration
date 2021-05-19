@@ -1,13 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { syncAddedPatients } from './offline';
 import { Resources, ResourcesContext } from './offline.resources';
 import { SavePatientForm } from './patient-registration/form-manager';
-import { PatientIdentifierType } from './patient-registration/patient-registration-types';
 import { PatientRegistration, PatientRegistrationProps } from './patient-registration/patient-registration.component';
 
 export interface RootProps extends PatientRegistrationProps, Resources {
-  syncAddedPatientsOnLoad: boolean;
   savePatientForm: SavePatientForm;
 }
 
@@ -16,7 +13,6 @@ export default function Root({
   addressTemplate,
   relationshipTypes,
   patientIdentifiers,
-  syncAddedPatientsOnLoad,
   savePatientForm,
 }: RootProps) {
   const resources = {
@@ -25,14 +21,6 @@ export default function Root({
     relationshipTypes,
     patientIdentifiers,
   };
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    if (syncAddedPatientsOnLoad) {
-      syncAddedPatients(abortController);
-    }
-    return () => abortController.abort();
-  }, [syncAddedPatientsOnLoad]);
 
   return (
     <ResourcesContext.Provider value={resources}>
