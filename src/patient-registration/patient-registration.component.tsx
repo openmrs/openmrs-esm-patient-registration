@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import XAxis16 from '@carbon/icons-react/es/x-axis/16';
 import styles from './patient-registration.scss';
 import camelCase from 'lodash-es/camelCase';
@@ -13,12 +13,7 @@ import { PatientIdentifierType, FormValues, CapturePhotoProps, PatientUuidMapTyp
 import { PatientRegistrationContext } from './patient-registration-context';
 import FormManager, { SavePatientForm } from './form-manager';
 import BeforeSavePrompt from './before-save-prompt';
-import {
-  fetchCurrentSession,
-  fetchAddressTemplate,
-  fetchPatientPhotoUrl,
-  fetchPatientIdentifierTypesWithSources,
-} from './patient-registration.resource';
+import { fetchPatientPhotoUrl } from './patient-registration.resource';
 import {
   createErrorHandler,
   showToast,
@@ -31,6 +26,7 @@ import { DummyDataInput } from './input/dummy-data/dummy-data-input.component';
 import { useTranslation } from 'react-i18next';
 import { getSection } from './section/section-helper';
 import { cancelRegistration, parseAddressTemplateXml, scrollIntoView } from './patient-registration-utils';
+import { ResourcesContext } from '../offline.resources';
 
 const initialAddressFieldValues = {};
 
@@ -77,22 +73,21 @@ export interface PatientRegistrationProps {
 }
 
 export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePatientForm, match }) => {
+  const { currentSession, addressTemplate, patientIdentifiers } = useContext(ResourcesContext);
   const { search } = useLocation();
   const config = useConfig();
   const { patientUuid } = match.params;
   const history = useHistory();
   const [open, setModalOpen] = useState(false);
   const [newUrl, setNewUrl] = useState(undefined);
-  const [location, setLocation] = useState('');
   const [sections, setSections] = useState([]);
-  const [identifierTypes, setIdentifierTypes] = useState(new Array<PatientIdentifierType>());
   const [validationSchema, setValidationSchema] = useState(initialSchema);
-  const [addressTemplate, setAddressTemplate] = useState('');
   const [loading, patient] = useCurrentPatient(patientUuid);
   const { t } = useTranslation();
   const [capturePhotoProps, setCapturePhotoProps] = useState<CapturePhotoProps>(null);
   const [fieldConfigs, setFieldConfigs] = useState({});
   const [currentPhoto, setCurrentPhoto] = useState(null);
+  const location = currentSession.sessionLocation?.uuid;
   const inEditMode = !!(patientUuid && patient);
   const cancelNavFn = useCallback(
     (evt: CustomEvent) => {
@@ -129,15 +124,6 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
       setFieldConfigs(config.fieldConfigurations);
     }
   }, [t, config]);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    fetchCurrentSession(abortController).then(
-      ({ data }) => setLocation(data.sessionLocation?.uuid),
-      createErrorHandler(),
-    );
-    return () => abortController.abort();
-  }, []);
 
   useEffect(() => {
     if (!inEditMode) {
@@ -224,23 +210,15 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
   }, [inEditMode]);
 
   useEffect(() => {
-    const abortController = new AbortController();
-
-    fetchPatientIdentifierTypesWithSources(abortController).then(identifierTypes => {
-      for (const identifierType of identifierTypes) {
-        if (!initialFormValues[identifierType.fieldName]) {
-          initialFormValues[identifierType.fieldName] = '';
-        }
-
-        initialFormValues['source-for-' + identifierType.fieldName] =
-          identifierType.identifierSources.length > 0 ? identifierType.identifierSources[0].name : '';
+    for (const patientIdentifier of patientIdentifiers) {
+      if (!initialFormValues[patientIdentifier.fieldName]) {
+        initialFormValues[patientIdentifier.fieldName] = '';
       }
 
-      setIdentifierTypes(identifierTypes);
-    });
-
-    return () => abortController.abort();
-  }, []);
+      initialFormValues['source-for-' + patientIdentifier.fieldName] =
+        patientIdentifier.identifierSources.length > 0 ? patientIdentifier.identifierSources[0].name : '';
+    }
+  }, [patientIdentifiers]);
 
   useEffect(() => {
     if (capturePhotoProps?.base64EncodedImage || capturePhotoProps?.imageFile) {
@@ -249,28 +227,22 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
   }, [capturePhotoProps]);
 
   useEffect(() => {
-    const abortController = new AbortController();
+    const addressTemplateXml = addressTemplate.results[0].value;
+    if (!addressTemplateXml) {
+      return;
+    }
 
-    fetchAddressTemplate(abortController).then(({ data }) => {
-      const addressTemplateXml = data.results[0].value;
-      if (!addressTemplateXml) {
-        return;
+    const { addressFieldValues, addressValidationSchema } = parseAddressTemplateXml(addressTemplateXml);
+
+    for (const { name, defaultValue } of addressFieldValues) {
+      if (!initialAddressFieldValues[name]) {
+        initialAddressFieldValues[name] = defaultValue;
       }
+    }
 
-      const { addressFieldValues, addressValidationSchema } = parseAddressTemplateXml(addressTemplateXml);
-
-      for (const { name, defaultValue } of addressFieldValues) {
-        if (!initialAddressFieldValues[name]) {
-          initialAddressFieldValues[name] = defaultValue;
-        }
-      }
-
-      setValidationSchema(validationSchema => validationSchema.concat(addressValidationSchema));
-      Object.assign(initialFormValues, initialAddressFieldValues);
-    });
-
-    return () => abortController.abort();
-  }, []);
+    setValidationSchema(validationSchema => validationSchema.concat(addressValidationSchema));
+    Object.assign(initialFormValues, initialAddressFieldValues);
+  }, [addressTemplate]);
 
   const onFormSubmit = async (values: FormValues) => {
     const abortController = new AbortController();
@@ -280,7 +252,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
         values,
         patientUuidMap,
         initialAddressFieldValues,
-        identifierTypes,
+        patientIdentifiers,
         capturePhotoProps,
         config?.concepts?.patientPhotoUuid,
         location,
@@ -371,7 +343,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
                   <Grid>
                     <PatientRegistrationContext.Provider
                       value={{
-                        identifierTypes,
+                        identifierTypes: patientIdentifiers,
                         validationSchema,
                         setValidationSchema,
                         fieldConfigs,

@@ -16,6 +16,16 @@ const sampleMatchProp: match<{ patientUuid: string }> = {
 describe('root component', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<Root savePatientForm={jest.fn()} match={sampleMatchProp} syncAddedPatientsOnLoad={false} />, div);
+    ReactDOM.render(
+      <Root
+        savePatientForm={jest.fn()}
+        match={sampleMatchProp}
+        addressTemplate={{ results: [] }}
+        currentSession={{} as any}
+        patientIdentifiers={[]}
+        relationshipTypes={{ results: [] }}
+      />,
+      div,
+    );
   });
 });

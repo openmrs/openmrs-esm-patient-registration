@@ -8,6 +8,8 @@ import { PatientRegistration } from './patient-registration.component';
 import { mockPatient } from '../../__mocks__/patient.mock';
 import { match } from 'react-router-dom';
 import FormManager from './form-manager';
+import { Resources, ResourcesContext } from '../offline.resources';
+import { SessionUser } from '@openmrs/esm-framework';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -16,20 +18,37 @@ jest.mock('react-router-dom', () => ({
   }),
 }));
 
-function getAddressTemplateMock() {
-  const predefinedAddressTemplate = {
-    data: {
-      results: [
-        {
-          value:
-            '<org.openmrs.layout.address.AddressTemplate>\r\n     <nameMappings class="properties">\r\n       <property name="postalCode" value="Location.postalCode"/>\r\n       <property name="address2" value="Location.address2"/>\r\n       <property name="address1" value="Location.address1"/>\r\n       <property name="country" value="Location.country"/>\r\n       <property name="stateProvince" value="Location.stateProvince"/>\r\n       <property name="cityVillage" value="Location.cityVillage"/>\r\n     </nameMappings>\r\n     <sizeMappings class="properties">\r\n       <property name="postalCode" value="4"/>\r\n       <property name="address1" value="40"/>\r\n       <property name="address2" value="40"/>\r\n       <property name="country" value="10"/>\r\n       <property name="stateProvince" value="10"/>\r\n       <property name="cityVillage" value="10"/>\r\n       <asset name="cityVillage" value="10"/>\r\n     </sizeMappings>\r\n     <lineByLineFormat>\r\n       <string>address1 address2</string>\r\n       <string>cityVillage stateProvince postalCode</string>\r\n       <string>country</string>\r\n     </lineByLineFormat>\r\n     <elementDefaults class="properties">\r\n            <property name="country" value=""/>\r\n     </elementDefaults>\r\n     <elementRegex class="properties">\r\n            <property name="address1" value="[a-zA-Z]+$"/>\r\n     </elementRegex>\r\n     <elementRegexFormats class="properties">\r\n            <property name="address1" value="Countries can only be letters"/>\r\n     </elementRegexFormats>\r\n   </org.openmrs.layout.address.AddressTemplate>',
-        },
-      ],
+const predefinedAddressTemplate = {
+  results: [
+    {
+      value:
+        '<org.openmrs.layout.address.AddressTemplate>\r\n     <nameMappings class="properties">\r\n       <property name="postalCode" value="Location.postalCode"/>\r\n       <property name="address2" value="Location.address2"/>\r\n       <property name="address1" value="Location.address1"/>\r\n       <property name="country" value="Location.country"/>\r\n       <property name="stateProvince" value="Location.stateProvince"/>\r\n       <property name="cityVillage" value="Location.cityVillage"/>\r\n     </nameMappings>\r\n     <sizeMappings class="properties">\r\n       <property name="postalCode" value="4"/>\r\n       <property name="address1" value="40"/>\r\n       <property name="address2" value="40"/>\r\n       <property name="country" value="10"/>\r\n       <property name="stateProvince" value="10"/>\r\n       <property name="cityVillage" value="10"/>\r\n       <asset name="cityVillage" value="10"/>\r\n     </sizeMappings>\r\n     <lineByLineFormat>\r\n       <string>address1 address2</string>\r\n       <string>cityVillage stateProvince postalCode</string>\r\n       <string>country</string>\r\n     </lineByLineFormat>\r\n     <elementDefaults class="properties">\r\n            <property name="country" value=""/>\r\n     </elementDefaults>\r\n     <elementRegex class="properties">\r\n            <property name="address1" value="[a-zA-Z]+$"/>\r\n     </elementRegex>\r\n     <elementRegexFormats class="properties">\r\n            <property name="address1" value="Countries can only be letters"/>\r\n     </elementRegexFormats>\r\n   </org.openmrs.layout.address.AddressTemplate>',
     },
-  };
+  ],
+};
 
-  return Promise.resolve(predefinedAddressTemplate);
-}
+const mockResourcesContextValue = {
+  currentSession: { sessionLocation: '' },
+  addressTemplate: predefinedAddressTemplate,
+  patientIdentifiers: [
+    {
+      name: 'OpenMRS Id',
+      fieldName: 'openMrsId',
+      required: true,
+      isPrimary: true,
+      uuid: 'e5af9a9c-ff9d-486d-900c-5fbf66a5ba3c',
+      identifierSources: [],
+    },
+    {
+      name: 'Old Identification Number',
+      fieldName: 'oldIdentificationNumber',
+      required: false,
+      isPrimary: false,
+      uuid: '3ff0063c-dd45-4d98-8af4-0c094f26166c',
+      identifierSources: [],
+    },
+  ],
+} as Resources;
 
 let mockOpenmrsConfig = {
   sections: ['demographics', 'contact'],
@@ -69,14 +88,23 @@ const sampleMatchProp: match<{ patientUuid: string }> = {
 describe('patient registration', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />, div);
+    ReactDOM.render(
+      <ResourcesContext.Provider value={mockResourcesContextValue}>
+        <PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />
+      </ResourcesContext.Provider>,
+      div,
+    );
   });
 });
 
 describe('patient registration sections', () => {
   const testSectionExists = (labelText: string) => {
     it(labelText + ' exists', async () => {
-      render(<PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />);
+      render(
+        <ResourcesContext.Provider value={mockResourcesContextValue}>
+          <PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />
+        </ResourcesContext.Provider>,
+      );
       await wait();
       expect(screen.getByLabelText(labelText)).not.toBeNull();
     });
@@ -106,7 +134,6 @@ describe('form submit', () => {
   };
 
   beforeAll(() => {
-    spyOn(backendController, 'fetchAddressTemplate').and.returnValue(getAddressTemplateMock());
     spyOn(mockOpenmrsFramework, 'useConfig').and.returnValue(mockOpenmrsConfig);
   });
 
@@ -142,7 +169,11 @@ describe('form submit', () => {
 
   it('should not save the patient if validation fails', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
-    render(<PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />);
+    render(
+      <ResourcesContext.Provider value={mockResourcesContextValue}>
+        <PatientRegistration match={sampleMatchProp} savePatientForm={jest.fn()} />
+      </ResourcesContext.Provider>,
+    );
     await wait();
 
     const givenNameInput = screen.getByLabelText('Given Name') as HTMLInputElement;
@@ -158,30 +189,12 @@ describe('form submit', () => {
 
   it('edits patient demographics', async () => {
     spyOn(backendController, 'savePatient').and.returnValue(Promise.resolve({}));
-
-    spyOn(backendController, 'fetchPatientIdentifierTypesWithSources').and.returnValue(
-      Promise.resolve([
-        {
-          name: 'OpenMRS Id',
-          fieldName: 'openMrsId',
-          required: true,
-          isPrimary: true,
-          uuid: 'e5af9a9c-ff9d-486d-900c-5fbf66a5ba3c',
-          identifierSources: [],
-        },
-        {
-          name: 'Old Identification Number',
-          fieldName: 'oldIdentificationNumber',
-          required: false,
-          isPrimary: false,
-          uuid: '3ff0063c-dd45-4d98-8af4-0c094f26166c',
-          identifierSources: [],
-        },
-      ]),
-    );
-
     spyOn(mockOpenmrsFramework, 'useCurrentPatient').and.returnValue([false, mockPatient, mockPatient.id, null]);
-    render(<PatientRegistration match={sampleMatchProp} savePatientForm={FormManager.savePatientFormOnline} />);
+    render(
+      <ResourcesContext.Provider value={mockResourcesContextValue}>
+        <PatientRegistration match={sampleMatchProp} savePatientForm={FormManager.savePatientFormOnline} />
+      </ResourcesContext.Provider>,
+    );
     await wait();
 
     const givenNameInput = screen.getByLabelText('Given Name') as HTMLInputElement;
@@ -194,7 +207,7 @@ describe('form submit', () => {
     expect(givenNameInput.value).toBe('John');
     expect(familyNameInput.value).toBe('Wilson');
     expect(middleNameInput.value).toBeFalsy();
-    expect(dateOfBirthInput.value).toBe('4/4/1972');
+    expect(dateOfBirthInput.value).toBe('04/04/1972');
 
     // do some edits
     userEvent.clear(givenNameInput);
@@ -216,14 +229,12 @@ describe('form submit', () => {
             uuid: '1f0ad7a1-430f-4397-b571-59ea654a52db',
             identifier: '100GEJ',
             identifierType: 'e5af9a9c-ff9d-486d-900c-5fbf66a5ba3c',
-            location: '',
             preferred: true,
           },
           {
             uuid: '1f0ad7a1-430f-4397-b571-59ea654a52db',
             identifier: '100732HE',
             identifierType: '3ff0063c-dd45-4d98-8af4-0c094f26166c',
-            location: '',
             preferred: false,
           },
         ],
