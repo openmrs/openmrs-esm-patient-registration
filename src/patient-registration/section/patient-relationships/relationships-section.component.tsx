@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import sectionStyles from '../section.scss';
 import styles from './relationships.scss';
 import Button from 'carbon-components-react/es/components/Button';
@@ -7,8 +7,9 @@ import SelectItem from 'carbon-components-react/es/components/SelectItem';
 import { FieldArray } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { Autosuggest } from '../../input/custom-input/autosuggest/autosuggest.component';
-import { fetchAllRelationshipTypes, fetchPerson } from '../../patient-registration.resource';
 import { PatientRegistrationContext } from '../../patient-registration-context';
+import { ResourcesContext } from '../../../offline.resources';
+import { fetchPerson } from '../../patient-registration.resource';
 
 interface RelationshipType {
   display: string;
@@ -17,30 +18,28 @@ interface RelationshipType {
 }
 
 export const RelationshipsSection: React.FC = () => {
-  const [relationshipTypes, setRelationshipTypes] = useState<RelationshipType[]>([]);
+  const { relationshipTypes } = useContext(ResourcesContext);
+  const [displayRelationshipTypes, setDisplayRelationshipTypes] = useState<RelationshipType[]>([]);
   const { setFieldValue } = React.useContext(PatientRegistrationContext);
   const { t } = useTranslation();
 
   useEffect(() => {
-    const abortController = new AbortController();
-    fetchAllRelationshipTypes(abortController).then(({ data: { results } }) => {
-      const tmp: RelationshipType[] = [];
-      results.forEach(type => {
-        const aIsToB = {
-          display: type.aIsToB,
-          uuid: type.uuid,
-          direction: 'aIsToB',
-        };
-        const bIsToA = {
-          display: type.bIsToA,
-          uuid: type.uuid,
-          direction: 'bIsToA',
-        };
-        aIsToB.display === bIsToA.display ? tmp.push(aIsToB) : tmp.push(aIsToB, bIsToA);
-      });
-      setRelationshipTypes(tmp);
+    const tmp: RelationshipType[] = [];
+    relationshipTypes.results.forEach(type => {
+      const aIsToB = {
+        display: type.aIsToB,
+        uuid: type.uuid,
+        direction: 'aIsToB',
+      };
+      const bIsToA = {
+        display: type.bIsToA,
+        uuid: type.uuid,
+        direction: 'bIsToA',
+      };
+      aIsToB.display === bIsToA.display ? tmp.push(aIsToB) : tmp.push(aIsToB, bIsToA);
     });
-  }, []);
+    setDisplayRelationshipTypes(tmp);
+  }, [relationshipTypes]);
 
   const handleRelationshipTypeChange = event => {
     const { target } = event;
@@ -100,7 +99,7 @@ export const RelationshipsSection: React.FC = () => {
                             value="placeholder-item"
                             text={t('relationshipToPatient', 'Relationship to patient')}
                           />
-                          {relationshipTypes.map(type => (
+                          {displayRelationshipTypes.map(type => (
                             <SelectItem text={type.display} value={`${type.uuid}/${type.direction}`} key={index} />
                           ))}
                         </Select>

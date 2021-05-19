@@ -8,8 +8,7 @@ import {
 import { backendDependencies } from './openmrs-backend-dependencies';
 import { esmPatientRegistrationSchema } from './config-schemas/openmrs-esm-patient-registration-schema';
 import { Workbox } from 'workbox-window';
-import { fetchAllRelationshipTypes } from './patient-registration/patient-registration.resource';
-import { fetchCurrentSession, fetchAddressTemplate, fetchPatientIdentifierTypesWithSources } from './offline.resources';
+import { fetchCurrentSession, fetchAddressTemplate, fetchPatientIdentifierTypesWithSources, fetchAllRelationshipTypes } from './offline.resources';
 import FormManager from './patient-registration/form-manager';
 
 const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
@@ -49,8 +48,9 @@ function setupOpenMRS() {
           savePatientForm: FormManager.savePatientFormOffline,
         },
         resources: {
-          addressTemplate: fetchAddressTemplate,
           currentSession: fetchCurrentSession,
+          addressTemplate: fetchAddressTemplate,
+          relationshipTypes: fetchAllRelationshipTypes,
           patientIdentifiers: fetchPatientIdentifierTypesWithSources,
         },
       },

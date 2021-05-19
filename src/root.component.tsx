@@ -14,6 +14,7 @@ export interface RootProps extends PatientRegistrationProps, Resources {
 export default function Root({
   currentSession,
   addressTemplate,
+  relationshipTypes,
   patientIdentifiers,
   syncAddedPatientsOnLoad,
   savePatientForm,
@@ -21,6 +22,7 @@ export default function Root({
   const resources = {
     currentSession,
     addressTemplate,
+    relationshipTypes,
     patientIdentifiers,
   };
 

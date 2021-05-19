@@ -42,12 +42,6 @@ export function deletePersonName(nameUuid: string, personUuid: string, abortCont
   });
 }
 
-export function fetchAllRelationshipTypes(abortController: AbortController) {
-  return openmrsFetch('/ws/rest/v1/relationshiptype?v=default', {
-    signal: abortController.signal,
-  });
-}
-
 export function saveRelationship(abortController: AbortController, relationship: Relationship) {
   return openmrsFetch('/ws/rest/v1/relationship', {
     headers: {

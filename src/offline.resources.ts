@@ -8,6 +8,7 @@ import { mockAutoGenerationOptionsResult } from '../__mocks__/autogenerationopti
 export interface Resources {
   addressTemplate: any;
   currentSession: SessionUser;
+  relationshipTypes: any;
   patientIdentifiers: Array<PatientIdentifierType>;
 }
 
@@ -22,6 +23,13 @@ export async function fetchCurrentSession(abortController?: AbortController): Pr
 
 export async function fetchAddressTemplate(abortController?: AbortController) {
   const url = '/ws/rest/v1/systemsetting?q=layout.address.format&v=custom:(value)';
+  await cacheUrl(url);
+  const { data } = await openmrsFetch(url, { signal: abortController?.signal });
+  return data;
+}
+
+export async function fetchAllRelationshipTypes(abortController?: AbortController) {
+  const url = '/ws/rest/v1/relationshiptype?v=default';
   await cacheUrl(url);
   const { data } = await openmrsFetch(url, { signal: abortController?.signal });
   return data;
