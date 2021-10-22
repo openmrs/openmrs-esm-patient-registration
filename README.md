@@ -1,4 +1,10 @@
-![Node.js CI](https://github.com/openmrs/openmrs-esm-patient-registration/workflows/Node.js%20CI/badge.svg)
+# Moved
+
+This is now part of [esm-patient-management](https://github.com/openmrs/openmrs-esm-patient-management).
+
+The old documentation follows.
+
+----
 
 # Patient Registration ESM
 
